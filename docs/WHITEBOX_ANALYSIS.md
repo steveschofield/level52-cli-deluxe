@@ -560,7 +560,7 @@ A: High-confidence correlations (type + endpoint + parameter match) have >90% ac
 ## Support
 
 For issues, questions, or feature requests:
-- GitHub Issues: https://github.com/steveschofield/guardian-cli-deluxe/issues
+- GitHub Issues: https://github.com/steveschofield/level52-cli-deluxe/issues
 - Documentation: `docs/TOOLS_DEVELOPMENT_GUIDE.md`
 
 ---

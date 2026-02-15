@@ -1,5 +1,5 @@
 2026-02-14 20:58:11,415 - guardian - INFO - Initialized OpenRouter model: openrouter/free @ https://openrouter.ai/api/v1
-2026-02-14 20:58:11,417 - guardian - INFO - Prompt templates: set=default paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/reporter.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/tool_selector.py
+2026-02-14 20:58:11,417 - guardian - INFO - Prompt templates: set=default paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/reporter.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/tool_selector.py
 2026-02-14 20:58:11,427 - guardian - INFO - Loaded skill configuration from config/skills.yaml
 2026-02-14 20:58:11,428 - guardian - INFO - ✓ Loaded 'planner' skill (default prompts)
 2026-02-14 20:58:11,720 - guardian - WARNING - Tool godeye is not installed or not in PATH
@@ -206,7 +206,7 @@ DESCRIPTION: A TFTP server is listening on UDP port 69. The script output indica
 2026-02-14 21:10:37,020 - guardian - INFO - Workflow Progress [############--------] 15/22 (63%) ETA ~595s
 2026-02-14 21:10:37,021 - guardian - INFO - Executing step: http_probing
 2026-02-14 21:10:37,022 - guardian - INFO - Tool Agent selecting tool: httpx
-2026-02-14 21:10:37,022 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244
+2026-02-14 21:10:37,022 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244
 2026-02-14 21:10:38,598 - guardian - INFO - Tool httpx finished in 1.57s (status=completed, exit=0, stdout=550B, stderr=0B)
 2026-02-14 21:10:38,599 - guardian - INFO - Tool Executed: httpx
 2026-02-14 21:10:38,599 - guardian - INFO - Analyst Agent analyzing results...
@@ -246,7 +246,7 @@ SUMMARY: The httpx output shows the target is running outdated software versions
 2026-02-14 21:11:37,889 - guardian - INFO - Workflow Progress [##############------] 17/22 (72%) ETA ~483s
 2026-02-14 21:11:37,890 - guardian - INFO - Executing step: ssl_tls_scan
 2026-02-14 21:11:37,891 - guardian - INFO - Tool Agent selecting tool: testssl
-2026-02-14 21:11:37,892 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-8tgaks8c/testssl.json --severity LOW --quiet --ip one 192.168.1.244
+2026-02-14 21:11:37,892 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-8tgaks8c/testssl.json --severity LOW --quiet --ip one 192.168.1.244
 2026-02-14 21:11:37,952 - guardian - INFO - Tool testssl completed in 0.06s (exit 254)
 2026-02-14 21:11:37,953 - guardian - INFO - Tool Executed: testssl
 2026-02-14 21:11:37,953 - guardian - WARNING - Tool execution failed: [1;35mFatal error: "--ip=one" plus supplying an IP address doesn't work[m
@@ -329,7 +329,7 @@ SUMMARY: The target system shows critical security issues with outdated Apache a
 2026-02-14 21:12:04,535 - guardian - INFO - Workflow Progress [#################---] 20/22 (86%) ETA ~249s
 2026-02-14 21:12:04,536 - guardian - INFO - Executing step: vulnerability_scan
 2026-02-14 21:12:04,537 - guardian - INFO - Tool Agent selecting tool: nuclei
-2026-02-14 21:12:04,634 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/tools/.bin/nuclei -l reports/20260214_205811/nuclei_20260214_205811.txt -jsonl -o reports/20260214_205811/nuclei_20260214_211204.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50
+2026-02-14 21:12:04,634 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/tools/.bin/nuclei -l reports/20260214_205811/nuclei_20260214_205811.txt -jsonl -o reports/20260214_205811/nuclei_20260214_211204.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50
 2026-02-14 21:13:46,166 - guardian - INFO - Tool nuclei finished in 101.53s (status=completed, exit=0, stdout=4177B, stderr=0B)
 2026-02-14 21:13:46,170 - guardian - INFO - Tool Executed: nuclei
 2026-02-14 21:13:46,171 - guardian - INFO - Analyst Agent analyzing results...

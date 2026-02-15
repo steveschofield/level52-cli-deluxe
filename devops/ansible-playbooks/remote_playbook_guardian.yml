@@ -6,9 +6,9 @@
   gather_facts: true
   vars:
     username: 52pickup
-    guardian_dir: "/home/{{ username }}/guardian-cli-deluxe"
+    guardian_dir: "/home/{{ username }}/level52-cli-deluxe"
     guardian_python_version: "3.13.12"
-    # guardian-cli-deluxe setup uses `go install pkg@latest` which needs Go >= 1.17.
+    # level52-cli-deluxe setup uses `go install pkg@latest` which needs Go >= 1.17.
     # We install a specific version to ensure consistency across environments.
     go_version: "1.22.0"
     go_root: "/home/{{ username }}/.local/go"
@@ -237,9 +237,9 @@
     # ===========================================
     # Clone Guardian CLI Repository
     # ===========================================
-    - name: Clone guardian-cli-deluxe repository
+    - name: Clone level52-cli-deluxe repository
       ansible.builtin.git:
-        repo: https://github.com/steveschofield/guardian-cli-deluxe.git
+        repo: https://github.com/steveschofield/level52-cli-deluxe.git
         dest: "{{ guardian_dir }}"
         force: yes
       become_user: "{{ username }}"
@@ -975,7 +975,7 @@
           # Activate when logging in or when cd'ing into the guardian directory
           GUARDIAN_VENV="{{ guardian_dir }}/venv/bin/activate"
 
-          # Auto-activate on cd into guardian-cli-deluxe (or any subdirectory)
+          # Auto-activate on cd into level52-cli-deluxe (or any subdirectory)
           guardian_auto_venv() {
               builtin cd "$@" || return
               if [[ "$PWD" == {{ guardian_dir }}* ]] && [[ -f "$GUARDIAN_VENV" ]]; then

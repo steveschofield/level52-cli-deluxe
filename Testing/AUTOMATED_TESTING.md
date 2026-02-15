@@ -83,7 +83,7 @@ Curated collection of vulnerable applications for testing:
 
 ```bash
 # 1. Navigate to Guardian directory
-cd /path/to/guardian-cli-deluxe
+cd /path/to/level52-cli-deluxe
 
 # 2. Activate virtual environment
 source venv/bin/activate

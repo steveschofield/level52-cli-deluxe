@@ -1,5 +1,5 @@
 2026-02-14 15:00:33,983 - guardian - INFO - Initialized Ollama model: DeepHat/DeepHat-V1-7B @ http://192.168.1.69:11434
-2026-02-14 15:00:33,985 - guardian - INFO - Prompt templates: set=deephat_v1_7b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/reporter.py
+2026-02-14 15:00:33,985 - guardian - INFO - Prompt templates: set=deephat_v1_7b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/reporter.py
 2026-02-14 15:00:33,994 - guardian - INFO - Loaded skill configuration from config/skills.yaml
 2026-02-14 15:00:33,995 - guardian - INFO - ✓ Loaded 'planner' skill (optimized for deephat_v1_7b)
 2026-02-14 15:00:34,251 - guardian - WARNING - Tool godeye is not installed or not in PATH
@@ -306,7 +306,7 @@ Would you like me to elaborate on any specific finding?
 2026-02-14 15:17:25,758 - guardian - INFO - Workflow Progress [############--------] 15/22 (63%) ETA ~808s
 2026-02-14 15:17:25,759 - guardian - INFO - Executing step: http_probing
 2026-02-14 15:17:25,759 - guardian - INFO - Tool Agent selecting tool: httpx
-2026-02-14 15:17:25,762 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244
+2026-02-14 15:17:25,762 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244
 2026-02-14 15:17:28,323 - guardian - INFO - Tool httpx finished in 2.56s (status=completed, exit=0, stdout=549B, stderr=0B)
 2026-02-14 15:17:28,324 - guardian - INFO - Tool Executed: httpx
 2026-02-14 15:17:28,324 - guardian - INFO - Analyst Agent analyzing results...
@@ -360,7 +360,7 @@ Would you like me to elaborate on any specific finding?
 2026-02-14 15:18:48,403 - guardian - INFO - Workflow Progress [##############------] 17/22 (72%) ETA ~656s
 2026-02-14 15:18:48,404 - guardian - INFO - Executing step: ssl_tls_scan
 2026-02-14 15:18:48,405 - guardian - INFO - Tool Agent selecting tool: testssl
-2026-02-14 15:18:48,412 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-7sc1pk6r/testssl.json --severity LOW --quiet --ip one 192.168.1.244
+2026-02-14 15:18:48,412 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-7sc1pk6r/testssl.json --severity LOW --quiet --ip one 192.168.1.244
 2026-02-14 15:18:48,510 - guardian - INFO - Tool testssl completed in 0.10s (exit 254)
 2026-02-14 15:18:48,512 - guardian - INFO - Tool Executed: testssl
 2026-02-14 15:18:48,513 - guardian - WARNING - Tool execution failed: [1;35mFatal error: "--ip=one" plus supplying an IP address doesn't work[m
@@ -491,7 +491,7 @@ Would you like me to elaborate on any specific finding?
 2026-02-14 15:22:07,973 - guardian - INFO - Workflow Progress [#################---] 20/22 (86%) ETA ~388s
 2026-02-14 15:22:07,974 - guardian - INFO - Executing step: vulnerability_scan
 2026-02-14 15:22:07,975 - guardian - INFO - Tool Agent selecting tool: nuclei
-2026-02-14 15:22:08,104 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/tools/.bin/nuclei -l reports/20260214_150033/nuclei_20260214_150033.txt -jsonl -o reports/20260214_150033/nuclei_20260214_152208.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50
+2026-02-14 15:22:08,104 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/tools/.bin/nuclei -l reports/20260214_150033/nuclei_20260214_150033.txt -jsonl -o reports/20260214_150033/nuclei_20260214_152208.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50
 2026-02-14 15:23:50,433 - guardian - INFO - Tool nuclei finished in 102.33s (status=completed, exit=0, stdout=4145B, stderr=0B)
 2026-02-14 15:23:50,438 - guardian - INFO - Tool Executed: nuclei
 2026-02-14 15:23:50,440 - guardian - INFO - Analyst Agent analyzing results...

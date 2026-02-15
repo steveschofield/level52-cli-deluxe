@@ -443,7 +443,7 @@
           Next steps:
           1. Logout and login again (or run: newgrp docker)
           2. Reload your shell: source ~/.bashrc
-          3. Navigate to guardian-cli-deluxe directory
+          3. Navigate to level52-cli-deluxe directory
           4. Create Python venv: python3 -m venv venv
           5. Activate venv: source venv/bin/activate
           6. Install Guardian: pip install -e .

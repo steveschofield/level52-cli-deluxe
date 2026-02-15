@@ -119,7 +119,7 @@ verify_installation() {
 
     echo ""
     echo -e "${YELLOW}Test Guardian:${NC}"
-    echo "  cd ~/guardian-cli-deluxe"
+    echo "  cd ~/level52-cli-deluxe"
     echo "  source venv/bin/activate"
     echo "  python -m cli.main workflow run --name recon --target scanme.nmap.org"
     echo ""

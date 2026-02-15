@@ -15,14 +15,14 @@ I've created `remote_playbook_guardian_enhanced.yml` which installs **ALL** miss
 
 ## 🚀 Quick Fix for Your Hyper-V VM
 
-Since you mentioned you have a working Hyper-V setup at `/Users/ss/code/guardian-cli-deluxe/devops/vagrant-ubuntu-hyperv-guardian-kali/`, here's how to update it:
+Since you mentioned you have a working Hyper-V setup at `/Users/ss/code/level52-cli-deluxe/devops/vagrant-ubuntu-hyperv-guardian-kali/`, here's how to update it:
 
 ### Option 1: Update Existing Remote Playbook
 
 ```bash
 # 1. Copy the enhanced playbook to your devops folder
 cp ansible-playbooks/remote_playbook_guardian_enhanced.yml \
-   /Users/ss/code/guardian-cli-deluxe/devops/ansible-playbooks/
+   /Users/ss/code/level52-cli-deluxe/devops/ansible-playbooks/
 
 # 2. SSH into your VM
 ssh 52pickup@<your-vm-ip>
@@ -36,7 +36,7 @@ sudo ansible-playbook remote_playbook_guardian_enhanced.yml
 
 ```bash
 # 1. Navigate to this repo
-cd /Users/ss/.claude-worktrees/guardian-cli-deluxe/strange-khorana/ansible-playbooks
+cd /Users/ss/.claude-worktrees/level52-cli-deluxe/strange-khorana/ansible-playbooks
 
 # 2. Create inventory for your remote VM
 cat > inventory/hosts.ini <<EOF
@@ -121,7 +121,7 @@ pip3 list | grep arjun
 pip3 list | grep schemathesis
 
 # Test Guardian
-cd ~/guardian-cli-deluxe
+cd ~/level52-cli-deluxe
 source venv/bin/activate
 python -m cli.main workflow run --name recon --target 192.168.1.232
 ```
@@ -166,7 +166,7 @@ source ~/.bashrc
 ### If Python tools have import errors:
 
 ```bash
-cd ~/guardian-cli-deluxe
+cd ~/level52-cli-deluxe
 source venv/bin/activate
 pip install -r requirements.txt
 ```
@@ -199,7 +199,7 @@ After installation completes successfully:
 
 1. **Test Basic Workflow**:
    ```bash
-   cd ~/guardian-cli-deluxe
+   cd ~/level52-cli-deluxe
    source venv/bin/activate
    python -m cli.main workflow run --name recon --target 192.168.1.232
    ```
@@ -214,7 +214,7 @@ After installation completes successfully:
 
 4. **Check Reports**:
    ```bash
-   ls -lh ~/guardian-cli-deluxe/reports/
+   ls -lh ~/level52-cli-deluxe/reports/
    ```
 
 ---
@@ -223,4 +223,4 @@ After installation completes successfully:
 
 - See full documentation: [README.md](README.md)
 - Check playbook source: [remote_playbook_guardian_enhanced.yml](remote_playbook_guardian_enhanced.yml)
-- Original working playbook: `/Users/ss/code/guardian-cli-deluxe/devops/ansible-playbooks/remote_playbook_guardian.yml`
+- Original working playbook: `/Users/ss/code/level52-cli-deluxe/devops/ansible-playbooks/remote_playbook_guardian.yml`

@@ -218,13 +218,13 @@ RUN echo "Installing god-eye..." && \
 ### Test Build Command
 
 ```bash
-cd /Users/ss/.claude-worktrees/guardian-cli-deluxe/strange-khorana
+cd /Users/ss/.claude-worktrees/level52-cli-deluxe/strange-khorana
 
 # Build with verbose output
-docker build -f Dockerfile.kali -t guardian-cli-deluxe:test . --progress=plain
+docker build -f Dockerfile.kali -t level52-cli-deluxe:test . --progress=plain
 
 # Or build without cache (clean build)
-docker build --no-cache -f Dockerfile.kali -t guardian-cli-deluxe:test . --progress=plain
+docker build --no-cache -f Dockerfile.kali -t level52-cli-deluxe:test . --progress=plain
 ```
 
 ### Test Build in Stages
@@ -243,7 +243,7 @@ docker build -f Dockerfile.kali -t guardian-test . 2>&1 | tee build.log
 
 ```bash
 # Run container
-docker run -it --rm guardian-cli-deluxe:test /bin/bash
+docker run -it --rm level52-cli-deluxe:test /bin/bash
 
 # Inside container, verify tools
 which testssl kr jwt_tool graphqlcop xsstrike cmseek \

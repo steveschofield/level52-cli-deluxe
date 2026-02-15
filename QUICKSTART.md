@@ -4,7 +4,7 @@
 
 1. **Navigate to project directory**:
    ```bash
-   cd /path/to/guardian-cli-deluxe
+   cd /path/to/level52-cli-deluxe
    ```
 
 2. **Create virtual environment**:

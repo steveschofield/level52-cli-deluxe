@@ -35,7 +35,7 @@ def _arch_suffix() -> str:
 def _download(url: str) -> bytes:
     req = urllib.request.Request(
         url,
-        headers={"Accept": "application/vnd.github+json", "User-Agent": "guardian-cli-deluxe"},
+        headers={"Accept": "application/vnd.github+json", "User-Agent": "level52-cli-deluxe"},
     )
     with urllib.request.urlopen(req, timeout=30) as resp:
         return resp.read()

@@ -13,7 +13,7 @@ Version 3.0 includes all tools, dependencies, and enhancements from the native s
 ### Build the Container
 
 ```bash
-docker build -f Dockerfile.kali -t guardian-cli-deluxe:latest .
+docker build -f Dockerfile.kali -t level52-cli-deluxe:latest .
 ```
 
 ### Run the Container
@@ -22,7 +22,7 @@ docker build -f Dockerfile.kali -t guardian-cli-deluxe:latest .
 docker run -it --rm \
   -e ANTHROPIC_API_KEY="your-key-here" \
   -v $(pwd)/reports:/guardian/reports \
-  guardian-cli-deluxe:latest
+  level52-cli-deluxe:latest
 ```
 
 ### Using Docker Compose
@@ -145,8 +145,8 @@ Both Docker and native setups now include:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/guardian-cli-deluxe.git
-cd guardian-cli-deluxe
+git clone https://github.com/yourusername/level52-cli-deluxe.git
+cd level52-cli-deluxe
 
 # Create and activate Python virtual environment
 python3.12 -m venv venv
@@ -166,11 +166,11 @@ source venv/bin/activate
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/guardian-cli-deluxe.git
-cd guardian-cli-deluxe
+git clone https://github.com/yourusername/level52-cli-deluxe.git
+cd level52-cli-deluxe
 
 # Build the Docker image (takes 30-60 minutes)
-docker build -f Dockerfile.kali -t guardian-cli-deluxe:latest .
+docker build -f Dockerfile.kali -t level52-cli-deluxe:latest .
 
 # Run with API keys
 docker run -it --rm \
@@ -178,7 +178,7 @@ docker run -it --rm \
   -v $(pwd)/reports:/guardian/reports \
   --cap-add=NET_ADMIN \
   --cap-add=NET_RAW \
-  guardian-cli-deluxe:latest
+  level52-cli-deluxe:latest
 ```
 
 **Advantages:**
@@ -194,7 +194,7 @@ docker run -it --rm \
 ### Basic Interactive Shell
 
 ```bash
-docker run -it --rm guardian-cli-deluxe:latest
+docker run -it --rm level52-cli-deluxe:latest
 ```
 
 ### Run a Workflow
@@ -203,7 +203,7 @@ docker run -it --rm guardian-cli-deluxe:latest
 docker run -it --rm \
   -e ANTHROPIC_API_KEY="sk-ant-..." \
   -v $(pwd)/reports:/guardian/reports \
-  guardian-cli-deluxe:latest \
+  level52-cli-deluxe:latest \
   python -m cli.main workflow run --name web --target https://example.com
 ```
 
@@ -214,7 +214,7 @@ docker run -it --rm \
   -e ANTHROPIC_API_KEY="sk-ant-..." \
   -v $(pwd)/reports:/guardian/reports \
   -v $(pwd)/source-code:/guardian/source \
-  guardian-cli-deluxe:latest \
+  level52-cli-deluxe:latest \
   python -m cli.main workflow run \
     --name web \
     --target https://example.com \
@@ -228,7 +228,7 @@ docker run -it --rm \
   --privileged \
   --net=host \
   -e ANTHROPIC_API_KEY="sk-ant-..." \
-  guardian-cli-deluxe:latest \
+  level52-cli-deluxe:latest \
   nmap -sS -sV 192.168.1.0/24
 ```
 
@@ -243,7 +243,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.kali
-    image: guardian-cli-deluxe:latest
+    image: level52-cli-deluxe:latest
     container_name: guardian-kali
     environment:
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
@@ -335,7 +335,7 @@ docker run -it --rm \
   -v $(pwd)/data:/guardian/data \            # Persistent data
   -v $(pwd)/config:/guardian/config \        # Custom configs
   -v $(pwd)/source:/guardian/source \        # Source code for SAST
-  guardian-cli-deluxe:latest
+  level52-cli-deluxe:latest
 ```
 
 ---
@@ -347,7 +347,7 @@ docker run -it --rm \
 Works for most HTTP-based testing:
 
 ```bash
-docker run -it --rm guardian-cli-deluxe:latest
+docker run -it --rm level52-cli-deluxe:latest
 ```
 
 ### Host Network Mode
@@ -357,7 +357,7 @@ Required for raw packet manipulation, SYN scans, masscan:
 ```bash
 docker run -it --rm \
   --net=host \
-  guardian-cli-deluxe:latest
+  level52-cli-deluxe:latest
 ```
 
 ### Port Forwarding
@@ -368,7 +368,7 @@ For running services inside the container:
 docker run -it --rm \
   -p 8080:8080 \
   -p 8443:8443 \
-  guardian-cli-deluxe:latest
+  level52-cli-deluxe:latest
 ```
 
 ---
@@ -383,7 +383,7 @@ For network scanning tools like nmap, masscan:
 docker run -it --rm \
   --cap-add=NET_ADMIN \
   --cap-add=NET_RAW \
-  guardian-cli-deluxe:latest
+  level52-cli-deluxe:latest
 ```
 
 ### Privileged Mode (Use with Caution)
@@ -393,7 +393,7 @@ For full access (required for some advanced attacks):
 ```bash
 docker run -it --rm \
   --privileged \
-  guardian-cli-deluxe:latest
+  level52-cli-deluxe:latest
 ```
 
 ⚠️ **Warning:** Only use `--privileged` in isolated/trusted environments.
@@ -418,7 +418,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build Guardian Docker Image
-        run: docker build -f Dockerfile.kali -t guardian-cli-deluxe:latest .
+        run: docker build -f Dockerfile.kali -t level52-cli-deluxe:latest .
 
       - name: Run Security Scan
         env:
@@ -427,7 +427,7 @@ jobs:
           docker run --rm \
             -e ANTHROPIC_API_KEY \
             -v $PWD/reports:/guardian/reports \
-            guardian-cli-deluxe:latest \
+            level52-cli-deluxe:latest \
             python -m cli.main workflow run \
               --name web \
               --target https://staging.example.com \
@@ -444,7 +444,7 @@ jobs:
 
 ```yaml
 guardian-security-scan:
-  image: guardian-cli-deluxe:latest
+  image: level52-cli-deluxe:latest
   script:
     - python -m cli.main workflow run --name web --target $TARGET_URL --source .
   artifacts:
@@ -462,7 +462,7 @@ guardian-security-scan:
 
 ```bash
 # Clean build (no cache)
-docker build --no-cache -f Dockerfile.kali -t guardian-cli-deluxe:latest .
+docker build --no-cache -f Dockerfile.kali -t level52-cli-deluxe:latest .
 
 # Check specific stage failure
 docker build --target STAGE_NAME -f Dockerfile.kali -t guardian-test .
@@ -472,34 +472,34 @@ docker build --target STAGE_NAME -f Dockerfile.kali -t guardian-test .
 
 ```bash
 # Check if tool is installed
-docker run -it --rm guardian-cli-deluxe:latest which nuclei
+docker run -it --rm level52-cli-deluxe:latest which nuclei
 
 # Verify Go tools are in PATH
-docker run -it --rm guardian-cli-deluxe:latest echo $PATH
+docker run -it --rm level52-cli-deluxe:latest echo $PATH
 ```
 
 ### Python Import Errors
 
 ```bash
 # Verify Python packages
-docker run -it --rm guardian-cli-deluxe:latest \
+docker run -it --rm level52-cli-deluxe:latest \
   python3 -c "import langchain_ollama; print('OK')"
 
 # Check pip packages
-docker run -it --rm guardian-cli-deluxe:latest pip list
+docker run -it --rm level52-cli-deluxe:latest pip list
 ```
 
 ### Network Scanning Not Working
 
 ```bash
 # Use host network mode
-docker run -it --rm --net=host guardian-cli-deluxe:latest nmap -sS 192.168.1.1
+docker run -it --rm --net=host level52-cli-deluxe:latest nmap -sS 192.168.1.1
 
 # Add network capabilities
 docker run -it --rm \
   --cap-add=NET_ADMIN \
   --cap-add=NET_RAW \
-  guardian-cli-deluxe:latest masscan 192.168.1.0/24 -p80
+  level52-cli-deluxe:latest masscan 192.168.1.0/24 -p80
 ```
 
 ---
@@ -538,10 +538,10 @@ Since Docker doesn't have the idempotent retry logic from `setup.sh`, updates re
 
 ```bash
 # Rebuild image with latest tools
-docker build --no-cache -f Dockerfile.kali -t guardian-cli-deluxe:latest .
+docker build --no-cache -f Dockerfile.kali -t level52-cli-deluxe:latest .
 
 # Tag with version
-docker tag guardian-cli-deluxe:latest guardian-cli-deluxe:v3.0
+docker tag level52-cli-deluxe:latest level52-cli-deluxe:v3.0
 ```
 
 ### Update Tools in Native Kali
@@ -605,7 +605,7 @@ source venv/bin/activate
 ## Support
 
 For issues or questions:
-- GitHub Issues: https://github.com/yourusername/guardian-cli-deluxe/issues
+- GitHub Issues: https://github.com/yourusername/level52-cli-deluxe/issues
 - Documentation: See README.md and setup.sh comments
 
 ---

@@ -1727,7 +1727,7 @@
   "tool_executions": [
     {
       "tool": "httpx",
-      "command": "/home/kali/code/guardian-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u http://192.168.1.12:3000",
+      "command": "/home/kali/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u http://192.168.1.12:3000",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T03:05:15.614731",
       "exit_code": 0,
@@ -1749,7 +1749,7 @@
     },
     {
       "tool": "wafw00f",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/wafw00f -v -a http://192.168.1.12:3000",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/wafw00f -v -a http://192.168.1.12:3000",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T03:06:24.153574",
       "exit_code": 0,
@@ -1760,7 +1760,7 @@
     },
     {
       "tool": "sslyze",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/sslyze 192.168.1.12:3000 --json_out=- --certinfo --sslv2 --sslv3 --tlsv1 --tlsv1_1 --tlsv1_2 --tlsv1_3 --reneg --resum --heartbleed --robot --openssl_ccs --compression --http_headers --timeout 10 --quiet",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/sslyze 192.168.1.12:3000 --json_out=- --certinfo --sslv2 --sslv3 --tlsv1 --tlsv1_1 --tlsv1_2 --tlsv1_3 --reneg --resum --heartbleed --robot --openssl_ccs --compression --http_headers --timeout 10 --quiet",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T03:06:43.999926",
       "exit_code": 2,
@@ -1771,7 +1771,7 @@
     },
     {
       "tool": "testssl",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-ukpr2egv/testssl.json --severity LOW --quiet --ip one 192.168.1.12:3000",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-ukpr2egv/testssl.json --severity LOW --quiet --ip one 192.168.1.12:3000",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T03:06:55.497225",
       "exit_code": 245,
@@ -1793,7 +1793,7 @@
     },
     {
       "tool": "whatweb",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/whatweb --log-json=reports/20260131_030514/whatweb_20260131_034458_351978.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.12:3000",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/whatweb --log-json=reports/20260131_030514/whatweb_20260131_034458_351978.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.12:3000",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T03:44:58.353032",
       "exit_code": 0,
@@ -1804,7 +1804,7 @@
     },
     {
       "tool": "cmseek",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/cmseek -u http://192.168.1.12:3000 --batch --random-agent",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/cmseek -u http://192.168.1.12:3000 --batch --random-agent",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T03:45:27.364481",
       "exit_code": 0,
@@ -1815,7 +1815,7 @@
     },
     {
       "tool": "katana",
-      "command": "/home/kali/code/guardian-cli-deluxe/tools/.bin/katana -silent -jsonl -d 3 -c 25 -list reports/20260131_030514/katana_20260131_030514.txt",
+      "command": "/home/kali/code/level52-cli-deluxe/tools/.bin/katana -silent -jsonl -d 3 -c 25 -list reports/20260131_030514/katana_20260131_030514.txt",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T03:45:53.933319",
       "exit_code": 0,
@@ -1826,7 +1826,7 @@
     },
     {
       "tool": "waybackurls",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/waybackurls http://192.168.1.12:3000",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/waybackurls http://192.168.1.12:3000",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T03:47:02.744416",
       "exit_code": 0,
@@ -1837,7 +1837,7 @@
     },
     {
       "tool": "kiterunner",
-      "command": "/home/kali/code/guardian-cli-deluxe/tools/.bin/kiterunner scan http://192.168.1.12:3000 -w ./tools/vendor/kiterunner/routes-small.kite",
+      "command": "/home/kali/code/level52-cli-deluxe/tools/.bin/kiterunner scan http://192.168.1.12:3000 -w ./tools/vendor/kiterunner/routes-small.kite",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T03:47:39.898693",
       "exit_code": 2,
@@ -1848,7 +1848,7 @@
     },
     {
       "tool": "subjs",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/subjs -i reports/20260131_030514/subjs_20260131_030514.txt",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/subjs -i reports/20260131_030514/subjs_20260131_030514.txt",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T03:48:13.597411",
       "exit_code": 0,
@@ -1859,7 +1859,7 @@
     },
     {
       "tool": "xnlinkfinder",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/xnLinkFinder -i reports/20260131_030514/xnlinkfinder_20260131_030514.txt",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/xnLinkFinder -i reports/20260131_030514/xnlinkfinder_20260131_030514.txt",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T03:48:35.408715",
       "exit_code": 0,
@@ -1870,7 +1870,7 @@
     },
     {
       "tool": "linkfinder",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/python -m linkfinder -i http://192.168.1.12:3000 -o cli",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/python -m linkfinder -i http://192.168.1.12:3000 -o cli",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T03:48:49.299394",
       "exit_code": 0,
@@ -1881,7 +1881,7 @@
     },
     {
       "tool": "retire",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/retire --outputformat json --path /tmp/guardian-retire-ba1ifu4m",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/retire --outputformat json --path /tmp/guardian-retire-ba1ifu4m",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T03:49:10.264777",
       "exit_code": 13,
@@ -1903,7 +1903,7 @@
     },
     {
       "tool": "paramspider",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/paramspider -d 192.168.1.12:3000",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/paramspider -d 192.168.1.12:3000",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T03:49:50.311856",
       "exit_code": 0,
@@ -1914,7 +1914,7 @@
     },
     {
       "tool": "arjun",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/arjun -u http://192.168.1.12:3000 --json -oJ arjun_1769849444.json",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/arjun -u http://192.168.1.12:3000 --json -oJ arjun_1769849444.json",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T03:50:44.420156",
       "exit_code": 2,
@@ -1925,7 +1925,7 @@
     },
     {
       "tool": "commix",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/commix --url http://192.168.1.12:3000 --batch --level 2",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/commix --url http://192.168.1.12:3000 --batch --level 2",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T03:50:57.323190",
       "exit_code": 0,
@@ -1947,7 +1947,7 @@
     },
     {
       "tool": "nuclei",
-      "command": "/home/kali/code/guardian-cli-deluxe/tools/.bin/nuclei -l reports/20260131_030514/nuclei_20260131_030514.txt -jsonl -o reports/20260131_030514/nuclei_20260131_035228.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50",
+      "command": "/home/kali/code/level52-cli-deluxe/tools/.bin/nuclei -l reports/20260131_030514/nuclei_20260131_030514.txt -jsonl -o reports/20260131_030514/nuclei_20260131_035228.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T03:52:28.506018",
       "exit_code": 0,
@@ -1958,7 +1958,7 @@
     },
     {
       "tool": "schemathesis",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/schemathesis run http://192.168.1.12:3000/openapi.json --url http://192.168.1.12:3000 --tls-verify=false",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/schemathesis run http://192.168.1.12:3000/openapi.json --url http://192.168.1.12:3000 --tls-verify=false",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T04:04:44.789772",
       "exit_code": 1,
@@ -1969,7 +1969,7 @@
     },
     {
       "tool": "graphql-cop",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/python /home/kali/code/guardian-cli-deluxe/tools/vendor/graphql-cop/graphql-cop.py -t http://192.168.1.12:3000/graphql",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/python /home/kali/code/level52-cli-deluxe/tools/vendor/graphql-cop/graphql-cop.py -t http://192.168.1.12:3000/graphql",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T04:05:06.307209",
       "exit_code": 0,
@@ -1980,7 +1980,7 @@
     },
     {
       "tool": "dalfox",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/dalfox file reports/20260131_030514/dalfox_20260131_030514.txt --format json --deep-domxss",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/dalfox file reports/20260131_030514/dalfox_20260131_030514.txt --format json --deep-domxss",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T04:05:25.169021",
       "exit_code": 0,
@@ -1991,7 +1991,7 @@
     },
     {
       "tool": "xsstrike",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/xsstrike -u http://192.168.1.12:3000 --crawl --json",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/xsstrike -u http://192.168.1.12:3000 --crawl --json",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T04:08:44.525977",
       "exit_code": 0,
@@ -2002,7 +2002,7 @@
     },
     {
       "tool": "csrf-tester",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/python /home/kali/code/guardian-cli-deluxe/tools/vendor/guardian_tools/csrf_tester.py --url http://192.168.1.12:3000 --insecure",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/python /home/kali/code/level52-cli-deluxe/tools/vendor/guardian_tools/csrf_tester.py --url http://192.168.1.12:3000 --insecure",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T04:08:59.068527",
       "exit_code": 0,
@@ -2013,7 +2013,7 @@
     },
     {
       "tool": "upload-scanner",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/python /home/kali/code/guardian-cli-deluxe/tools/vendor/guardian_tools/upload_scanner.py --url http://192.168.1.12:3000 --insecure",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/python /home/kali/code/level52-cli-deluxe/tools/vendor/guardian_tools/upload_scanner.py --url http://192.168.1.12:3000 --insecure",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T04:09:17.874094",
       "exit_code": 0,
@@ -2035,11 +2035,11 @@
     },
     {
       "tool": "cors-scanner",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/python /home/kali/code/guardian-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.12:3000 -t 10 -T 10 -j",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/python /home/kali/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.12:3000 -t 10 -T 10 -j",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T04:10:02.184638",
       "exit_code": 0,
-      "output": "\n   ____ ___  ____  ____   ____    _    _   _ _   _ _____ ____  \n  / ___/ _ \\|  _ \\/ ___| / ___|  / \\  | \\ | | \\ | | ____|  _ \\ \n | |  | | | | |_) \\___ \\| |     / _ \\ |  \\| |  \\| |  _| | |_) |\n | |__| |_| |  _ < ___) | |___ / ___ \\| |\\  | |\\  | |___|  _ < \n  \\____\\___/|_| \\_\\____/ \\____/_/   \\_\\_| \\_|_| \\_|_____|_| \\_                                                               \n        # Coded By Jianjun Chen - whucjj@gmail.com\n    \nUsage: python /home/kali/code/guardian-cli-deluxe/tools/vendor/CORScanner/cors_scan.py [Options] use -h for help\nError: unrecognized arguments: -j\n",
+      "output": "\n   ____ ___  ____  ____   ____    _    _   _ _   _ _____ ____  \n  / ___/ _ \\|  _ \\/ ___| / ___|  / \\  | \\ | | \\ | | ____|  _ \\ \n | |  | | | | |_) \\___ \\| |     / _ \\ |  \\| |  \\| |  _| | |_) |\n | |__| |_| |  _ < ___) | |___ / ___ \\| |\\  | |\\  | |___|  _ < \n  \\____\\___/|_| \\_\\____/ \\____/_/   \\_\\_| \\_|_| \\_|_____|_| \\_                                                               \n        # Coded By Jianjun Chen - whucjj@gmail.com\n    \nUsage: python /home/kali/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py [Options] use -h for help\nError: unrecognized arguments: -j\n",
       "duration": 0.299765,
       "findings_count": 0,
       "success": true
@@ -2123,7 +2123,7 @@
     },
     {
       "tool": "zap",
-      "command": "python3 /home/kali/code/guardian-cli-deluxe/scripts/zap_docker_daemon_scan.py --image ghcr.io/zaproxy/zaproxy:stable --api-url http://127.0.0.1:8080 --target http://192.168.1.12:3000 --max-minutes 45 --startup-timeout 180 --spider --ajax-spider --active --ignore-robots --seed-file reports/20260131_030514/zap_seed_20260131_030514.txt --username-field username --password-field password --json-out reports/20260131_030514/zap/zap_full_20260131_041544.json --html-out reports/20260131_030514/zap/zap_full_20260131_041544.html --md-out reports/20260131_030514/zap/zap_full_20260131_041544.md",
+      "command": "python3 /home/kali/code/level52-cli-deluxe/scripts/zap_docker_daemon_scan.py --image ghcr.io/zaproxy/zaproxy:stable --api-url http://127.0.0.1:8080 --target http://192.168.1.12:3000 --max-minutes 45 --startup-timeout 180 --spider --ajax-spider --active --ignore-robots --seed-file reports/20260131_030514/zap_seed_20260131_030514.txt --username-field username --password-field password --json-out reports/20260131_030514/zap/zap_full_20260131_041544.json --html-out reports/20260131_030514/zap/zap_full_20260131_041544.html --md-out reports/20260131_030514/zap/zap_full_20260131_041544.md",
       "target": "http://192.168.1.12:3000",
       "timestamp": "2026-01-31T04:15:44.941833",
       "exit_code": 0,

@@ -52,7 +52,7 @@
     },
     {
       "tool": "httpx",
-      "command": "/home/kali/code/guardian-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244",
+      "command": "/home/kali/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244",
       "target": "192.168.1.244",
       "timestamp": "2026-02-14T07:57:36.319316",
       "exit_code": 0,
@@ -63,7 +63,7 @@
     },
     {
       "tool": "testssl",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-an637vw5/testssl.json --severity LOW --quiet --ip one 192.168.1.244",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-an637vw5/testssl.json --severity LOW --quiet --ip one 192.168.1.244",
       "target": "192.168.1.244",
       "timestamp": "2026-02-14T07:57:51.306855",
       "exit_code": 254,

@@ -5,8 +5,8 @@ cd ~/Downloads
 sudo apt install ./<filename.deb>
 mkdir ~/code
 cd ~/code
-git clone https://github.com/steveschofield/guardian-cli-deluxe
-─$ cd ~/code/guardian-cli-deluxe 
+git clone https://github.com/steveschofield/level52-cli-deluxe
+─$ cd ~/code/level52-cli-deluxe 
 code .
 
 #Install VSCode Extensions
@@ -20,15 +20,15 @@ GitHub Pull Requests (to sign into GitHub)
 
 #Install Docker
 sudo apt install ansible
-cd ~/code/guardian-cli-deluxe/ansible-playbooks
+cd ~/code/level52-cli-deluxe/ansible-playbooks
 ansible-playbook -K local_playbook_kali.yml 
 
-┌──(kali㉿kali)-[~/whatcode/guardian-cli-deluxe/ansible-playbooks]
+┌──(kali㉿kali)-[~/whatcode/level52-cli-deluxe/ansible-playbooks]
 └─$ sudo systemctl enable docker
 Synchronizing state of docker.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
 Executing: /usr/lib/systemd/systemd-sysv-install enable docker
                                                                              
-┌──(kali㉿kali)-[~/code/guardian-cli-deluxe/ansible-playbooks]
+┌──(kali㉿kali)-[~/code/level52-cli-deluxe/ansible-playbooks]
 └─$ sudo systemctl start docker 
 
 #Download ZAP container - READme.md has paths
@@ -51,7 +51,7 @@ source venv/bin/activate
 pip install -e .
 
 sudo apt instll code-oss (visual code)
-git clone https://github.com/steveschofield/guardian-cli-deluxe
+git clone https://github.com/steveschofield/level52-cli-deluxe
 ./setup.sh
 
 ============

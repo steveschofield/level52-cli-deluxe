@@ -1,5 +1,5 @@
 2026-02-14 07:55:55,045 - guardian - INFO - Initialized Ollama model: llama3.2:3b @ http://192.168.1.69:11434
-2026-02-14 07:55:55,047 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
+2026-02-14 07:55:55,047 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
 2026-02-14 07:55:55,055 - guardian - INFO - Loaded skill configuration from config/skills.yaml
 2026-02-14 07:55:55,537 - guardian - WARNING - Tool godeye is not installed or not in PATH
 2026-02-14 07:55:55,612 - guardian - WARNING - BloodHound MCP image not found. Run: docker pull ghcr.io/fuzzinglabs/bloodhound-mcp:latest
@@ -283,7 +283,7 @@ The nmap output indicates that there are no active services listening on the def
 2026-02-14 07:57:36,313 - guardian - INFO - Workflow Progress [############--------] 15/22 (63%) ETA ~80s
 2026-02-14 07:57:36,315 - guardian - INFO - Executing step: http_probing
 2026-02-14 07:57:36,316 - guardian - INFO - Tool Agent selecting tool: httpx
-2026-02-14 07:57:36,317 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244
+2026-02-14 07:57:36,317 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244
 2026-02-14 07:57:51,289 - guardian - INFO - Tool httpx finished in 14.97s (status=completed, exit=0, stdout=0B, stderr=0B)
 2026-02-14 07:57:51,292 - guardian - INFO - Tool Executed: httpx
 2026-02-14 07:57:51,293 - guardian - INFO - Analyst Agent analyzing results...
@@ -299,7 +299,7 @@ The nmap output indicates that there are no active services listening on the def
 2026-02-14 07:57:51,304 - guardian - INFO - Workflow Progress [##############------] 17/22 (72%) ETA ~69s
 2026-02-14 07:57:51,305 - guardian - INFO - Executing step: ssl_tls_scan
 2026-02-14 07:57:51,306 - guardian - INFO - Tool Agent selecting tool: testssl
-2026-02-14 07:57:51,307 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-an637vw5/testssl.json --severity LOW --quiet --ip one 192.168.1.244
+2026-02-14 07:57:51,307 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-an637vw5/testssl.json --severity LOW --quiet --ip one 192.168.1.244
 2026-02-14 07:57:51,408 - guardian - INFO - Tool testssl completed in 0.10s (exit 254)
 2026-02-14 07:57:51,409 - guardian - INFO - Tool Executed: testssl
 2026-02-14 07:57:51,409 - guardian - WARNING - Tool execution failed: [1;35mFatal error: "--ip=one" plus supplying an IP address doesn't work[m

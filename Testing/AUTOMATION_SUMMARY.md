@@ -212,7 +212,7 @@ Recommendations
 ### Files Created
 
 ```
-guardian-cli-deluxe/
+level52-cli-deluxe/
 ├── homelab_test_orchestrator.py    # Main orchestrator (1,100 lines)
 ├── log_analyzer.py                 # Analysis engine (700 lines)
 ├── AUTOMATED_TESTING.md            # Comprehensive guide
@@ -234,7 +234,7 @@ guardian-cli-deluxe/
 #!/bin/bash
 # Cron: 0 2 * * * /path/to/daily_test.sh
 
-cd /path/to/guardian-cli-deluxe
+cd /path/to/level52-cli-deluxe
 source venv/bin/activate
 
 # Run tests against key targets
@@ -420,7 +420,7 @@ You now have a **production-ready, fully automated security testing framework** 
 **Next action:** Run your first automated test!
 
 ```bash
-cd /path/to/guardian-cli-deluxe
+cd /path/to/level52-cli-deluxe
 source venv/bin/activate
 python homelab_test_orchestrator.py --target dvwa --workflow web
 ```

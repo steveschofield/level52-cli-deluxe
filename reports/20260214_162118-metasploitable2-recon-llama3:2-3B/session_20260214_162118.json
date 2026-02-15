@@ -498,7 +498,7 @@
     },
     {
       "tool": "httpx",
-      "command": "/home/kali/code/guardian-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244",
+      "command": "/home/kali/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244",
       "target": "192.168.1.244",
       "timestamp": "2026-02-14T16:33:17.283489",
       "exit_code": 0,
@@ -509,7 +509,7 @@
     },
     {
       "tool": "testssl",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-jdl1obdb/testssl.json --severity LOW --quiet --ip one 192.168.1.244",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-jdl1obdb/testssl.json --severity LOW --quiet --ip one 192.168.1.244",
       "target": "192.168.1.244",
       "timestamp": "2026-02-14T16:33:30.584968",
       "exit_code": 254,
@@ -542,7 +542,7 @@
     },
     {
       "tool": "nuclei",
-      "command": "/home/kali/code/guardian-cli-deluxe/tools/.bin/nuclei -l reports/20260214_162118/nuclei_20260214_162118.txt -jsonl -o reports/20260214_162118/nuclei_20260214_163406.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50",
+      "command": "/home/kali/code/level52-cli-deluxe/tools/.bin/nuclei -l reports/20260214_162118/nuclei_20260214_162118.txt -jsonl -o reports/20260214_162118/nuclei_20260214_163406.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50",
       "target": "192.168.1.244",
       "timestamp": "2026-02-14T16:34:06.767474",
       "exit_code": 0,

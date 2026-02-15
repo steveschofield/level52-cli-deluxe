@@ -2810,7 +2810,7 @@
     },
     {
       "tool": "testssl",
-      "command": "/home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-29c7dkec/testssl.json --severity LOW --quiet --ip one 192.168.1.232",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-29c7dkec/testssl.json --severity LOW --quiet --ip one 192.168.1.232",
       "target": "192.168.1.232",
       "timestamp": "2026-01-31T08:36:35.077803",
       "exit_code": 254,

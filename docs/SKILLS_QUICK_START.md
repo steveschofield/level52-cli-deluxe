@@ -338,7 +338,7 @@ class GuardianAgent:
 ## File Reference
 
 ```
-guardian-cli-deluxe/
+level52-cli-deluxe/
 ├── ai/prompt_templates/
 │   ├── exploitation.py      # NEW: Exploitation agent
 │   ├── osint.py             # NEW: OSINT agent

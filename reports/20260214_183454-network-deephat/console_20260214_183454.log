@@ -1,5 +1,5 @@
 2026-02-14 18:34:54,911 - guardian - INFO - Initialized Ollama model: DeepHat/DeepHat-V1-7B @ http://192.168.1.69:11434
-2026-02-14 18:34:54,913 - guardian - INFO - Prompt templates: set=deephat_v1_7b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/reporter.py
+2026-02-14 18:34:54,913 - guardian - INFO - Prompt templates: set=deephat_v1_7b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/reporter.py
 2026-02-14 18:34:54,922 - guardian - INFO - Loaded skill configuration from config/skills.yaml
 2026-02-14 18:34:54,922 - guardian - INFO - ✓ Loaded 'planner' skill (optimized for deephat_v1_7b)
 2026-02-14 18:34:55,410 - guardian - WARNING - Tool godeye is not installed or not in PATH
@@ -756,7 +756,7 @@ Would you like me to elaborate on any specific finding?
 2026-02-14 19:09:26,820 - guardian - INFO - Workflow Progress [############--------] 22/33 (63%) ETA ~364s
 2026-02-14 19:09:26,821 - guardian - INFO - Executing step: ssl_tls_scan
 2026-02-14 19:09:26,822 - guardian - INFO - Tool Agent selecting tool: testssl
-2026-02-14 19:09:26,839 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-78g4wrgu/testssl.json --severity LOW --quiet --ip one 192.168.1.232
+2026-02-14 19:09:26,839 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-78g4wrgu/testssl.json --severity LOW --quiet --ip one 192.168.1.232
 2026-02-14 19:09:27,068 - guardian - INFO - Tool testssl completed in 0.24s (exit 254)
 2026-02-14 19:09:27,071 - guardian - INFO - Tool Executed: testssl
 2026-02-14 19:09:27,072 - guardian - WARNING - Tool execution failed: [1;35mFatal error: "--ip=one" plus supplying an IP address doesn't work[m
@@ -1269,7 +1269,7 @@ This ensures proper remediation of issues without duplication or oversight.
 2026-02-14 19:59:07,047 - guardian - INFO - - nuclei: skipped (runs=1, success=0, failed=0, skipped=1)
 2026-02-14 19:59:07,049 - guardian - INFO - - bloodhound: failed (runs=6, success=0, failed=6, skipped=0)
 2026-02-14 20:01:00,140 - guardian - INFO - Initialized Ollama model: DeepHat/DeepHat-V1-7B @ http://192.168.1.69:11434
-2026-02-14 20:01:00,141 - guardian - INFO - Prompt templates: set=deephat_v1_7b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/reporter.py
+2026-02-14 20:01:00,141 - guardian - INFO - Prompt templates: set=deephat_v1_7b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/reporter.py
 2026-02-14 20:01:00,150 - guardian - INFO - Loaded skill configuration from config/skills.yaml
 2026-02-14 20:01:00,150 - guardian - INFO - ✓ Loaded 'planner' skill (optimized for deephat_v1_7b)
 2026-02-14 20:01:00,496 - guardian - WARNING - Tool godeye is not installed or not in PATH

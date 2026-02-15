@@ -340,7 +340,7 @@
 
           Test with:
             ssh 52pickup@<ip>
-            cd ~/guardian-cli-deluxe
+            cd ~/level52-cli-deluxe
             source venv/bin/activate
             python -m cli.main workflow run --name recon --target 192.168.1.232
 

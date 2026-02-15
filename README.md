@@ -18,8 +18,8 @@
 ### Installation# 1. Clone and setup
 
 ```bash
-git clone https://github.com/steveschofield/guardian-cli-deluxe
-cd guardian-cli-deluxe
+git clone https://github.com/steveschofield/level52-cli-deluxe
+cd level52-cli-deluxe
 python3 -m venv venv
 source venv/bin/activate
 

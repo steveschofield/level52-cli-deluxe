@@ -139,8 +139,8 @@ Guardian will use these automatically if present:
 
 ```bash
 # 1. Clone and setup
-git clone https://github.com/steveschofield/guardian-cli-deluxe.git
-cd guardian-cli-deluxe
+git clone https://github.com/steveschofield/level52-cli-deluxe.git
+cd level52-cli-deluxe
 python3 -m venv venv
 source venv/bin/activate  # On Windows: .\venv\Scripts\activate
 pip install -e .
@@ -166,8 +166,8 @@ git clone https://github.com/zakirkun/guardian-cli.git
 cd guardian-cli
 
 # Clone repository updated framework by Steve Schofield
-git clone https://github.com/steveschofield/guardian-cli-deluxe.git
-cd guardian-cli-deluxe
+git clone https://github.com/steveschofield/level52-cli-deluxe.git
+cd level52-cli-deluxe
 
 # Optional: .env if using Gemini
 echo "GOOGLE_API_KEY=your_api_key_here" > .env

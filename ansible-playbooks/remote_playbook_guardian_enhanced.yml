@@ -6,7 +6,7 @@
   gather_facts: true
   vars:
     username: 52pickup
-    guardian_dir: "/home/{{ username }}/guardian-cli-deluxe"
+    guardian_dir: "/home/{{ username }}/level52-cli-deluxe"
     guardian_python_version: "3.13.0"
     go_version: "1.22.0"
     go_root: "/home/{{ username }}/.local/go"
@@ -575,9 +575,9 @@
     # ===========================================
     # Clone Guardian CLI Repository
     # ===========================================
-    - name: Clone guardian-cli-deluxe repository
+    - name: Clone level52-cli-deluxe repository
       ansible.builtin.git:
-        repo: https://github.com/steveschofield/guardian-cli-deluxe.git
+        repo: https://github.com/steveschofield/level52-cli-deluxe.git
         dest: "{{ guardian_dir }}"
         force: yes
       become_user: "{{ username }}"

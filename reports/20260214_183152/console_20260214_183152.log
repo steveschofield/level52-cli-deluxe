@@ -1,5 +1,5 @@
 2026-02-14 18:31:52,496 - guardian - INFO - Initialized Ollama model: DeepHat/DeepHat-V1-7B @ http://192.168.1.69:11434
-2026-02-14 18:31:52,499 - guardian - INFO - Prompt templates: set=deephat_v1_7b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/reporter.py
+2026-02-14 18:31:52,499 - guardian - INFO - Prompt templates: set=deephat_v1_7b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/reporter.py
 2026-02-14 18:31:52,507 - guardian - INFO - Loaded skill configuration from config/skills.yaml
 2026-02-14 18:31:52,507 - guardian - INFO - ✓ Loaded 'planner' skill (optimized for deephat_v1_7b)
 2026-02-14 18:31:52,841 - guardian - WARNING - Tool godeye is not installed or not in PATH

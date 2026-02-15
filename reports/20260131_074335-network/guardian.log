@@ -1,5 +1,5 @@
 2026-01-31 07:43:35,701 - guardian - INFO - Initialized Ollama model: llama3.2:3b @ http://192.168.1.69:11434
-2026-01-31 07:43:35,705 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
+2026-01-31 07:43:35,705 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
 2026-01-31 07:43:36,679 - guardian - WARNING - Tool godeye is not installed or not in PATH
 2026-01-31 07:43:37,057 - guardian - WARNING - BloodHound availability check failed: 'BloodhoundTool' object has no attribute 'docker_image'
 2026-01-31 07:43:37,057 - guardian - WARNING - Tool bloodhound is not installed or not in PATH
@@ -1238,7 +1238,7 @@ TOOLING ISSUE: nmap output shows a timeout error, indicating a tooling issue rat
 2026-01-31 08:36:35,076 - guardian - INFO - Workflow Progress [############--------] 22/33 (63%) ETA ~168s
 2026-01-31 08:36:35,076 - guardian - INFO - Executing step: ssl_tls_scan
 2026-01-31 08:36:35,077 - guardian - INFO - Tool Agent selecting tool: testssl
-2026-01-31 08:36:35,078 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-29c7dkec/testssl.json --severity LOW --quiet --ip one 192.168.1.232
+2026-01-31 08:36:35,078 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-29c7dkec/testssl.json --severity LOW --quiet --ip one 192.168.1.232
 2026-01-31 08:36:35,137 - guardian - INFO - Tool testssl completed in 0.06s (exit 254)
 2026-01-31 08:36:35,138 - guardian - INFO - Tool Executed: testssl
 2026-01-31 08:36:35,138 - guardian - WARNING - Tool execution failed: [1;35mFatal error: "--ip=one" plus supplying an IP address doesn't work[m
@@ -2939,13 +2939,13 @@ By addressing these critical vulnerabilities and implementing strong security me
 2026-01-31 09:00:17,160 - guardian - INFO - - nuclei: skipped (runs=1, success=0, failed=0, skipped=1)
 2026-01-31 09:00:17,160 - guardian - INFO - - bloodhound: failed (runs=6, success=0, failed=6, skipped=0)
 2026-01-31 09:20:35,464 - guardian - INFO - Initialized Ollama model: llama3.2:3b @ http://192.168.1.69:11434
-2026-01-31 09:20:35,467 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
+2026-01-31 09:20:35,467 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
 2026-01-31 09:20:35,472 - guardian - INFO - [CISAKEVClient] Loaded CISA KEV from cache (1501 entries)
 2026-01-31 09:20:35,472 - guardian - INFO - OSINT enrichment enabled: CISA KEV, GitHub, EPSS, OSV
 2026-01-31 09:20:35,473 - guardian - INFO - [Reporter] GeneratingReport: Format: markdown
 2026-01-31 09:20:35,474 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=646 chars
 2026-01-31 09:20:48,865 - guardian - INFO - Initialized Ollama model: llama3.2:3b @ http://192.168.1.69:11434
-2026-01-31 09:20:48,866 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
+2026-01-31 09:20:48,866 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
 2026-01-31 09:20:48,871 - guardian - INFO - [CISAKEVClient] Loaded CISA KEV from cache (1501 entries)
 2026-01-31 09:20:48,871 - guardian - INFO - OSINT enrichment enabled: CISA KEV, GitHub, EPSS, OSV
 2026-01-31 09:20:48,872 - guardian - INFO - [Reporter] GeneratingReport: Format: markdown
@@ -3082,7 +3082,7 @@ The remediation plan is structured to address the identified vulnerabilities in 
 Note that the estimated effort and security impact are approximate values and may vary depending on the specific environment and requirements.
 2026-01-31 09:22:31,551 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=145097 chars
 2026-01-31 09:22:54,245 - guardian - INFO - Initialized Ollama model: llama3.2:3b @ http://192.168.1.69:11434
-2026-01-31 09:22:54,247 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
+2026-01-31 09:22:54,247 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
 2026-01-31 09:22:54,254 - guardian - INFO - [CISAKEVClient] Loaded CISA KEV from cache (1501 entries)
 2026-01-31 09:22:54,255 - guardian - INFO - OSINT enrichment enabled: CISA KEV, GitHub, EPSS, OSV
 2026-01-31 09:22:54,257 - guardian - INFO - [Reporter] GeneratingReport: Format: markdown
@@ -3253,7 +3253,7 @@ The estimated effort required to complete the remediation plan is as follows:
 The remediation plan aims to mitigate high-risk vulnerabilities, prevent potential remote code execution attacks, and improve overall system security. The plan's estimated effort and timeline are designed to ensure that critical vulnerabilities are addressed promptly, while also allowing for medium-term improvements and long-term security enhancements.
 2026-01-31 09:26:15,713 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=147021 chars
 2026-01-31 09:28:45,840 - guardian - INFO - Initialized Ollama model: llama3.2:3b @ http://192.168.1.69:11434
-2026-01-31 09:28:45,842 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
+2026-01-31 09:28:45,842 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
 2026-01-31 09:28:45,853 - guardian - INFO - [CISAKEVClient] Loaded CISA KEV from cache (1501 entries)
 2026-01-31 09:28:45,854 - guardian - INFO - OSINT enrichment enabled: CISA KEV, GitHub, EPSS, OSV
 2026-01-31 09:28:45,857 - guardian - INFO - [Reporter] GeneratingReport: Format: markdown
@@ -3429,7 +3429,7 @@ Here is a prioritized action plan to address the identified vulnerabilities:
 Note that the estimated effort times are approximate and may vary depending on the specific requirements of each action.
 2026-01-31 09:30:54,544 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=147857 chars
 2026-01-31 09:32:20,003 - guardian - INFO - Initialized Ollama model: llama3.2:3b @ http://192.168.1.69:11434
-2026-01-31 09:32:20,004 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
+2026-01-31 09:32:20,004 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
 2026-01-31 09:32:20,009 - guardian - INFO - [CISAKEVClient] Loaded CISA KEV from cache (1501 entries)
 2026-01-31 09:32:20,009 - guardian - INFO - OSINT enrichment enabled: CISA KEV, GitHub, EPSS, OSV
 2026-01-31 09:32:20,010 - guardian - INFO - [Reporter] GeneratingReport: Format: markdown
@@ -3465,7 +3465,7 @@ We will provide a detailed report outlining our findings, technical details, and
 2026-01-31 09:33:03,673 - guardian - INFO - Enriched 1/42 findings with OSINT data
 2026-01-31 09:33:03,676 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=18382 chars
 2026-01-31 09:35:27,963 - guardian - INFO - Initialized Ollama model: llama3.2:3b @ http://192.168.1.69:11434
-2026-01-31 09:35:27,964 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
+2026-01-31 09:35:27,964 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
 2026-01-31 09:35:27,968 - guardian - INFO - [CISAKEVClient] Loaded CISA KEV from cache (1501 entries)
 2026-01-31 09:35:27,969 - guardian - INFO - OSINT enrichment enabled: CISA KEV, GitHub, EPSS, OSV
 2026-01-31 09:35:27,970 - guardian - INFO - [Reporter] GeneratingReport: Format: markdown
@@ -4070,7 +4070,7 @@ This transparent AI decision trace demonstrates the thought process and reasonin
 2026-01-31 10:02:19,316 - guardian - ERROR - Ollama API error: Event loop is closed
 2026-01-31 10:02:19,317 - guardian - ERROR - Agent Reporter thinking error: Event loop is closed
 2026-01-31 10:02:56,582 - guardian - INFO - Initialized Ollama model: llama3.2:3b @ http://192.168.1.69:11434
-2026-01-31 10:02:56,583 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
+2026-01-31 10:02:56,583 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
 2026-01-31 10:02:56,588 - guardian - INFO - [CISAKEVClient] Loaded CISA KEV from cache (1501 entries)
 2026-01-31 10:02:56,589 - guardian - INFO - OSINT enrichment enabled: CISA KEV, GitHub, EPSS, OSV
 2026-01-31 10:02:56,592 - guardian - INFO - [Reporter] GeneratingReport: Format: markdown
@@ -4341,7 +4341,7 @@ Based on the findings of this penetration test, we strongly recommend that the o
 2026-01-31 10:05:03,704 - guardian - INFO - Enriched 1/42 findings with OSINT data
 2026-01-31 10:05:03,707 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=18382 chars
 2026-01-31 10:12:47,485 - guardian - INFO - Initialized Ollama model: llama3.2:3b @ http://192.168.1.69:11434
-2026-01-31 10:12:47,486 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
+2026-01-31 10:12:47,486 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
 2026-01-31 10:12:47,491 - guardian - INFO - [CISAKEVClient] Loaded CISA KEV from cache (1501 entries)
 2026-01-31 10:12:47,491 - guardian - INFO - OSINT enrichment enabled: CISA KEV, GitHub, EPSS, OSV
 2026-01-31 10:12:47,493 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=646 chars

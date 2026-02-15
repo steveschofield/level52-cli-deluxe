@@ -12,5 +12,5 @@
 /usr/bin/onesixtyone -q 192.168.1.232 public
 /usr/bin/snmpwalk -v 2c -c public 192.168.1.232
 /usr/bin/nmap -sV -sC -T4 -oX - -p 3389,3389,3389 --script rdp-enum-encryption,rdp-ntlm-info 192.168.1.232
-/home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-29c7dkec/testssl.json --severity LOW --quiet --ip one 192.168.1.232
+/home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-29c7dkec/testssl.json --severity LOW --quiet --ip one 192.168.1.232
 /usr/bin/nmap -sV --script vuln -T4 -oX - -p 49175,53,139,49184,47001,49153,49180,445,135,49179,53,135,139,445,3389,49153,49154,49175,53,135,139,445,3389,47001,49152,49153,49154,49175,49179,49180,49184,53,67,53,67,53,67,139,445,3389,49152,49153,49154,49175,49179,49180,49184,445 192.168.1.232

@@ -34,8 +34,8 @@ Vagrant.configure("2") do |config|
   end
 
   # Synced folder for Guardian CLI repository
-  # Mount your local guardian-cli-deluxe directory
-  config.vm.synced_folder "../", "/home/vagrant/guardian-cli-deluxe",
+  # Mount your local level52-cli-deluxe directory
+  config.vm.synced_folder "../", "/home/vagrant/level52-cli-deluxe",
     owner: "vagrant",
     group: "vagrant"
 
@@ -69,14 +69,14 @@ Vagrant.configure("2") do |config|
   # Post-provisioning setup
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
     # Setup Python virtual environment for Guardian
-    cd /home/vagrant/guardian-cli-deluxe
+    cd /home/vagrant/level52-cli-deluxe
     python3 -m venv venv
     source venv/bin/activate
     pip install -e .
 
     # Create convenient aliases
-    echo 'alias guardian-activate="cd /home/vagrant/guardian-cli-deluxe && source venv/bin/activate"' >> ~/.bashrc
-    echo 'alias guardian-run="cd /home/vagrant/guardian-cli-deluxe && source venv/bin/activate && python -m cli.main"' >> ~/.bashrc
+    echo 'alias guardian-activate="cd /home/vagrant/level52-cli-deluxe && source venv/bin/activate"' >> ~/.bashrc
+    echo 'alias guardian-run="cd /home/vagrant/level52-cli-deluxe && source venv/bin/activate && python -m cli.main"' >> ~/.bashrc
 
     # Display completion message
     echo ""

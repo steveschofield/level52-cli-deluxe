@@ -1,5 +1,5 @@
 2026-02-14 08:31:08,474 - guardian - INFO - Initialized Ollama model: DeepHat/DeepHat-V1-7B @ http://192.168.1.69:11434
-2026-02-14 08:31:08,476 - guardian - INFO - Prompt templates: set=deephat_v1_7b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/reporter.py
+2026-02-14 08:31:08,476 - guardian - INFO - Prompt templates: set=deephat_v1_7b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/deephat_v1_7b/reporter.py
 2026-02-14 08:31:08,486 - guardian - INFO - Loaded skill configuration from config/skills.yaml
 2026-02-14 08:31:08,486 - guardian - INFO - ✓ Loaded 'planner' skill (optimized for deephat_v1_7b)
 2026-02-14 08:31:08,774 - guardian - WARNING - Tool godeye is not installed or not in PATH
@@ -286,7 +286,7 @@ Would you like me to elaborate on any specific part of this analysis?
 2026-02-14 08:37:03,819 - guardian - INFO - Workflow Progress [############--------] 15/22 (63%) ETA ~283s
 2026-02-14 08:37:03,821 - guardian - INFO - Executing step: http_probing
 2026-02-14 08:37:03,824 - guardian - INFO - Tool Agent selecting tool: httpx
-2026-02-14 08:37:03,827 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244
+2026-02-14 08:37:03,827 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244
 2026-02-14 08:37:12,309 - guardian - INFO - Tool httpx finished in 8.48s (status=completed, exit=0, stdout=0B, stderr=0B)
 2026-02-14 08:37:12,317 - guardian - INFO - Tool Executed: httpx
 2026-02-14 08:37:12,318 - guardian - INFO - Analyst Agent analyzing results...
@@ -304,7 +304,7 @@ Would you like me to elaborate on any specific part of this analysis?
 2026-02-14 08:37:12,325 - guardian - INFO - Workflow Progress [##############------] 17/22 (72%) ETA ~217s
 2026-02-14 08:37:12,326 - guardian - INFO - Executing step: ssl_tls_scan
 2026-02-14 08:37:12,326 - guardian - INFO - Tool Agent selecting tool: testssl
-2026-02-14 08:37:12,328 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-r9356qw8/testssl.json --severity LOW --quiet --ip one 192.168.1.244
+2026-02-14 08:37:12,328 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-r9356qw8/testssl.json --severity LOW --quiet --ip one 192.168.1.244
 2026-02-14 08:37:12,386 - guardian - INFO - Tool testssl completed in 0.06s (exit 254)
 2026-02-14 08:37:12,388 - guardian - INFO - Tool Executed: testssl
 2026-02-14 08:37:12,389 - guardian - WARNING - Tool execution failed: [1;35mFatal error: "--ip=one" plus supplying an IP address doesn't work[m

@@ -249,7 +249,7 @@ nmap -sU --top-ports 100 target
 ```bash
 # 1. Clone and setup
 git clone <repo>
-cd guardian-cli-deluxe
+cd level52-cli-deluxe
 python3.12 -m venv venv
 source venv/bin/activate
 

@@ -10,13 +10,13 @@ Podman is a daemonless container engine that's compatible with Docker commands. 
 
 ```bash
 # Navigate to repository
-cd /Users/ss/.claude-worktrees/guardian-cli-deluxe/strange-khorana
+cd /Users/ss/.claude-worktrees/level52-cli-deluxe/strange-khorana
 
 # Build with Podman
-podman build -f Dockerfile.kali -t guardian-cli-deluxe:latest .
+podman build -f Dockerfile.kali -t level52-cli-deluxe:latest .
 
 # Or with progress output
-podman build -f Dockerfile.kali -t guardian-cli-deluxe:latest . --progress=plain
+podman build -f Dockerfile.kali -t level52-cli-deluxe:latest . --progress=plain
 ```
 
 ---
@@ -34,13 +34,13 @@ Unlike Docker, Podman runs without a daemon, so:
 **Rootless (Recommended)**:
 ```bash
 # Build as regular user (more secure)
-podman build -f Dockerfile.kali -t guardian-cli-deluxe:latest .
+podman build -f Dockerfile.kali -t level52-cli-deluxe:latest .
 ```
 
 **Root (if needed for network capabilities)**:
 ```bash
 # Build as root (for raw socket access)
-sudo podman build -f Dockerfile.kali -t guardian-cli-deluxe:latest .
+sudo podman build -f Dockerfile.kali -t level52-cli-deluxe:latest .
 ```
 
 ### 3. **Build Arguments**
@@ -48,15 +48,15 @@ sudo podman build -f Dockerfile.kali -t guardian-cli-deluxe:latest .
 ```bash
 # With build args
 podman build -f Dockerfile.kali \
-  -t guardian-cli-deluxe:latest \
+  -t level52-cli-deluxe:latest \
   --build-arg HTTP_PROXY=http://proxy:8080 \
   .
 
 # No cache (clean build)
-podman build --no-cache -f Dockerfile.kali -t guardian-cli-deluxe:latest .
+podman build --no-cache -f Dockerfile.kali -t level52-cli-deluxe:latest .
 
 # Verbose output
-podman build -f Dockerfile.kali -t guardian-cli-deluxe:latest . --log-level=debug
+podman build -f Dockerfile.kali -t level52-cli-deluxe:latest . --log-level=debug
 ```
 
 ---
@@ -106,7 +106,7 @@ echo 'unqualified-search-registries = ["docker.io"]' >> ~/.config/containers/reg
 **Solution**:
 ```bash
 # Increase timeout
-podman build -f Dockerfile.kali -t guardian-cli-deluxe:latest . --timeout=7200
+podman build -f Dockerfile.kali -t level52-cli-deluxe:latest . --timeout=7200
 
 # Or set in config
 cat >> ~/.config/containers/containers.conf << EOF
@@ -123,12 +123,12 @@ EOF
 
 ```bash
 # Basic run
-podman run -it --rm guardian-cli-deluxe:latest
+podman run -it --rm level52-cli-deluxe:latest
 
 # With volume mounts
 podman run -it --rm \
   -v $(pwd)/reports:/guardian/reports:z \
-  guardian-cli-deluxe:latest
+  level52-cli-deluxe:latest
 
 # Note the :z flag - required for SELinux systems
 ```
@@ -142,12 +142,12 @@ For tools like masscan/nmap that need raw sockets:
 podman run -it --rm \
   --cap-add=NET_ADMIN \
   --cap-add=NET_RAW \
-  guardian-cli-deluxe:latest
+  level52-cli-deluxe:latest
 
 # Or as root container (less secure)
 podman run -it --rm \
   --privileged \
-  guardian-cli-deluxe:latest
+  level52-cli-deluxe:latest
 ```
 
 ### 3. Run with Host Network
@@ -156,7 +156,7 @@ podman run -it --rm \
 # Use host network (needed for some scans)
 podman run -it --rm \
   --network=host \
-  guardian-cli-deluxe:latest
+  level52-cli-deluxe:latest
 ```
 
 ---
@@ -186,7 +186,7 @@ brew install buildah  # macOS
 sudo apt install buildah  # Linux
 
 # Build with buildah directly
-buildah bud -f Dockerfile.kali -t guardian-cli-deluxe:latest .
+buildah bud -f Dockerfile.kali -t level52-cli-deluxe:latest .
 ```
 
 ### 2. Layer Caching
@@ -194,7 +194,7 @@ buildah bud -f Dockerfile.kali -t guardian-cli-deluxe:latest .
 ```bash
 # Podman caches layers by default
 # To see cache usage
-podman image tree guardian-cli-deluxe:latest
+podman image tree level52-cli-deluxe:latest
 
 # Clear cache
 podman system reset
@@ -206,7 +206,7 @@ podman system reset
 # Build for different architectures
 podman build -f Dockerfile.kali \
   --platform=linux/amd64,linux/arm64 \
-  -t guardian-cli-deluxe:latest \
+  -t level52-cli-deluxe:latest \
   .
 ```
 
@@ -218,7 +218,7 @@ podman build -f Dockerfile.kali \
 
 ```bash
 # In one terminal - start build
-podman build -f Dockerfile.kali -t guardian-cli-deluxe:latest . --progress=plain 2>&1 | tee build.log
+podman build -f Dockerfile.kali -t level52-cli-deluxe:latest . --progress=plain 2>&1 | tee build.log
 
 # In another terminal - monitor
 tail -f build.log
@@ -234,10 +234,10 @@ podman events
 podman images
 
 # Inspect image
-podman inspect guardian-cli-deluxe:latest
+podman inspect level52-cli-deluxe:latest
 
 # Check image size
-podman images guardian-cli-deluxe --format "{{.Size}}"
+podman images level52-cli-deluxe --format "{{.Size}}"
 ```
 
 ---
@@ -295,10 +295,10 @@ podman rmi $(podman images -f "dangling=true" -q)
 **Solution**:
 ```bash
 # Use :z flag for SELinux systems
-podman run -it --rm -v $(pwd)/reports:/guardian/reports:z guardian-cli-deluxe:latest
+podman run -it --rm -v $(pwd)/reports:/guardian/reports:z level52-cli-deluxe:latest
 
 # Or run as root container (less secure)
-podman run -it --rm --privileged -v $(pwd)/reports:/guardian/reports guardian-cli-deluxe:latest
+podman run -it --rm --privileged -v $(pwd)/reports:/guardian/reports level52-cli-deluxe:latest
 ```
 
 ---
@@ -309,7 +309,7 @@ podman run -it --rm --privileged -v $(pwd)/reports:/guardian/reports guardian-cl
 
 ```bash
 # Podman can generate K8s manifests
-podman generate kube guardian-cli-deluxe > guardian-k8s.yaml
+podman generate kube level52-cli-deluxe > guardian-k8s.yaml
 
 # Deploy to Kubernetes
 kubectl apply -f guardian-k8s.yaml
@@ -333,7 +333,7 @@ systemctl --user start guardian.service
 podman pod create --name guardian-pod -p 8080:8080
 
 # Run Guardian in pod
-podman run -d --pod guardian-pod guardian-cli-deluxe:latest
+podman run -d --pod guardian-pod level52-cli-deluxe:latest
 
 # Run ZAP in same pod
 podman run -d --pod guardian-pod owasp/zap2docker-stable
@@ -346,33 +346,33 @@ podman run -d --pod guardian-pod owasp/zap2docker-stable
 ### Basic Build
 
 ```bash
-podman build -f Dockerfile.kali -t guardian-cli-deluxe:latest .
+podman build -f Dockerfile.kali -t level52-cli-deluxe:latest .
 ```
 
 ### Build with Progress
 
 ```bash
-podman build -f Dockerfile.kali -t guardian-cli-deluxe:latest . --progress=plain
+podman build -f Dockerfile.kali -t level52-cli-deluxe:latest . --progress=plain
 ```
 
 ### Build with No Cache
 
 ```bash
-podman build --no-cache -f Dockerfile.kali -t guardian-cli-deluxe:latest .
+podman build --no-cache -f Dockerfile.kali -t level52-cli-deluxe:latest .
 ```
 
 ### Build with Timeout
 
 ```bash
-podman build -f Dockerfile.kali -t guardian-cli-deluxe:latest . --timeout=7200
+podman build -f Dockerfile.kali -t level52-cli-deluxe:latest . --timeout=7200
 ```
 
 ### Build and Save to File
 
 ```bash
 # Build and save
-podman build -f Dockerfile.kali -t guardian-cli-deluxe:latest .
-podman save guardian-cli-deluxe:latest -o guardian-cli.tar
+podman build -f Dockerfile.kali -t level52-cli-deluxe:latest .
+podman save level52-cli-deluxe:latest -o guardian-cli.tar
 
 # Load on another system
 podman load -i guardian-cli.tar
@@ -382,10 +382,10 @@ podman load -i guardian-cli.tar
 
 ```bash
 # Build
-podman build -f Dockerfile.kali -t guardian-cli-deluxe:latest .
+podman build -f Dockerfile.kali -t level52-cli-deluxe:latest .
 
 # Tag for registry
-podman tag guardian-cli-deluxe:latest registry.example.com/guardian-cli:latest
+podman tag level52-cli-deluxe:latest registry.example.com/guardian-cli:latest
 
 # Push
 podman push registry.example.com/guardian-cli:latest
@@ -415,7 +415,7 @@ podman ps -a
 podman container prune
 
 # Show image history
-podman history guardian-cli-deluxe:latest
+podman history level52-cli-deluxe:latest
 
 # Export container filesystem
 podman export <container-id> -o guardian.tar
@@ -434,10 +434,10 @@ podman export <container-id> -o guardian.tar
 
 ```bash
 # After build completes
-podman run --rm guardian-cli-deluxe:latest which testssl kr jwt_tool trivy
+podman run --rm level52-cli-deluxe:latest which testssl kr jwt_tool trivy
 
 # Test Guardian
-podman run --rm guardian-cli-deluxe:latest python -m cli.main --help
+podman run --rm level52-cli-deluxe:latest python -m cli.main --help
 ```
 
 ---
@@ -458,9 +458,9 @@ podman run --rm guardian-cli-deluxe:latest python -m cli.main --help
 ## ✅ Final Build Command
 
 ```bash
-cd /Users/ss/.claude-worktrees/guardian-cli-deluxe/strange-khorana
+cd /Users/ss/.claude-worktrees/level52-cli-deluxe/strange-khorana
 
-podman build -f Dockerfile.kali -t guardian-cli-deluxe:latest . --progress=plain 2>&1 | tee podman-build.log
+podman build -f Dockerfile.kali -t level52-cli-deluxe:latest . --progress=plain 2>&1 | tee podman-build.log
 ```
 
 **Monitoring**: Watch `podman-build.log` in another terminal with `tail -f podman-build.log`

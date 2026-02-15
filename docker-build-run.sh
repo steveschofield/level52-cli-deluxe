@@ -83,7 +83,7 @@ case $ACTION in
         if [ "$USE_COMPOSE" = true ]; then
             $COMPOSE_CMD build --no-cache
         else
-            docker build -t guardian-cli-deluxe:kali-latest -f Dockerfile.kali .
+            docker build -t level52-cli-deluxe:kali-latest -f Dockerfile.kali .
         fi
         echo -e "\n${GREEN}✓${NC} Build complete!"
         ;;
@@ -108,7 +108,7 @@ case $ACTION in
                 -e OPENAI_API_KEY=${OPENAI_API_KEY} \
                 --cap-add=NET_ADMIN \
                 --cap-add=NET_RAW \
-                guardian-cli-deluxe:kali-latest
+                level52-cli-deluxe:kali-latest
         fi
         ;;
     
@@ -125,7 +125,7 @@ case $ACTION in
                     -v $(pwd):/guardian \
                     -e ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY} \
                     -e GOOGLE_API_KEY=${GOOGLE_API_KEY} \
-                    guardian-cli-deluxe:kali-latest
+                    level52-cli-deluxe:kali-latest
             else
                 docker exec -it guardian-kali bash
             fi
@@ -150,7 +150,7 @@ case $ACTION in
             docker stop guardian-kali 2>/dev/null || true
             docker rm guardian-kali 2>/dev/null || true
         fi
-        docker rmi guardian-cli-deluxe:kali-latest 2>/dev/null || true
+        docker rmi level52-cli-deluxe:kali-latest 2>/dev/null || true
         echo -e "${GREEN}✓${NC} Cleanup complete"
         ;;
     
@@ -198,7 +198,7 @@ case $ACTION in
         if [ "$USE_COMPOSE" = true ]; then
             $COMPOSE_CMD build
         else
-            docker build -t guardian-cli-deluxe:kali-latest -f Dockerfile.kali .
+            docker build -t level52-cli-deluxe:kali-latest -f Dockerfile.kali .
         fi
         echo -e "${GREEN}✓${NC} Build complete!\n"
         
@@ -215,7 +215,7 @@ case $ACTION in
                 -v guardian-logs:/guardian/logs \
                 -e ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY} \
                 -e GOOGLE_API_KEY=${GOOGLE_API_KEY} \
-                guardian-cli-deluxe:kali-latest \
+                level52-cli-deluxe:kali-latest \
                 tail -f /dev/null
         fi
         echo -e "${GREEN}✓${NC} Container started!\n"

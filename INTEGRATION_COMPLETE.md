@@ -66,7 +66,7 @@ examples/
 
 ```bash
 # Navigate to Guardian directory
-cd /Users/ss/.claude-worktrees/guardian-cli-deluxe/confident-cohen
+cd /Users/ss/.claude-worktrees/level52-cli-deluxe/confident-cohen
 
 # Validate all skills and configuration
 python -m utils.skill_validator --validate

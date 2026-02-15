@@ -10,7 +10,7 @@ This guide will have you running fully automated security tests against vulnerab
 
 ```bash
 # 1. Guardian CLI installed
-cd /path/to/guardian-cli-deluxe
+cd /path/to/level52-cli-deluxe
 source venv/bin/activate
 
 # 2. Docker running
@@ -267,7 +267,7 @@ python log_analyzer.py --session latest --check-errors
 #!/bin/bash
 # daily_test.sh
 
-cd /path/to/guardian-cli-deluxe
+cd /path/to/level52-cli-deluxe
 source venv/bin/activate
 
 # Run tests

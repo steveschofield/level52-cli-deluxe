@@ -30,7 +30,7 @@ def _arch_tokens() -> list[str]:
 
 
 def _download(url: str, accept_json: bool = False) -> bytes:
-    headers = {"User-Agent": "guardian-cli-deluxe"}
+    headers = {"User-Agent": "level52-cli-deluxe"}
     if accept_json:
         headers["Accept"] = "application/vnd.github+json"
     req = urllib.request.Request(url, headers=headers)

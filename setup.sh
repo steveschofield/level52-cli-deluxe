@@ -305,7 +305,7 @@ log_info "Using virtualenv: ${VIRTUAL_ENV}"
 mkdir -p "${TOOLS_DIR}" "${BIN_DIR}"
 
 # Install project and core dependencies
-log_info "Installing guardian-cli-deluxe and core dependencies..."
+log_info "Installing level52-cli-deluxe and core dependencies..."
 "${VENV_BIN}/pip" install --upgrade pip setuptools wheel --quiet
 "${VENV_BIN}/pip" install -e "${BASE_DIR}" --quiet 2>/dev/null || log_warn "Editable install skipped"
 

@@ -1,5 +1,5 @@
 [2026-02-14T10:11:49.451307] target=192.168.1.244 exit=0 duration=104.987438s findings=1
-command: /home/kali/code/guardian-cli-deluxe/tools/.bin/nuclei -l reports/20260214_093721/nuclei_20260214_093721.txt -jsonl -o reports/20260214_093721/nuclei_20260214_101149.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50
+command: /home/kali/code/level52-cli-deluxe/tools/.bin/nuclei -l reports/20260214_093721/nuclei_20260214_093721.txt -jsonl -o reports/20260214_093721/nuclei_20260214_101149.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50
 targets: reports/20260214_093721/nuclei_20260214_093721.txt
 jsonl: reports/20260214_093721/nuclei_20260214_101149.jsonl
 output:

@@ -1,5 +1,5 @@
 2026-02-14 20:52:40,880 - guardian - INFO - Initialized OpenRouter model: xiaomi/mimo-v2-flash:free @ https://openrouter.ai/api/v1
-2026-02-14 20:52:40,882 - guardian - INFO - Prompt templates: set=default paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/reporter.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/tool_selector.py
+2026-02-14 20:52:40,882 - guardian - INFO - Prompt templates: set=default paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/reporter.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/tool_selector.py
 2026-02-14 20:52:40,890 - guardian - INFO - Loaded skill configuration from config/skills.yaml
 2026-02-14 20:52:40,890 - guardian - INFO - ✓ Loaded 'planner' skill (default prompts)
 2026-02-14 20:52:41,133 - guardian - WARNING - Tool godeye is not installed or not in PATH

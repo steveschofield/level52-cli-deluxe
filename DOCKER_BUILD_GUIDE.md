@@ -25,23 +25,23 @@ The following critical issues have been **FIXED** in `Dockerfile.kali`:
 ### Quick Build
 
 ```bash
-cd /Users/ss/.claude-worktrees/guardian-cli-deluxe/strange-khorana
+cd /Users/ss/.claude-worktrees/level52-cli-deluxe/strange-khorana
 
 # Basic build
-docker build -f Dockerfile.kali -t guardian-cli-deluxe:latest .
+docker build -f Dockerfile.kali -t level52-cli-deluxe:latest .
 
 # Build with progress output (recommended)
-docker build -f Dockerfile.kali -t guardian-cli-deluxe:latest . --progress=plain
+docker build -f Dockerfile.kali -t level52-cli-deluxe:latest . --progress=plain
 
 # Clean build (no cache)
-docker build --no-cache -f Dockerfile.kali -t guardian-cli-deluxe:latest . --progress=plain
+docker build --no-cache -f Dockerfile.kali -t level52-cli-deluxe:latest . --progress=plain
 ```
 
 ### Build with Detailed Logging
 
 ```bash
 # Save build output to log file
-docker build -f Dockerfile.kali -t guardian-cli-deluxe:latest . --progress=plain 2>&1 | tee docker-build.log
+docker build -f Dockerfile.kali -t level52-cli-deluxe:latest . --progress=plain 2>&1 | tee docker-build.log
 
 # Monitor build progress in real-time
 tail -f docker-build.log
@@ -55,12 +55,12 @@ tail -f docker-build.log
 
 ```bash
 # Start container
-docker run -it --rm guardian-cli-deluxe:latest /bin/bash
+docker run -it --rm level52-cli-deluxe:latest /bin/bash
 
 # Or with volume mounts for reports
 docker run -it --rm \
   -v $(pwd)/reports:/guardian/reports \
-  guardian-cli-deluxe:latest /bin/bash
+  level52-cli-deluxe:latest /bin/bash
 ```
 
 ### 2. Verify All Tools Installed
@@ -190,7 +190,7 @@ export GOPROXY=https://proxy.golang.org,direct
 export GOPROXY=direct
 
 # Rebuild
-docker build -f Dockerfile.kali -t guardian-cli-deluxe:latest .
+docker build -f Dockerfile.kali -t level52-cli-deluxe:latest .
 ```
 
 ---
@@ -253,7 +253,7 @@ docker kill <container-id>
 docker system prune
 
 # Rebuild with more verbose output
-docker build -f Dockerfile.kali -t guardian-cli-deluxe:latest . --progress=plain --no-cache
+docker build -f Dockerfile.kali -t level52-cli-deluxe:latest . --progress=plain --no-cache
 ```
 
 ---
@@ -269,8 +269,8 @@ docker build -f Dockerfile.kali -t guardian-cli-deluxe:latest . --progress=plain
 ### Check Image Size
 
 ```bash
-docker images guardian-cli-deluxe
-docker image inspect guardian-cli-deluxe:latest | grep Size
+docker images level52-cli-deluxe
+docker image inspect level52-cli-deluxe:latest | grep Size
 ```
 
 ### Reduce Image Size (Future Optimization)
@@ -292,18 +292,18 @@ FROM kalilinux/kali-rolling
 
 ```bash
 # Interactive shell
-docker run -it --rm guardian-cli-deluxe:latest
+docker run -it --rm level52-cli-deluxe:latest
 
 # With API keys
 docker run -it --rm \
   -e ANTHROPIC_API_KEY="sk-ant-..." \
-  guardian-cli-deluxe:latest
+  level52-cli-deluxe:latest
 
 # With volume mounts
 docker run -it --rm \
   -v $(pwd)/reports:/guardian/reports \
   -v $(pwd)/data:/guardian/data \
-  guardian-cli-deluxe:latest
+  level52-cli-deluxe:latest
 ```
 
 ### Run Specific Command
@@ -313,14 +313,14 @@ docker run -it --rm \
 docker run --rm \
   -e ANTHROPIC_API_KEY="sk-ant-..." \
   -v $(pwd)/reports:/guardian/reports \
-  guardian-cli-deluxe:latest \
+  level52-cli-deluxe:latest \
   python -m cli.main workflow run --name web --target https://example.com
 
 # Run specific tool
-docker run --rm guardian-cli-deluxe:latest nmap -sV scanme.nmap.org
+docker run --rm level52-cli-deluxe:latest nmap -sV scanme.nmap.org
 
 # Run trivy scan
-docker run --rm -v $(pwd):/scan guardian-cli-deluxe:latest trivy fs /scan
+docker run --rm -v $(pwd):/scan level52-cli-deluxe:latest trivy fs /scan
 ```
 
 ### Network Scanning (Requires Privileges)
@@ -330,13 +330,13 @@ docker run --rm -v $(pwd):/scan guardian-cli-deluxe:latest trivy fs /scan
 docker run -it --rm \
   --cap-add=NET_ADMIN \
   --cap-add=NET_RAW \
-  guardian-cli-deluxe:latest
+  level52-cli-deluxe:latest
 
 # For masscan/nmap SYN scans
 docker run -it --rm \
   --privileged \
   --net=host \
-  guardian-cli-deluxe:latest
+  level52-cli-deluxe:latest
 ```
 
 ---
@@ -361,7 +361,7 @@ After successful build, verify:
 
 echo "Starting Guardian Docker image verification..."
 
-docker run --rm guardian-cli-deluxe:latest /bin/bash -c '
+docker run --rm level52-cli-deluxe:latest /bin/bash -c '
     echo "=== Checking Tools ==="
     TOOLS="testssl kr jwt_tool graphqlcop xsstrike cmseek linkfinder xnlinkfinder paramspider feroxbuster godeye corsscanner trivy retire"
     for tool in $TOOLS; do
@@ -420,4 +420,4 @@ If build fails:
 ---
 
 **Status**: ✅ Dockerfile fixed and ready to build
-**Build Command**: `docker build -f Dockerfile.kali -t guardian-cli-deluxe:latest . --progress=plain`
+**Build Command**: `docker build -f Dockerfile.kali -t level52-cli-deluxe:latest . --progress=plain`

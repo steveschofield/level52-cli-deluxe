@@ -1,5 +1,5 @@
 2026-01-31 10:50:17,575 - guardian - INFO - Initialized Ollama model: llama3.2:3b @ http://192.168.1.69:11434
-2026-01-31 10:50:17,576 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
+2026-01-31 10:50:17,576 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
 2026-01-31 10:50:17,773 - guardian - WARNING - Tool godeye is not installed or not in PATH
 2026-01-31 10:50:17,813 - guardian - WARNING - BloodHound availability check failed: 'BloodhoundTool' object has no attribute 'docker_image'
 2026-01-31 10:50:17,813 - guardian - WARNING - Tool bloodhound is not installed or not in PATH
@@ -372,7 +372,7 @@ No evidence of issues in this output.
 2026-01-31 11:03:41,577 - guardian - INFO - Analyst Agent analyzing results...
 2026-01-31 11:03:41,579 - guardian - INFO - [Analyst] LLM request: system_prompt=1007 chars, prompt=3448 chars
 2026-01-31 11:28:22,111 - guardian - INFO - Initialized Ollama model: llama3.2:3b @ http://192.168.1.69:11434
-2026-01-31 11:28:22,112 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
+2026-01-31 11:28:22,112 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
 2026-01-31 11:28:22,360 - guardian - WARNING - Tool godeye is not installed or not in PATH
 2026-01-31 11:28:22,414 - guardian - WARNING - BloodHound availability check failed: 'BloodhoundTool' object has no attribute 'docker_image'
 2026-01-31 11:28:22,415 - guardian - WARNING - Tool bloodhound is not installed or not in PATH
@@ -584,7 +584,7 @@ OWASP: A0X:2021 - Information Disclosure
 2026-01-31 11:31:13,092 - guardian - INFO - Workflow Progress [############--------] 14/21 (61%) ETA ~136s
 2026-01-31 11:31:13,093 - guardian - INFO - Executing step: http_probing
 2026-01-31 11:31:13,094 - guardian - INFO - Tool Agent selecting tool: httpx
-2026-01-31 11:31:13,094 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244
+2026-01-31 11:31:13,094 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244
 2026-01-31 11:31:13,984 - guardian - INFO - Tool httpx finished in 0.89s (status=completed, exit=0, stdout=550B, stderr=0B)
 2026-01-31 11:31:13,984 - guardian - INFO - Tool Executed: httpx
 2026-01-31 11:31:13,985 - guardian - INFO - Analyst Agent analyzing results...
@@ -665,7 +665,7 @@ OWASP: A0X:2021 - No Known Issues
 2026-01-31 11:31:35,483 - guardian - INFO - Workflow Progress [##############------] 16/21 (71%) ETA ~115s
 2026-01-31 11:31:35,484 - guardian - INFO - Executing step: ssl_tls_scan
 2026-01-31 11:31:35,485 - guardian - INFO - Tool Agent selecting tool: testssl
-2026-01-31 11:31:35,486 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-fwlwreom/testssl.json --severity LOW --quiet --ip one 192.168.1.244
+2026-01-31 11:31:35,486 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-fwlwreom/testssl.json --severity LOW --quiet --ip one 192.168.1.244
 2026-01-31 11:31:35,556 - guardian - INFO - Tool testssl completed in 0.07s (exit 254)
 2026-01-31 11:31:35,557 - guardian - INFO - Tool Executed: testssl
 2026-01-31 11:31:35,557 - guardian - WARNING - Tool execution failed: [1;35mFatal error: "--ip=one" plus supplying an IP address doesn't work[m
@@ -813,7 +813,7 @@ OWASP: A0X:2021 - Custom HTTP headers
 2026-01-31 11:32:30,463 - guardian - INFO - Workflow Progress [#################---] 19/21 (85%) ETA ~74s
 2026-01-31 11:32:30,463 - guardian - INFO - Executing step: vulnerability_scan
 2026-01-31 11:32:30,464 - guardian - INFO - Tool Agent selecting tool: nuclei
-2026-01-31 11:32:30,572 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/tools/.bin/nuclei -l reports/20260131_105017/nuclei_20260131_105017.txt -jsonl -o reports/20260131_105017/nuclei_20260131_113230.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50
+2026-01-31 11:32:30,572 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/tools/.bin/nuclei -l reports/20260131_105017/nuclei_20260131_105017.txt -jsonl -o reports/20260131_105017/nuclei_20260131_113230.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50
 2026-01-31 11:34:19,308 - guardian - INFO - Tool nuclei finished in 108.73s (status=completed, exit=0, stdout=4177B, stderr=0B)
 2026-01-31 11:34:19,312 - guardian - INFO - Tool Executed: nuclei
 2026-01-31 11:34:19,313 - guardian - INFO - Analyst Agent analyzing results...

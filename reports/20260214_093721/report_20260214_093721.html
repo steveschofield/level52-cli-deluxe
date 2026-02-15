@@ -141,11 +141,11 @@ Completed Actions: 9</p></div>
     <div><p>- <strong>masscan<strong>: /usr/bin/masscan -p 1-65535 --rate 5000 -oJ reports/20260214_093721/masscan_20260214_093722_814445.json 192.168.1.244 (Duration: 36.97s)
 - <strong>nmap<strong>: /usr/bin/nmap -sV --script vuln,vulners -T4 -Pn -oX reports/20260214_093721/nmap_20260214_094028_825020.xml -p 21,22,23,25,53,80,111,139,445,512,513,514,1099,1524,2049,2121,3306,3632,5432,5900,6000,6697,8009,8180,8787,41755,42519,49727,50763 192.168.1.244 (Duration: 451.33s)
 - <strong>nmap<strong>: /usr/bin/nmap -sV -sC -T3 -Pn -oX reports/20260214_093721/nmap_20260214_094957_412511.xml -p 53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389 -sU 192.168.1.244 (Duration: 144.30s)
-- <strong>httpx<strong>: /home/kali/code/guardian-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244 (Duration: 1.77s)
-- <strong>testssl<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-yohaf77x/testssl.json --severity LOW --quiet --ip one 192.168.1.244 (Duration: 0.14s)
+- <strong>httpx<strong>: /home/kali/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244 (Duration: 1.77s)
+- <strong>testssl<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-yohaf77x/testssl.json --severity LOW --quiet --ip one 192.168.1.244 (Duration: 0.14s)
 - <strong>headers<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Header-Check/1.0 -L -k 192.168.1.244 (Duration: 0.06s)
 - <strong>nikto<strong>: /usr/bin/nikto -h 192.168.1.244 -Tuning x -timeout 10 -nointeractive (Duration: 4.07s)
-- <strong>nuclei<strong>: /home/kali/code/guardian-cli-deluxe/tools/.bin/nuclei -l reports/20260214_093721/nuclei_20260214_093721.txt -jsonl -o reports/20260214_093721/nuclei_20260214_101149.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50 (Duration: 104.99s)</p></div>
+- <strong>nuclei<strong>: /home/kali/code/level52-cli-deluxe/tools/.bin/nuclei -l reports/20260214_093721/nuclei_20260214_093721.txt -jsonl -o reports/20260214_093721/nuclei_20260214_101149.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50 (Duration: 104.99s)</p></div>
     
     <footer>
         <hr>

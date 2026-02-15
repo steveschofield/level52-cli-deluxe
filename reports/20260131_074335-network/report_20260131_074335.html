@@ -464,7 +464,7 @@ This vulnerability is a critical open port that can be exploited to gain unautho
 - <strong>onesixtyone<strong>: /usr/bin/onesixtyone -q 192.168.1.232 public (Duration: 5.02s)
 - <strong>snmpwalk<strong>: /usr/bin/snmpwalk -v 2c -c public 192.168.1.232 (Duration: 6.03s)
 - <strong>nmap<strong>: /usr/bin/nmap -sV -sC -T4 -oX - -p 3389,3389,3389 --script rdp-enum-encryption,rdp-ntlm-info 192.168.1.232 (Duration: 83.70s)
-- <strong>testssl<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-29c7dkec/testssl.json --severity LOW --quiet --ip one 192.168.1.232 (Duration: 0.06s)
+- <strong>testssl<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-29c7dkec/testssl.json --severity LOW --quiet --ip one 192.168.1.232 (Duration: 0.06s)
 - <strong>nmap<strong>: /usr/bin/nmap -sV --script vuln -T4 -oX - -p 49175,53,139,49184,47001,49153,49180,445,135,49179,53,135,139,445,3389,49153,49154,49175,53,135,139,445,3389,47001,49152,49153,49154,49175,49179,49180,49184,53,67,53,67,53,67,139,445,3389,49152,49153,49154,49175,49179,49180,49184,445 192.168.1.232 (Duration: 316.77s)
 - <strong>nuclei<strong>:  (Duration: 0.00s)
 - <strong>bloodhound<strong>:  (Duration: 0.00s)

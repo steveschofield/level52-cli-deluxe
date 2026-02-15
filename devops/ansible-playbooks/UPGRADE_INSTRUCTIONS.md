@@ -17,7 +17,7 @@ This approach adds the missing tools to your existing working playbook without c
 
 1. **Backup your current playbook**:
    ```bash
-   cd /Users/ss/code/guardian-cli-deluxe/devops/ansible-playbooks
+   cd /Users/ss/code/level52-cli-deluxe/devops/ansible-playbooks
    cp remote_playbook_guardian.yml remote_playbook_guardian.yml.backup
    ```
 
@@ -109,7 +109,7 @@ This approach adds the missing tools to your existing working playbook without c
 
 3. **Run the updated playbook**:
    ```bash
-   cd /Users/ss/code/guardian-cli-deluxe/devops/ansible-playbooks
+   cd /Users/ss/code/level52-cli-deluxe/devops/ansible-playbooks
    ansible-playbook -i inventory/hosts.ini remote_playbook_guardian.yml
    ```
 
@@ -118,7 +118,7 @@ This approach adds the missing tools to your existing working playbook without c
 I've already copied the enhanced playbook to your devops folder. Use the convenience script:
 
 ```bash
-cd /Users/ss/code/guardian-cli-deluxe/devops/ansible-playbooks
+cd /Users/ss/code/level52-cli-deluxe/devops/ansible-playbooks
 ./run_guardian_enhanced.sh
 ```
 
@@ -167,7 +167,7 @@ ansible-playbook -i inventory/hosts.ini install_missing_tools.yml
 
 ### Test Connection
 ```bash
-cd /Users/ss/code/guardian-cli-deluxe/devops/ansible-playbooks
+cd /Users/ss/code/level52-cli-deluxe/devops/ansible-playbooks
 ansible -i inventory/hosts.ini guardian_workers -m ping
 ```
 
@@ -210,7 +210,7 @@ ansible-playbook -i inventory/hosts.ini remote_playbook_guardian.yml --tags "mis
 
 3. **Test Guardian**:
    ```bash
-   cd ~/guardian-cli-deluxe
+   cd ~/level52-cli-deluxe
    source venv/bin/activate
    python -m cli.main workflow run --name recon --target 192.168.1.232
    ```
@@ -250,5 +250,5 @@ ansible-playbook -i inventory/hosts.ini remote_playbook_guardian.yml --check
 Check the logs on the remote server:
 ```bash
 ssh 52pickup@192.168.1.148
-tail -f ~/guardian-cli-deluxe/setup.log
+tail -f ~/level52-cli-deluxe/setup.log
 ```

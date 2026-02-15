@@ -1,5 +1,5 @@
 2026-01-31 03:05:14,917 - guardian - INFO - Initialized Ollama model: llama3.2:3b @ http://192.168.1.69:11434
-2026-01-31 03:05:14,918 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
+2026-01-31 03:05:14,918 - guardian - INFO - Prompt templates: set=llama3_2_3b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/llama3_2_3b/reporter.py
 2026-01-31 03:05:15,363 - guardian - WARNING - Tool godeye is not installed or not in PATH
 2026-01-31 03:05:15,424 - guardian - WARNING - BloodHound availability check failed: 'BloodhoundTool' object has no attribute 'docker_image'
 2026-01-31 03:05:15,425 - guardian - WARNING - Tool bloodhound is not installed or not in PATH
@@ -73,7 +73,7 @@
 2026-01-31 03:05:15,585 - guardian - INFO - Workflow Progress [--------------------] 1/41 (0%) ETA n/a
 2026-01-31 03:05:15,585 - guardian - INFO - Executing step: http_discovery
 2026-01-31 03:05:15,612 - guardian - INFO - Tool Agent selecting tool: httpx
-2026-01-31 03:05:15,614 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u http://192.168.1.12:3000
+2026-01-31 03:05:15,614 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u http://192.168.1.12:3000
 2026-01-31 03:05:16,515 - guardian - INFO - Tool httpx finished in 0.90s (status=completed, exit=0, stdout=516B, stderr=0B)
 2026-01-31 03:05:16,516 - guardian - INFO - Tool Executed: httpx
 2026-01-31 03:05:16,516 - guardian - INFO - Analyst Agent analyzing results...
@@ -198,7 +198,7 @@ TOOLING ISSUE: The output shows a tooling issue (missing modules) and does not p
 2026-01-31 03:06:24,121 - guardian - INFO - Workflow Progress [--------------------] 3/41 (4%) ETA ~1336s
 2026-01-31 03:06:24,122 - guardian - INFO - Executing step: waf_detection
 2026-01-31 03:06:24,148 - guardian - INFO - Tool Agent selecting tool: wafw00f
-2026-01-31 03:06:24,152 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/wafw00f -v -a http://192.168.1.12:3000
+2026-01-31 03:06:24,152 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/wafw00f -v -a http://192.168.1.12:3000
 2026-01-31 03:06:24,499 - guardian - INFO - Tool wafw00f finished in 0.35s (status=completed, exit=0, stdout=917B, stderr=0B)
 2026-01-31 03:06:24,500 - guardian - INFO - Tool Executed: wafw00f
 2026-01-31 03:06:24,502 - guardian - INFO - Analyst Agent analyzing results...
@@ -255,7 +255,7 @@ Note: The tooling issue with wafw00f is not a security finding, but rather an in
 2026-01-31 03:06:43,970 - guardian - INFO - Workflow Progress [#-------------------] 4/41 (7%) ETA ~1119s
 2026-01-31 03:06:43,972 - guardian - INFO - Executing step: tls_headers_scan
 2026-01-31 03:06:43,997 - guardian - INFO - Tool Agent selecting tool: sslyze
-2026-01-31 03:06:43,998 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/sslyze 192.168.1.12:3000 --json_out=- --certinfo --sslv2 --sslv3 --tlsv1 --tlsv1_1 --tlsv1_2 --tlsv1_3 --reneg --resum --heartbleed --robot --openssl_ccs --compression --http_headers --timeout 10 --quiet
+2026-01-31 03:06:43,998 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/sslyze 192.168.1.12:3000 --json_out=- --certinfo --sslv2 --sslv3 --tlsv1 --tlsv1_1 --tlsv1_2 --tlsv1_3 --reneg --resum --heartbleed --robot --openssl_ccs --compression --http_headers --timeout 10 --quiet
 2026-01-31 03:06:44,246 - guardian - INFO - Tool sslyze finished in 0.25s (status=completed, exit=2, stdout=0B, stderr=956B)
 2026-01-31 03:06:44,247 - guardian - INFO - Tool Executed: sslyze
 2026-01-31 03:06:44,247 - guardian - INFO - Analyst Agent analyzing results...
@@ -292,7 +292,7 @@ No evidence of security issues was found in this output. However, it's essential
 2026-01-31 03:06:55,471 - guardian - INFO - Workflow Progress [#-------------------] 5/41 (9%) ETA ~923s
 2026-01-31 03:06:55,472 - guardian - INFO - Executing step: ssl_tls_scan
 2026-01-31 03:06:55,494 - guardian - INFO - Tool Agent selecting tool: testssl
-2026-01-31 03:06:55,498 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-ukpr2egv/testssl.json --severity LOW --quiet --ip one 192.168.1.12:3000
+2026-01-31 03:06:55,498 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-ukpr2egv/testssl.json --severity LOW --quiet --ip one 192.168.1.12:3000
 2026-01-31 03:18:33,549 - guardian - INFO - Tool testssl completed in 698.05s (exit 245)
 2026-01-31 03:18:33,551 - guardian - INFO - Tool Executed: testssl
 2026-01-31 03:18:33,552 - guardian - WARNING - Tool execution failed: Tool exited with exit code 245
@@ -368,7 +368,7 @@ OWASP: A0X:2021 - None
 2026-01-31 03:44:58,324 - guardian - INFO - Workflow Progress [##------------------] 7/41 (14%) ETA ~13899s
 2026-01-31 03:44:58,325 - guardian - INFO - Executing step: tech_fingerprint
 2026-01-31 03:44:58,350 - guardian - INFO - Tool Agent selecting tool: whatweb
-2026-01-31 03:44:58,352 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/whatweb --log-json=reports/20260131_030514/whatweb_20260131_034458_351978.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.12:3000
+2026-01-31 03:44:58,352 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/whatweb --log-json=reports/20260131_030514/whatweb_20260131_034458_351978.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.12:3000
 2026-01-31 03:45:01,971 - guardian - INFO - Tool whatweb finished in 3.62s (status=completed, exit=0, stdout=444B, stderr=0B)
 2026-01-31 03:45:01,972 - guardian - INFO - Tool Executed: whatweb
 2026-01-31 03:45:01,973 - guardian - INFO - Analyst Agent analyzing results...
@@ -445,7 +445,7 @@ No security findings in output. The tooling issue was due to an invalid environm
 2026-01-31 03:45:27,332 - guardian - INFO - Workflow Progress [###-----------------] 8/41 (17%) ETA ~11713s
 2026-01-31 03:45:27,333 - guardian - INFO - Executing step: cms_detection
 2026-01-31 03:45:27,362 - guardian - INFO - Tool Agent selecting tool: cmseek
-2026-01-31 03:45:27,363 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/cmseek -u http://192.168.1.12:3000 --batch --random-agent
+2026-01-31 03:45:27,363 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/cmseek -u http://192.168.1.12:3000 --batch --random-agent
 2026-01-31 03:45:27,708 - guardian - INFO - Tool cmseek finished in 0.34s (status=completed, exit=0, stdout=1157B, stderr=0B)
 2026-01-31 03:45:27,709 - guardian - INFO - Tool Executed: cmseek
 2026-01-31 03:45:27,710 - guardian - INFO - Analyst Agent analyzing results...
@@ -504,7 +504,7 @@ No evidence of issues in this output. The output appears to be from a tool that 
 2026-01-31 03:45:53,898 - guardian - INFO - Workflow Progress [###-----------------] 9/41 (19%) ETA ~10057s
 2026-01-31 03:45:53,899 - guardian - INFO - Executing step: crawl
 2026-01-31 03:45:53,930 - guardian - INFO - Tool Agent selecting tool: katana
-2026-01-31 03:45:53,932 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/tools/.bin/katana -silent -jsonl -d 3 -c 25 -list reports/20260131_030514/katana_20260131_030514.txt
+2026-01-31 03:45:53,932 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/tools/.bin/katana -silent -jsonl -d 3 -c 25 -list reports/20260131_030514/katana_20260131_030514.txt
 2026-01-31 03:46:05,424 - guardian - INFO - Tool katana finished in 11.49s (status=completed, exit=0, stdout=6094695B, stderr=0B)
 2026-01-31 03:46:05,428 - guardian - INFO - Tool Executed: katana
 2026-01-31 03:46:05,429 - guardian - INFO - Analyst Agent analyzing results...
@@ -568,7 +568,7 @@ The output indicates a moderate level of security risk, with identified vulnerab
 2026-01-31 03:47:02,703 - guardian - INFO - Workflow Progress [####----------------] 10/41 (21%) ETA ~8913s
 2026-01-31 03:47:02,704 - guardian - INFO - Executing step: historical_urls
 2026-01-31 03:47:02,743 - guardian - INFO - Tool Agent selecting tool: waybackurls
-2026-01-31 03:47:02,743 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/waybackurls http://192.168.1.12:3000
+2026-01-31 03:47:02,743 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/waybackurls http://192.168.1.12:3000
 2026-01-31 03:47:39,856 - guardian - INFO - Tool waybackurls finished in 37.11s (status=completed, exit=0, stdout=0B, stderr=0B)
 2026-01-31 03:47:39,858 - guardian - INFO - Tool Executed: waybackurls
 2026-01-31 03:47:39,859 - guardian - INFO - Analyst Agent analyzing results...
@@ -580,7 +580,7 @@ The output indicates a moderate level of security risk, with identified vulnerab
 2026-01-31 03:47:39,870 - guardian - INFO - Workflow Progress [####----------------] 11/41 (24%) ETA ~7887s
 2026-01-31 03:47:39,871 - guardian - INFO - Executing step: api_route_discovery
 2026-01-31 03:47:39,896 - guardian - INFO - Tool Agent selecting tool: kiterunner
-2026-01-31 03:47:39,897 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/tools/.bin/kiterunner scan http://192.168.1.12:3000 -w ./tools/vendor/kiterunner/routes-small.kite
+2026-01-31 03:47:39,897 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/tools/.bin/kiterunner scan http://192.168.1.12:3000 -w ./tools/vendor/kiterunner/routes-small.kite
 2026-01-31 03:47:40,114 - guardian - INFO - Tool kiterunner finished in 0.22s (status=completed, exit=2, stdout=0B, stderr=7777B)
 2026-01-31 03:47:40,116 - guardian - INFO - Tool Executed: kiterunner
 2026-01-31 03:47:40,116 - guardian - INFO - Analyst Agent analyzing results...
@@ -637,7 +637,7 @@ Note: No security findings were available, but potential tooling issues and misc
 2026-01-31 03:48:13,567 - guardian - INFO - Workflow Progress [#####---------------] 12/41 (26%) ETA ~7649s
 2026-01-31 03:48:13,567 - guardian - INFO - Executing step: js_url_extraction
 2026-01-31 03:48:13,592 - guardian - INFO - Tool Agent selecting tool: subjs
-2026-01-31 03:48:13,596 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/subjs -i reports/20260131_030514/subjs_20260131_030514.txt
+2026-01-31 03:48:13,596 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/subjs -i reports/20260131_030514/subjs_20260131_030514.txt
 2026-01-31 03:48:13,726 - guardian - INFO - Tool subjs finished in 0.13s (status=completed, exit=0, stdout=287B, stderr=0B)
 2026-01-31 03:48:13,729 - guardian - INFO - Tool Executed: subjs
 2026-01-31 03:48:13,731 - guardian - INFO - Analyst Agent analyzing results...
@@ -690,7 +690,7 @@ TOOLING ISSUE: Tool failure due to invalid environment variable.
 2026-01-31 03:48:35,375 - guardian - INFO - Workflow Progress [#####---------------] 13/41 (29%) ETA ~7340s
 2026-01-31 03:48:35,376 - guardian - INFO - Executing step: js_endpoint_extraction
 2026-01-31 03:48:35,406 - guardian - INFO - Tool Agent selecting tool: xnlinkfinder
-2026-01-31 03:48:35,407 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/xnLinkFinder -i reports/20260131_030514/xnlinkfinder_20260131_030514.txt
+2026-01-31 03:48:35,407 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/xnLinkFinder -i reports/20260131_030514/xnlinkfinder_20260131_030514.txt
 2026-01-31 03:48:35,823 - guardian - INFO - Tool xnlinkfinder finished in 0.42s (status=completed, exit=0, stdout=0B, stderr=440B)
 2026-01-31 03:48:35,824 - guardian - INFO - Tool Executed: xnlinkfinder
 2026-01-31 03:48:35,825 - guardian - INFO - Analyst Agent analyzing results...
@@ -737,7 +737,7 @@ Note: No security findings were identified due to the lack of concrete evidence 
 2026-01-31 03:48:49,270 - guardian - INFO - Workflow Progress [######--------------] 14/41 (31%) ETA ~7070s
 2026-01-31 03:48:49,270 - guardian - INFO - Executing step: client_side_linkfinder
 2026-01-31 03:48:49,297 - guardian - INFO - Tool Agent selecting tool: linkfinder
-2026-01-31 03:48:49,298 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/python -m linkfinder -i http://192.168.1.12:3000 -o cli
+2026-01-31 03:48:49,298 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/python -m linkfinder -i http://192.168.1.12:3000 -o cli
 2026-01-31 03:48:49,384 - guardian - INFO - Tool linkfinder finished in 0.09s (status=completed, exit=0, stdout=348B, stderr=0B)
 2026-01-31 03:48:49,385 - guardian - INFO - Tool Executed: linkfinder
 2026-01-31 03:48:49,385 - guardian - INFO - Analyst Agent analyzing results...
@@ -789,7 +789,7 @@ The output does not contain any concrete evidence of vulnerabilities or misconfi
 2026-01-31 03:49:09,771 - guardian - INFO - Workflow Progress [######--------------] 15/41 (34%) ETA ~6842s
 2026-01-31 03:49:09,772 - guardian - INFO - Executing step: retire_scan
 2026-01-31 03:49:09,798 - guardian - INFO - Tool Agent selecting tool: retire
-2026-01-31 03:49:10,263 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/retire --outputformat json --path /tmp/guardian-retire-ba1ifu4m
+2026-01-31 03:49:10,263 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/retire --outputformat json --path /tmp/guardian-retire-ba1ifu4m
 2026-01-31 03:49:10,895 - guardian - INFO - Tool retire finished in 0.63s (status=completed, exit=13, stdout=2596B, stderr=0B)
 2026-01-31 03:49:10,896 - guardian - INFO - Tool Executed: retire
 2026-01-31 03:49:10,897 - guardian - INFO - Analyst Agent analyzing results...
@@ -896,7 +896,7 @@ Note: Since there was no explicit security-related information in the output, I 
 2026-01-31 03:49:50,277 - guardian - INFO - Workflow Progress [#######-------------] 17/41 (39%) ETA ~729s
 2026-01-31 03:49:50,278 - guardian - INFO - Executing step: param_discovery
 2026-01-31 03:49:50,310 - guardian - INFO - Tool Agent selecting tool: paramspider
-2026-01-31 03:49:50,311 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/paramspider -d 192.168.1.12:3000
+2026-01-31 03:49:50,311 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/paramspider -d 192.168.1.12:3000
 2026-01-31 03:50:33,730 - guardian - INFO - Tool Executed: paramspider
 2026-01-31 03:50:33,731 - guardian - INFO - Analyst Agent analyzing results...
 2026-01-31 03:50:33,732 - guardian - INFO - [Analyst] LLM request: system_prompt=1007 chars, prompt=1460 chars
@@ -932,7 +932,7 @@ No evidence of issues in this output. The provided banner message does not indic
 2026-01-31 03:50:44,386 - guardian - INFO - Workflow Progress [########------------] 18/41 (41%) ETA ~760s
 2026-01-31 03:50:44,387 - guardian - INFO - Executing step: param_probe
 2026-01-31 03:50:44,417 - guardian - INFO - Tool Agent selecting tool: arjun
-2026-01-31 03:50:44,419 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/arjun -u http://192.168.1.12:3000 --json -oJ arjun_1769849444.json
+2026-01-31 03:50:44,419 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/arjun -u http://192.168.1.12:3000 --json -oJ arjun_1769849444.json
 2026-01-31 03:50:44,519 - guardian - INFO - Tool arjun finished in 0.10s (status=completed, exit=2, stdout=0B, stderr=427B)
 2026-01-31 03:50:44,520 - guardian - INFO - Tool Executed: arjun
 2026-01-31 03:50:44,521 - guardian - INFO - Analyst Agent analyzing results...
@@ -969,7 +969,7 @@ Note that the error reported by the `arjun` tool is not indicative of a security
 2026-01-31 03:50:57,287 - guardian - INFO - Workflow Progress [########------------] 19/41 (43%) ETA ~697s
 2026-01-31 03:50:57,290 - guardian - INFO - Executing step: commix_scan
 2026-01-31 03:50:57,318 - guardian - INFO - Tool Agent selecting tool: commix
-2026-01-31 03:50:57,319 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/commix --url http://192.168.1.12:3000 --batch --level 2
+2026-01-31 03:50:57,319 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/commix --url http://192.168.1.12:3000 --batch --level 2
 2026-01-31 03:50:57,390 - guardian - INFO - Tool commix finished in 0.07s (status=completed, exit=0, stdout=638B, stderr=0B)
 2026-01-31 03:50:57,391 - guardian - INFO - Tool Executed: commix
 2026-01-31 03:50:57,392 - guardian - INFO - Analyst Agent analyzing results...
@@ -1084,7 +1084,7 @@ Note: The output did not contain any explicit security vulnerabilities or exploi
 2026-01-31 03:52:28,350 - guardian - INFO - Workflow Progress [#########-----------] 21/41 (48%) ETA ~605s
 2026-01-31 03:52:28,351 - guardian - INFO - Executing step: vulnerability_scan
 2026-01-31 03:52:28,379 - guardian - INFO - Tool Agent selecting tool: nuclei
-2026-01-31 03:52:28,504 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/tools/.bin/nuclei -l reports/20260131_030514/nuclei_20260131_030514.txt -jsonl -o reports/20260131_030514/nuclei_20260131_035228.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50
+2026-01-31 03:52:28,504 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/tools/.bin/nuclei -l reports/20260131_030514/nuclei_20260131_030514.txt -jsonl -o reports/20260131_030514/nuclei_20260131_035228.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50
 2026-01-31 04:03:44,611 - guardian - INFO - Tool nuclei finished in 676.10s (status=completed, exit=0, stdout=1105838B, stderr=0B)
 2026-01-31 04:03:44,642 - guardian - INFO - Tool Executed: nuclei
 2026-01-31 04:03:44,643 - guardian - INFO - Analyst Agent analyzing results...
@@ -1154,7 +1154,7 @@ The output indicates several potential security vulnerabilities and misconfigura
 2026-01-31 04:04:44,724 - guardian - INFO - Workflow Progress [##########----------] 22/41 (51%) ETA ~1982s
 2026-01-31 04:04:44,726 - guardian - INFO - Executing step: api_schema_scan
 2026-01-31 04:04:44,785 - guardian - INFO - Tool Agent selecting tool: schemathesis
-2026-01-31 04:04:44,788 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/schemathesis run http://192.168.1.12:3000/openapi.json --url http://192.168.1.12:3000 --tls-verify=false
+2026-01-31 04:04:44,788 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/schemathesis run http://192.168.1.12:3000/openapi.json --url http://192.168.1.12:3000 --tls-verify=false
 2026-01-31 04:04:45,099 - guardian - INFO - Tool schemathesis finished in 0.31s (status=completed, exit=1, stdout=650B, stderr=0B)
 2026-01-31 04:04:45,100 - guardian - INFO - Tool Executed: schemathesis
 2026-01-31 04:04:45,100 - guardian - INFO - Analyst Agent analyzing results...
@@ -1201,7 +1201,7 @@ OWASP: A0X:2021 - Category: None
 2026-01-31 04:05:06,218 - guardian - INFO - Workflow Progress [##########----------] 23/41 (53%) ETA ~1882s
 2026-01-31 04:05:06,219 - guardian - INFO - Executing step: graphql_scan
 2026-01-31 04:05:06,250 - guardian - INFO - Tool Agent selecting tool: graphql-cop
-2026-01-31 04:05:06,303 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/python /home/kali/code/guardian-cli-deluxe/tools/vendor/graphql-cop/graphql-cop.py -t http://192.168.1.12:3000/graphql
+2026-01-31 04:05:06,303 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/python /home/kali/code/level52-cli-deluxe/tools/vendor/graphql-cop/graphql-cop.py -t http://192.168.1.12:3000/graphql
 2026-01-31 04:05:06,442 - guardian - INFO - Tool graphql-cop finished in 0.14s (status=completed, exit=0, stdout=146B, stderr=0B)
 2026-01-31 04:05:06,445 - guardian - INFO - Tool Executed: graphql-cop
 2026-01-31 04:05:06,446 - guardian - INFO - Analyst Agent analyzing results...
@@ -1259,7 +1259,7 @@ Note: No security findings were available due to the absence of explicit evidenc
 2026-01-31 04:05:25,129 - guardian - INFO - Workflow Progress [###########---------] 24/41 (56%) ETA ~1792s
 2026-01-31 04:05:25,130 - guardian - INFO - Executing step: xss_scan
 2026-01-31 04:05:25,162 - guardian - INFO - Tool Agent selecting tool: dalfox
-2026-01-31 04:05:25,167 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/dalfox file reports/20260131_030514/dalfox_20260131_030514.txt --format json --deep-domxss
+2026-01-31 04:05:25,167 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/dalfox file reports/20260131_030514/dalfox_20260131_030514.txt --format json --deep-domxss
 2026-01-31 04:08:34,660 - guardian - INFO - Tool dalfox finished in 189.49s (status=completed, exit=0, stdout=6B, stderr=18253B)
 2026-01-31 04:08:34,663 - guardian - INFO - Tool Executed: dalfox
 2026-01-31 04:08:34,665 - guardian - INFO - Analyst Agent analyzing results...
@@ -1296,7 +1296,7 @@ No evidence of issues in this output. The dalfox tool failed to gather relevant 
 2026-01-31 04:08:44,486 - guardian - INFO - Workflow Progress [###########---------] 25/41 (58%) ETA ~1996s
 2026-01-31 04:08:44,486 - guardian - INFO - Executing step: xss_scan_xsstrike
 2026-01-31 04:08:44,520 - guardian - INFO - Tool Agent selecting tool: xsstrike
-2026-01-31 04:08:44,523 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/xsstrike -u http://192.168.1.12:3000 --crawl --json
+2026-01-31 04:08:44,523 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/xsstrike -u http://192.168.1.12:3000 --crawl --json
 2026-01-31 04:08:44,665 - guardian - INFO - Tool xsstrike finished in 0.14s (status=completed, exit=0, stdout=173B, stderr=0B)
 2026-01-31 04:08:44,666 - guardian - INFO - Tool Executed: xsstrike
 2026-01-31 04:08:44,667 - guardian - INFO - Analyst Agent analyzing results...
@@ -1346,7 +1346,7 @@ Note that without more concrete evidence from the raw output, I couldn't identif
 2026-01-31 04:08:59,037 - guardian - INFO - Workflow Progress [############--------] 26/41 (60%) ETA ~1859s
 2026-01-31 04:08:59,039 - guardian - INFO - Executing step: csrf_scan
 2026-01-31 04:08:59,065 - guardian - INFO - Tool Agent selecting tool: csrf-tester
-2026-01-31 04:08:59,067 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/python /home/kali/code/guardian-cli-deluxe/tools/vendor/guardian_tools/csrf_tester.py --url http://192.168.1.12:3000 --insecure
+2026-01-31 04:08:59,067 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/python /home/kali/code/level52-cli-deluxe/tools/vendor/guardian_tools/csrf_tester.py --url http://192.168.1.12:3000 --insecure
 2026-01-31 04:08:59,162 - guardian - INFO - Tool csrf-tester finished in 0.09s (status=completed, exit=0, stdout=117B, stderr=0B)
 2026-01-31 04:08:59,163 - guardian - INFO - Tool Executed: csrf-tester
 2026-01-31 04:08:59,163 - guardian - INFO - Analyst Agent analyzing results...
@@ -1399,7 +1399,7 @@ OWASP: A0X:2021 - Tooling issue
 2026-01-31 04:09:17,843 - guardian - INFO - Workflow Progress [############--------] 27/41 (63%) ETA ~1751s
 2026-01-31 04:09:17,843 - guardian - INFO - Executing step: upload_scan
 2026-01-31 04:09:17,870 - guardian - INFO - Tool Agent selecting tool: upload-scanner
-2026-01-31 04:09:17,872 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/python /home/kali/code/guardian-cli-deluxe/tools/vendor/guardian_tools/upload_scanner.py --url http://192.168.1.12:3000 --insecure
+2026-01-31 04:09:17,872 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/python /home/kali/code/level52-cli-deluxe/tools/vendor/guardian_tools/upload_scanner.py --url http://192.168.1.12:3000 --insecure
 2026-01-31 04:09:17,960 - guardian - INFO - Tool upload-scanner finished in 0.09s (status=completed, exit=0, stdout=118B, stderr=0B)
 2026-01-31 04:09:17,961 - guardian - INFO - Tool Executed: upload-scanner
 2026-01-31 04:09:17,962 - guardian - INFO - Analyst Agent analyzing results...
@@ -1538,7 +1538,7 @@ Note that the output shows a tooling issue with the `keep-alive` header, which i
 2026-01-31 04:10:02,158 - guardian - INFO - Workflow Progress [#############-------] 29/41 (68%) ETA ~1488s
 2026-01-31 04:10:02,159 - guardian - INFO - Executing step: cors_scan
 2026-01-31 04:10:02,181 - guardian - INFO - Tool Agent selecting tool: cors-scanner
-2026-01-31 04:10:02,183 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/python /home/kali/code/guardian-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.12:3000 -t 10 -T 10 -j
+2026-01-31 04:10:02,183 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/python /home/kali/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.12:3000 -t 10 -T 10 -j
 2026-01-31 04:10:02,485 - guardian - INFO - Tool cors-scanner finished in 0.30s (status=completed, exit=0, stdout=586B, stderr=184B)
 2026-01-31 04:10:02,486 - guardian - INFO - Tool Executed: cors-scanner
 2026-01-31 04:10:02,487 - guardian - INFO - Analyst Agent analyzing results...
@@ -1994,7 +1994,7 @@ The analysis revealed several security vulnerabilities and misconfigurations, in
 2026-01-31 04:15:44,911 - guardian - INFO - Workflow Progress [##################--] 38/41 (90%) ETA ~147s
 2026-01-31 04:15:44,912 - guardian - INFO - Executing step: zap_scan
 2026-01-31 04:15:44,936 - guardian - INFO - Tool Agent selecting tool: zap
-2026-01-31 04:15:44,940 - guardian - INFO - Executing: python3 /home/kali/code/guardian-cli-deluxe/scripts/zap_docker_daemon_scan.py --image ghcr.io/zaproxy/zaproxy:stable --api-url http://127.0.0.1:8080 --target http://192.168.1.12:3000 --max-minutes 45 --startup-timeout 180 --spider --ajax-spider --active --ignore-robots --seed-file reports/20260131_030514/zap_seed_20260131_030514.txt --username-field username --password-field password --json-out reports/20260131_030514/zap/zap_full_20260131_041544.json --html-out reports/20260131_030514/zap/zap_full_20260131_041544.html --md-out reports/20260131_030514/zap/zap_full_20260131_041544.md
+2026-01-31 04:15:44,940 - guardian - INFO - Executing: python3 /home/kali/code/level52-cli-deluxe/scripts/zap_docker_daemon_scan.py --image ghcr.io/zaproxy/zaproxy:stable --api-url http://127.0.0.1:8080 --target http://192.168.1.12:3000 --max-minutes 45 --startup-timeout 180 --spider --ajax-spider --active --ignore-robots --seed-file reports/20260131_030514/zap_seed_20260131_030514.txt --username-field username --password-field password --json-out reports/20260131_030514/zap/zap_full_20260131_041544.json --html-out reports/20260131_030514/zap/zap_full_20260131_041544.html --md-out reports/20260131_030514/zap/zap_full_20260131_041544.md
 2026-01-31 04:22:20,771 - guardian - INFO - Tool zap finished in 395.83s (status=completed, exit=0, stdout=684062B, stderr=9769B)
 2026-01-31 04:22:20,826 - guardian - INFO - Tool Executed: zap
 2026-01-31 04:22:20,827 - guardian - INFO - Analyst Agent analyzing results...

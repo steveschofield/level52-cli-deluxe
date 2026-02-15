@@ -26,8 +26,8 @@ sudo apt update
 sudo apt install -y ansible
 
 # 2. Clone this repository
-git clone https://github.com/steveschofield/guardian-cli-deluxe.git
-cd guardian-cli-deluxe/ansible-playbooks
+git clone https://github.com/steveschofield/level52-cli-deluxe.git
+cd level52-cli-deluxe/ansible-playbooks
 
 # 3. Run the local playbook
 ansible-playbook -K local_playbook_kali.yml
@@ -44,8 +44,8 @@ If you want to create a new Kali Linux VM with Guardian CLI pre-installed:
 # See: https://www.vagrantup.com/downloads
 
 # 2. Clone this repository
-git clone https://github.com/steveschofield/guardian-cli-deluxe.git
-cd guardian-cli-deluxe/ansible-playbooks
+git clone https://github.com/steveschofield/level52-cli-deluxe.git
+cd level52-cli-deluxe/ansible-playbooks
 
 # 3. Start the VM (VirtualBox)
 vagrant up
@@ -57,7 +57,7 @@ vagrant up --provider=hyperv
 vagrant ssh
 
 # 5. Activate Guardian environment
-cd /home/vagrant/guardian-cli-deluxe
+cd /home/vagrant/level52-cli-deluxe
 source venv/bin/activate
 
 # 6. Run a test scan
@@ -307,7 +307,7 @@ source ~/.profile
 which httpx nuclei subfinder
 
 # Run Guardian verification
-cd ~/guardian-cli-deluxe
+cd ~/level52-cli-deluxe
 source venv/bin/activate
 python -m cli.main --help
 ```
@@ -354,7 +354,7 @@ go install github.com/projectdiscovery/httpx/cmd/httpx@latest
 **Solution**:
 ```bash
 # Activate Guardian virtual environment
-cd ~/guardian-cli-deluxe
+cd ~/level52-cli-deluxe
 source venv/bin/activate
 
 # Reinstall requirements

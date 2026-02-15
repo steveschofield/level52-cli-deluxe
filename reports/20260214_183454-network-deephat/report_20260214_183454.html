@@ -181,7 +181,7 @@
 - <strong>onesixtyone<strong>: /usr/bin/onesixtyone -q 192.168.1.232 public (Duration: 5.03s)
 - <strong>snmpwalk<strong>: /usr/bin/snmpwalk -v 2c -c public 192.168.1.232 (Duration: 6.07s)
 - <strong>nmap<strong>: /usr/bin/nmap -sV -sC -T4 -Pn -oX reports/20260214_183454/nmap_20260214_190618_237596.xml -p 3389 --script rdp-enum-encryption,rdp-ntlm-info 192.168.1.232 (Duration: 83.76s)
-- <strong>testssl<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-78g4wrgu/testssl.json --severity LOW --quiet --ip one 192.168.1.232 (Duration: 0.24s)
+- <strong>testssl<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-78g4wrgu/testssl.json --severity LOW --quiet --ip one 192.168.1.232 (Duration: 0.24s)
 - <strong>nmap<strong>: /usr/bin/nmap -sV --script vuln,vulners -T4 -Pn -oX reports/20260214_183454/nmap_20260214_190927_077580.xml -p 53,123,135,139,445,3389,49152,49153,49166,49174,49180,55349 192.168.1.232 (Duration: 90.96s)
 - <strong>nuclei<strong>:  (Duration: 0.00s)
 - <strong>bloodhound<strong>: docker run -i --rm --network host -e NEO4J_URI=bolt://localhost:7687 -e NEO4J_USER=neo4j ghcr.io/fuzzinglabs/bloodhound-mcp:latest (Duration: 0.68s)

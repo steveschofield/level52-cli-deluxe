@@ -326,7 +326,7 @@ ai:
 Run the validation test to ensure your prompt set loads correctly:
 
 ```bash
-cd /Users/ss/code/guardian-cli-deluxe
+cd /Users/ss/code/level52-cli-deluxe
 python test_prompt_validation.py
 ```
 
@@ -546,4 +546,4 @@ For issues with prompt configuration:
 1. Check validation test: `python test_prompt_validation.py`
 2. Review logs: `reports/*/llm_io_*.jsonl`
 3. Enable debug logging: `output.verbosity: debug`
-4. Open issue: https://github.com/yourusername/guardian-cli-deluxe/issues
+4. Open issue: https://github.com/yourusername/level52-cli-deluxe/issues

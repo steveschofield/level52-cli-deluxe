@@ -15,7 +15,7 @@ WARNING  Tool jwt is not installed or not in PATH
 The easiest way to integrate the missing tools:
 
 ```bash
-cd /Users/ss/code/guardian-cli-deluxe/devops/ansible-playbooks
+cd /Users/ss/code/level52-cli-deluxe/devops/ansible-playbooks
 ./integrate.sh
 ```
 
@@ -87,7 +87,7 @@ ansible-playbook -i inventory/hosts.ini remote_playbook_guardian.yml
 ### Workflow 1: Update Existing Remote Server (FASTEST)
 
 ```bash
-cd /Users/ss/code/guardian-cli-deluxe/devops/ansible-playbooks
+cd /Users/ss/code/level52-cli-deluxe/devops/ansible-playbooks
 
 # Install only what's missing
 ansible-playbook -i inventory/hosts.ini install_missing_tools.yml
@@ -104,7 +104,7 @@ which testssl kr jwt_tool graphqlcop xsstrike feroxbuster trivy
 ### Workflow 2: Update Both Local and Remote
 
 ```bash
-cd /Users/ss/code/guardian-cli-deluxe/devops/ansible-playbooks
+cd /Users/ss/code/level52-cli-deluxe/devops/ansible-playbooks
 
 # Interactive menu
 ./integrate.sh
@@ -121,7 +121,7 @@ cd /Users/ss/code/guardian-cli-deluxe/devops/ansible-playbooks
 If you want to keep your original `remote_playbook_guardian.yml` with all its features:
 
 ```bash
-cd /Users/ss/code/guardian-cli-deluxe/devops/ansible-playbooks
+cd /Users/ss/code/level52-cli-deluxe/devops/ansible-playbooks
 
 # 1. Backup original
 cp remote_playbook_guardian.yml remote_playbook_guardian.yml.backup
@@ -164,7 +164,7 @@ pip3 list | grep -E "arjun|schemathesis|dirsearch"
 retire --version
 
 # Test Guardian (should show NO warnings!)
-cd ~/guardian-cli-deluxe
+cd ~/level52-cli-deluxe
 source venv/bin/activate
 python -m cli.main workflow run --name recon --target 192.168.1.232
 ```
@@ -258,7 +258,7 @@ cat inventory/hosts.ini
 ## 📂 File Organization
 
 ```
-/Users/ss/code/guardian-cli-deluxe/devops/ansible-playbooks/
+/Users/ss/code/level52-cli-deluxe/devops/ansible-playbooks/
 ├── inventory/
 │   └── hosts.ini                              # Ansible inventory
 ├── install_missing_tools.yml                  # Quick fix playbook (NEW)
@@ -279,7 +279,7 @@ cat inventory/hosts.ini
 **For your immediate needs (fixing missing tools on existing server):**
 
 ```bash
-cd /Users/ss/code/guardian-cli-deluxe/devops/ansible-playbooks
+cd /Users/ss/code/level52-cli-deluxe/devops/ansible-playbooks
 ansible-playbook -i inventory/hosts.ini install_missing_tools.yml
 ```
 
@@ -293,7 +293,7 @@ This will:
 
 ```bash
 ssh 52pickup@192.168.1.148
-cd ~/guardian-cli-deluxe
+cd ~/level52-cli-deluxe
 source venv/bin/activate
 python -m cli.main workflow run --name recon --target 192.168.1.232
 ```
@@ -302,7 +302,7 @@ You should see **zero warnings** about missing tools! 🎉
 
 ## 📞 Need Help?
 
-- Check logs: `tail -f ~/guardian-cli-deluxe/setup.log`
+- Check logs: `tail -f ~/level52-cli-deluxe/setup.log`
 - Run playbook with verbose output: `ansible-playbook -i inventory/hosts.ini install_missing_tools.yml -vv`
 - Test individual tools: `ssh 52pickup@192.168.1.148 "which testssl"`
 
@@ -324,5 +324,5 @@ ansible -i inventory/hosts.ini guardian_workers -m ping
 ssh 52pickup@192.168.1.148 "which testssl kr jwt_tool graphqlcop"
 
 # Test Guardian
-ssh 52pickup@192.168.1.148 "cd ~/guardian-cli-deluxe && source venv/bin/activate && python -m cli.main workflow run --name recon --target 192.168.1.232"
+ssh 52pickup@192.168.1.148 "cd ~/level52-cli-deluxe && source venv/bin/activate && python -m cli.main workflow run --name recon --target 192.168.1.232"
 ```

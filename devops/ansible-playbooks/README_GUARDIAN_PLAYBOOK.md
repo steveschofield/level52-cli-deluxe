@@ -47,7 +47,7 @@ This is the **ONLY** playbook you need to run for complete Guardian CLI setup wi
 ### Quick Start
 
 ```bash
-cd /Users/ss/code/guardian-cli-deluxe/devops/ansible-playbooks
+cd /Users/ss/code/level52-cli-deluxe/devops/ansible-playbooks
 
 # Run the master playbook
 ansible-playbook -i inventory/hosts.ini remote_playbook_guardian.yml
@@ -118,7 +118,7 @@ pip3 list | grep -E "arjun|schemathesis|dirsearch"
 retire --version
 
 # Test Guardian - Should show NO warnings!
-cd ~/guardian-cli-deluxe
+cd ~/level52-cli-deluxe
 source venv/bin/activate
 python -m cli.main workflow run --name recon --target 192.168.1.232
 ```
@@ -129,7 +129,7 @@ python -m cli.main workflow run --name recon --target 192.168.1.232
 
 ```
 /home/52pickup/
-├── guardian-cli-deluxe/          # Main Guardian installation
+├── level52-cli-deluxe/          # Main Guardian installation
 │   ├── venv/                     # Python virtual environment
 │   ├── reports/                  # Scan reports
 │   ├── logs/                     # Application logs
@@ -276,7 +276,7 @@ ansible-playbook -i inventory/hosts.ini remote_playbook_guardian.yml
 ## ✅ Ready to Deploy
 
 ```bash
-cd /Users/ss/code/guardian-cli-deluxe/devops/ansible-playbooks
+cd /Users/ss/code/level52-cli-deluxe/devops/ansible-playbooks
 ansible-playbook -i inventory/hosts.ini remote_playbook_guardian.yml
 ```
 
