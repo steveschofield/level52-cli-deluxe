@@ -1,24 +1,25 @@
-# Guardian Quick Start Guide
+# Level52 Quick Start Guide
 
 ## Installation (Kali Linux)
 
 1. **Navigate to project directory**:
+
    ```bash
    cd /path/to/level52-cli-deluxe
    ```
-
 2. **Create virtual environment**:
+
    ```bash
    python3 -m venv venv
    source venv/bin/activate
    ```
-
 3. **Install Guardian and tools**:
+
    ```bash
    ./setup.sh 2>&1 | tee setup.log
    ```
-
 4. **Initialize configuration**:
+
    ```bash
    python -m cli.main init
    ```
@@ -26,21 +27,25 @@
 ## Common Commands
 
 ### List Available Workflows
+
 ```bash
 python -m cli.main workflow list
 ```
 
 ### Dry Run Reconnaissance
+
 ```bash
 python -m cli.main recon --domain example.com --dry-run
 ```
 
 ### Run Port Scan (requires nmap)
+
 ```bash
 python -m cli.main scan --target scanme.nmap.org
 ```
 
 ### Run Full Workflow
+
 ```bash
 python -m cli.main workflow run --name recon --target example.com
 python -m cli.main workflow run --name recon_quick --target example.com
@@ -50,12 +55,14 @@ python -m cli.main workflow run --name quick_vuln_scan --target https://example.
 ## Configuration
 
 Edit `config/guardian.yaml` (when running from this repo) or `~/.guardian/guardian.yaml` (when using `guardian init`) to customize:
+
 - AI model and settings
 - Tool configurations
 - Security guardrails
 - Output formats
 
 If you’re using `~/.guardian/guardian.yaml`, pass it explicitly:
+
 ```bash
 python -m cli.main recon --domain example.com --config ~/.guardian/guardian.yaml
 ```
@@ -77,19 +84,23 @@ python -m cli.main <command> --help
 ## Troubleshooting
 
 ### Command not found
+
 - Make sure you're in the project directory
 - Activate the virtual environment
 - Use `python -m cli.main` instead of `guardian`
 
 ### Import errors
+
 - Reinstall dependencies: run `./setup.sh`
 - Check Python version: `python --version` (requires 3.11+)
 
 ### masscan permission denied
+
 - `./setup.sh` attempts to set capabilities for non-root use
 - If it still fails: `sudo setcap cap_net_raw,cap_net_admin+eip "$(command -v masscan)"`
 
 ### API errors
+
 - Verify your Gemini API key in `.env` (project root) or `~/.guardian/.env`
 - If using OpenRouter, verify `OPENROUTER_API_KEY` in `.env` (project root) or `~/.guardian/.env`
 - If using Gemini Vertex/ADC, ensure `gcloud auth application-default login` has been run and `ai.project` is set in your config

@@ -1,4 +1,4 @@
-# Guardian CLI Deluxe - Docker Container Guide
+# Level52 CLI Deluxe - Docker Container Guide
 
 ## Overview
 
@@ -41,21 +41,21 @@ docker-compose exec guardian-kali bash
 
 The native installation is the recommended approach for the following reasons:
 
-| Feature | Native Kali + setup.sh | Docker Container |
-|---------|------------------------|------------------|
-| **Tool Coverage** | ✅ 100% (all tools) | ✅ 100% (complete parity) |
-| **Performance** | ✅ Native speed | ⚠️ Docker overhead |
-| **Network Access** | ✅ Direct access | ⚠️ Requires `--net=host` for some tools |
-| **Privilege Escalation** | ✅ Easy with sudo | ⚠️ Requires `--privileged` or caps |
-| **GPU Access** | ✅ Direct access | ⚠️ Complex GPU passthrough |
-| **Installation Time** | ⚠️ 10-20 minutes | ⚠️ 30-60 minutes (build) |
-| **Disk Space** | ✅ ~5-10 GB | ❌ ~15-20 GB (image size) |
-| **Idempotency** | ✅ Re-run safe | ⚠️ Requires rebuild |
-| **Updates** | ✅ Just re-run setup.sh | ⚠️ Rebuild entire image |
-| **Customization** | ✅ Easy modifications | ⚠️ Requires Dockerfile edits |
-| **Tool Binaries** | ✅ GitHub releases first | ✅ Same strategy |
-| **Dependency Isolation** | ✅ Python venv | ⚠️ System-wide pip |
-| **Portability** | ❌ Kali-only | ✅ Runs anywhere |
+| Feature                        | Native Kali + setup.sh   | Docker Container                            |
+| ------------------------------ | ------------------------ | ------------------------------------------- |
+| **Tool Coverage**        | ✅ 100% (all tools)      | ✅ 100% (complete parity)                   |
+| **Performance**          | ✅ Native speed          | ⚠️ Docker overhead                        |
+| **Network Access**       | ✅ Direct access         | ⚠️ Requires `--net=host` for some tools |
+| **Privilege Escalation** | ✅ Easy with sudo        | ⚠️ Requires `--privileged` or caps      |
+| **GPU Access**           | ✅ Direct access         | ⚠️ Complex GPU passthrough                |
+| **Installation Time**    | ⚠️ 10-20 minutes       | ⚠️ 30-60 minutes (build)                  |
+| **Disk Space**           | ✅ ~5-10 GB              | ❌ ~15-20 GB (image size)                   |
+| **Idempotency**          | ✅ Re-run safe           | ⚠️ Requires rebuild                       |
+| **Updates**              | ✅ Just re-run setup.sh  | ⚠️ Rebuild entire image                   |
+| **Customization**        | ✅ Easy modifications    | ⚠️ Requires Dockerfile edits              |
+| **Tool Binaries**        | ✅ GitHub releases first | ✅ Same strategy                            |
+| **Dependency Isolation** | ✅ Python venv           | ⚠️ System-wide pip                        |
+| **Portability**          | ❌ Kali-only             | ✅ Runs anywhere                            |
 
 ---
 
@@ -92,47 +92,58 @@ Native installation is better for:
 Both Docker and native setups now include:
 
 #### SAST/Whitebox Analysis Tools
+
 - ✅ **Semgrep** - Code vulnerability scanner (SQLi, XSS, SSTI, etc.)
 - ✅ **Trivy** - Dependency CVE scanner + IaC misconfigurations
 - ✅ **TruffleHog** - Advanced secret detection (v3 binary)
 - ✅ **Gitleaks** - Secret scanning (regex patterns)
 
 #### ProjectDiscovery Suite
+
 - ✅ httpx, nuclei, subfinder, dnsx, katana, naabu, shuffledns, asnmap, interactsh-client
 
 #### Go Tools
+
 - ✅ ffuf, waybackurls, gau, dalfox, gitleaks, puredns, subjs, webanalyze, god-eye
 
 #### Rust Tools
+
 - ✅ feroxbuster (compiled from source)
 
 #### Python Security Tools
+
 - ✅ arjun, dirsearch, schemathesis, wafw00f, sqlmap, sslyze, dnsrecon
 - ✅ xnlinkfinder, dnsgen, sstimap (replaces tplmap)
 
 #### Git-Cloned Tools
+
 - ✅ testssl.sh, XSStrike, CMSeeK, WhatWeb, commix
 - ✅ graphql-cop, jwt_tool, SSTImap, CORScanner, LinkFinder, ParamSpider
 
 #### npm Tools
+
 - ✅ retire.js (JavaScript library vulnerability scanner)
 
 #### Wordlists
+
 - ✅ SecLists (comprehensive wordlist collection)
 - ✅ Kiterunner API routes wordlist
 
 #### LangChain Ecosystem
+
 - ✅ langchain, langchain-core, langchain-community
 - ✅ **langchain-ollama** (was missing in v2.0)
 - ✅ **langsmith** (was missing in v2.0)
 
 #### Fixed Dependencies
+
 - ✅ requests >= 2.32.0
 - ✅ urllib3 >= 2.0.0
 - ✅ charset-normalizer >= 3.0.0
 - ✅ attrs >= 22.2.0
 
 #### Guardian Enhancements
+
 - ✅ ZAP hybrid mode (Docker + native detection)
 - ✅ Smart port scanner (masscan → nmap pipeline)
 - ✅ Comprehensive verification checks
@@ -157,6 +168,7 @@ source venv/bin/activate
 ```
 
 **Advantages:**
+
 - Faster execution
 - Direct hardware access
 - Easier to update individual tools
@@ -182,6 +194,7 @@ docker run -it --rm \
 ```
 
 **Advantages:**
+
 - Portable across systems
 - Isolated environment
 - Consistent builds
@@ -275,6 +288,7 @@ docker-compose down
 ## Docker Container Features
 
 ### System Tools (via apt)
+
 - nmap, masscan, rustscan
 - nikto, whatweb, wpscan
 - enum4linux, enum4linux-ng
@@ -315,9 +329,11 @@ If any critical tool is missing, the Docker build will **fail**.
 ## Environment Variables
 
 ### Required
+
 - `ANTHROPIC_API_KEY` - Claude API key for AI-powered analysis
 
 ### Optional
+
 - `OPENAI_API_KEY` - OpenAI API key (if using GPT models)
 - `GOOGLE_API_KEY` - Google API key (if using Gemini)
 - `GUARDIAN_CONFIG` - Custom config file path (default: `/guardian/config/guardian.yaml`)
@@ -507,12 +523,14 @@ docker run -it --rm \
 ## Differences from Native Setup
 
 ### Advantages of Docker
+
 1. ✅ Portable - runs on any system with Docker
 2. ✅ Isolated - doesn't affect host system
 3. ✅ Reproducible - exact same environment
 4. ✅ CI/CD friendly - easy automation
 
 ### Limitations of Docker
+
 1. ❌ Larger disk footprint (~15-20 GB vs ~5-10 GB)
 2. ❌ Slower builds (30-60 min vs 10-20 min)
 3. ❌ Network limitations (requires `--net=host` for some tools)
@@ -520,6 +538,7 @@ docker run -it --rm \
 5. ❌ Harder to update individual tools (requires rebuild)
 
 ### What's Identical
+
 - ✅ All tools installed (100% parity)
 - ✅ All dependencies fixed (requests>=2.32.0, etc.)
 - ✅ LangChain ecosystem complete
@@ -558,35 +577,36 @@ source venv/bin/activate
 
 ## Size Comparison
 
-| Component | Native Kali | Docker |
-|-----------|-------------|--------|
-| Base OS | 0 GB (already installed) | ~2 GB (Kali base image) |
-| System packages | ~2 GB | ~4 GB |
-| Go tools | ~500 MB | ~500 MB |
-| Python tools | ~1 GB | ~2 GB (no venv) |
-| Git repos | ~1 GB | ~1 GB |
-| Wordlists | ~2 GB | ~2 GB |
-| Rust tools | ~500 MB | ~500 MB |
-| Docker overhead | 0 GB | ~3 GB (layers) |
-| **Total** | **~7 GB** | **~15 GB** |
+| Component       | Native Kali              | Docker                  |
+| --------------- | ------------------------ | ----------------------- |
+| Base OS         | 0 GB (already installed) | ~2 GB (Kali base image) |
+| System packages | ~2 GB                    | ~4 GB                   |
+| Go tools        | ~500 MB                  | ~500 MB                 |
+| Python tools    | ~1 GB                    | ~2 GB (no venv)         |
+| Git repos       | ~1 GB                    | ~1 GB                   |
+| Wordlists       | ~2 GB                    | ~2 GB                   |
+| Rust tools      | ~500 MB                  | ~500 MB                 |
+| Docker overhead | 0 GB                     | ~3 GB (layers)          |
+| **Total** | **~7 GB**          | **~15 GB**        |
 
 ---
 
 ## Performance Comparison
 
-| Operation | Native Kali | Docker | Difference |
-|-----------|-------------|--------|------------|
-| Setup time | 10-20 min | 30-60 min | **2-3x slower** |
-| Tool execution | 1.0x baseline | 0.95x | ~5% overhead |
-| Network scanning | Full speed | Requires `--net=host` | Depends on mode |
-| File I/O | Native FS | Volume mount overhead | ~10-20% slower |
-| Memory usage | ~2 GB | ~2.5 GB | +500 MB overhead |
+| Operation        | Native Kali   | Docker                  | Difference            |
+| ---------------- | ------------- | ----------------------- | --------------------- |
+| Setup time       | 10-20 min     | 30-60 min               | **2-3x slower** |
+| Tool execution   | 1.0x baseline | 0.95x                   | ~5% overhead          |
+| Network scanning | Full speed    | Requires `--net=host` | Depends on mode       |
+| File I/O         | Native FS     | Volume mount overhead   | ~10-20% slower        |
+| Memory usage     | ~2 GB         | ~2.5 GB                 | +500 MB overhead      |
 
 ---
 
 ## Recommendations
 
 ### Use Native Kali If:
+
 - ✅ You're on Kali Linux already
 - ✅ You need maximum performance
 - ✅ You frequently update tools
@@ -594,6 +614,7 @@ source venv/bin/activate
 - ✅ You're doing active pentesting
 
 ### Use Docker If:
+
 - ✅ You're on non-Kali systems (Ubuntu, macOS, Windows)
 - ✅ You want isolated environments
 - ✅ You're running in CI/CD
@@ -605,6 +626,7 @@ source venv/bin/activate
 ## Support
 
 For issues or questions:
+
 - GitHub Issues: https://github.com/yourusername/level52-cli-deluxe/issues
 - Documentation: See README.md and setup.sh comments
 
@@ -613,6 +635,7 @@ For issues or questions:
 ## Version History
 
 ### v3.0 (Current) - Full Parity Release
+
 - ✅ Added all missing SAST tools (Semgrep, Trivy)
 - ✅ Added all ProjectDiscovery tools
 - ✅ Added all Go tools (gau, waybackurls, gitleaks, etc.)
@@ -626,6 +649,7 @@ For issues or questions:
 - ✅ **Achieved 100% parity with native setup.sh**
 
 ### v2.0 - Initial Docker Release
+
 - ❌ Missing SAST tools
 - ❌ Missing many Go tools
 - ❌ Missing LangChain dependencies
@@ -638,12 +662,14 @@ For issues or questions:
 Both Docker and native Kali installations are now **fully equivalent** in terms of tool coverage.
 
 **Native Kali + setup.sh remains the recommended approach** for most pentesters due to:
+
 - Better performance
 - Easier updates
 - Less disk space
 - Direct hardware/network access
 
 **Docker is perfect for**:
+
 - CI/CD automation
 - Non-Kali systems
 - Isolated testing

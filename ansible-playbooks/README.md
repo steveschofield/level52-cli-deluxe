@@ -1,4 +1,4 @@
-# Guardian CLI Deluxe - Ansible Playbooks
+# Level52 CLI Deluxe - Ansible Playbooks
 
 This directory contains Ansible playbooks and Vagrant configuration for automated deployment of Guardian CLI on Kali Linux systems.
 
@@ -89,6 +89,7 @@ ansible-playbook -i inventory/hosts.ini remote_playbook_guardian_enhanced.yml
 ## 📦 What Gets Installed
 
 ### System Packages (via apt)
+
 - **Core Tools**: git, curl, wget, build-essential, python3, go, nodejs, npm, cargo
 - **Network Scanning**: nmap, masscan, nikto, hydra
 - **Web Testing**: sqlmap, dirb, gobuster, whatweb
@@ -99,6 +100,7 @@ ansible-playbook -i inventory/hosts.ini remote_playbook_guardian_enhanced.yml
 ### Security Tools Installed
 
 #### Go-based Tools
+
 - ✅ **httpx** - HTTP toolkit (ProjectDiscovery)
 - ✅ **nuclei** - Vulnerability scanner (ProjectDiscovery)
 - ✅ **subfinder** - Subdomain discovery (ProjectDiscovery)
@@ -115,6 +117,7 @@ ansible-playbook -i inventory/hosts.ini remote_playbook_guardian_enhanced.yml
 - ✅ **kiterunner (kr)** - API endpoint discovery
 
 #### Python-based Tools
+
 - ✅ **arjun** - HTTP parameter discovery
 - ✅ **xsstrike** - Advanced XSS detection
 - ✅ **cmseek** - CMS detection & exploitation
@@ -132,26 +135,32 @@ ansible-playbook -i inventory/hosts.ini remote_playbook_guardian_enhanced.yml
 - ✅ **graphqlcop** - GraphQL security auditor
 
 #### Git-cloned Tools
+
 - ✅ **testssl.sh** - SSL/TLS testing suite
 - ✅ **jwt_tool** - JWT security testing
 - ✅ **LinkFinder** - JavaScript endpoint discovery
 
 #### Rust-based Tools
+
 - ✅ **feroxbuster** - Content discovery
 
 #### npm Tools
+
 - ✅ **retire.js** - JavaScript library vulnerability scanner
 
 #### SAST (Static Analysis) Tools
+
 - ✅ **trivy** - Vulnerability/secret scanner
 - ✅ **semgrep** - Code security scanner (installed via setup.sh)
 
 #### Frameworks & Databases
+
 - ✅ **Metasploit Framework** - Exploitation framework
 - ✅ **BloodHound** - Active Directory analysis (Docker)
 - ✅ **ZAP** - OWASP ZAP proxy (Docker)
 
 #### Exploit Database
+
 - ✅ **Exploit-DB** - Local copy of exploit database
 - ✅ **searchsploit** - Exploit search tool
 
@@ -162,12 +171,14 @@ ansible-playbook -i inventory/hosts.ini remote_playbook_guardian_enhanced.yml
 **Purpose**: Install all Guardian CLI security tools on a local Kali Linux machine.
 
 **Features**:
+
 - Installs all missing security tools from your error list
 - Creates wrapper scripts for Python-based tools
 - Configures PATH and environment variables
 - Idempotent (safe to run multiple times)
 
 **Usage**:
+
 ```bash
 ansible-playbook -K local_playbook_kali.yml
 ```
@@ -179,6 +190,7 @@ ansible-playbook -K local_playbook_kali.yml
 **Purpose**: Complete Guardian CLI setup on remote Kali Linux servers with all security tools.
 
 **Features**:
+
 - Everything from local playbook
 - Installs specific Python version via pyenv
 - Creates Guardian virtual environment
@@ -188,6 +200,7 @@ ansible-playbook -K local_playbook_kali.yml
 - Sets up Docker images (ZAP, BloodHound)
 
 **Usage**:
+
 ```bash
 ansible-playbook -i inventory/hosts.ini remote_playbook_guardian_enhanced.yml
 ```
@@ -199,11 +212,13 @@ ansible-playbook -i inventory/hosts.ini remote_playbook_guardian_enhanced.yml
 **Purpose**: Automated Kali Linux VM creation with Guardian CLI pre-installed.
 
 **Providers Supported**:
+
 - VirtualBox (Linux, macOS, Windows)
 - Hyper-V (Windows)
 - VMware Desktop
 
 **VM Specifications**:
+
 - **OS**: Kali Linux (latest rolling release)
 - **Memory**: 4GB RAM (configurable)
 - **CPUs**: 2 cores (configurable)
@@ -211,11 +226,13 @@ ansible-playbook -i inventory/hosts.ini remote_playbook_guardian_enhanced.yml
 - **User**: vagrant (password: vagrant)
 
 **Network Configuration**:
+
 - Private network with DHCP
 - Port forwarding for ZAP (8080, 8443)
 - Port forwarding for Neo4j/BloodHound (7474, 7687)
 
 **Usage**:
+
 ```bash
 # VirtualBox
 vagrant up
@@ -319,6 +336,7 @@ python -m cli.main --help
 **Problem**: Tools installed but not in PATH
 
 **Solution**:
+
 ```bash
 # Reload shell configuration
 source ~/.bashrc
@@ -334,6 +352,7 @@ exit
 **Problem**: `go install` fails or Go not found
 
 **Solution**:
+
 ```bash
 # Ensure Go environment is configured
 export GOROOT="$HOME/.local/go"
@@ -352,6 +371,7 @@ go install github.com/projectdiscovery/httpx/cmd/httpx@latest
 **Problem**: `ModuleNotFoundError` when running Python tools
 
 **Solution**:
+
 ```bash
 # Activate Guardian virtual environment
 cd ~/level52-cli-deluxe
@@ -369,6 +389,7 @@ pip install <package-name>
 **Problem**: Task fails during playbook execution
 
 **Solution**:
+
 ```bash
 # Run playbook in verbose mode
 ansible-playbook -K local_playbook_kali.yml -vvv
@@ -385,6 +406,7 @@ ansible-playbook -K local_playbook_kali.yml --tags "go-tools"
 **Problem**: masscan requires root privileges
 
 **Solution**:
+
 ```bash
 # Set capabilities (done by playbook, but can be manual)
 sudo setcap cap_net_raw,cap_net_admin+eip $(which masscan)
@@ -398,6 +420,7 @@ getcap $(which masscan)
 **Problem**: Docker service not running after installation
 
 **Solution**:
+
 ```bash
 # Enable and start Docker
 sudo systemctl enable docker

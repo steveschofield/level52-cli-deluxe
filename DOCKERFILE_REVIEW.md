@@ -4,13 +4,14 @@
 
 **File**: `Dockerfile.kali`
 **Size**: 651 lines
-**Purpose**: Build Guardian CLI Deluxe in a Kali Linux Docker container with full tool parity
+**Purpose**: Build Level52 CLI Deluxe in a Kali Linux Docker container with full tool parity
 
 ## ⚠️ Known Issues Found
 
 ### 1. **Trivy Installation - BROKEN** (Lines 185-191)
 
 **Problem**:
+
 ```dockerfile
 RUN wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor -o /usr/share/keyrings/trivy.gpg && \
     echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/trivy.list && \
@@ -21,6 +22,7 @@ RUN wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --
 **Issue**: Kali Linux's codename isn't supported by Trivy's Debian repository. This will fail during build.
 
 **Fix**: Use binary installation instead:
+
 ```dockerfile
 RUN TRIVY_VERSION=$(curl -s https://api.github.com/repos/aquasecurity/trivy/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/') && \
     curl -sSL "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz" -o /tmp/trivy.tar.gz && \
@@ -37,26 +39,27 @@ RUN TRIVY_VERSION=$(curl -s https://api.github.com/repos/aquasecurity/trivy/rele
 
 The Dockerfile is missing several tools that we added to the Ansible playbook:
 
-| Tool | Status in Dockerfile |
-|------|---------------------|
-| testssl | ✅ Included (line 332) |
-| kiterunner | ❌ **MISSING** |
-| jwt_tool | ✅ Included (line 361) |
-| graphql-cop | ✅ Included (line 375) |
-| arjun | ✅ Included (line 290) |
-| xsstrike | ✅ Included (line 336) |
-| cmseek | ✅ Included (line 342) |
-| retire.js | ❌ **MISSING** |
-| linkfinder | ✅ Included (line 382) |
-| xnlinkfinder | ✅ Included (line 297) |
-| paramspider | ✅ Included (line 389) |
-| schemathesis | ✅ Included (line 292) |
-| feroxbuster | ✅ Included (line 241) |
-| godeye | ✅ Included (line 229) |
-| corsscanner | ✅ Included (line 406) |
-| trivy | ⚠️ Broken (needs fix) |
+| Tool         | Status in Dockerfile    |
+| ------------ | ----------------------- |
+| testssl      | ✅ Included (line 332)  |
+| kiterunner   | ❌**MISSING**     |
+| jwt_tool     | ✅ Included (line 361)  |
+| graphql-cop  | ✅ Included (line 375)  |
+| arjun        | ✅ Included (line 290)  |
+| xsstrike     | ✅ Included (line 336)  |
+| cmseek       | ✅ Included (line 342)  |
+| retire.js    | ❌**MISSING**     |
+| linkfinder   | ✅ Included (line 382)  |
+| xnlinkfinder | ✅ Included (line 297)  |
+| paramspider  | ✅ Included (line 389)  |
+| schemathesis | ✅ Included (line 292)  |
+| feroxbuster  | ✅ Included (line 241)  |
+| godeye       | ✅ Included (line 229)  |
+| corsscanner  | ✅ Included (line 406)  |
+| trivy        | ⚠️ Broken (needs fix) |
 
 **Missing Tools**:
+
 1. **kiterunner** - API endpoint discovery
 2. **retire.js** - JavaScript vulnerability scanner
 
@@ -65,6 +68,7 @@ The Dockerfile is missing several tools that we added to the Ansible playbook:
 ### 3. **God-Eye Build Might Fail** (Line 229-231)
 
 **Problem**:
+
 ```dockerfile
 RUN git clone --depth 1 https://github.com/Vyntral/god-eye.git /opt/tools/god-eye && \
     cd /opt/tools/god-eye && \
@@ -74,6 +78,7 @@ RUN git clone --depth 1 https://github.com/Vyntral/god-eye.git /opt/tools/god-ey
 **Issue**: Silently fails if build errors occur. Should use `go install` instead.
 
 **Fix**:
+
 ```dockerfile
 RUN go install -v github.com/Vyntral/god-eye@latest 2>/dev/null || \
     echo "Warning: god-eye installation failed"
@@ -84,14 +89,6 @@ RUN go install -v github.com/Vyntral/god-eye@latest 2>/dev/null || \
 ### 4. **Potential npm Not Configured Globally**
 
 For retire.js and other npm tools, need to ensure npm global prefix is set correctly.
-
----
-
-### 5. **Guardian Source Code Not Copied**
-
-**Problem**: Lines 550+ try to install Guardian but the source code isn't in the image!
-
-**Issue**: `COPY . /guardian` should happen BEFORE trying to `pip install -e .`
 
 ---
 
@@ -147,6 +144,7 @@ RUN npm install -g retire && \
 Move the `COPY . /guardian` command to around line 550 (BEFORE pip install attempts).
 
 Current location (around line 550):
+
 ```dockerfile
 # Guardian installation
 COPY . /guardian
@@ -264,17 +262,17 @@ python -m cli.main --help
 
 ## 📊 Build Time Estimates
 
-| Stage | Estimated Time | Can Fail? |
-|-------|---------------|-----------|
-| Base packages | 5-10 min | Low risk |
-| Kali tools (apt) | 10-15 min | Low risk |
-| SAST tools | 3-5 min | ⚠️ Trivy (fixed now) |
-| Go tools | 5-10 min | Medium risk |
-| Rust tools | 10-20 min | High (feroxbuster compile) |
-| Python tools | 5-10 min | Low risk |
-| Git-cloned tools | 5-10 min | Low risk |
-| Guardian install | 2-5 min | Low risk |
-| **TOTAL** | **45-85 minutes** | |
+| Stage            | Estimated Time          | Can Fail?                  |
+| ---------------- | ----------------------- | -------------------------- |
+| Base packages    | 5-10 min                | Low risk                   |
+| Kali tools (apt) | 10-15 min               | Low risk                   |
+| SAST tools       | 3-5 min                 | ⚠️ Trivy (fixed now)     |
+| Go tools         | 5-10 min                | Medium risk                |
+| Rust tools       | 10-20 min               | High (feroxbuster compile) |
+| Python tools     | 5-10 min                | Low risk                   |
+| Git-cloned tools | 5-10 min                | Low risk                   |
+| Guardian install | 2-5 min                 | Low risk                   |
+| **TOTAL**  | **45-85 minutes** |                            |
 
 ---
 

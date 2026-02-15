@@ -1,8 +1,8 @@
-# 🔐 Guardian Enterprise
+# 🔐 Level52 
 
-### AI-Powered Penetration Testing Automation Platform
+# AI-Powered Penetration Testing Automation Platform
 
-**Guardian Enterprise** is an AI-powered penetration testing automation framework designed for internal security teams. It combines modern LLM providers with industry-standard security tools to deliver intelligent, automated security assessments.
+**Level52 ** is an AI-powered penetration testing automation framework designed for internal security teams. It combines modern LLM providers with industry-standard security tools to deliver intelligent, automated security assessments.
 
 ---
 
@@ -142,14 +142,14 @@ python -m cli.main recon --domain <target> --auto-exploit
 
 #### Configuration Options
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `auto_exploit` | `false` | Enable/disable automatic exploitation |
-| `auto_exploit_require_confirmation` | `true` | Require user approval before each exploit |
-| `auto_exploit_min_severity` | `"critical"` | Minimum severity to exploit (`critical`, `high`, `medium`, `low`) |
-| `auto_exploit_max_attempts` | `5` | Maximum exploitation attempts per session |
-| `exploitdb_path` | `/usr/share/exploitdb` | Path to local Exploit-DB repository |
-| `metasploit_path` | `/usr/share/metasploit-framework` | Path to Metasploit installation |
+| Option                                | Default                             | Description                                                               |
+| ------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------- |
+| `auto_exploit`                      | `false`                           | Enable/disable automatic exploitation                                     |
+| `auto_exploit_require_confirmation` | `true`                            | Require user approval before each exploit                                 |
+| `auto_exploit_min_severity`         | `"critical"`                      | Minimum severity to exploit (`critical`, `high`, `medium`, `low`) |
+| `auto_exploit_max_attempts`         | `5`                               | Maximum exploitation attempts per session                                 |
+| `exploitdb_path`                    | `/usr/share/exploitdb`            | Path to local Exploit-DB repository                                       |
+| `metasploit_path`                   | `/usr/share/metasploit-framework` | Path to Metasploit installation                                           |
 
 #### Safety Features
 
