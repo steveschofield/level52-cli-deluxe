@@ -1,0 +1,78 @@
+shannon-uncontained*
+tools/vendor/kiterunner/routes-small.json
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+.env
+lib64/
+parts/
+sdist/
+var/
+wheels/
+#reports*
+*.egg-info/
+.installed.cfg
+*.egg
+tools/vendor/commix/.git/info/exclude*
+tools/vendor*
+.npm-global/*
+toos
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+gap-analysis*
+reports*
+setup-tools.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.npm-global
+.hypothesis
+
+# Environment variables
+.env
+.env.local
+
+# Reports and logs
+#reports/*.json
+#reports/*.html
+#reports/*.md
+#reports/session_*.json
+logs/
+#*.log
+wordlists/SecLists/
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Guardian specific
+guardian_state.json
+*.scope
+
+# Local tool binaries (don’t commit)
+tools/.bin/
+
+# Prevent accidental check-in of a file literally named '-'
+/-
