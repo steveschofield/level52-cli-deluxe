@@ -1,0 +1,40 @@
+That is a textbook example of "AI-native" engineering. You didn’t wait for a vendor to sell you a "Security AI Triage™" seat; you just built a pipeline using the tools on your desk.
+
+What’s most impressive here isn't just the triage—it’s the proactive verification. Having the agent check similar endpoints without being prompted shows how these tools are shifting from "search engines" to "reasoning engines." You effectively hired a junior security engineer for $2 and five minutes of your time.
+
+Since you're looking for scrappy, high-impact wins, here are a few ways I’ve seen people (and myself) move the needle without fancy enterprise middleware:
+
+1. The "Ghost of Documentation Past"
+The Problem: Onboarding a new dev or auditing an old service usually involves hunting down a person who left the company three years ago.
+The Scrappy Move: * Feed the agent your entire docs/ folder and the git log --graph --oneline.
+
+Ask it to: "Identify the three most fragile parts of this system based on commit frequency and complexity, then write the 'Missing Manual' for them."
+
+Impact: You get an instant architectural risk map that usually takes weeks of manual code review to build.
+
+2. Automated PR "Style & Logic" Enforcer
+The Problem: Senior devs spend too much time in PRs saying "we don't use this pattern here" or "this will break if X is null."
+The Scrappy Move:
+
+Create a .claudecode/skills (or equivalent) that contains your internal engineering "vibe" and common pitfalls.
+
+Point the agent at a diff and ask: "Be my most pedantic, yet helpful senior engineer. Find logic flaws and style drifts."
+
+Impact: It catches the "dumb" stuff before a human ever has to look at the PR, keeping the team's energy focused on high-level architecture.
+
+3. The "Legacy Decipherer" (Regex to Logic)
+The Problem: Inheriting a 500-line SQL query or a regex string that looks like cat-walking-on-a-keyboard.
+The Scrappy Move:
+
+Give the agent the scary block of code and a sample dataset.
+
+Ask: "Reverse engineer this into a human-readable Mermaid.js flowchart and write a set of unit tests that would prove it works (or fails)."
+
+Impact: You turn "tribal knowledge" into a documented, tested asset in minutes.
+
+The "Gemini + Agent" Synergy
+Since you used me to build the skill for Claude, you're already playing at a high level. One way to optimize that "scrappy" flow is to use Multimodal Triage:
+
+If you get a bug report that includes a screenshot or a video of a UI glitch, you can feed that image to me (Gemini) to describe the exact DOM elements or UI state transitions occurring. You then pipe that text description into your Claude Code triage flow. It bridges the gap between "I see a bug" and "Here is the line of code responsible."
+
+Would you like me to help you draft a more complex "Security Auditor" skill or perhaps a script to automate the PDF-to-triage pipeline?

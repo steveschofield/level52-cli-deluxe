@@ -1,0 +1,68 @@
+# Full Vulnerability Assessment Workflow
+# Comprehensive scan using SQLMap, SSLyze, Nuclei, and others
+
+name: quick_vuln_scan
+description: Comprehensive vulnerability assessment including SQLi and SSL/TLS checks
+version: 1.0.0
+author: Guardian AI
+
+steps:
+  - name: web_discovery
+    tool: httpx
+    description: Identify live web endpoints
+    parameters:
+      tech_detect: true
+
+  - name: web_vuln_scan_nikto
+    tool: nikto
+    description: Baseline web vulnerability scan of discovered endpoints
+    parameters:
+      format: "json"
+    dependencies:
+      - web_discovery
+
+  - name: ssl_analysis
+    tool: sslyze
+    description: Deep SSL/TLS configuration analysis
+    dependencies:
+      - web_discovery
+
+  - name: fuzzing_paths
+    tool: ffuf
+    description: Fuzz for hidden directories and files
+    parameters:
+      wordlist: "common.txt"
+      extensions: ".php,.html,.txt,.json"
+    dependencies:
+      - web_discovery
+
+  - name: vuln_scanning
+    tool: nuclei
+    description: Template-based vulnerability scanning
+    parameters:
+      severity: ["critical", "high"]
+      tool_timeout: 900
+    dependencies:
+      - web_discovery
+
+  - name: sql_injection_check
+    tool: sqlmap
+    description: Test for SQL injection vulnerabilities (Safe Mode)
+    parameters:
+      level: 1
+      risk: 1
+      batch: true
+    dependencies:
+      - fuzzing_paths
+
+  - name: secrets_scan_trufflehog
+    tool: trufflehog
+    description: Scan URLs or local paths for exposed secrets
+    parameters:
+      only_verified: true
+    condition: target_is_url_or_path
+
+  - name: secrets_scan_gitleaks
+    tool: gitleaks
+    description: Scan local source trees for leaked secrets
+    condition: target_is_path

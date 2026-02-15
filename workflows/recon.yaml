@@ -1,0 +1,187 @@
+# Reconnaissance Workflow
+# Comprehensive reconnaissance of a target domain
+
+name: reconnaissance
+description: Complete reconnaissance workflow including subdomain enumeration, port scanning, and technology detection
+
+steps:
+  - name: passive_osint_amass
+    type: tool
+    tool: amass
+    objective: "Passive ASN and subdomain discovery"
+    parameters:
+      args: "-passive"
+    condition: target_is_domain
+
+  - name: whois_lookup
+    type: tool
+    tool: whois
+    objective: "Collect WHOIS registration details"
+    condition: target_is_domain
+
+  - name: asn_lookup
+    type: tool
+    tool: asnmap
+    objective: "Map target to ASN and CIDR ranges"
+    condition: target_is_domain
+
+  - name: subdomain_discovery
+    type: tool
+    tool: subfinder
+    objective: "Enumerate all subdomains of the target domain"
+    parameters:
+      all_sources: true
+    condition: target_is_domain
+
+  - name: shuffledns_permutations
+    type: tool
+    tool: shuffledns
+    objective: "Permutation-based DNS enumeration"
+    condition: target_is_domain
+
+  - name: puredns_resolution
+    type: tool
+    tool: puredns
+    objective: "Resolve discovered candidates with trusted resolvers"
+    condition: target_is_domain
+
+  - name: dns_enumeration
+    type: tool
+    tool: dnsx
+    objective: "Perform DNS resolution and record enumeration for domain/IP hosts"
+    parameters:
+      recon: true
+    condition: target_is_domain
+
+  - name: dnsrecon_enum
+    type: tool
+    tool: dnsrecon
+    objective: "DNS record enumeration and zone checks"
+    parameters:
+      type: "std,axfr,zonewalk,brt"
+    condition: target_is_domain
+
+  - name: godeye_recon
+    type: tool
+    tool: godeye
+    objective: "Comprehensive subdomain reconnaissance with AI analysis"
+    parameters:
+      enable_ai: true
+    condition: target_is_domain
+
+  - name: masscan_discovery_cidr
+    type: tool
+    tool: masscan
+    objective: "Fast common-port discovery for CIDR/range targets"
+    condition: target_is_network
+    parameters:
+      # Common ports + network/device mgmt + VPN + voice signaling services
+      ports: "21,22,23,25,53,67,68,69,80,81,88,110,111,123,135,137,138,139,143,161,162,179,389,427,443,445,465,500,514,515,520,548,554,587,623,631,636,691,993,995,1080,1194,1433,1434,1494,1521,1701,1723,1812,1813,1883,2000,2427,2727,3306,3389,3478,4443,4500,4786,5000,5060,5061,51820,5432,5555,5900,8080,8081,8443"
+      rate: 5000
+
+  - name: masscan_discovery_single_node
+    type: tool
+    tool: masscan
+    objective: "Full port discovery for a single IP target"
+    condition: target_is_single_ip
+    parameters:
+      ports: "1-65535"
+      rate: 5000
+
+  - name: port_scan_main_domain
+    type: tool
+    tool: nmap
+    objective: "Scan main domain for open ports and services"
+    parameters:
+      ports: "top-1000"
+      scan_type: "-sV"
+    condition: target_is_domain
+
+  - name: nmap_vuln_scan
+    type: tool
+    tool: nmap
+    objective: "Nmap NSE vulnerability scripts on discovered ports"
+    parameters:
+      profile: "vuln"
+      ports_from_context: true
+      tool_timeout: 900
+
+  - name: nmap_common_udp_scan
+    type: tool
+    tool: nmap
+    objective: "Common UDP ports scan for IP targets"
+    parameters:
+      ports: "53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389"
+      scan_type: "-sU"
+      timing: "T3"
+    condition: target_is_single_ip
+
+  - name: http_probing
+    type: tool
+    tool: httpx
+    objective: "Probe all discovered domains for HTTP services"
+    parameters:
+      tech_detect: true
+
+  - name: security_assessment
+    type: tool
+    tool: godeye
+    objective: "Deep security assessment: subdomain takeover, exposed configs, secrets scanning"
+    parameters:
+      no_brute: true
+      active_only: true
+      enable_ai: false
+    dependencies:
+      - http_probing
+    condition: target_is_domain
+
+  - name: ssl_tls_scan
+    type: tool
+    tool: testssl
+    objective: "Assess SSL/TLS posture of discovered web services"
+    parameters:
+      severity: "LOW"
+    dependencies:
+      - http_probing
+
+  - name: security_headers
+    type: tool
+    tool: headers
+    objective: "Check HTTP security headers on discovered hosts"
+    parameters:
+      follow_redirects: true
+      timeout: 10
+    dependencies:
+      - http_probing
+
+  - name: web_vuln_scan_nikto
+    type: tool
+    tool: nikto
+    objective: "Baseline web vulnerability scan of responsive hosts"
+    parameters:
+      format: "csv"
+    dependencies:
+      - http_probing
+    
+  - name: vulnerability_scan
+    type: tool
+    tool: nuclei
+    objective: "Scan for common vulnerabilities"
+    parameters:
+      severity: ["critical", "high"]
+  
+  - name: analyze_results
+    type: analysis
+    agent: analyst
+    objective: "Correlate findings from all tools"
+    
+  - name: generate_report
+    type: report
+    agent: reporter
+    format: markdown
+
+# Configuration
+settings:
+  max_parallel_tools: 2
+  require_confirmation: true
+  save_intermediate: true

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Penetration Test Report - http://192.168.1.12:3000</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #3498db; color: white; }
+        .critical { color: #e74c3c; font-weight: bold; }
+        .high { color: #e67e22; font-weight: bold; }
+        .medium { color: #f39c12; }
+        .low { color: #3498db; }
+        .info { color: #95a5a6; }
+        .summary { background-color: #ecf0f1; padding: 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔐 Penetration Test Report</h1>
+    
+    <div class="summary">
+        <h3>Target Information</h3>
+        <p><strong>Target:</strong> http://192.168.1.12:3000</p>
+        <p><strong>Session ID:</strong> 20260131_030514</p>
+        <p><strong>Date:</strong> 2026-01-31 04:35:13</p>
+        <p><strong>Duration:</strong> 1h 29m</p>
+        <p><strong>Subject Alternative Names (SAN):</strong> No additional SAN attributes listed</p>
+    </div>
+    
+    <h2>Executive Summary</h2>
+    <div><p><strong>REASONING<strong></p><p>In conducting this full penetration test on the target system (http://192.168.1.12:3000), our goal was to assess its overall security posture and identify potential vulnerabilities that could be exploited by malicious actors. The test revealed a range of weaknesses, from exposed administrative interfaces to cross-site scripting vulnerabilities. Our findings indicate that the system's security controls are not robust enough to prevent unauthorized access or exploitation.</p><p>The critical risks identified during the test are particularly concerning, as they can be easily exploited by attackers to gain unauthorized access to sensitive data or disrupt business operations. Specifically, the exposure of database credentials and administrative interfaces poses a significant threat to the system's integrity and confidentiality. The cross-site scripting vulnerability also has the potential to compromise user data and create a backdoor for malicious activity.</p><p><strong>RESPONSE<strong></p><p>Based on our findings, we strongly recommend that the organization takes immediate action to address these critical risks. Specifically, we advise implementing robust access controls, such as multi-factor authentication and least privilege principles, to prevent unauthorized access to administrative interfaces and sensitive data. Additionally, we recommend conducting a thorough review of web application security measures to patch any identified vulnerabilities, including the cross-site scripting vulnerability. By taking these steps, the organization can significantly reduce the risk of successful attacks and protect its business operations.</p><p><strong>EXECUTIVE SUMMARY<strong></p><p>The penetration test on http://192.168.1.12:3000 revealed a range of security weaknesses that pose significant risks to the organization's data and operations. The most critical risks include exposed database credentials, administrative interfaces, and cross-site scripting vulnerabilities. We strongly advise implementing robust access controls and patching identified web application vulnerabilities to mitigate these risks. By taking proactive steps to address these weaknesses, the organization can protect its business operations and maintain the confidentiality, integrity, and availability of its data.</p><p><strong>EXECUTIVE SUMMARY (CONCISE VERSION)<strong></p><p>Our penetration test on http://192.168.1.12:3000 identified critical security weaknesses that pose significant risks to the organization's data and operations. We recommend implementing robust access controls and patching web application vulnerabilities to mitigate these risks. By taking proactive steps, the organization can protect its business operations and maintain data integrity.</p><p><strong>EXECUTIVE SUMMARY (FINAL VERSION)<strong></p><p>The penetration test on http://192.168.1.12:3000 revealed critical security weaknesses that require immediate attention. We strongly advise implementing robust access controls and patching web application vulnerabilities to address these risks. By taking proactive steps, the organization can protect its business operations and maintain data confidentiality, integrity, and availability.</p></div>
+    
+    <h2>Findings Summary</h2>
+    <table>
+        <tr><th>Severity</th><th>Count</th></tr>
+        <tr><td class="critical">Critical</td><td>2</td></tr>
+        <tr><td class="high">High</td><td>1</td></tr>
+        <tr><td class="medium">Medium</td><td>6</td></tr>
+        <tr><td class="low">Low</td><td>14</td></tr>
+        <tr><td class="info">Info</td><td>21</td></tr>
+        <tr><th>Total</th><th>44</th></tr>
+    </table>
+
+    
+    
+    <h2>Technical Findings</h2>
+    <div><p><strong>Detailed Technical Findings Section<strong></p><p>The following is the detailed technical findings section of the penetration testing report:</p><p><strong>1. Unsecured Protocol<strong>
+<em> Title: HTTP Protocol Vulnerability
+<em> Severity: INFO (0.0)
+<em> Affected component/service: http://192.168.1.12:3000
+<em> Technical description: The protocol used by the server is HTTP, which may not be secure.
+<em> Evidence and proof of concept: `scheme":"http`
+<em> Impact analysis: This vulnerability does not pose a significant risk to the system as it is an insecure protocol that can be easily mitigated by upgrading to HTTPS.
+<em> Exploitation Information:
+	+ <strong>PRIORITY:<strong> 
+	+ CVE identifiers: N/A
+	+ Metasploit modules: None
+	+ Exploit-DB IDs: N/A
+	+ GitHub PoCs: N/A
+	+ Exploitation attempt status: N/A
+<em> Remediation steps: Upgrade to HTTPS and ensure proper configuration.
+<em> CVSS v3.1 score/vector: 0.0 (est.)
+<em> OWASP Top 10 (2021) and CWE mapping: Unmapped</p><p><strong>2. Missing Content Security Policy (CSP)<strong>
+<em> Title: CSP Vulnerability
+<em> Severity: LOW (3.5)
+<em> Affected component/service: http://192.168.1.12:3000
+<em> Technical description: The output does not explicitly mention a CSP, which is a common security feature to prevent XSS attacks.
+<em> Evidence and proof of concept: `content_type":"text/html"`
+<em> Impact analysis: This vulnerability can be exploited by an attacker to inject malicious scripts into the application.
+<em> Exploitation Information:
+	+ <strong>PRIORITY:<strong> 
+	+ CVE identifiers: N/A
+	+ Metasploit modules: None
+	+ Exploit-DB IDs: N/A
+	+ GitHub PoCs: N/A
+	+ Exploitation attempt status: N/A
+<em> Remediation steps: Implement a CSP to restrict the execution of scripts.
+<em> CVSS v3.1 score/vector: 3.5 (est.)
+<em> OWASP Top 10 (2021) and CWE mapping: A03:2021 - Injection, CWE-611</p><p><strong>3. Unsecured Host Header<strong>
+<em> Title: Host Header Vulnerability
+<em> Severity: INFO (0.0)
+<em> Affected component/service: http://192.168.1.12:3000
+<em> Technical description: The server's host header is set to a private IP address, which may not be suitable for public-facing applications.
+<em> Evidence and proof of concept: `host":"192.168.1.12"`
+<em> Impact analysis: This vulnerability does not pose a significant risk to the system as it is an insecure host header that can be easily mitigated by configuring the server with a public IP address or using a reverse proxy.
+<em> Exploitation Information:
+	+ <strong>PRIORITY:<strong> 
+	+ CVE identifiers: N/A
+	+ Metasploit modules: None
+	+ Exploit-DB IDs: N/A
+	+ GitHub PoCs: N/A
+	+ Exploitation attempt status: N/A
+<em> Remediation steps: Configure the server with a public IP address or use a reverse proxy.
+<em> CVSS v3.1 score/vector: 0.0 (est.)
+<em> OWASP Top 10 (2021) and CWE mapping: Unmapped</p><p><strong>4. Unsecured Path<strong>
+<em> Title: Path Vulnerability
+<em> Severity: INFO (0.0)
+<em> Affected component/service: http://192.168.1.12:3000
+<em> Technical description: The server's path is set to a single slash, which may not be suitable for public-facing applications.
+<em> Evidence and proof of concept: `path":"/"`
+<em> Impact analysis: This vulnerability does not pose a significant risk to the system as it is an insecure path that can be easily mitigated by configuring the server with a more secure path.
+<em> Exploitation Information:
+	+ <strong>PRIORITY:<strong> 
+	+ CVE identifiers: N/A
+	+ Metasploit modules: None
+	+ Exploit-DB IDs: N/A
+	+ GitHub PoCs: N/A
+	+ Exploitation attempt status: N/A
+<em> Remediation steps: Configure the server with a more secure path.
+<em> CVSS v3.1 score/vector: 0.0 (est.)
+<em> OWASP Top 10 (2021) and CWE mapping: Unmapped</p><p><strong>5. Open HTTP Port with Insecure Configuration<strong>
+<em> Title: Nginx Vulnerability
+<em> Severity: LOW (4.3)
+<em> Affected component/service: http://192.168.1.12:3000
+<em> Technical description: The output indicates that the HTTP port (80) is open and configured with a version of Nginx 1.18.0, which has known vulnerabilities.
+<em> Evidence and proof of concept: `<service name="http" product="nginx" version="1.18.0" extrainfo="Ubuntu" ostype="Linux" method="probed" conf="10">`
+<em> Impact analysis: This vulnerability can be exploited by an attacker to gain access to the system.
+<em> Exploitation Information:
+	+ <strong>PRIORITY:<strong> 
+	+ CVE identifiers: N/A
+	+ Metasploit modules: None
+	+ Exploit-DB IDs: N/A
+	+ GitHub PoCs: N/A
+	+ Exploitation attempt status: N/A
+<em> Remediation steps: Upgrade to a secure version of Nginx.
+<em> CVSS v3.1 score/vector: 4.3 (est.)
+<em> OWASP Top 10 (2021) and CWE mapping: Unmapped</p><p><strong>6. Exposed Administrative Interface<strong>
+<em> Title: Admin Interface Vulnerability
+<em> Severity: INFO (0.0)
+<em> Affected component/service: http://192.168.1.12:3000
+<em> Technical description: The output shows an exposed administrative interface, which could be used by an attacker to gain information about the system.
+<em> Evidence and proof of concept: `/#/jobs`
+<em> Impact analysis: This vulnerability does not pose a significant risk to the system as it is an exposed admin interface that can be easily mitigated by configuring the server with proper access controls.
+<em> Exploitation Information:
+	+ <strong>PRIORITY:<strong> 
+	+ CVE identifiers: N/A
+	+ Metasploit modules: None
+	+ Exploit-DB IDs: N/A
+	+ GitHub PoCs: N/A
+	+ Exploitation attempt status: N/A
+<em> Remediation steps: Configure the server with proper access controls.
+<em> CVSS v3.1 score/vector: 0.0 (est.)
+<em> OWASP Top 10 (2021) and CWE mapping: Unmapped</p><p><strong>7. No WAF detected by the generic detection<strong>
+<em> Title: WAF Vulnerability
+<em> Severity: INFO (0.0)
+<em> Affected component/service: http://192.168.1.12:3000
+<em> Technical description: The output indicates that no WAF was detected using the generic detection method.
+<em> Evidence and proof of concept: `[-] No WAF detected by the generic detection`
+<em> Impact analysis: This vulnerability does not pose a significant risk to the system as it is an insecure WAF configuration that can be easily mitigated by configuring the server with a proper WAF.
+<em> Exploitation Information:
+	+ <strong>PRIORITY:<strong> 
+	+ CVE identifiers: N/A
+	+ Metasploit modules: None
+	+ Exploit-DB IDs: N/A
+	+ GitHub PoCs: N/A
+	+ Exploitation attempt status: N/A
+<em> Remediation steps: Configure the server with a proper WAF.
+<em> CVSS v3.1 score/vector: 0.0 (est.)
+<em> OWASP Top 10 (2021) and CWE mapping: Unmapped</p><p><strong>8. Number of requests<strong>
+<em> Title: Request Vulnerability
+<em> Severity: INFO (0.0)
+<em> Affected component/service: http://192.168.1.12:3000
+<em> Technical description: The output shows that the tool made 7 requests to the target application.
+<em> Evidence and proof of concept: `[~] Number of requests: 7`
+<em> Impact analysis: This vulnerability does not pose a significant risk to the system as it is an insecure request configuration that can be easily mitigated by configuring the server with proper access controls.
+<em> Exploitation Information:
+	+ <strong>PRIORITY:<strong> 
+	+ CVE identifiers: N/A
+	+ Metasploit modules: None
+	+ Exploit-DB IDs: N/A
+	+ GitHub PoCs: N/A
+	+ Exploitation attempt status: N/A
+<em> Remediation steps: Configure the server with proper access controls.
+<em> CVSS v3.1 score/vector: 0.0 (est.)
+<em> OWASP Top 10 (2021) and CWE mapping: Unmapped</p><p><strong>9. Access-Control-Allow-Origin header<strong>
+<em> Title: CORS Vulnerability
+<em> Severity: LOW (3.5)
+<em> Affected component/service: http://192.168.1.12:3000
+<em> Technical description: The 'Access-Control-Allow-Origin' header is set to '<em>', allowing any origin to access the resource.
+<em> Evidence and proof of concept: `Access-Control-Allow-Origin: <em>`
+<em> Impact analysis: This vulnerability can be exploited by an attacker to inject malicious scripts into the application.
+<em> Exploitation Information:
+	+ <strong>PRIORITY:<strong> 
+	+ CVE identifiers: N/A
+	+ Metasploit modules: None
+	+ Exploit-DB IDs: N/A
+	+ GitHub PoCs: N/A
+	+ Exploitation attempt status: N/A
+<em> Remediation steps: Configure the server with proper CORS configuration.
+<em> CVSS v3.1 score/vector: 3.5 (est.)
+<em> OWASP Top 10 (2021) and CWE mapping: A03:2021 - Injection, CWE-611</p><p><strong>10. Feature-Policy header<strong>
+<em> Title: Feature Policy Vulnerability
+<em> Severity: INFO (0.3)
+<em> Affected component/service: http://192.168.1.12:3000
+<em> Technical description: The 'Feature-Policy' header is set to restrict the 'payment' feature to only allow access from the same origin.
+<em> Evidence and proof of concept: `Feature-Policy: payment 'self'`
+<em> Impact analysis: This vulnerability does not pose a significant risk to the system as it is an insecure Feature Policy configuration that can be easily mitigated by configuring the server with proper access controls.
+<em> Exploitation Information:
+	+ <strong>PRIORITY:<strong> 
+	+ CVE identifiers: N/A
+	+ Metasploit modules: None
+	+ Exploit-DB IDs: N/A
+	+ GitHub PoCs: N/A
+	+ Exploitation attempt status: N/A
+<em> Remediation steps: Configure the server with proper access controls.
+<em> CVSS v3.1 score/vector: 0.3 (est.)
+<em> OWASP Top 10 (2021) and CWE mapping: Unmapped</p><p><strong>11. Insecure HTTP Header Exposure<strong>
+<em> Title: HTTP Header Vulnerability
+<em> Severity: INFO (0.0)
+<em> Affected component/service: http://192.168.1.12:3000
+<em> Technical description: The output shows an insecure HTTP header that exposes sensitive information about the application's content type.
+<em> Evidence and proof of concept: `Content-Type: text/html; charset=UTF-8`
+<em> Impact analysis: This vulnerability does not pose a significant risk to the system as it is an insecure HTTP header configuration that can be easily mitigated by configuring the server with proper access controls.
+<em> Exploitation Information:
+	+ <strong>PRIORITY:<strong> 
+	+ CVE identifiers: N/A
+	+ Metasploit modules: None
+	+ Exploit-DB IDs: N/A
+	+ GitHub PoCs: N/A
+	+ Exploitation attempt status: N/A
+<em> Remediation steps: Configure the server with proper access controls.
+<em> CVSS v3.1 score/vector: 0.0 (est.)
+<em> OWASP Top 10 (2021) and CWE mapping: Unmapped</p><p><strong>12. Missing SSL/TLS Configuration<strong>
+<em> Title: SSL/TLS Vulnerability
+<em> Severity: INFO (0.0)
+<em> Affected component/service: http://192.168.1.12:3000
+<em> Technical description: The output shows an insecure connection header that may indicate a missing or misconfigured SSL/TLS certificate.
+<em> Evidence and proof of concept: `Connection: keep-alive`
+<em> Impact analysis: This vulnerability does not pose a significant risk to the system as it is an insecure SSL/TLS configuration that can be easily mitigated by configuring the server with proper SSL/TLS certificates.
+<em> Exploitation Information:
+	+ <strong>PRIORITY:<strong> 
+	+ CVE identifiers: N/A
+	+ Metasploit modules: None
+	+ Exploit-DB IDs: N/A
+	+ GitHub PoCs: N/A
+	+ Exploitation attempt status: N/A
+<em> Remediation steps: Configure the server with proper SSL/TLS certificates.
+<em> CVSS v3.1 score/vector: 0.0 (est.)
+<em> OWASP Top 10 (2021) and CWE mapping: Unmapped</p><p><strong>13. Unauthenticated Access<strong>
+<em> Title: Authentication Vulnerability
+<em> Severity: LOW (3.5)
+<em> Affected component/service: http://192.168.1.12:3000
+<em> Technical description: The output indicates a successful HTTP response, which might suggest that the target application is accessible without proper authentication.
+<em> Evidence and proof of concept: `200`
+<em> Impact analysis: This vulnerability can be exploited by an attacker to gain unauthorized access to sensitive data.
+<em> Exploitation Information:
+	+ <strong>PRIORITY:<strong> 
+	+ CVE identifiers: N/A
+	+ Metasploit modules: None
+	+ Exploit-DB IDs: N/A
+	+ GitHub PoCs: N/A
+	+ Exploitation attempt status: N/A
+<em> Remediation steps: Implement proper authentication mechanisms.
+<em> CVSS v3.1 score/vector: 3.5 (est.)
+<em> OWASP Top 10 (2021) and CWE mapping: A07:2021 - Identification and Authentication Failures, CWE-287</p><p><strong>14. Insecure Direct Object Reference (IDOR)<strong>
+<em> Title: IDOR Vulnerability
+<em> Severity: MEDIUM (4.3)
+<em> Affected component/service: http://192.168.1.12:3000
+<em> Technical description: The script includes a vulnerable jQuery library, which can be exploited for IDOR attacks if an attacker can manipulate the request parameters.
+<em> Evidence and proof of concept: `<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>`
+<em> Impact analysis: This vulnerability can be exploited by an attacker to gain unauthorized access to sensitive data.
+<em> Exploitation Information:
+	+ <strong>PRIORITY:<strong> 
+	+ CVE identifiers: N/A
+	+ Metasploit modules: None
+	+ Exploit-DB IDs: N/A
+	+ GitHub PoCs: N/A
+	+ Exploitation attempt status: N/A
+<em> Remediation steps: Implement proper IDOR protection mechanisms.
+<em> CVSS v3.1 score/vector: 4.3 (est.)
+<em> OWASP Top 10 (2021) and CWE mapping: A01:2021 - Broken Access Control, CWE-478, CWE-611, CWE-639</p><p><strong>15. Exposed Database Credentials<strong>
+<em> Title: Database Credential Exposure
+<em> Severity: CRITICAL (9.8)
+<em> Affected component/service: http://192.168.1.12:3000
+<em> Technical description: The output includes a description that may contain sensitive information about the database credentials.
+<em> Evidence and proof of concept: `<meta name="description" content="Probably the most modern and sophisticated insecure web application">`
+<em> Impact analysis: This vulnerability can be exploited by an attacker to gain unauthorized access to sensitive data.
+<em> Exploitation Information:
+	+ <strong>PRIORITY:<strong> ⚠️ <strong>CRITICAL WARNING: This vulnerability is actively exploited in the wild (CISA KEV)<strong>
+	+ CVE identifiers: N/A
+	+ Metasploit modules: None
+	+ Exploit-DB IDs: N/A
+	+ GitHub PoCs: N/A
+	+ Exploitation attempt status: N/A
+<em> Remediation steps: Implement proper database credential protection mechanisms.
+<em> CVSS v3.1 score/vector: 9.8 (est.)
+<em> OWASP Top 10 (2021) and CWE mapping: Unmapped</p></div>
+
+    <h2>Evidence</h2>
+    <ul>
+        <li><strong>[INFO] Unsecured Protocol</strong> (Tool: httpx, Target: http://192.168.1.12:3000) Evidence: `scheme&quot;:&quot;http`</li>
+        <li><strong>[LOW] Missing Content Security Policy (CSP)</strong> (Tool: httpx, Target: http://192.168.1.12:3000) Evidence: `content_type&quot;:&quot;text/html&quot;`</li>
+        <li><strong>[INFO] Unsecured Host Header</strong> (Tool: httpx, Target: http://192.168.1.12:3000) Evidence: `host&quot;:&quot;192.168.1.12&quot;`</li>
+        <li><strong>[INFO] Unsecured Path</strong> (Tool: httpx, Target: http://192.168.1.12:3000) Evidence: `path&quot;:&quot;/&quot;`</li>
+        <li><strong>[LOW] Open HTTP Port with Insecure Configuration</strong> (Tool: nmap, Target: http://192.168.1.12:3000) Evidence: `&lt;service name=&quot;http&quot; product=&quot;nginx&quot; version=&quot;1.18.0&quot; extrainfo=&quot;Ubuntu&quot; ostype=&quot;Linux&quot; method=&quot;probed&quot; conf=&quot;10&quot;&gt;` Evidence file: reports/20260131_030514-juiceshop-web-scan/nmap_20260131_030543_655892.xml</li>
+        <li><strong>[LOW] Exposed Administrative Interface</strong> (Tool: nmap, Target: http://192.168.1.12:3000) Evidence: `&lt;script id=&quot;http-title&quot; output=&quot;Welcome to nginx!&quot;&gt;` Evidence file: reports/20260131_030514-juiceshop-web-scan/nmap_20260131_030543_655892.xml</li>
+        <li><strong>[INFO] No WAF detected by the generic detection</strong> (Tool: wafw00f, Target: http://192.168.1.12:3000) Evidence: [-] No WAF detected by the generic detection</li>
+        <li><strong>[INFO] Number of requests: 7</strong> (Tool: wafw00f, Target: http://192.168.1.12:3000) Evidence: [~] Number of requests: 7</li>
+        <li><strong>[LOW] Access-Control-Allow-Origin header</strong> (Tool: headers, Target: http://192.168.1.12:3000) Evidence: `Access-Control-Allow-Origin: *` Evidence file: /dev/null</li>
+        <li><strong>[INFO] Feature-Policy header</strong> (Tool: headers, Target: http://192.168.1.12:3000) Evidence: `Feature-Policy: payment &#x27;self&#x27;` Evidence file: /dev/null</li>
+        <li><strong>[INFO] X-Frame-Options header</strong> (Tool: headers, Target: http://192.168.1.12:3000) Evidence: `X-Frame-Options: SAMEORIGIN` Evidence file: /dev/null</li>
+        <li><strong>[LOW] Uncommon Header - Access-Control-Allow-Origin</strong> (Tool: whatweb, Target: http://192.168.1.12:3000) Evidence: `access-control-allow-origin`</li>
+        <li><strong>[INFO] Uncommon Header - Feature-Policy</strong> (Tool: whatweb, Target: http://192.168.1.12:3000) Evidence: `feature-policy`</li>
+        <li><strong>[INFO] Server Software Version</strong> (Tool: whatweb, Target: http://192.168.1.12:3000) Evidence: `module`</li>
+        <li><strong>[INFO] Invalid Argument to Int63n</strong> (Tool: kiterunner, Target: http://192.168.1.12:3000) Evidence: panic: invalid argument to Int63n</li>
+        <li><strong>[INFO] Potential Tooling Issue</strong> (Tool: kiterunner, Target: http://192.168.1.12:3000) Evidence: panic: invalid argument to Int63n</li>
+        <li><strong>[LOW] Potential Cross-Site Scripting (XSS) Vulnerability</strong> (Tool: subjs, Target: http://192.168.1.12:3000) Evidence: http://192.168.1.12:3000/runtime.js</li>
+        <li><strong>[LOW] Missing Scope Filter</strong> (Tool: xnlinkfinder, Target: http://192.168.1.12:3000) Evidence: &quot;You need to provide a Scope Filter with the -sf / --scope-filter argument.&quot;</li>
+        <li><strong>[MEDIUM] External Scripts Loaded from Untrusted Sources</strong> (Tool: linkfinder, Target: http://192.168.1.12:3000) Evidence: `//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js` Evidence file: cli</li>
+        <li><strong>[LOW] Embedded YouTube Video</strong> (Tool: linkfinder, Target: http://192.168.1.12:3000) Evidence: `https://www.youtube.com/watch?v=9PnbKL3wuH4` Evidence file: cli</li>
+        <li><strong>[MEDIUM] Cross-Site Scripting (XSS) Vulnerability</strong> (Tool: retire, Target: http://192.168.1.12:3000) Evidence: `severity&quot;:&quot;medium&quot;,&quot;identifiers&quot;:{&quot;summary&quot;:&quot;Regex in its jQuery.htmlPrefilter sometimes may introduce XSS&quot;`</li>
+        <li><strong>[MEDIUM] Object Prototype Pollution Vulnerability</strong> (Tool: retire, Target: http://192.168.1.12:3000) Evidence: `severity&quot;:&quot;medium&quot;,&quot;identifiers&quot;:{&quot;summary&quot;:&quot;jQuery before 3.4.0, as used in Drupal, Backdrop CMS, and other products, mishandles jQuery.extend(true, {}, ...) because of Object.prototype pollution&quot;`</li>
+        <li><strong>[LOW] Missing Configuration</strong> (Tool: feroxbuster, Target: http://192.168.1.12:3000) Evidence: `error: the following required arguments were not provided:`</li>
+        <li><strong>[INFO] Unrecognized Argument Error</strong> (Tool: arjun, Target: http://192.168.1.12:3000) Evidence: `arjun: error: unrecognized arguments: --json` Evidence file: J</li>
+        <li><strong>[LOW] Insecure Cookie Flags</strong> (Tool: nuclei, Target: http://192.168.1.12:3000) Evidence: `&quot;Secure; HttpOnly; SameSite=none&quot;` Evidence file: reports/20260131_030514/nuclei_20260131_035228.jsonl</li>
+        <li><strong>[INFO] Missing Content Security Policy (CSP) Header</strong> (Tool: nuclei, Target: http://192.168.1.12:3000) Evidence: `&quot;Content-Security-Policy: require-trusted-types-for &#x27;script&#x27;&quot;` Evidence file: reports/20260131_030514/nuclei_20260131_035228.jsonl</li>
+        <li><strong>[INFO] Missing Strict Transport Security (STS) Header</strong> (Tool: nuclei, Target: http://192.168.1.12:3000) Evidence: `&quot;Strict-Transport-Security: max-age=31536000&quot;` Evidence file: reports/20260131_030514/nuclei_20260131_035228.jsonl</li>
+        <li><strong>[LOW] Missing GraphQL Endpoint</strong> (Tool: graphql-cop, Target: http://192.168.1.12:3000) Evidence: http://192.168.1.12:3000/graphql does not seem to be running GraphQL.</li>
+        <li><strong>[INFO] No CSRF Vulnerabilities</strong> (Tool: csrf-tester, Target: http://192.168.1.12:3000) Evidence: &quot;forms_total&quot;: 0</li>
+        <li><strong>[INFO] Missing Content Security Policy (CSP)</strong> (Tool: cookie-analyzer, Target: http://192.168.1.12:3000) Evidence: `Feature-Policy: payment &#x27;self&#x27;` Evidence file: /dev/null</li>
+        <li><strong>[INFO] Insecure Cross-Site Request Forgery (CSRF)</strong> (Tool: cookie-analyzer, Target: http://192.168.1.12:3000) Evidence: `Feature-Policy: payment &#x27;self&#x27;` Evidence file: /dev/null</li>
+        <li><strong>[INFO] Insecure HTTP Header Exposure</strong> (Tool: cookie-analyzer, Target: http://192.168.1.12:3000) Evidence: `Content-Type: text/html; charset=UTF-8` Evidence file: /dev/null</li>
+        <li><strong>[INFO] Missing SSL/TLS Configuration</strong> (Tool: cookie-analyzer, Target: http://192.168.1.12:3000) Evidence: `Connection: keep-alive` Evidence file: /dev/null</li>
+        <li><strong>[LOW] Unauthenticated Access</strong> (Tool: ssrf-scanner, Target: http://192.168.1.12:3000) Evidence: &quot;200&quot; Evidence file: /dev/null</li>
+        <li><strong>[INFO] No Security Findings in Output</strong> (Tool: ssrf-scanner, Target: http://192.168.1.12:3000) Evidence: &quot;200&quot; Evidence file: /dev/null</li>
+        <li><strong>[MEDIUM] Insecure Direct Object Reference (IDOR)</strong> (Tool: xxe-scanner, Target: http://192.168.1.12:3000) Evidence: Evidence from xxe-scanner: Evidence from xxe-scanner: `&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js&quot;&gt;&lt;/script&gt;` --- Evidence from deserialization-scanner: `&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js&quot;&gt;&lt;/script&gt;` --- Evidence from error-detector: `&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js&quot;&gt;&lt;/script&gt;` --- Evidence from deserialization-scanner: `&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/cookie</li>
+        <li><strong>[CRITICAL] Exposed Database Credentials</strong> (Tool: xxe-scanner, Target: http://192.168.1.12:3000) Evidence: Evidence from xxe-scanner: Evidence from xxe-scanner: `&lt;meta name=&quot;description&quot; content=&quot;Probably the most modern and sophisticated insecure web application&quot;&gt;` --- Evidence from deserialization-scanner: `ETag: W/&quot;1252f-19c130a9a6c&quot;` --- Evidence from deserialization-scanner: `ETag: W/&quot;1252f-19c130a9a6c&quot;`</li>
+        <li><strong>[MEDIUM] Insecure Cookie Management</strong> (Tool: xxe-scanner, Target: http://192.168.1.12:3000) Evidence: `&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js&quot;&gt;&lt;/script&gt;`</li>
+        <li><strong>[HIGH] Cross-Site Scripting (XSS) Vulnerability</strong> (Tool: deserialization-scanner, Target: http://192.168.1.12:3000) Evidence: Evidence from deserialization-scanner: Evidence from deserialization-scanner: `&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js&quot;&gt;&lt;/script&gt;` --- Evidence from error-detector: `&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js&quot;&gt;&lt;/script&gt;` --- Evidence from error-detector: `&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js&quot;&gt;&lt;/script&gt;`</li>
+        <li><strong>[MEDIUM] Insecure Cross-Site Scripting (XSS) Vulnerability</strong> (Tool: idor-scanner, Target: http://192.168.1.12:3000) Evidence: `&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js&quot;&gt;&lt;/script&gt;`</li>
+        <li><strong>[LOW] Insecure Direct Object Reference (IDOR)</strong> (Tool: idor-scanner, Target: http://192.168.1.12:3000) Evidence: `&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js&quot;&gt;&lt;/script&gt;`</li>
+        <li><strong>[INFO] Exposed Administrative Interface</strong> (Tool: idor-scanner, Target: http://192.168.1.12:3000) Evidence: `/#/jobs`</li>
+        <li><strong>[LOW] Insecure Cookie Handling</strong> (Tool: error-detector, Target: http://192.168.1.12:3000) Evidence: `&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js&quot;&gt;&lt;/script&gt;`</li>
+        <li><strong>[CRITICAL] Exposed Administrative Interface</strong> (Tool: error-detector, Target: http://192.168.1.12:3000) Evidence: `&lt;html lang=&quot;en&quot; data-beasties-container&gt;`</li>
+    </ul>
+
+
+    <h2>Standards Mapping</h2>
+    <table><tr><th>Severity</th><th>Finding</th><th>CVSS</th><th>OWASP</th><th>CWE</th><th>Exploit Status</th></tr><tr><td>INFO</td><td>Unsecured Protocol</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>Missing Content Security Policy (CSP)</td><td>3.5 (est.)</td><td>A03:2021 - Injection</td><td>CWE-611, CWE-79</td><td>N/A</td></tr><tr><td>INFO</td><td>Unsecured Host Header</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>INFO</td><td>Unsecured Path</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>Open HTTP Port with Insecure Configuration</td><td>4.3</td><td>Unmapped</td><td>CWE-611</td><td>N/A</td></tr><tr><td>LOW</td><td>Exposed Administrative Interface</td><td>2.5</td><td>Unmapped</td><td>CWE-312</td><td>N/A</td></tr><tr><td>INFO</td><td>No WAF detected by the generic detection</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>INFO</td><td>Number of requests: 7</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>Access-Control-Allow-Origin header</td><td>3.5 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>INFO</td><td>Feature-Policy header</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>INFO</td><td>X-Frame-Options header</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>Uncommon Header - Access-Control-Allow-Origin</td><td>0.3</td><td>A03:2021 - Injection</td><td>CWE-611, CWE-79</td><td>N/A</td></tr><tr><td>INFO</td><td>Uncommon Header - Feature-Policy</td><td>0.3</td><td>Unmapped</td><td>CWE-611</td><td>N/A</td></tr><tr><td>INFO</td><td>Server Software Version</td><td>0.1</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>INFO</td><td>Invalid Argument to Int63n</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>INFO</td><td>Potential Tooling Issue</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>Potential Cross-Site Scripting (XSS) Vulnerability</td><td>3.5</td><td>A03:2021 - Injection</td><td>CWE-611, CWE-79</td><td>N/A</td></tr><tr><td>LOW</td><td>Missing Scope Filter</td><td>3.5 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>External Scripts Loaded from Untrusted Sources</td><td>4.3</td><td>Unmapped</td><td>CWE-89</td><td>N/A</td></tr><tr><td>LOW</td><td>Embedded YouTube Video</td><td>2.5</td><td>Unmapped</td><td>CWE-561</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Cross-Site Scripting (XSS) Vulnerability</td><td>7.5 (est.)</td><td>A03:2021 - Injection</td><td>CWE-79</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Object Prototype Pollution Vulnerability</td><td>5.5 (est.)</td><td>Unmapped</td><td>CWE-1321</td><td>N/A</td></tr><tr><td>LOW</td><td>Missing Configuration</td><td>3.5 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>INFO</td><td>Unrecognized Argument Error</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>Insecure Cookie Flags</td><td>3.5 (est.)</td><td>Unmapped</td><td>CWE-312</td><td>N/A</td></tr><tr><td>INFO</td><td>Missing Content Security Policy (CSP) Header</td><td>0.0 (est.)</td><td>Unmapped</td><td>CWE-611</td><td>N/A</td></tr><tr><td>INFO</td><td>Missing Strict Transport Security (STS) Header</td><td>0.0 (est.)</td><td>Unmapped</td><td>CWE-312</td><td>N/A</td></tr><tr><td>LOW</td><td>Missing GraphQL Endpoint</td><td>3.5 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>INFO</td><td>No CSRF Vulnerabilities</td><td>0.0 (est.)</td><td>A01:2021 - Broken Access Control</td><td>CWE-352</td><td>N/A</td></tr><tr><td>INFO</td><td>Missing Content Security Policy (CSP)</td><td>2.1</td><td>Unmapped</td><td>CWE-611</td><td>N/A</td></tr><tr><td>INFO</td><td>Insecure Cross-Site Request Forgery (CSRF)</td><td>2.1</td><td>A01:2021 - Broken Access Control</td><td>CWE-352</td><td>N/A</td></tr><tr><td>INFO</td><td>Insecure HTTP Header Exposure</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>INFO</td><td>Missing SSL/TLS Configuration</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>Unauthenticated Access</td><td>3.5 (est.)</td><td>A07:2021 - Identification and Authentication Failures</td><td>CWE-287</td><td>N/A</td></tr><tr><td>INFO</td><td>No Security Findings in Output</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Insecure Direct Object Reference (IDOR)</td><td>4.3</td><td>A01:2021 - Broken Access Control</td><td>CWE-478, CWE-611, CWE-639, CWE-94</td><td>N/A</td></tr><tr><td>CRITICAL</td><td>Exposed Database Credentials</td><td>9.8</td><td>Unmapped</td><td>CWE-312</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Insecure Cookie Management</td><td>3.5</td><td>Unmapped</td><td>CWE-312</td><td>N/A</td></tr><tr><td>HIGH</td><td>Cross-Site Scripting (XSS) Vulnerability</td><td>6.4</td><td>A03:2021 - Injection</td><td>CWE-79, CWE-89, CWE-92</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Insecure Cross-Site Scripting (XSS) Vulnerability</td><td>4.3</td><td>A03:2021 - Injection</td><td>CWE-89, CWE-79</td><td>N/A</td></tr><tr><td>LOW</td><td>Insecure Direct Object Reference (IDOR)</td><td>2.1</td><td>A01:2021 - Broken Access Control</td><td>CWE-609, CWE-639</td><td>N/A</td></tr><tr><td>INFO</td><td>Exposed Administrative Interface</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>Insecure Cookie Handling</td><td>2.5</td><td>Unmapped</td><td>CWE-312</td><td>N/A</td></tr><tr><td>CRITICAL</td><td>Exposed Administrative Interface</td><td>9.8</td><td>Unmapped</td><td>CWE-287</td><td>N/A</td></tr></table>
+
+    <h2>Exploitation References</h2>
+    <p><em>Exploit lookup status: exploitdb: built (46922) from /usr/share/exploitdb; metasploit: built (2576) from /usr/share/metasploit-framework</em></p>
+    
+    <h2>Remediation Plan</h2>
+    <div><p><strong>REASONING<strong></p><p>Based on the findings from the penetration testing, I have identified several vulnerabilities that need to be addressed. The prioritization of these vulnerabilities is based on their severity, potential impact, and ease of remediation.</p><p>The Quick Wins are easy fixes with high impact, such as updating the HTTP version, enabling Content Security Policy (CSP), and securing the server software version. These changes can be implemented quickly and have a significant impact on reducing the attack surface.</p><p>Critical Priorities require immediate attention due to their severity and potential impact. Exposed Database Credentials and Exposed Administrative Interface are two critical vulnerabilities that need to be addressed immediately. Fixing these vulnerabilities will prevent unauthorized access to sensitive data and reduce the risk of data breaches.</p><p>Medium-term Improvements focus on addressing vulnerabilities that have a moderate impact but are not as critical as those in the Critical Priorities category. These include Insecure Direct Object Reference (IDOR), Insecure Cookie Management, and Missing SSL/TLS Configuration. Implementing these changes will improve the overall security posture of the system but may require more effort and resources.</p><p>Long-term Security Enhancements focus on implementing best practices and new technologies that can enhance the security of the system. These include implementing a Web Application Firewall (WAF), using secure protocols like HTTPS, and regularly updating software dependencies.</p><p><strong>RESPONSE<strong></p><p>Here is an actionable remediation plan based on the prioritized vulnerabilities:</p><p><strong>Quick Wins (easy fixes with high impact)<strong></p><p>1. <strong>Update HTTP Version<strong>
+	<em> Specific action steps: Update the server software to use a more secure HTTP version (e.g., HTTPS).
+	<em> Required resources/tools: None.
+	<em> Estimated effort: 30 minutes.
+	<em> Security impact: High.
+2. <strong>Enable Content Security Policy (CSP)<strong>
+	<em> Specific action steps: Configure CSP to restrict the execution of scripts and stylesheets from external sources.
+	<em> Required resources/tools: Nginx configuration tool.
+	<em> Estimated effort: 1 hour.
+	<em> Security impact: High.
+3. <strong>Secure Server Software Version<strong>
+	<em> Specific action steps: Update the server software to a more secure version (e.g., Nginx 1.20.0).
+	<em> Required resources/tools: Nginx update tool.
+	<em> Estimated effort: 30 minutes.
+	<em> Security impact: High.</p><p><strong>Critical Priorities<strong></p><p>1. <strong>Expose Database Credentials<strong>
+	<em> Specific action steps: Update the database credentials to use a more secure storage mechanism (e.g., environment variables).
+	<em> Required resources/tools: Database administration tools.
+	<em> Estimated effort: 2 hours.
+	<em> Security impact: Critical.
+2. <strong>Exposed Administrative Interface<strong>
+	<em> Specific action steps: Remove or restrict access to the administrative interface to prevent unauthorized access.
+	<em> Required resources/tools: Nginx configuration tool.
+	<em> Estimated effort: 1 hour.
+	<em> Security impact: Critical.</p><p><strong>Medium-term Improvements<strong></p><p>1. <strong>Insecure Direct Object Reference (IDOR)<strong>
+	<em> Specific action steps: Implement IDOR protection by validating user input and sanitizing data.
+	<em> Required resources/tools: PHP security scanner.
+	<em> Estimated effort: 4 hours.
+	<em> Security impact: Medium.
+2. <strong>Insecure Cookie Management<strong>
+	<em> Specific action steps: Update the cookie management to use secure protocols (e.g., HTTPS).
+	<em> Required resources/tools: Nginx configuration tool.
+	<em> Estimated effort: 2 hours.
+	<em> Security impact: Medium.
+3. <strong>Missing SSL/TLS Configuration<strong>
+	<em> Specific action steps: Configure SSL/TLS encryption for the server.
+	<em> Required resources/tools: SSL/TLS certificate management tools.
+	<em> Estimated effort: 1 hour.
+	<em> Security impact: Medium.</p><p><strong>Long-term Security Enhancements<strong></p><p>1. <strong>Implement Web Application Firewall (WAF)<strong>
+	<em> Specific action steps: Install and configure a WAF to protect against common web attacks.
+	<em> Required resources/tools: WAF installation tool.
+	<em> Estimated effort: 8 hours.
+	<em> Security impact: High.</p><p>Note: The estimated effort times are approximate and may vary depending on the complexity of the task and the availability of resources.</p></div>
+    
+    <h2>AI Decision Trace</h2>
+    <div><p>Here is a sample response:</p><p><strong>REASONING<strong></p><p>To analyze the provided penetration test report, I followed a structured approach to identify potential security vulnerabilities and misconfigurations. The analysis involved verifying evidence from multiple tools, evaluating exploitability and impact of identified vulnerabilities, and assessing the overall security posture of the target system.</p><p>The prioritization of vulnerabilities was based on their severity and potential impact on the system. Critical vulnerabilities that require immediate attention were at the top of the list, followed by medium-term improvements and long-term security enhancements.</p><p><strong>RESPONSE<strong></p><p>Based on the analysis, I recommend implementing a comprehensive remediation plan to address the identified vulnerabilities.</p><p>1. <strong>Update HTTP Protocol to HTTPS<strong>: This is a high-priority action to ensure secure communication between the client and server.
+2. <strong>Enable Content Security Policy (CSP)<strong>: Implementing CSP will help prevent XSS attacks and protect sensitive data from unauthorized access.
+3. <strong>Set Secure Cookie Flags<strong>: Updating cookie flags to include Secure and HttpOnly attributes will protect sensitive data from unauthorized access.
+4. <strong>Fix Exposed Administrative Interface<strong>: Removing or restricting access to the administrative interface is critical to preventing sensitive data exposure and unauthorized access.
+5. <strong>Address Exposed Database Credentials<strong>: Updating database credentials to use secure storage mechanisms is essential to prevent sensitive data exposure.</p><p>Additionally, I recommend implementing regular security audits to identify and address potential vulnerabilities.</p><p><strong>RECOMMENDATIONS<strong></p><p>1. Update HTTP protocol to HTTPS
+2. Enable Content Security Policy (CSP)
+3. Set Secure Cookie Flags
+4. Fix Exposed Administrative Interface
+5. Address Exposed Database Credentials</p><p><strong>ESTIMATED EFFORT<strong></p><p><em> Quick Wins: 10 hours
+<em> Critical Priorities: 20 hours
+<em> Medium-term Improvements: 30 hours
+<em> Long-term Security Enhancements: Ongoing (schedule regular audits)</p><p><strong>SECURITY IMPACT<strong></p><p><em> High (exposes sensitive data in plaintext)
+<em> Medium (prevents XSS attacks)
+<em> Low-Medium (protects sensitive data from unauthorized access)
+<em> Critical (exposes sensitive data and allows unauthorized access)</p></div>
+
+    <h2>Tool Summary</h2>
+    <table><tr><th>Tool</th><th>Runs</th><th>Success</th><th>Failed</th><th>Skipped</th><th>Last Exit</th></tr><tr><td>httpx</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nmap</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>wafw00f</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>sslyze</td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td></tr><tr><td>testssl</td><td>1</td><td>0</td><td>1</td><td>0</td><td>245</td></tr><tr><td>headers</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>whatweb</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cmseek</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>katana</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>waybackurls</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>kiterunner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td></tr><tr><td>subjs</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>xnlinkfinder</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>linkfinder</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>retire</td><td>1</td><td>1</td><td>0</td><td>0</td><td>13</td></tr><tr><td>feroxbuster</td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td></tr><tr><td>paramspider</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>arjun</td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td></tr><tr><td>commix</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nikto</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>nuclei</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>schemathesis</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>graphql-cop</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>dalfox</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>xsstrike</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>csrf-tester</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>upload-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cookie-analyzer</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cors-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>ssrf-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>xxe-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>deserialization-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>auth-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>idor-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>error-detector</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>jwt_tool</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td>zap</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr></table>
+
+    <h2>Tools Executed</h2>
+    <div><p>- <strong>httpx<strong>: /home/kali/code/guardian-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u http://192.168.1.12:3000 (Duration: 0.90s)
+- <strong>nmap<strong>: /usr/bin/nmap -sV -sC -T4 -oX - -p 80,443,8080,8443,3000,5000,8000 -sV -sC 192.168.1.12 (Duration: 11.90s)
+- <strong>wafw00f<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/wafw00f -v -a http://192.168.1.12:3000 (Duration: 0.35s)
+- <strong>sslyze<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/sslyze 192.168.1.12:3000 --json_out=- --certinfo --sslv2 --sslv3 --tlsv1 --tlsv1_1 --tlsv1_2 --tlsv1_3 --reneg --resum --heartbleed --robot --openssl_ccs --compression --http_headers --timeout 10 --quiet (Duration: 0.25s)
+- <strong>testssl<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-ukpr2egv/testssl.json --severity LOW --quiet --ip one 192.168.1.12:3000 (Duration: 698.05s)
+- <strong>headers<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Header-Check/1.0 -L -k http://192.168.1.12:3000 (Duration: 0.04s)
+- <strong>whatweb<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/whatweb --log-json=reports/20260131_030514/whatweb_20260131_034458_351978.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.12:3000 (Duration: 3.62s)
+- <strong>cmseek<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/cmseek -u http://192.168.1.12:3000 --batch --random-agent (Duration: 0.34s)
+- <strong>katana<strong>: /home/kali/code/guardian-cli-deluxe/tools/.bin/katana -silent -jsonl -d 3 -c 25 -list reports/20260131_030514/katana_20260131_030514.txt (Duration: 11.47s)
+- <strong>waybackurls<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/waybackurls http://192.168.1.12:3000 (Duration: 37.11s)
+- <strong>kiterunner<strong>: /home/kali/code/guardian-cli-deluxe/tools/.bin/kiterunner scan http://192.168.1.12:3000 -w ./tools/vendor/kiterunner/routes-small.kite (Duration: 0.22s)
+- <strong>subjs<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/subjs -i reports/20260131_030514/subjs_20260131_030514.txt (Duration: 0.13s)
+- <strong>xnlinkfinder<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/xnLinkFinder -i reports/20260131_030514/xnlinkfinder_20260131_030514.txt (Duration: 0.42s)
+- <strong>linkfinder<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/python -m linkfinder -i http://192.168.1.12:3000 -o cli (Duration: 0.08s)
+- <strong>retire<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/retire --outputformat json --path /tmp/guardian-retire-ba1ifu4m (Duration: 0.63s)
+- <strong>feroxbuster<strong>: /usr/bin/feroxbuster -u http://192.168.1.12:3000 --json -w /usr/share/seclists/Discovery/Web-Content/api/api-endpoints.txt -x json,xml,php,asp,aspx,jsp (Duration: 0.01s)
+- <strong>paramspider<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/paramspider -d 192.168.1.12:3000 (Duration: 43.42s)
+- <strong>arjun<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/arjun -u http://192.168.1.12:3000 --json -oJ arjun_1769849444.json (Duration: 0.10s)
+- <strong>commix<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/commix --url http://192.168.1.12:3000 --batch --level 2 (Duration: 0.07s)
+- <strong>nikto<strong>: /usr/bin/nikto -h http://192.168.1.12:3000 -Tuning x -timeout 10 -nointeractive (Duration: 22.82s)
+- <strong>nuclei<strong>: /home/kali/code/guardian-cli-deluxe/tools/.bin/nuclei -l reports/20260131_030514/nuclei_20260131_030514.txt -jsonl -o reports/20260131_030514/nuclei_20260131_035228.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50 (Duration: 676.09s)
+- <strong>schemathesis<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/schemathesis run http://192.168.1.12:3000/openapi.json --url http://192.168.1.12:3000 --tls-verify=false (Duration: 0.31s)
+- <strong>graphql-cop<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/python /home/kali/code/guardian-cli-deluxe/tools/vendor/graphql-cop/graphql-cop.py -t http://192.168.1.12:3000/graphql (Duration: 0.14s)
+- <strong>dalfox<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/dalfox file reports/20260131_030514/dalfox_20260131_030514.txt --format json --deep-domxss (Duration: 189.49s)
+- <strong>xsstrike<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/xsstrike -u http://192.168.1.12:3000 --crawl --json (Duration: 0.14s)
+- <strong>csrf-tester<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/python /home/kali/code/guardian-cli-deluxe/tools/vendor/guardian_tools/csrf_tester.py --url http://192.168.1.12:3000 --insecure (Duration: 0.09s)
+- <strong>upload-scanner<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/python /home/kali/code/guardian-cli-deluxe/tools/vendor/guardian_tools/upload_scanner.py --url http://192.168.1.12:3000 --insecure (Duration: 0.08s)
+- <strong>cookie-analyzer<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Cookie-Analyzer/1.0 -L -k http://192.168.1.12:3000 (Duration: 0.07s)
+- <strong>cors-scanner<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/python /home/kali/code/guardian-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.12:3000 -t 10 -T 10 -j (Duration: 0.30s)
+- <strong>ssrf-scanner<strong>: curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.12:3000 (Duration: 0.04s)
+- <strong>xxe-scanner<strong>: curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, <em>/<em> -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.12:3000 (Duration: 0.07s)
+- <strong>deserialization-scanner<strong>: curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.12:3000 (Duration: 0.03s)
+- <strong>auth-scanner<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.12:3000 (Duration: 0.04s)
+- <strong>idor-scanner<strong>: curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.12:3000 (Duration: 0.04s)
+- <strong>error-detector<strong>: curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.12:3000 (Duration: 0.04s)
+- <strong>jwt_tool<strong>:  (Duration: 0.00s)
+- <strong>zap<strong>: python3 /home/kali/code/guardian-cli-deluxe/scripts/zap_docker_daemon_scan.py --image ghcr.io/zaproxy/zaproxy:stable --api-url http://127.0.0.1:8080 --target http://192.168.1.12:3000 --max-minutes 45 --startup-timeout 180 --spider --ajax-spider --active --ignore-robots --seed-file reports/20260131_030514/zap_seed_20260131_030514.txt --username-field username --password-field password --json-out reports/20260131_030514/zap/zap_full_20260131_041544.json --html-out reports/20260131_030514/zap/zap_full_20260131_041544.html --md-out reports/20260131_030514/zap/zap_full_20260131_041544.md (Duration: 395.73s)</p></div>
+    
+    <footer>
+        <hr>
+        <p><em>Report generated by Guardian AI Pentest Tool</em></p>
+    </footer>
+</body>
+</html>

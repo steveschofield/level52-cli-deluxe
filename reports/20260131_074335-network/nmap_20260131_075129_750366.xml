@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.98 scan initiated Sat Jan 31 07:51:29 2026 as: /usr/lib/nmap/nmap -&#45;privileged -sV -sC -T3 -oX - -p 1-65535 -sS 192.168.1.232 -->
+<nmaprun scanner="nmap" args="/usr/lib/nmap/nmap -&#45;privileged -sV -sC -T3 -oX - -p 1-65535 -sS 192.168.1.232" start="1769863889" startstr="Sat Jan 31 07:51:29 2026" version="7.98" xmloutputversion="1.05">
+<scaninfo type="syn" protocol="tcp" numservices="65535" services="1-65535"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<hosthint><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.232" addrtype="ipv4"/>
+<address addr="00:15:5D:FC:98:5D" addrtype="mac" vendor="Microsoft"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<taskprogress task="SYN Stealth Scan" time="1769865524" percent="15.10" remaining="9189" etc="1769874713"/>
+<host starttime="1769863890" endtime="1769865616"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.232" addrtype="ipv4"/>
+<address addr="00:15:5D:FC:98:5D" addrtype="mac" vendor="Microsoft"/>
+<hostnames>
+<hostname name="win2008-1.localdomain" type="PTR"/>
+</hostnames>
+<ports><extraports state="closed" count="65522">
+<extrareasons reason="reset" count="65522" proto="tcp" ports="1-52,54-134,136-138,140-444,446-3388,3390-47000,47002-49151,49155-49174,49176-49178,49181-49183,49185-65535"/>
+</extraports>
+<port protocol="tcp" portid="53"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="domain" product="Microsoft DNS" version="6.1.7601 (1DB1446A)" extrainfo="Windows Server 2008 R2 SP1" ostype="Windows" method="probed" conf="10"><cpe>cpe:/a:microsoft:dns</cpe><cpe>cpe:/o:microsoft:windows_server_2008:r2:sp1</cpe></service><script id="dns-nsid" output="&#xa;  bind.version: Microsoft DNS 6.1.7601 (1DB1446A)"><elem key="bind.version">Microsoft DNS 6.1.7601 (1DB1446A)</elem>
+</script></port>
+<port protocol="tcp" portid="135"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="msrpc" product="Microsoft Windows RPC" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="139"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="netbios-ssn" product="Microsoft Windows netbios-ssn" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="445"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="microsoft-ds" product="Windows Server 2008 R2 Standard 7601 Service Pack 1 microsoft-ds" ostype="Windows Server 2008 R2 - 2012" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="3389"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="ms-wbt-server" product="Microsoft Terminal Service" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service><script id="ssl-cert" output="Subject: commonName=win2008-1.ss.hackme&#xa;Not valid before: 2025-09-12T00:39:51&#xa;Not valid after:  2026-03-14T00:39:51"><table key="subject">
+<elem key="commonName">win2008-1.ss.hackme</elem>
+</table>
+<table key="issuer">
+<elem key="commonName">win2008-1.ss.hackme</elem>
+</table>
+<table key="pubkey">
+<elem key="type">rsa</elem>
+<elem key="bits">2048</elem>
+<elem key="modulus">8B42D7C13BEC82DF5A23BCDDB6B41E63BB3C07F9EFA10565889901E756185DE903E2F5A788B0004B6716A754254433AC3A8FF227DB1964CF67AB0FB121674B1A4E029803ED09E768255A7F5904EDCF0C1C69E48898892D04212C86EB534ED3CF8457A214C45A40EBF0811E2F698C53F22A2A21DC85BD2F9EC49D28CE34830261E90ACE81EAD64DC172AA6D872FCC4A9484940896D1035AB6DB76368DF35A9CDFC134315ED1138258F6A7B44372E081EBE242BBE26342942D8B3CD5AC7B98FBB725CF320CC70A7C124CBB15A77BEB96BBF9294F14D2E193EFC66DB0477526445DDCBA95F7E01222F68E18FBE14DFD45E3F911C3FE482DAA071432FC4937A57F4D</elem>
+<elem key="exponent">65537</elem>
+</table>
+<table key="extensions">
+<table>
+<elem key="name">X509v3 Extended Key Usage</elem>
+<elem key="value">TLS Web Server Authentication</elem>
+</table>
+<table>
+<elem key="name">X509v3 Key Usage</elem>
+<elem key="value">Key Encipherment, Data Encipherment</elem>
+</table>
+</table>
+<elem key="sig_algo">sha1WithRSAEncryption</elem>
+<table key="validity">
+<elem key="notBefore">2025-09-12T00:39:51</elem>
+<elem key="notAfter">2026-03-14T00:39:51</elem>
+</table>
+<elem key="md5">c50d5421655ade7fe98a0b3b5abfc091</elem>
+<elem key="sha1">194ad40bb179df928c563e2695985325aa91939c</elem>
+<elem key="sha256">8600813579961a48f9342900e3a32c2da267493eadb2d7505db238525e9c8ced</elem>
+<elem key="pem">-&#45;&#45;&#45;&#45;BEGIN CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;MIIC6jCCAdKgAwIBAgIQYrRCV7p8MrFDSa6ECNuqkDANBgkqhkiG9w0BAQUFADAe&#xa;MRwwGgYDVQQDExN3aW4yMDA4LTEuc3MuaGFja21lMB4XDTI1MDkxMjAwMzk1MVoX&#xa;DTI2MDMxNDAwMzk1MVowHjEcMBoGA1UEAxMTd2luMjAwOC0xLnNzLmhhY2ttZTCC&#xa;ASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAItC18E77ILfWiO83ba0HmO7&#xa;PAf576EFZYiZAedWGF3pA+L1p4iwAEtnFqdUJUQzrDqP8ifbGWTPZ6sPsSFnSxpO&#xa;ApgD7QnnaCVaf1kE7c8MHGnkiJiJLQQhLIbrU07Tz4RXohTEWkDr8IEeL2mMU/Iq&#xa;KiHchb0vnsSdKM40gwJh6QrOgerWTcFyqm2HL8xKlISUCJbRA1q223Y2jfNanN/B&#xa;NDFe0ROCWPantENy4IHr4kK74mNClC2LPNWse5j7tyXPMgzHCnwSTLsVp3vrlrv5&#xa;KU8U0uGT78ZtsEd1JkRd3LqV9+ASIvaOGPvhTf1F4/kRw/5ILaoHFDL8STelf00C&#xa;AwEAAaMkMCIwEwYDVR0lBAwwCgYIKwYBBQUHAwEwCwYDVR0PBAQDAgQwMA0GCSqG&#xa;SIb3DQEBBQUAA4IBAQBVRd5QPgfg36gbcTI8ZXnfvjlD8yGKXnMiL9TfzxW7yKDC&#xa;p0QWYoodafcE69g2F4U/1fjN2MJh4HukiZX383LPGz09jwyKuJIP3HVOhdHHedad&#xa;+GlQ8HHNN1hDd58sHXeyDBWvxVrKN+JevyIskJ0bLkfqKncGWUYD0c7Srs/kCVNC&#xa;e3LYUWuTEm2tfJcjcjyyLJdGoz/MCeRmITWj5aj2u9r9jDA+9+Ulb/GHOFWSWhvU&#xa;4vBDliGcCrEhwuTt1qUlbfVdoENv3LQkBB5E3XrM2+5YHzKm+zGWnk7uX5njqtCS&#xa;EEHh4EvwVbGRjnaxQWROTu1dNdjsfqjLVXn7F5eQ&#xa;-&#45;&#45;&#45;&#45;END CERTIFICATE-&#45;&#45;&#45;&#45;&#xa;</elem>
+</script><script id="ssl-date" output="2026-01-31T13:20:16+00:00; 0s from scanner time."><elem key="date">2026-01-31T13:20:16+00:00</elem>
+<elem key="delta">0.0</elem>
+</script><script id="rdp-ntlm-info" output="&#xa;  Target_Name: SS&#xa;  NetBIOS_Domain_Name: SS&#xa;  NetBIOS_Computer_Name: WIN2008-1&#xa;  DNS_Domain_Name: ss.hackme&#xa;  DNS_Computer_Name: win2008-1.ss.hackme&#xa;  DNS_Tree_Name: ss.hackme&#xa;  Product_Version: 6.1.7601&#xa;  System_Time: 2026-01-31T13:20:06+00:00"><elem key="Target_Name">SS</elem>
+<elem key="NetBIOS_Domain_Name">SS</elem>
+<elem key="NetBIOS_Computer_Name">WIN2008-1</elem>
+<elem key="DNS_Domain_Name">ss.hackme</elem>
+<elem key="DNS_Computer_Name">win2008-1.ss.hackme</elem>
+<elem key="DNS_Tree_Name">ss.hackme</elem>
+<elem key="Product_Version">6.1.7601</elem>
+<elem key="System_Time">2026-01-31T13:20:06+00:00</elem>
+</script></port>
+<port protocol="tcp" portid="47001"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="http" product="Microsoft HTTPAPI httpd" version="2.0" extrainfo="SSDP/UPnP" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service><script id="http-title" output="Not Found"><elem key="title">Not Found</elem>
+</script><script id="http-server-header" output="Microsoft-HTTPAPI/2.0"><elem>Microsoft-HTTPAPI/2.0</elem>
+</script></port>
+<port protocol="tcp" portid="49152"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="msrpc" product="Microsoft Windows RPC" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="49153"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="msrpc" product="Microsoft Windows RPC" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="49154"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="msrpc" product="Microsoft Windows RPC" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="49175"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="msrpc" product="Microsoft Windows RPC" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="49179"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="msrpc" product="Microsoft Windows RPC" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="49180"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="msrpc" product="Microsoft Windows RPC" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+<port protocol="tcp" portid="49184"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="msrpc" product="Microsoft Windows RPC" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+</ports>
+<hostscript><script id="smb2-time" output="&#xa;  date: 2026-01-31T13:20:06&#xa;  start_date: 2025-09-13T18:41:28"><elem key="date">2026-01-31T13:20:06</elem>
+<elem key="start_date">2025-09-13T18:41:28</elem>
+</script><script id="smb-security-mode" output="&#xa;  account_used: guest&#xa;  authentication_level: user&#xa;  challenge_response: supported&#xa;  message_signing: disabled (dangerous, but default)"><elem key="account_used">guest</elem>
+<elem key="authentication_level">user</elem>
+<elem key="challenge_response">supported</elem>
+<elem key="message_signing">disabled</elem>
+</script><script id="smb2-security-mode" output="&#xa;  2.1: &#xa;    Message signing enabled but not required"><table key="2.1">
+<elem>Message signing enabled but not required</elem>
+</table>
+</script><script id="clock-skew" output="mean: 1h36m00s, deviation: 3h34m40s, median: 0s"><elem key="stddev">12880</elem>
+<elem key="median">0</elem>
+<elem key="mean">5760</elem>
+<elem key="count">5</elem>
+</script><script id="smb-os-discovery" output="&#xa;  OS: Windows Server 2008 R2 Standard 7601 Service Pack 1 (Windows Server 2008 R2 Standard 6.1)&#xa;  OS CPE: cpe:/o:microsoft:windows_server_2008::sp1&#xa;  Computer name: win2008-1&#xa;  NetBIOS computer name: WIN2008-1\x00&#xa;  Domain name: ss.hackme&#xa;  Forest name: ss.hackme&#xa;  FQDN: win2008-1.ss.hackme&#xa;  System time: 2026-01-31T05:20:06-08:00&#xa;"><elem key="os">Windows Server 2008 R2 Standard 7601 Service Pack 1</elem>
+<elem key="lanmanager">Windows Server 2008 R2 Standard 6.1</elem>
+<elem key="server">WIN2008-1\x00</elem>
+<elem key="date">2026-01-31T05:20:06-08:00</elem>
+<elem key="fqdn">win2008-1.ss.hackme</elem>
+<elem key="domain_dns">ss.hackme</elem>
+<elem key="forest_dns">ss.hackme</elem>
+<elem key="workgroup">SS\x00</elem>
+<elem key="cpe">cpe:/o:microsoft:windows_server_2008::sp1</elem>
+</script><script id="nbstat" output="NetBIOS name: WIN2008-1, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: 00:15:5d:fc:98:5d (Microsoft)"/></hostscript><times srtt="6374" rttvar="74" to="100000"/>
+</host>
+<runstats><finished time="1769865616" timestr="Sat Jan 31 08:20:16 2026" summary="Nmap done at Sat Jan 31 08:20:16 2026; 1 IP address (1 host up) scanned in 1726.77 seconds" elapsed="1726.77" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

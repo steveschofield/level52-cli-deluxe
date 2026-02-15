@@ -1,0 +1,6 @@
+http://192.168.1.12:5280
+http://192.168.1.12:5280/dvwa/css/login.css
+http://192.168.1.12:5280/login.php
+http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd
+http://www.w3.org/1999/xhtml
+http://www.dvwa.co.uk/

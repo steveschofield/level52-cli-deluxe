@@ -1,0 +1,21 @@
+/usr/bin/masscan -p 1-65535 --rate 5000 -oJ reports/20260214_183454/masscan_20260214_183455_883843.json 192.168.1.232
+/usr/bin/nmap -sV -sC -T2 -Pn -oX reports/20260214_183454/nmap_20260214_183725_467859.xml -p 53,135,139,445,3389,49152,49153,49166,49174,49180,55349 -sS -Pn -f -D RND:5 --scan-delay 50ms --max-rate 200 192.168.1.232
+/usr/bin/nmap -sV -sC -T3 -Pn -oX reports/20260214_183454/nmap_20260214_184549_324400.xml -p 53,135,139,445,3389,49152,49153,49166,49174,49180,55349 -sS 192.168.1.232
+/usr/bin/nmap -sV -sC -T3 -Pn -oX reports/20260214_183454/nmap_20260214_184920_960457.xml -p 53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389 -sU 192.168.1.232
+/usr/bin/nmap -sV -sC -T3 -Pn -oX reports/20260214_183454/nmap_20260214_185407_379144.xml -p 53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389 -sU -sV --version-intensity 0 192.168.1.232
+/usr/bin/nmap -sV -sC -T3 -Pn -oX reports/20260214_183454/nmap_20260214_185728_874678.xml -sY --top-ports 50 192.168.1.232
+/usr/bin/nmap -sV -sC -T4 -Pn -oX reports/20260214_183454/nmap_20260214_185944_593400.xml -p 53,123,135,139,445,3389,49152,49153,49166,49174,49180,55349 -sV -sC 192.168.1.232
+/usr/bin/nmap -sV -sC -T4 -Pn -oX reports/20260214_183454/nmap_20260214_190257_241466.xml -p 445 --script smb-os-discovery,smb-enum-shares,smb-enum-users 192.168.1.232
+/usr/bin/smbclient -L //192.168.1.232 -N
+/usr/sbin/showmount -e 192.168.1.232
+/usr/bin/onesixtyone -q 192.168.1.232 public
+/usr/bin/snmpwalk -v 2c -c public 192.168.1.232
+/usr/bin/nmap -sV -sC -T4 -Pn -oX reports/20260214_183454/nmap_20260214_190618_237596.xml -p 3389 --script rdp-enum-encryption,rdp-ntlm-info 192.168.1.232
+/home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-78g4wrgu/testssl.json --severity LOW --quiet --ip one 192.168.1.232
+/usr/bin/nmap -sV --script vuln,vulners -T4 -Pn -oX reports/20260214_183454/nmap_20260214_190927_077580.xml -p 53,123,135,139,445,3389,49152,49153,49166,49174,49180,55349 192.168.1.232
+docker run -i --rm --network host -e NEO4J_URI=bolt://localhost:7687 -e NEO4J_USER=neo4j ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+docker run -i --rm --network host -e NEO4J_URI=bolt://localhost:7687 -e NEO4J_USER=neo4j ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+docker run -i --rm --network host -e NEO4J_URI=bolt://localhost:7687 -e NEO4J_USER=neo4j ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+docker run -i --rm --network host -e NEO4J_URI=bolt://localhost:7687 -e NEO4J_USER=neo4j ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+docker run -i --rm --network host -e NEO4J_URI=bolt://localhost:7687 -e NEO4J_USER=neo4j ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+docker run -i --rm --network host -e NEO4J_URI=bolt://localhost:7687 -e NEO4J_USER=neo4j ghcr.io/fuzzinglabs/bloodhound-mcp:latest

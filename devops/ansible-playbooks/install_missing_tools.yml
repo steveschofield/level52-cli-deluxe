@@ -1,0 +1,347 @@
+---
+# Quick playbook to install ONLY the missing tools
+# This can be run in addition to remote_playbook_guardian.yml
+# or integrated into it
+
+- name: Install Missing Guardian Security Tools
+  hosts: guardian_workers
+  become: yes
+
+  vars:
+    username: 52pickup
+    tools_dir: "/opt/guardian-tools"
+    go_root: "/home/{{ username }}/.local/go"
+    go_path: "/home/{{ username }}/go"
+
+  tasks:
+    - name: Install additional system packages
+      apt:
+        name:
+          - unzip
+          - cargo
+          - rustc
+        state: present
+        update_cache: no
+
+    - name: Create tools directory
+      ansible.builtin.file:
+        path: "{{ tools_dir }}"
+        state: directory
+        mode: '0755'
+        owner: "{{ username }}"
+        group: "{{ username }}"
+
+    # ===========================================
+    # testssl.sh
+    # ===========================================
+    - name: Clone testssl.sh
+      ansible.builtin.git:
+        repo: https://github.com/drwetter/testssl.sh.git
+        dest: "{{ tools_dir }}/testssl.sh"
+        version: master
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Create testssl symlink
+      ansible.builtin.file:
+        src: "{{ tools_dir }}/testssl.sh/testssl.sh"
+        dest: /usr/local/bin/testssl
+        state: link
+
+    # ===========================================
+    # kiterunner
+    # ===========================================
+    - name: Download and install kiterunner
+      ansible.builtin.shell: |
+        KR_VERSION=$(curl -s https://api.github.com/repos/assetnote/kiterunner/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+        curl -sSL "https://github.com/assetnote/kiterunner/releases/download/v${KR_VERSION}/kiterunner_${KR_VERSION}_linux_amd64.tar.gz" -o /tmp/kiterunner.tar.gz
+        tar -xzf /tmp/kiterunner.tar.gz -C /tmp/
+        mv /tmp/kr /usr/local/bin/kr
+        chmod +x /usr/local/bin/kr
+        rm -f /tmp/kiterunner.tar.gz
+      args:
+        creates: /usr/local/bin/kr
+
+    # ===========================================
+    # jwt_tool
+    # ===========================================
+    - name: Clone jwt_tool
+      ansible.builtin.git:
+        repo: https://github.com/ticarpi/jwt_tool.git
+        dest: "{{ tools_dir }}/jwt_tool"
+        version: master
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Create jwt_tool wrapper
+      ansible.builtin.copy:
+        dest: /usr/local/bin/jwt_tool
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/jwt_tool
+          python3 jwt_tool.py "$@"
+
+    # ===========================================
+    # graphql-cop
+    # ===========================================
+    - name: Clone graphql-cop
+      ansible.builtin.git:
+        repo: https://github.com/dolevf/graphql-cop.git
+        dest: "{{ tools_dir }}/graphql-cop"
+        version: master
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Create graphqlcop wrapper
+      ansible.builtin.copy:
+        dest: /usr/local/bin/graphqlcop
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/graphql-cop
+          python3 graphql-cop.py "$@"
+
+    # ===========================================
+    # XSStrike
+    # ===========================================
+    - name: Clone XSStrike
+      ansible.builtin.git:
+        repo: https://github.com/s0md3v/XSStrike.git
+        dest: "{{ tools_dir }}/XSStrike"
+        version: master
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Create xsstrike wrapper
+      ansible.builtin.copy:
+        dest: /usr/local/bin/xsstrike
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/XSStrike
+          python3 xsstrike.py "$@"
+
+    # ===========================================
+    # CMSeeK
+    # ===========================================
+    - name: Clone CMSeeK
+      ansible.builtin.git:
+        repo: https://github.com/Tuhinshubhra/CMSeeK.git
+        dest: "{{ tools_dir }}/CMSeeK"
+        version: master
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Create cmseek wrapper
+      ansible.builtin.copy:
+        dest: /usr/local/bin/cmseek
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/CMSeeK
+          python3 cmseek.py "$@"
+
+    # ===========================================
+    # LinkFinder
+    # ===========================================
+    - name: Clone LinkFinder
+      ansible.builtin.git:
+        repo: https://github.com/GerbenJavado/LinkFinder.git
+        dest: "{{ tools_dir }}/LinkFinder"
+        version: master
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Create linkfinder wrapper
+      ansible.builtin.copy:
+        dest: /usr/local/bin/linkfinder
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/LinkFinder
+          python3 linkfinder.py "$@"
+
+    # ===========================================
+    # xnLinkFinder
+    # ===========================================
+    - name: Clone xnLinkFinder
+      ansible.builtin.git:
+        repo: https://github.com/xnl-h4ck3r/xnLinkFinder.git
+        dest: "{{ tools_dir }}/xnLinkFinder"
+        version: main
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Create xnlinkfinder wrapper
+      ansible.builtin.copy:
+        dest: /usr/local/bin/xnlinkfinder
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/xnLinkFinder
+          python3 xnLinkFinder.py "$@"
+
+    # ===========================================
+    # ParamSpider
+    # ===========================================
+    - name: Clone ParamSpider
+      ansible.builtin.git:
+        repo: https://github.com/devanshbatham/ParamSpider.git
+        dest: "{{ tools_dir }}/ParamSpider"
+        version: master
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Create paramspider wrapper
+      ansible.builtin.copy:
+        dest: /usr/local/bin/paramspider
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/ParamSpider
+          python3 paramspider.py "$@"
+
+    # ===========================================
+    # CORScanner
+    # ===========================================
+    - name: Clone CORScanner
+      ansible.builtin.git:
+        repo: https://github.com/chenjj/CORScanner.git
+        dest: "{{ tools_dir }}/CORScanner"
+        version: master
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Create corsscanner wrapper
+      ansible.builtin.copy:
+        dest: /usr/local/bin/corsscanner
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/CORScanner
+          python3 cors_scan.py "$@"
+
+    # ===========================================
+    # Python tools via pip
+    # ===========================================
+    - name: Install Python security tools
+      ansible.builtin.pip:
+        name:
+          - arjun
+          - dirsearch
+          - schemathesis
+          - wafw00f
+          - sslyze
+          - dnsrecon
+          - xnlinkfinder
+          - dnsgen
+          - linkfinder-py
+        state: latest
+        executable: pip3
+      ignore_errors: yes
+
+    # ===========================================
+    # npm tools
+    # ===========================================
+    - name: Install retire.js
+      community.general.npm:
+        name: retire
+        global: yes
+        state: present
+
+    # ===========================================
+    # feroxbuster
+    # ===========================================
+    - name: Download and install feroxbuster
+      ansible.builtin.shell: |
+        FEROX_VERSION=$(curl -s https://api.github.com/repos/epi052/feroxbuster/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+        curl -sSL "https://github.com/epi052/feroxbuster/releases/download/v${FEROX_VERSION}/x86_64-linux-feroxbuster.zip" -o /tmp/feroxbuster.zip
+        unzip -o /tmp/feroxbuster.zip -d /tmp/
+        mv /tmp/feroxbuster /usr/local/bin/feroxbuster
+        chmod +x /usr/local/bin/feroxbuster
+        rm -f /tmp/feroxbuster.zip
+      args:
+        creates: /usr/local/bin/feroxbuster
+
+    # ===========================================
+    # godeye (god-eye)
+    # ===========================================
+    - name: Install godeye via go install
+      ansible.builtin.shell: |
+        export GOROOT="{{ go_root }}"
+        export GOPATH="{{ go_path }}"
+        export PATH="{{ go_root }}/bin:{{ go_path }}/bin:$PATH"
+        go install github.com/Vyntral/god-eye@latest
+      become_user: "{{ username }}"
+      args:
+        creates: "{{ go_path }}/bin/god-eye"
+      environment:
+        GOROOT: "{{ go_root }}"
+        GOPATH: "{{ go_path }}"
+
+    - name: Create godeye symlink
+      ansible.builtin.file:
+        src: "{{ go_path }}/bin/god-eye"
+        dest: /usr/local/bin/godeye
+        state: link
+      ignore_errors: yes
+
+    # ===========================================
+    # Trivy
+    # ===========================================
+    - name: Download and install Trivy
+      ansible.builtin.shell: |
+        TRIVY_VERSION=$(curl -s https://api.github.com/repos/aquasecurity/trivy/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+        ARCH=$(uname -m)
+        if [ "$ARCH" = "x86_64" ]; then
+          TRIVY_ARCH="64bit"
+        elif [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
+          TRIVY_ARCH="ARM64"
+        else
+          echo "Unsupported architecture: $ARCH"
+          exit 1
+        fi
+        curl -sSL "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-${TRIVY_ARCH}.tar.gz" -o /tmp/trivy.tar.gz
+        tar -xzf /tmp/trivy.tar.gz -C /tmp/
+        mv /tmp/trivy /usr/local/bin/trivy
+        chmod +x /usr/local/bin/trivy
+        rm -f /tmp/trivy.tar.gz
+      args:
+        creates: /usr/local/bin/trivy
+
+    - name: Display completion message
+      ansible.builtin.debug:
+        msg: |
+          ============================================
+          Missing Tools Installation Complete!
+          ============================================
+
+          Tools installed:
+            ✓ testssl       ✓ kiterunner (kr)    ✓ jwt_tool
+            ✓ graphqlcop    ✓ arjun              ✓ xsstrike
+            ✓ cmseek        ✓ retire             ✓ linkfinder
+            ✓ xnlinkfinder  ✓ paramspider        ✓ schemathesis
+            ✓ feroxbuster   ✓ godeye             ✓ corsscanner
+            ✓ trivy
+
+          Python packages:
+            ✓ dirsearch     ✓ wafw00f            ✓ sslyze
+            ✓ dnsrecon      ✓ dnsgen             ✓ linkfinder-py
+
+          Test with:
+            ssh 52pickup@<ip>
+            cd ~/guardian-cli-deluxe
+            source venv/bin/activate
+            python -m cli.main workflow run --name recon --target 192.168.1.232
+
+          ============================================

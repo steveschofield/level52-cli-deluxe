@@ -1,0 +1,801 @@
+---
+- name: Install Guardian CLI and Configure Automated Security Assessments
+  hosts: guardian_workers
+  become: yes
+
+  gather_facts: true
+  vars:
+    username: 52pickup
+    guardian_dir: "/home/{{ username }}/guardian-cli-deluxe"
+    guardian_python_version: "3.13.0"
+    go_version: "1.22.0"
+    go_root: "/home/{{ username }}/.local/go"
+    go_path: "/home/{{ username }}/go"
+    tools_dir: "/opt/guardian-tools"
+
+  tasks:
+    - name: Remove unsupported Trivy apt repo on Kali
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/trivy.list
+        state: absent
+      when: ansible_distribution | lower == "kali"
+
+    - name: Remove stale Trivy apt keyring on Kali
+      ansible.builtin.file:
+        path: /usr/share/keyrings/trivy.gpg
+        state: absent
+      when: ansible_distribution | lower == "kali"
+
+    # ===========================================
+    # Install Guardian CLI Dependencies
+    # ===========================================
+    - name: Install system dependencies for Guardian CLI
+      apt:
+        name:
+          - git
+          - python3
+          - python3-pip
+          - python3-venv
+          - ca-certificates
+          # Scanning & recon tools
+          - nmap
+          - nikto
+          - sqlmap
+          - dirb
+          - gobuster
+          - whatweb
+          - dnsutils
+          - whois
+          - curl
+          - jq
+          - bc
+          # Network/enumeration tools
+          - masscan
+          - hydra
+          - smbclient
+          - nfs-common
+          - snmp
+          - onesixtyone
+          - libpcap-dev
+          - libcap2-bin
+          # Ruby (for wpscan)
+          - ruby
+          - ruby-dev
+          # Node.js (for retire.js)
+          - nodejs
+          - npm
+          # Build tools for compiling tools
+          - build-essential
+          - cargo
+          - rustc
+        state: present
+        update_cache: true
+
+    # ===========================================
+    # Create Tools Directories
+    # ===========================================
+    - name: Create tools directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: "{{ username }}"
+        group: "{{ username }}"
+      loop:
+        - "{{ tools_dir }}"
+        - "/home/{{ username }}/.local/bin"
+
+    # ===========================================
+    # Install testssl.sh
+    # ===========================================
+    - name: Clone testssl.sh repository
+      ansible.builtin.git:
+        repo: https://github.com/drwetter/testssl.sh.git
+        dest: "{{ tools_dir }}/testssl.sh"
+        version: master
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Create testssl symlink
+      ansible.builtin.file:
+        src: "{{ tools_dir }}/testssl.sh/testssl.sh"
+        dest: /usr/local/bin/testssl
+        state: link
+
+    # ===========================================
+    # Install kiterunner (kr)
+    # ===========================================
+    - name: Download kiterunner latest release
+      ansible.builtin.shell: |
+        KR_VERSION=$(curl -s https://api.github.com/repos/assetnote/kiterunner/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+        curl -sSL "https://github.com/assetnote/kiterunner/releases/download/v${KR_VERSION}/kiterunner_${KR_VERSION}_linux_amd64.tar.gz" -o /tmp/kiterunner.tar.gz
+        tar -xzf /tmp/kiterunner.tar.gz -C /tmp/
+        mv /tmp/kr /usr/local/bin/kr
+        chmod +x /usr/local/bin/kr
+        rm -f /tmp/kiterunner.tar.gz
+      args:
+        creates: /usr/local/bin/kr
+
+    # ===========================================
+    # Install jwt_tool
+    # ===========================================
+    - name: Clone jwt_tool repository
+      ansible.builtin.git:
+        repo: https://github.com/ticarpi/jwt_tool.git
+        dest: "{{ tools_dir }}/jwt_tool"
+        version: master
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Create jwt_tool wrapper script
+      ansible.builtin.copy:
+        dest: /usr/local/bin/jwt_tool
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/jwt_tool
+          python3 jwt_tool.py "$@"
+
+    # ===========================================
+    # Install graphql-cop (graphqlcop)
+    # ===========================================
+    - name: Clone graphql-cop repository
+      ansible.builtin.git:
+        repo: https://github.com/dolevf/graphql-cop.git
+        dest: "{{ tools_dir }}/graphql-cop"
+        version: master
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Install graphql-cop Python dependencies
+      ansible.builtin.pip:
+        requirements: "{{ tools_dir }}/graphql-cop/requirements.txt"
+        executable: pip3
+      when: tools_dir + '/graphql-cop/requirements.txt' is file
+      ignore_errors: yes
+
+    - name: Create graphqlcop wrapper script
+      ansible.builtin.copy:
+        dest: /usr/local/bin/graphqlcop
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/graphql-cop
+          python3 graphql-cop.py "$@"
+
+    # ===========================================
+    # Install Python Security Tools (via pip)
+    # ===========================================
+    - name: Install Python security tools via pip
+      ansible.builtin.pip:
+        name:
+          - arjun
+          - dirsearch
+          - schemathesis
+          - wafw00f
+          - sslyze
+          - dnsrecon
+          - xnlinkfinder
+          - dnsgen
+          - linkfinder-py
+        state: latest
+        executable: pip3
+      ignore_errors: yes
+
+    # ===========================================
+    # Install XSStrike
+    # ===========================================
+    - name: Clone XSStrike repository
+      ansible.builtin.git:
+        repo: https://github.com/s0md3v/XSStrike.git
+        dest: "{{ tools_dir }}/XSStrike"
+        version: master
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Install XSStrike dependencies
+      ansible.builtin.pip:
+        requirements: "{{ tools_dir }}/XSStrike/requirements.txt"
+        executable: pip3
+      when: tools_dir + '/XSStrike/requirements.txt' is file
+      ignore_errors: yes
+
+    - name: Create xsstrike wrapper script
+      ansible.builtin.copy:
+        dest: /usr/local/bin/xsstrike
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/XSStrike
+          python3 xsstrike.py "$@"
+
+    # ===========================================
+    # Install CMSeeK
+    # ===========================================
+    - name: Clone CMSeeK repository
+      ansible.builtin.git:
+        repo: https://github.com/Tuhinshubhra/CMSeeK.git
+        dest: "{{ tools_dir }}/CMSeeK"
+        version: master
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Install CMSeeK dependencies
+      ansible.builtin.pip:
+        requirements: "{{ tools_dir }}/CMSeeK/requirements.txt"
+        executable: pip3
+      when: tools_dir + '/CMSeeK/requirements.txt' is file
+      ignore_errors: yes
+
+    - name: Create cmseek wrapper script
+      ansible.builtin.copy:
+        dest: /usr/local/bin/cmseek
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/CMSeeK
+          python3 cmseek.py "$@"
+
+    # ===========================================
+    # Install retire.js (npm)
+    # ===========================================
+    - name: Install retire.js globally via npm
+      community.general.npm:
+        name: retire
+        global: yes
+        state: present
+
+    # ===========================================
+    # Install LinkFinder
+    # ===========================================
+    - name: Clone LinkFinder repository
+      ansible.builtin.git:
+        repo: https://github.com/GerbenJavado/LinkFinder.git
+        dest: "{{ tools_dir }}/LinkFinder"
+        version: master
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Install LinkFinder dependencies
+      ansible.builtin.pip:
+        requirements: "{{ tools_dir }}/LinkFinder/requirements.txt"
+        executable: pip3
+      when: tools_dir + '/LinkFinder/requirements.txt' is file
+      ignore_errors: yes
+
+    - name: Create linkfinder wrapper script
+      ansible.builtin.copy:
+        dest: /usr/local/bin/linkfinder
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/LinkFinder
+          python3 linkfinder.py "$@"
+
+    # ===========================================
+    # Install xnLinkFinder
+    # ===========================================
+    - name: Clone xnLinkFinder repository
+      ansible.builtin.git:
+        repo: https://github.com/xnl-h4ck3r/xnLinkFinder.git
+        dest: "{{ tools_dir }}/xnLinkFinder"
+        version: main
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Install xnLinkFinder dependencies
+      ansible.builtin.pip:
+        requirements: "{{ tools_dir }}/xnLinkFinder/requirements.txt"
+        executable: pip3
+      when: tools_dir + '/xnLinkFinder/requirements.txt' is file
+      ignore_errors: yes
+
+    - name: Create xnlinkfinder wrapper script
+      ansible.builtin.copy:
+        dest: /usr/local/bin/xnlinkfinder
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/xnLinkFinder
+          python3 xnLinkFinder.py "$@"
+
+    # ===========================================
+    # Install ParamSpider
+    # ===========================================
+    - name: Clone ParamSpider repository
+      ansible.builtin.git:
+        repo: https://github.com/devanshbatham/ParamSpider.git
+        dest: "{{ tools_dir }}/ParamSpider"
+        version: master
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Install ParamSpider dependencies
+      ansible.builtin.pip:
+        requirements: "{{ tools_dir }}/ParamSpider/requirements.txt"
+        executable: pip3
+      when: tools_dir + '/ParamSpider/requirements.txt' is file
+      ignore_errors: yes
+
+    - name: Create paramspider wrapper script
+      ansible.builtin.copy:
+        dest: /usr/local/bin/paramspider
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/ParamSpider
+          python3 paramspider.py "$@"
+
+    # ===========================================
+    # Install feroxbuster (Rust binary)
+    # ===========================================
+    - name: Download and install feroxbuster
+      ansible.builtin.shell: |
+        FEROX_VERSION=$(curl -s https://api.github.com/repos/epi052/feroxbuster/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+        curl -sSL "https://github.com/epi052/feroxbuster/releases/download/v${FEROX_VERSION}/x86_64-linux-feroxbuster.zip" -o /tmp/feroxbuster.zip
+        unzip -o /tmp/feroxbuster.zip -d /tmp/
+        mv /tmp/feroxbuster /usr/local/bin/feroxbuster
+        chmod +x /usr/local/bin/feroxbuster
+        rm -f /tmp/feroxbuster.zip
+      args:
+        creates: /usr/local/bin/feroxbuster
+
+    # ===========================================
+    # Install godeye (god-eye) - Go tool
+    # ===========================================
+    - name: Ensure Go toolchain is available for Go installs
+      ansible.builtin.set_fact:
+        go_binary: "{{ go_root }}/bin/go"
+
+    - name: Install godeye via go install
+      ansible.builtin.shell: |
+        export GOROOT="{{ go_root }}"
+        export GOPATH="{{ go_path }}"
+        export PATH="{{ go_root }}/bin:{{ go_path }}/bin:$PATH"
+        go install github.com/Vyntral/god-eye@latest
+      become_user: "{{ username }}"
+      args:
+        creates: "{{ go_path }}/bin/god-eye"
+      environment:
+        GOROOT: "{{ go_root }}"
+        GOPATH: "{{ go_path }}"
+
+    - name: Create godeye symlink
+      ansible.builtin.file:
+        src: "{{ go_path }}/bin/god-eye"
+        dest: /usr/local/bin/godeye
+        state: link
+      ignore_errors: yes
+
+    # ===========================================
+    # Install CORScanner
+    # ===========================================
+    - name: Clone CORScanner repository
+      ansible.builtin.git:
+        repo: https://github.com/chenjj/CORScanner.git
+        dest: "{{ tools_dir }}/CORScanner"
+        version: master
+        depth: 1
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Install CORScanner dependencies
+      ansible.builtin.pip:
+        requirements: "{{ tools_dir }}/CORScanner/requirements.txt"
+        executable: pip3
+      when: tools_dir + '/CORScanner/requirements.txt' is file
+      ignore_errors: yes
+
+    - name: Create corsscanner wrapper script
+      ansible.builtin.copy:
+        dest: /usr/local/bin/corsscanner
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/CORScanner
+          python3 cors_scan.py "$@"
+
+    # ===========================================
+    # Install Trivy (binary download)
+    # ===========================================
+    - name: Download and install Trivy
+      ansible.builtin.shell: |
+        TRIVY_VERSION=$(curl -s https://api.github.com/repos/aquasecurity/trivy/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+        ARCH=$(uname -m)
+        if [ "$ARCH" = "x86_64" ]; then
+          TRIVY_ARCH="64bit"
+        elif [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
+          TRIVY_ARCH="ARM64"
+        else
+          echo "Unsupported architecture: $ARCH"
+          exit 1
+        fi
+        curl -sSL "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-${TRIVY_ARCH}.tar.gz" -o /tmp/trivy.tar.gz
+        tar -xzf /tmp/trivy.tar.gz -C /tmp/
+        mv /tmp/trivy /usr/local/bin/trivy
+        chmod +x /usr/local/bin/trivy
+        rm -f /tmp/trivy.tar.gz
+      args:
+        creates: /usr/local/bin/trivy
+
+    # ===========================================
+    # Install BloodHound (optional - Docker image)
+    # ===========================================
+    - name: Pull BloodHound Docker image
+      ansible.builtin.command:
+        argv:
+          - docker
+          - pull
+          - ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+      become_user: "{{ username }}"
+      failed_when: false
+
+    # ===========================================
+    # Install Optional Tools
+    # ===========================================
+    - name: Install enum4linux (if available)
+      apt:
+        name: enum4linux
+        state: present
+      register: enum4linux_install
+      failed_when: false
+
+    - name: Install amass (if available)
+      apt:
+        name: amass
+        state: present
+      register: amass_install
+      failed_when: false
+
+    - name: Install seclists (if available)
+      apt:
+        name: seclists
+        state: present
+      register: seclists_install
+      failed_when: false
+
+    # ===========================================
+    # Install Metasploit Framework
+    # ===========================================
+    - name: Download Rapid7 Metasploit signing key
+      ansible.builtin.command:
+        argv:
+          - /bin/bash
+          - -lc
+          - "curl -fsSL https://apt.metasploit.com/metasploit-framework.gpg.key | gpg --dearmor -o /usr/share/keyrings/metasploit-framework.gpg"
+        creates: /usr/share/keyrings/metasploit-framework.gpg
+      failed_when: false
+
+    - name: Add Metasploit APT repository
+      ansible.builtin.copy:
+        dest: /etc/apt/sources.list.d/metasploit-framework.list
+        content: "deb [signed-by=/usr/share/keyrings/metasploit-framework.gpg] https://apt.metasploit.com/ lucid main\n"
+        mode: "0644"
+      failed_when: false
+
+    - name: Install Metasploit Framework
+      apt:
+        name: metasploit-framework
+        state: present
+        update_cache: true
+      register: metasploit_install
+      failed_when: false
+
+    # ===========================================
+    # Install Go Toolchain
+    # ===========================================
+    - name: Map Go architecture for download
+      ansible.builtin.set_fact:
+        go_arch: >-
+          {{ 'amd64' if ansible_architecture in ['x86_64', 'amd64'] else
+             'arm64' if ansible_architecture in ['aarch64', 'arm64'] else
+             ansible_architecture }}
+
+    - name: Download Go {{ go_version }}
+      ansible.builtin.get_url:
+        url: "https://go.dev/dl/go{{ go_version }}.linux-{{ go_arch }}.tar.gz"
+        dest: "/tmp/go{{ go_version }}.linux-{{ go_arch }}.tar.gz"
+        mode: "0644"
+
+    - name: Detect old Go toolchain installed in GOPATH location
+      ansible.builtin.stat:
+        path: "{{ go_path }}/VERSION"
+      register: gopath_contains_go_toolchain
+      become: yes
+      become_user: "{{ username }}"
+
+    - name: Remove old Go toolchain from GOPATH location (if present)
+      ansible.builtin.file:
+        path: "{{ go_path }}"
+        state: absent
+      become: yes
+      become_user: "{{ username }}"
+      when: gopath_contains_go_toolchain.stat.exists
+
+    - name: Ensure GOPATH directory exists
+      ansible.builtin.file:
+        path: "{{ go_path }}"
+        state: directory
+        mode: "0755"
+      become: yes
+      become_user: "{{ username }}"
+
+    - name: Remove existing user-local Go toolchain dir
+      ansible.builtin.file:
+        path: "{{ go_root }}"
+        state: absent
+      become: yes
+      become_user: "{{ username }}"
+
+    - name: Ensure ~/.local exists for user-local installs
+      ansible.builtin.file:
+        path: "/home/{{ username }}/.local"
+        state: directory
+        mode: "0755"
+      become: yes
+      become_user: "{{ username }}"
+
+    - name: Install Go {{ go_version }} under {{ go_root }}
+      ansible.builtin.unarchive:
+        src: "/tmp/go{{ go_version }}.linux-{{ go_arch }}.tar.gz"
+        dest: "/home/{{ username }}/.local"
+        remote_src: yes
+      become: yes
+      become_user: "{{ username }}"
+
+    - name: Ensure user-local Go and GOPATH are on PATH in .profile
+      ansible.builtin.blockinfile:
+        path: "/home/{{ username }}/.profile"
+        block: |
+          # Go toolchain + GOPATH (installed by Ansible)
+          export GOROOT="$HOME/.local/go"
+          export GOPATH="$HOME/go"
+          export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
+        marker: "# {mark} ANSIBLE MANAGED GO"
+        create: yes
+      become: yes
+      become_user: "{{ username }}"
+
+    - name: Install optional wpscan package (if available)
+      apt:
+        name: wpscan
+        state: present
+      register: wpscan_install
+      failed_when: false
+      changed_when: "'No package matching' not in (wpscan_install.msg | default(''))"
+
+    # ===========================================
+    # Clone Guardian CLI Repository
+    # ===========================================
+    - name: Clone guardian-cli-deluxe repository
+      ansible.builtin.git:
+        repo: https://github.com/steveschofield/guardian-cli-deluxe.git
+        dest: "{{ guardian_dir }}"
+        force: yes
+      become_user: "{{ username }}"
+
+    - name: Install Python {{ guardian_python_version }} via pyenv
+      ansible.builtin.command:
+        argv:
+          - /bin/bash
+          - -lc
+          - |
+            export PYENV_ROOT="$HOME/.pyenv"
+            export PATH="$PYENV_ROOT/bin:$PATH"
+            eval "$(pyenv init --path)"
+            pyenv install -s {{ guardian_python_version }}
+      become_user: "{{ username }}"
+
+    - name: Remove existing Guardian virtual environment
+      ansible.builtin.file:
+        path: "{{ guardian_dir }}/venv"
+        state: absent
+      become_user: "{{ username }}"
+
+    - name: Create Python {{ guardian_python_version }} virtual environment for Guardian
+      ansible.builtin.command:
+        argv:
+          - /bin/bash
+          - -lc
+          - |
+            export PYENV_ROOT="$HOME/.pyenv"
+            "$PYENV_ROOT/versions/{{ guardian_python_version }}/bin/python" -m venv {{ guardian_dir }}/venv
+      become_user: "{{ username }}"
+
+    - name: Verify venv Python version is {{ guardian_python_version }}
+      ansible.builtin.command:
+        argv:
+          - /bin/bash
+          - -lc
+          - |
+            VER=$({{ guardian_dir }}/venv/bin/python --version 2>&1)
+            echo "$VER"
+            echo "$VER" | grep -q "{{ guardian_python_version }}" || { echo "FAIL: expected {{ guardian_python_version }}"; exit 1; }
+      become_user: "{{ username }}"
+      register: venv_python_version
+      changed_when: false
+
+    - name: Display venv Python version
+      ansible.builtin.debug:
+        msg: "Guardian venv Python version: {{ venv_python_version.stdout }}"
+
+    - name: Ensure pip exists in Guardian venv
+      ansible.builtin.command:
+        argv:
+          - /bin/bash
+          - -lc
+          - "cd {{ guardian_dir }} && ./venv/bin/python -m ensurepip --upgrade && ./venv/bin/python -m pip install --upgrade pip setuptools wheel"
+      become_user: "{{ username }}"
+
+    - name: Write .python-version file for pyenv compatibility
+      ansible.builtin.copy:
+        content: "{{ guardian_python_version }}"
+        dest: "{{ guardian_dir }}/.python-version"
+        owner: "{{ username }}"
+        mode: "0644"
+
+    - name: Check for Guardian setup script
+      ansible.builtin.stat:
+        path: "{{ guardian_dir }}/setup.sh"
+      register: guardian_setup_script
+
+    - name: Run Guardian setup script (with Go and pyenv on PATH)
+      ansible.builtin.command:
+        argv:
+          - /bin/bash
+          - -lc
+          - |
+            export PYENV_ROOT="$HOME/.pyenv"
+            export PATH="$PYENV_ROOT/bin:$PATH"
+            eval "$(pyenv init --path)"
+            export GOROOT="$HOME/.local/go"
+            export GOPATH="$HOME/go"
+            export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
+            cd {{ guardian_dir }}
+            source venv/bin/activate
+            chmod +x setup.sh
+            ./setup.sh 2>&1 | tee setup.log
+      become_user: "{{ username }}"
+      when: guardian_setup_script.stat.exists
+      timeout: 1800
+
+    - name: Check for Guardian requirements.txt
+      ansible.builtin.stat:
+        path: "{{ guardian_dir }}/requirements.txt"
+      register: guardian_requirements_file
+
+    - name: Install Guardian Python dependencies from requirements.txt
+      ansible.builtin.command:
+        argv:
+          - /bin/bash
+          - -lc
+          - "cd {{ guardian_dir }} && ./venv/bin/python -m pip install -r requirements.txt"
+      become_user: "{{ username }}"
+      when: guardian_requirements_file.stat.exists
+
+    - name: Fail when setup.sh is missing
+      ansible.builtin.fail:
+        msg: "Expected {{ guardian_dir }}/setup.sh, but it was not found."
+      when: not guardian_setup_script.stat.exists
+
+    # ===========================================
+    # Post-setup: Docker images & system config
+    # ===========================================
+    - name: Pull ZAP Docker image (if not already present)
+      ansible.builtin.command:
+        argv:
+          - docker
+          - pull
+          - ghcr.io/zaproxy/zaproxy:stable
+      become_user: "{{ username }}"
+      failed_when: false
+
+    # ===========================================
+    # Exploit-DB / SearchSploit
+    # ===========================================
+    - name: Clone Exploit-DB repository
+      ansible.builtin.git:
+        repo: https://gitlab.com/exploit-database/exploitdb.git
+        dest: "/opt/exploitdb"
+        depth: 1
+        force: yes
+      register: exploitdb_clone
+      failed_when: false
+
+    - name: Symlink searchsploit into PATH
+      ansible.builtin.file:
+        src: /opt/exploitdb/searchsploit
+        dest: /usr/local/bin/searchsploit
+        state: link
+      when: exploitdb_clone is not failed
+
+    - name: Configure searchsploit rc file
+      ansible.builtin.copy:
+        dest: "/home/{{ username }}/.searchsploit_rc"
+        owner: "{{ username }}"
+        mode: "0644"
+        content: |
+          package_array+=(EXPLOITDB "/opt/exploitdb")
+          package_array+=(EXPLOITDB_PAPERS "/opt/exploitdb/exploits")
+      when: exploitdb_clone is not failed
+
+    - name: Detect masscan binary path
+      ansible.builtin.command:
+        argv:
+          - /bin/bash
+          - -lc
+          - "command -v masscan"
+      register: masscan_bin
+      changed_when: false
+      failed_when: false
+
+    - name: Set masscan network capabilities for non-root use
+      ansible.builtin.command:
+        argv:
+          - setcap
+          - cap_net_raw,cap_net_admin+eip
+          - "{{ masscan_bin.stdout }}"
+      when: masscan_bin.rc == 0 and (masscan_bin.stdout | length > 0)
+      failed_when: false
+
+    # ===========================================
+    # Create Guardian Configuration Directories
+    # ===========================================
+    - name: Create Guardian config directory
+      ansible.builtin.file:
+        path: "/home/{{ username }}/.guardian"
+        state: directory
+        owner: "{{ username }}"
+        mode: "0755"
+
+    - name: Create Guardian reports directory
+      ansible.builtin.file:
+        path: "{{ guardian_dir }}/reports"
+        state: directory
+        owner: "{{ username }}"
+        mode: "0755"
+
+    - name: Create Guardian logs directory
+      ansible.builtin.file:
+        path: "{{ guardian_dir }}/logs"
+        state: directory
+        owner: "{{ username }}"
+        mode: "0755"
+
+    # ===========================================
+    # Display Final Status
+    # ===========================================
+    - name: Display Guardian installation message
+      ansible.builtin.debug:
+        msg: |
+
+          ============================================
+          Guardian CLI Enhanced Installation Complete!
+          ============================================
+
+          Guardian CLI Location: {{ guardian_dir }}
+
+          All security tools installed:
+            ✓ testssl          ✓ kiterunner      ✓ jwt_tool
+            ✓ graphqlcop       ✓ arjun           ✓ xsstrike
+            ✓ cmseek           ✓ retire          ✓ linkfinder
+            ✓ xnlinkfinder     ✓ paramspider     ✓ schemathesis
+            ✓ feroxbuster      ✓ godeye          ✓ corsscanner
+            ✓ trivy            ✓ bloodhound      ✓ metasploit
+
+          Python tools via pip:
+            ✓ dirsearch        ✓ wafw00f         ✓ sslyze
+            ✓ dnsrecon         ✓ dnsgen          ✓ linkfinder-py
+
+          Re-login or run: source ~/.profile
+          Then test: python -m cli.main workflow run --name recon --target <target>
+
+          ============================================

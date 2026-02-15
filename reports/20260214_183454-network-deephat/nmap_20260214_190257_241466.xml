@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.98 scan initiated Sat Feb 14 19:02:57 2026 as: /usr/lib/nmap/nmap -&#45;privileged -sV -sC -T4 -Pn -oX reports/20260214_183454/nmap_20260214_190257_241466.xml -p 445 -&#45;script smb-os-discovery,smb-enum-shares,smb-enum-users 192.168.1.232 -->
+<nmaprun scanner="nmap" args="/usr/lib/nmap/nmap -&#45;privileged -sV -sC -T4 -Pn -oX reports/20260214_183454/nmap_20260214_190257_241466.xml -p 445 -&#45;script smb-os-discovery,smb-enum-shares,smb-enum-users 192.168.1.232" start="1771113777" startstr="Sat Feb 14 19:02:57 2026" version="7.98" xmloutputversion="1.05">
+<scaninfo type="syn" protocol="tcp" numservices="1" services="445"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<hosthint><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.232" addrtype="ipv4"/>
+<address addr="00:15:5D:FC:98:5D" addrtype="mac" vendor="Microsoft"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<host starttime="1771113777" endtime="1771113777"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.232" addrtype="ipv4"/>
+<address addr="00:15:5D:FC:98:5D" addrtype="mac" vendor="Microsoft"/>
+<hostnames>
+<hostname name="win2008-1.localdomain" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="445"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="microsoft-ds" method="table" conf="3"/></port>
+</ports>
+<times srtt="4157" rttvar="5000" to="100000"/>
+</host>
+<runstats><finished time="1771113777" timestr="Sat Feb 14 19:02:57 2026" summary="Nmap done at Sat Feb 14 19:02:57 2026; 1 IP address (1 host up) scanned in 0.60 seconds" elapsed="0.60" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

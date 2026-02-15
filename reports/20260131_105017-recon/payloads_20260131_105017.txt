@@ -1,0 +1,8 @@
+/usr/bin/masscan -p 1-65535 --rate 5000 -oJ - 192.168.1.244
+/usr/bin/nmap -sV --script vuln -T4 -oX - -p 2121,25,8180,6697,139,3632,32948,445,6000,22,2049,5900,21,52281,51348,111,1099,54005,5432,513,80,8787,514,1524,6667,23,512,3306,53 192.168.1.244
+/usr/bin/nmap -sV -sC -T3 -oX - -p 53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389 -sU 192.168.1.244
+/home/kali/code/guardian-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244
+/home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-fwlwreom/testssl.json --severity LOW --quiet --ip one 192.168.1.244
+curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Header-Check/1.0 -L -k 192.168.1.244
+/usr/bin/nikto -h 192.168.1.244 -Tuning x -timeout 10 -nointeractive
+/home/kali/code/guardian-cli-deluxe/tools/.bin/nuclei -l reports/20260131_105017/nuclei_20260131_105017.txt -jsonl -o reports/20260131_105017/nuclei_20260131_113230.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50

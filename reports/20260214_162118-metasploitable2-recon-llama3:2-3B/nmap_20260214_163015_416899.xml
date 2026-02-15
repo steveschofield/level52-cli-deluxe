@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.98 scan initiated Sat Feb 14 16:30:15 2026 as: /usr/lib/nmap/nmap -&#45;privileged -sV -sC -T3 -Pn -oX reports/20260214_162118/nmap_20260214_163015_416899.xml -p 53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389 -sU 192.168.1.244 -->
+<nmaprun scanner="nmap" args="/usr/lib/nmap/nmap -&#45;privileged -sV -sC -T3 -Pn -oX reports/20260214_162118/nmap_20260214_163015_416899.xml -p 53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389 -sU 192.168.1.244" start="1771104615" startstr="Sat Feb 14 16:30:15 2026" version="7.98" xmloutputversion="1.05">
+<scaninfo type="udp" protocol="udp" numservices="35" services="53,67-69,88,111,123,135,137-138,161-162,389,445,500,514,520,623,1194,1434,1701,1812-1813,1900,2049,3389,3478,4500,4789,5004-5005,5060-5061,5353,11211"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<hosthint><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.244" addrtype="ipv4"/>
+<address addr="00:15:5D:FC:98:69" addrtype="mac" vendor="Microsoft"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<host starttime="1771104616" endtime="1771104766"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.244" addrtype="ipv4"/>
+<address addr="00:15:5D:FC:98:69" addrtype="mac" vendor="Microsoft"/>
+<hostnames>
+</hostnames>
+<ports><extraports state="closed" count="29">
+<extrareasons reason="port-unreach" count="29" proto="udp" ports="67-68,88,123,135,161-162,389,445,500,514,520,623,1194,1434,1701,1812-1813,1900,3389,3478,4500,4789,5004-5005,5060-5061,5353,11211"/>
+</extraports>
+<port protocol="udp" portid="53"><state state="open" reason="udp-response" reason_ttl="64"/><service name="domain" product="ISC BIND" version="9.4.2" method="probed" conf="10"><cpe>cpe:/a:isc:bind:9.4.2</cpe></service><script id="dns-recursion" output="Recursion appears to be enabled"/><script id="dns-nsid" output="&#xa;  bind.version: 9.4.2"><elem key="bind.version">9.4.2</elem>
+</script></port>
+<port protocol="udp" portid="69"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="tftp" method="table" conf="3"/></port>
+<port protocol="udp" portid="111"><state state="open" reason="udp-response" reason_ttl="64"/><service name="rpcbind" version="2" extrainfo="RPC #100000" method="probed" conf="10"/><script id="rpcinfo" output="&#xa;  program version    port/proto  service&#xa;  100000  2            111/tcp   rpcbind&#xa;  100000  2            111/udp   rpcbind&#xa;  100003  2,3,4       2049/tcp   nfs&#xa;  100003  2,3,4       2049/udp   nfs&#xa;  100005  1,2,3      41755/tcp   mountd&#xa;  100005  1,2,3      56259/udp   mountd&#xa;  100021  1,3,4      49727/tcp   nlockmgr&#xa;  100021  1,3,4      55521/udp   nlockmgr&#xa;  100024  1          50763/tcp   status&#xa;  100024  1          57281/udp   status&#xa;"><table key="100024">
+<table key="tcp">
+<elem key="port">50763</elem>
+<table key="version">
+<elem>1</elem>
+</table>
+</table>
+<table key="udp">
+<elem key="port">57281</elem>
+<table key="version">
+<elem>1</elem>
+</table>
+</table>
+</table>
+<table key="100003">
+<table key="tcp">
+<elem key="port">2049</elem>
+<table key="version">
+<elem>2</elem>
+<elem>3</elem>
+<elem>4</elem>
+</table>
+</table>
+<table key="udp">
+<elem key="port">2049</elem>
+<table key="version">
+<elem>2</elem>
+<elem>3</elem>
+<elem>4</elem>
+</table>
+</table>
+</table>
+<table key="100000">
+<table key="udp">
+<elem key="port">111</elem>
+<table key="version">
+<elem>2</elem>
+</table>
+</table>
+<table key="tcp">
+<elem key="port">111</elem>
+<table key="version">
+<elem>2</elem>
+</table>
+</table>
+</table>
+<table key="100021">
+<table key="tcp">
+<elem key="port">49727</elem>
+<table key="version">
+<elem>1</elem>
+<elem>3</elem>
+<elem>4</elem>
+</table>
+</table>
+<table key="udp">
+<elem key="port">55521</elem>
+<table key="version">
+<elem>1</elem>
+<elem>3</elem>
+<elem>4</elem>
+</table>
+</table>
+</table>
+<table key="100005">
+<table key="tcp">
+<elem key="port">41755</elem>
+<table key="version">
+<elem>1</elem>
+<elem>2</elem>
+<elem>3</elem>
+</table>
+</table>
+<table key="udp">
+<elem key="port">56259</elem>
+<table key="version">
+<elem>1</elem>
+<elem>2</elem>
+<elem>3</elem>
+</table>
+</table>
+</table>
+</script></port>
+<port protocol="udp" portid="137"><state state="open" reason="udp-response" reason_ttl="64"/><service name="netbios-ns" product="Microsoft Windows netbios-ns" extrainfo="workgroup: WORKGROUP" hostname="METASPLOITABLE" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service><script id="nbns-interfaces" output="&#xa;  hostname: METASPLOITABLE&#xa;  interfaces: &#xa;    192.168.1.244"><elem key="hostname">METASPLOITABLE</elem>
+<table key="interfaces">
+<elem>192.168.1.244</elem>
+</table>
+</script></port>
+<port protocol="udp" portid="138"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="netbios-dgm" method="table" conf="3"/></port>
+<port protocol="udp" portid="2049"><state state="open" reason="udp-response" reason_ttl="64"/><service name="nfs" version="2-4" extrainfo="RPC #100003" method="probed" conf="10"/></port>
+</ports>
+<hostscript><script id="nbstat" output="NetBIOS name: METASPLOITABLE, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: &lt;unknown&gt; (unknown)"/></hostscript><times srtt="5272" rttvar="1394" to="100000"/>
+</host>
+<runstats><finished time="1771104766" timestr="Sat Feb 14 16:32:46 2026" summary="Nmap done at Sat Feb 14 16:32:46 2026; 1 IP address (1 host up) scanned in 150.85 seconds" elapsed="150.85" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

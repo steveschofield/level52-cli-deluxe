@@ -1,0 +1,85 @@
+"""
+Prompt templates package with dynamic loading support
+
+Supports different prompt sets optimized for different LLMs:
+- default: Standard prompts (works with GPT-4, Claude, etc.)
+- llama3_2_3b: Optimized for Llama 3.2 3B and similar small models
+- llama3_1_8b: Balanced prompts for Llama 3.1 8B mid-size model
+- deepseek_r1_8b: Reasoning-focused prompts for DeepSeek-R1 8B
+- deephat_v1_7b: Red team focused prompts for DeepHat cybersecurity model
+"""
+
+import os
+import importlib
+
+
+def load_prompts(prompt_set: str = "default"):
+    """
+    Load prompt templates based on configuration.
+
+    Args:
+        prompt_set: Name of prompt set to load. Options:
+            - "default": Standard prompts (current)
+            - "llama3_2_3b": Optimized for Llama 3.2 3B
+
+    Returns:
+        dict: Dictionary of all prompt constants
+    """
+    if prompt_set == "llama3_2_3b":
+        from . import llama3_2_3b as prompt_module
+    else:
+        # Default prompts - load from current directory
+        prompt_module = importlib.import_module("ai.prompt_templates")
+
+    # Extract all prompt constants
+    prompts = {}
+    for attr in dir(prompt_module):
+        if attr.isupper() and "PROMPT" in attr:
+            prompts[attr] = getattr(prompt_module, attr)
+
+    return prompts
+
+
+# Default behavior: Load standard prompts for backward compatibility
+from .planner import (
+    PLANNER_SYSTEM_PROMPT,
+    PLANNER_DECISION_PROMPT,
+    PLANNER_ANALYSIS_PROMPT,
+)
+from .tool_selector import (
+    TOOL_SELECTOR_SYSTEM_PROMPT,
+    TOOL_SELECTION_PROMPT,
+    TOOL_PARAMETERS_PROMPT,
+)
+from .analyst import (
+    ANALYST_SYSTEM_PROMPT,
+    ANALYST_INTERPRET_PROMPT,
+    ANALYST_CORRELATION_PROMPT,
+    ANALYST_FALSE_POSITIVE_PROMPT,
+)
+from .reporter import (
+    REPORTER_SYSTEM_PROMPT,
+    REPORTER_EXECUTIVE_SUMMARY_PROMPT,
+    REPORTER_TECHNICAL_FINDINGS_PROMPT,
+    REPORTER_REMEDIATION_PROMPT,
+    REPORTER_AI_TRACE_PROMPT,
+)
+
+__all__ = [
+    "load_prompts",
+    "PLANNER_SYSTEM_PROMPT",
+    "PLANNER_DECISION_PROMPT",
+    "PLANNER_ANALYSIS_PROMPT",
+    "TOOL_SELECTOR_SYSTEM_PROMPT",
+    "TOOL_SELECTION_PROMPT",
+    "TOOL_PARAMETERS_PROMPT",
+    "ANALYST_SYSTEM_PROMPT",
+    "ANALYST_INTERPRET_PROMPT",
+    "ANALYST_CORRELATION_PROMPT",
+    "ANALYST_FALSE_POSITIVE_PROMPT",
+    "REPORTER_SYSTEM_PROMPT",
+    "REPORTER_EXECUTIVE_SUMMARY_PROMPT",
+    "REPORTER_TECHNICAL_FINDINGS_PROMPT",
+    "REPORTER_REMEDIATION_PROMPT",
+    "REPORTER_AI_TRACE_PROMPT",
+]

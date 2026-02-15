@@ -1,0 +1,20 @@
+services:
+  guardian-kali:
+    build:
+      context: .
+      dockerfile: Dockerfile.kali
+    image: guardian-kali:latest
+    container_name: guardian-kali
+    env_file:
+      - .env
+    ports:
+      - "3390:3390"
+    volumes:
+      - ./reports:/opt/guardian/reports
+      - ./logs:/opt/guardian/logs
+      - ./config:/opt/guardian/config
+      - ./workflows:/opt/guardian/workflows
+    stdin_open: true
+    tty: true
+    restart: "no"
+

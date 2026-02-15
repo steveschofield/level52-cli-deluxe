@@ -1,0 +1,126 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Guardian CLI Deluxe - Vagrant Configuration for Kali Linux
+# This Vagrantfile sets up a Kali Linux VM with all Guardian tools
+
+Vagrant.configure("2") do |config|
+  # Use official Kali Linux box
+  config.vm.box = "kalilinux/rolling"
+  config.vm.box_version = ">= 2024.1.0"
+
+  # VM hostname
+  config.vm.hostname = "guardian-kali"
+
+  # Network configuration
+  # Private network for internal testing
+  config.vm.network "private_network", type: "dhcp"
+
+  # Port forwarding for common services
+  config.vm.network "forwarded_port", guest: 8080, host: 8080  # ZAP Proxy
+  config.vm.network "forwarded_port", guest: 8443, host: 8443  # ZAP HTTPS
+  config.vm.network "forwarded_port", guest: 7474, host: 7474  # Neo4j (BloodHound)
+  config.vm.network "forwarded_port", guest: 7687, host: 7687  # Neo4j Bolt
+
+  # VM resources
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "Guardian-Kali-Linux"
+    vb.gui = false
+    vb.memory = "4096"  # 4GB RAM
+    vb.cpus = 2
+
+    # Enable nested virtualization for Docker
+    vb.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
+  end
+
+  # Synced folder for Guardian CLI repository
+  # Mount your local guardian-cli-deluxe directory
+  config.vm.synced_folder "../", "/home/vagrant/guardian-cli-deluxe",
+    owner: "vagrant",
+    group: "vagrant"
+
+  # Synced folder for reports output
+  config.vm.synced_folder "./reports", "/home/vagrant/reports",
+    create: true,
+    owner: "vagrant",
+    group: "vagrant"
+
+  # Provisioning with shell script for initial setup
+  config.vm.provision "shell", inline: <<-SHELL
+    # Update system
+    apt-get update
+    apt-get upgrade -y
+
+    # Install Ansible if not present
+    apt-get install -y ansible
+
+    # Ensure pip is available
+    apt-get install -y python3-pip
+  SHELL
+
+  # Provision with Ansible playbook
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.playbook = "local_playbook_kali.yml"
+    ansible.verbose = true
+    ansible.install = true
+    ansible.limit = "all"
+  end
+
+  # Post-provisioning setup
+  config.vm.provision "shell", privileged: false, inline: <<-SHELL
+    # Setup Python virtual environment for Guardian
+    cd /home/vagrant/guardian-cli-deluxe
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install -e .
+
+    # Create convenient aliases
+    echo 'alias guardian-activate="cd /home/vagrant/guardian-cli-deluxe && source venv/bin/activate"' >> ~/.bashrc
+    echo 'alias guardian-run="cd /home/vagrant/guardian-cli-deluxe && source venv/bin/activate && python -m cli.main"' >> ~/.bashrc
+
+    # Display completion message
+    echo ""
+    echo "========================================="
+    echo "Guardian CLI Kali VM Setup Complete!"
+    echo "========================================="
+    echo ""
+    echo "To get started:"
+    echo "  1. vagrant ssh"
+    echo "  2. guardian-activate"
+    echo "  3. ./setup.sh"
+    echo "  4. python -m cli.main workflow run --name recon --target <target>"
+    echo ""
+    echo "Or use the shortcut:"
+    echo "  guardian-run workflow run --name recon --target <target>"
+    echo ""
+    echo "========================================="
+  SHELL
+
+  # Message to display after 'vagrant up'
+  config.vm.post_up_message = <<-MESSAGE
+    ========================================
+    Guardian CLI Kali Linux VM is ready!
+    ========================================
+
+    Connect to VM:
+      vagrant ssh
+
+    Activate Guardian environment:
+      guardian-activate
+
+    Run Guardian:
+      guardian-run workflow run --name recon --target <target>
+
+    Access from host:
+      ZAP Proxy: http://localhost:8080
+      Neo4j: http://localhost:7474
+
+    VM Management:
+      Start: vagrant up
+      Stop: vagrant halt
+      Restart: vagrant reload
+      Destroy: vagrant destroy
+
+    ========================================
+  MESSAGE
+end

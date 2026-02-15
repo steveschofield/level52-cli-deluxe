@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.98 scan initiated Sat Jan 31 07:43:37 2026 as: /usr/lib/nmap/nmap -&#45;privileged -T4 -oX - -sn -PE -PP -PM 192.168.1.232 -->
+<nmaprun scanner="nmap" args="/usr/lib/nmap/nmap -&#45;privileged -T4 -oX - -sn -PE -PP -PM 192.168.1.232" start="1769863417" startstr="Sat Jan 31 07:43:37 2026" version="7.98" xmloutputversion="1.05">
+<verbose level="0"/>
+<debugging level="0"/>
+<host><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.232" addrtype="ipv4"/>
+<address addr="00:15:5D:FC:98:5D" addrtype="mac" vendor="Microsoft"/>
+<hostnames>
+<hostname name="win2008-1.localdomain" type="PTR"/>
+</hostnames>
+<times srtt="6994" rttvar="6994" to="100000"/>
+</host>
+<runstats><finished time="1769863417" timestr="Sat Jan 31 07:43:37 2026" summary="Nmap done at Sat Jan 31 07:43:37 2026; 1 IP address (1 host up) scanned in 0.08 seconds" elapsed="0.08" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

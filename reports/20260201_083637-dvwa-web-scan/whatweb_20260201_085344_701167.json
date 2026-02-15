@@ -1,0 +1,5 @@
+[
+{"target":"http://192.168.1.12:5280","http_status":302,"request_config":{"headers":{"User-Agent":"Guardian-Pentest-Tool"}},"plugins":{"Apache":{"version":["2.4.25"]},"Cookies":{"string":["PHPSESSID","security"]},"Country":{"string":["RESERVED"],"module":["ZZ"]},"HTTPServer":{"os":["Debian Linux"],"string":["Apache/2.4.25 (Debian)"]},"IP":{"string":["192.168.1.12"]},"RedirectLocation":{"string":["login.php"]}}}
+,
+{"target":"http://192.168.1.12:5280/login.php","http_status":200,"request_config":{"headers":{"User-Agent":"Guardian-Pentest-Tool","Cookie":"PHPSESSID=f5paijqtjeoa3ovs7kojp42cd4; PHPSESSID=f5paijqtjeoa3ovs7kojp42cd4; security=low"}},"plugins":{"Apache":{"version":["2.4.25"]},"Country":{"string":["RESERVED"],"module":["ZZ"]},"DVWA":{},"HTTPServer":{"os":["Debian Linux"],"string":["Apache/2.4.25 (Debian)"]},"IP":{"string":["192.168.1.12"]},"PasswordField":{"string":["password"]},"PHP":{},"Title":{"string":["Login :: Damn Vulnerable Web Application (DVWA) v1.10 *Development*"]}}}
+]

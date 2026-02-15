@@ -1,0 +1,16 @@
+/usr/bin/nmap -T4 -oX - -sn -PE -PP -PM 192.168.1.232
+/usr/bin/masscan -p 1-65535 --rate 5000 -oJ - 192.168.1.232
+/usr/bin/nmap -sV -sC -T2 -oX - -sS -Pn -f -D RND:5 --scan-delay 50ms --max-rate 200 --top-ports 1000 192.168.1.232
+/usr/bin/nmap -sV -sC -T3 -oX - -p 1-65535 -sS 192.168.1.232
+/usr/bin/nmap -sV -sC -T3 -oX - -p 53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389 -sU 192.168.1.232
+/usr/bin/nmap -sV -sC -T3 -oX - -p 53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389 -sU -sV --version-intensity 0 192.168.1.232
+/usr/bin/nmap -sV -sC -T3 -oX - -sY --top-ports 50 192.168.1.232
+/usr/bin/nmap -sV -sC -T4 -oX - -p 49175,53,139,49184,47001,49153,49180,445,135,49179,53,135,139,445,3389,49153,49154,49175,53,135,139,445,3389,47001,49152,49153,49154,49175,49179,49180,49184,53,67,53,67 -sV -sC 192.168.1.232
+/usr/bin/nmap -sV -sC -T4 -oX - -p 445,445,445,445 --script smb-os-discovery,smb-enum-shares,smb-enum-users 192.168.1.232
+/usr/bin/smbclient -L //192.168.1.232 -N
+/usr/sbin/showmount -e 192.168.1.232
+/usr/bin/onesixtyone -q 192.168.1.232 public
+/usr/bin/snmpwalk -v 2c -c public 192.168.1.232
+/usr/bin/nmap -sV -sC -T4 -oX - -p 3389,3389,3389 --script rdp-enum-encryption,rdp-ntlm-info 192.168.1.232
+/home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-29c7dkec/testssl.json --severity LOW --quiet --ip one 192.168.1.232
+/usr/bin/nmap -sV --script vuln -T4 -oX - -p 49175,53,139,49184,47001,49153,49180,445,135,49179,53,135,139,445,3389,49153,49154,49175,53,135,139,445,3389,47001,49152,49153,49154,49175,49179,49180,49184,53,67,53,67,53,67,139,445,3389,49152,49153,49154,49175,49179,49180,49184,445 192.168.1.232

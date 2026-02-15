@@ -1,0 +1,54 @@
+# Guardian Configuration (Override Layer)
+#
+# When running from the repo, Guardian loads `config/guardian.yaml` by default and (if present)
+# deep-merges this repo-root `guardian.yaml` on top as an override layer.
+#
+# If you run Guardian with `--config ~/.guardian/guardian.yaml`, this file is NOT automatically applied.#
+#ai:
+  # Supported providers: gemini, ollama, openrouter, huggingface
+  #
+  # Gemini (Google) (uncomment to use):
+  # - API key goes in env var: GOOGLE_API_KEY (do NOT put keys in this file)
+  # - Guardian uses the google-genai SDK when installed.
+  # - For higher limits without an API key, use Vertex AI + ADC:
+  #   1) gcloud auth application-default login
+  #   2) set vertexai: true and project: "<your project id or project number>"
+  # provider: gemini
+  # model: "gemini-2.5-flash"
+  # temperature: 0.2
+  # vertexai: true
+  # project: "<your-gcp-project-id-or-number>"
+  # location: "us-central1"
+
+  # OpenRouter (uncomment to use):
+  # provider: openrouter
+  # model: "xiaomi/mimo-v2-flash"
+  # base_url: "https://openrouter.ai/api/v1"
+  #
+  # Ollama (uncomment to use):
+  # provider: ollama
+  # model: "llama3.1:8b"
+  # base_url: "http://127.0.0.1:11434"
+  # temperature: 0.2
+  # context_window: 8192   # Ollama num_ctx
+  # max_input_chars: 40000
+  #
+  # Hugging Face Serverless Inference API (uncomment to use):
+  # - Set env HF_TOKEN (or HUGGINGFACEHUB_API_TOKEN)
+  # provider: huggingface
+  # model: "meta-llama/Meta-Llama-3-8B-Instruct"
+  # base_url: "https://router.huggingface.co/hf-inference/models"
+  # hf_max_retries: 4
+  # Overall time budget for an LLM call (seconds). If you hit timeouts, increase this and `ai.timeout`.
+  #llm_timeout_seconds: 1200
+  # Match provider-level timeout with agent budget.
+  #timeout: 1200
+
+scope: {}
+# Example:
+# scope:
+#   blacklist:
+#     - 127.0.0.0/8
+#     - 10.0.0.0/8
+#     - 172.16.0.0/12
+#     - 192.168.0.0/24

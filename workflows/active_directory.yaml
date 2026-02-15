@@ -1,0 +1,306 @@
+# Active Directory Security Assessment Workflow
+# Comprehensive AD attack path analysis using BloodHound MCP
+#
+# Prerequisites:
+# 1. SharpHound data collection completed and imported to Neo4j
+# 2. Neo4j database running with BloodHound data
+# 3. BloodHound MCP Docker image pulled:
+#    docker pull ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+# 4. MCP server configured in guardian.yaml
+#
+# Usage:
+#   guardian workflow run --name active_directory --target domain.local
+#   guardian workflow run --name ad --target domain.local  # alias
+
+name: active_directory
+description: Active Directory attack path analysis and security assessment
+aliases:
+  - ad
+  - bloodhound
+
+# Requires BloodHound MCP server
+requires:
+  - mcp.servers.bloodhound
+
+steps:
+  # Phase 1: Domain Reconnaissance
+  - name: domain_stats
+    type: tool
+    tool: bloodhound
+    objective: "Get domain statistics and overview"
+    parameters:
+      tool: get_domain_stats
+
+  - name: domain_controllers
+    type: tool
+    tool: bloodhound
+    objective: "Enumerate domain controllers"
+    parameters:
+      tool: get_domain_controllers
+    dependencies:
+      - domain_stats
+
+  - name: domain_trusts
+    type: tool
+    tool: bloodhound
+    objective: "Map domain trust relationships"
+    parameters:
+      tool: get_domain_trusts
+    dependencies:
+      - domain_stats
+
+  - name: forest_trusts
+    type: tool
+    tool: bloodhound
+    objective: "Map forest trust relationships"
+    parameters:
+      tool: get_forest_trusts
+    dependencies:
+      - domain_stats
+
+  # Phase 2: Privileged Account Analysis
+  - name: domain_admins
+    type: tool
+    tool: bloodhound
+    objective: "Enumerate Domain Admins group members"
+    parameters:
+      tool: get_domain_admins
+    dependencies:
+      - domain_stats
+
+  - name: enterprise_admins
+    type: tool
+    tool: bloodhound
+    objective: "Enumerate Enterprise Admins group members"
+    parameters:
+      tool: get_enterprise_admins
+    dependencies:
+      - domain_stats
+
+  - name: privileged_users
+    type: tool
+    tool: bloodhound
+    objective: "Identify all privileged users"
+    parameters:
+      tool: get_privileged_users
+    dependencies:
+      - domain_admins
+      - enterprise_admins
+
+  - name: dcsync_users
+    type: tool
+    tool: bloodhound
+    objective: "Find users with DCSync rights"
+    parameters:
+      tool: get_users_with_dcsync
+    dependencies:
+      - privileged_users
+
+  # Phase 3: Attack Path Analysis
+  - name: paths_to_da
+    type: tool
+    tool: bloodhound
+    objective: "Find shortest paths to Domain Admins"
+    parameters:
+      tool: find_path_to_da
+      max_depth: 15
+    dependencies:
+      - domain_admins
+
+  - name: paths_to_highvalue
+    type: tool
+    tool: bloodhound
+    objective: "Find paths to high-value targets"
+    parameters:
+      tool: find_path_to_highvalue
+      max_depth: 10
+    dependencies:
+      - domain_stats
+
+  # Phase 4: Kerberos Attack Vectors
+  - name: kerberoastable_users
+    type: tool
+    tool: bloodhound
+    objective: "Find Kerberoastable service accounts"
+    parameters:
+      tool: get_kerberoastable_users
+    dependencies:
+      - domain_stats
+
+  - name: asreproastable_users
+    type: tool
+    tool: bloodhound
+    objective: "Find AS-REP roastable users (no preauth)"
+    parameters:
+      tool: get_asreproastable_users
+    dependencies:
+      - domain_stats
+
+  - name: users_with_spn
+    type: tool
+    tool: bloodhound
+    objective: "Enumerate users with SPNs set"
+    parameters:
+      tool: get_users_with_spn
+    dependencies:
+      - kerberoastable_users
+
+  # Phase 5: Delegation Analysis
+  - name: unconstrained_delegation
+    type: tool
+    tool: bloodhound
+    objective: "Find unconstrained delegation (critical)"
+    parameters:
+      tool: get_unconstrained_delegation
+    dependencies:
+      - domain_stats
+
+  - name: constrained_delegation
+    type: tool
+    tool: bloodhound
+    objective: "Find constrained delegation"
+    parameters:
+      tool: get_constrained_delegation
+    dependencies:
+      - domain_stats
+
+  - name: rbcd_targets
+    type: tool
+    tool: bloodhound
+    objective: "Find Resource-Based Constrained Delegation targets"
+    parameters:
+      tool: get_rbcd_targets
+    dependencies:
+      - domain_stats
+
+  # Phase 6: ACL Abuse Analysis
+  - name: acl_abuse_paths
+    type: tool
+    tool: bloodhound
+    objective: "Find ACL abuse opportunities"
+    parameters:
+      tool: get_acl_abuse_paths
+    dependencies:
+      - domain_stats
+
+  - name: genericall_on_users
+    type: tool
+    tool: bloodhound
+    objective: "Find GenericAll permissions on users"
+    parameters:
+      tool: get_genericall_on_users
+    dependencies:
+      - acl_abuse_paths
+
+  - name: writedacl_paths
+    type: tool
+    tool: bloodhound
+    objective: "Find WriteDACL abuse paths"
+    parameters:
+      tool: get_writedacl_paths
+    dependencies:
+      - acl_abuse_paths
+
+  - name: writeowner_paths
+    type: tool
+    tool: bloodhound
+    objective: "Find WriteOwner abuse paths"
+    parameters:
+      tool: get_writeowner_paths
+    dependencies:
+      - acl_abuse_paths
+
+  # Phase 7: Computer Analysis
+  - name: computers_without_laps
+    type: tool
+    tool: bloodhound
+    objective: "Find computers without LAPS"
+    parameters:
+      tool: get_computers_without_laps
+    dependencies:
+      - domain_stats
+
+  - name: computers_with_sessions
+    type: tool
+    tool: bloodhound
+    objective: "Find computers with active admin sessions"
+    parameters:
+      tool: get_computers_with_sessions
+    dependencies:
+      - domain_stats
+
+  # Phase 8: Group Analysis
+  - name: nested_group_membership
+    type: tool
+    tool: bloodhound
+    objective: "Analyze nested group memberships"
+    parameters:
+      tool: get_nested_group_membership
+    dependencies:
+      - privileged_users
+
+  # Phase 9: Attack Surface Summary
+  - name: attack_surface_stats
+    type: tool
+    tool: bloodhound
+    objective: "Generate attack surface summary"
+    parameters:
+      tool: get_attack_surface_stats
+    dependencies:
+      - paths_to_da
+      - kerberoastable_users
+      - asreproastable_users
+      - unconstrained_delegation
+      - acl_abuse_paths
+
+  # Phase 10: Analysis and Reporting
+  - name: analyze_ad_security
+    type: analysis
+    agent: analyst
+    objective: |
+      Analyze Active Directory security posture based on BloodHound findings:
+      1. Identify critical attack paths to Domain Admin
+      2. Assess Kerberos attack surface (Kerberoasting, AS-REP roasting)
+      3. Evaluate delegation vulnerabilities (unconstrained, constrained, RBCD)
+      4. Review ACL misconfigurations and abuse paths
+      5. Check for LAPS deployment gaps
+      6. Analyze trust relationships for lateral movement risks
+      7. Prioritize remediation based on attack path severity
+
+  - name: generate_ad_report
+    type: report
+    agent: reporter
+    format: markdown
+    template: active_directory
+    sections:
+      - executive_summary
+      - attack_paths
+      - kerberos_vulnerabilities
+      - delegation_issues
+      - acl_misconfigurations
+      - privileged_accounts
+      - computer_security
+      - trust_analysis
+      - remediation_priorities
+
+settings:
+  max_parallel_tools: 3  # BloodHound queries can run in parallel
+  require_confirmation: false  # Read-only analysis
+  save_intermediate: true
+  tool_timeout: 300
+
+# Risk scoring thresholds
+risk_scoring:
+  critical:
+    - paths_to_da > 0
+    - unconstrained_delegation > 0
+    - dcsync_users > 1
+  high:
+    - kerberoastable_users > 5
+    - asreproastable_users > 0
+    - acl_abuse_paths > 3
+  medium:
+    - computers_without_laps > 10
+    - constrained_delegation > 5
+  low:
+    - nested_group_membership_depth > 3

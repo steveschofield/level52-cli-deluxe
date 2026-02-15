@@ -1,0 +1,127 @@
+++++++++++++++++++++++++++++++++
+Setup kali VM or container
+https://code.visualstudio.com/docs/?dv=linuxarm64_deb
+cd ~/Downloads
+sudo apt install ./<filename.deb>
+mkdir ~/code
+cd ~/code
+git clone https://github.com/steveschofield/guardian-cli-deluxe
+─$ cd ~/code/guardian-cli-deluxe 
+code .
+
+#Install VSCode Extensions
+
+python language support - addons
+markdown all in one (Yu Zhang)
+Office Viewer (database client)
+Codex (by OpenAI)
+GitHub Repositories
+GitHub Pull Requests (to sign into GitHub)
+
+#Install Docker
+sudo apt install ansible
+cd ~/code/guardian-cli-deluxe/ansible-playbooks
+ansible-playbook -K local_playbook_kali.yml 
+
+┌──(kali㉿kali)-[~/whatcode/guardian-cli-deluxe/ansible-playbooks]
+└─$ sudo systemctl enable docker
+Synchronizing state of docker.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install enable docker
+                                                                             
+┌──(kali㉿kali)-[~/code/guardian-cli-deluxe/ansible-playbooks]
+└─$ sudo systemctl start docker 
+
+#Download ZAP container - READme.md has paths
+
+Setup Python - ReadME.md has instructions
+python3 -m venv venv
+source venv/bin/activate
+pip install -e .
+
+Then run...
+./setup.sh
+
+
+Setup New Kali VM
+===================
+
+Setup a new machine (non docker)
+python3 -m venv venv
+source venv/bin/activate
+pip install -e .
+
+sudo apt instll code-oss (visual code)
+git clone https://github.com/steveschofield/guardian-cli-deluxe
+./setup.sh
+
+============
+
+export LSG_ALLOW_PRIVATE=1
+export LSG_LOG_LLM_REQUESTS=1
+export LSG_DEBUG_SAVE_OUTPUT=1
+export LLM_FAST_MODEL=xiaomi/mimo-v2-flash:free
+export LLM_PROVIDER=openrouter
+export LLM_BASE_URL=https://openrouter.ai/api/v1
+export LLM_SMART_MODEL=xiaomi/mimo-v2-flash:free
+export LLM_CODE_MODEL=xiaomi/mimo-v2-flash:free
+export LLM_MODEL=xiaomi/mimo-v2-flash:free
+# OpenRouter API key export removed
+
+export LSG_ALLOW_PRIVATE=1
+export LSG_LOG_LLM_REQUESTS=1
+export LSG_DEBUG_SAVE_OUTPUT=1
+export LLM_FAST_MODEL=llama3.1:8b
+export LLM_PROVIDER=ollama
+export LLM_BASE_URL=http://192.168.1.69:11434/v1
+export LLM_SMART_MODEL=llama3.1:8b
+export LLM_CODE_MODEL=llama3.1:8b
+export LLM_MODEL=llama3.1:8b
+
+export LSG_ALLOW_PRIVATE=1
+export LSG_LOG_LLM_REQUESTS=1
+export LSG_DEBUG_SAVE_OUTPUT=1
+export LLM_FAST_MODEL=gurubot/gpt-oss-derestricted:20b
+export LLM_PROVIDER=ollama
+export LLM_BASE_URL=http://192.168.1.69:11434/v1
+export LLM_SMART_MODEL=gurubot/gpt-oss-derestricted:20b
+export LLM_CODE_MODEL=gurubot/gpt-oss-derestricted:20b
+export LLM_MODEL=gurubot/gpt-oss-derestricted:20b
+
+python -m cli.main workflow run --name autonomous --target http://192.168.1.130:3000
+python -m cli.main workflow run --name network --target https://juiceshop.ss.local
+ 
+# Install Powershell on Kali Linux
+# 1. Update your system first
+sudo apt update && sudo apt upgrade -y
+
+# 2. Install required dependencies (if not already present)
+sudo apt install -y wget tar libc6 libgcc-s1 libgssapi-krb5-2 libicu72 zlib1g libunwind8 libssl3
+
+# 3. Download the latest stable arm64 tar.gz
+# Check https://github.com/PowerShell/PowerShell/releases for the newest version
+# Example with 7.5.4 (adjust the version number if newer available)
+wget https://github.com/PowerShell/PowerShell/releases/download/v7.5.4/powershell-7.5.4-linux-arm64.tar.gz -O /tmp/powershell.tar.gz
+
+# 4. Create install directory
+sudo mkdir -p /opt/microsoft/powershell/7
+
+# 5. Extract the archive
+sudo tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
+
+# 6. Set execute permissions
+sudo chmod +x /opt/microsoft/powershell/7/pwsh
+
+# 7. Create symlink so you can run 'pwsh' from anywhere
+sudo ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
+
+# 8. Clean up
+rm /tmp/powershell.tar.gz
+
+pwsh
+
+
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+sudo apt update
+sudo apt install gh -y

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.98 scan initiated Sat Jan 31 08:30:33 2026 as: /usr/lib/nmap/nmap -&#45;privileged -sV -sC -T3 -oX - -sY -&#45;top-ports 50 192.168.1.232 -->
+<nmaprun scanner="nmap" args="/usr/lib/nmap/nmap -&#45;privileged -sV -sC -T3 -oX - -sY -&#45;top-ports 50 192.168.1.232" start="1769866233" startstr="Sat Jan 31 08:30:33 2026" version="7.98" xmloutputversion="1.05">
+<scaninfo type="sctpinit" protocol="sctp" numservices="50" services="7,9,20-22,80,179,443,1167,1812-1813,2049,2225,2427,2904-2905,2944-2945,3097,3565,3863-3864,3868,4739-4740,5060-5061,5090-5091,5672,5675,6704-6706,7626,8471,9082,9084,9899-9902,11997-11999,14001,20049,29118,29168-29169"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<hosthint><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.232" addrtype="ipv4"/>
+<address addr="00:15:5D:FC:98:5D" addrtype="mac" vendor="Microsoft"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<host starttime="1769866233" endtime="1769866241"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.232" addrtype="ipv4"/>
+<address addr="00:15:5D:FC:98:5D" addrtype="mac" vendor="Microsoft"/>
+<hostnames>
+<hostname name="win2008-1.localdomain" type="PTR"/>
+</hostnames>
+<ports><extraports state="filtered" count="50">
+<extrareasons reason="no-response" count="47" proto="sctp" ports="7,9,20-22,80,443,1167,1812-1813,2049,2225,2427,2904-2905,2944-2945,3097,3565,3863-3864,3868,4739-4740,5060-5061,5090-5091,5675,6704-6706,7626,8471,9082,9084,9899-9902,11997-11999,20049,29118,29168-29169"/>
+<extrareasons reason="proto-unreach" count="3" proto="sctp" ports="179,5672,14001"/>
+</extraports>
+</ports>
+<times srtt="4035" rttvar="2325" to="100000"/>
+</host>
+<runstats><finished time="1769866241" timestr="Sat Jan 31 08:30:41 2026" summary="Nmap done at Sat Jan 31 08:30:41 2026; 1 IP address (1 host up) scanned in 7.38 seconds" elapsed="7.38" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

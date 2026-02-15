@@ -1,0 +1,6 @@
+http://192.168.1.12:3000
+http://192.168.1.12:3000/runtime.js
+http://192.168.1.12:3000/polyfills.js
+http://192.168.1.12:3000/styles.css
+http://192.168.1.12:3000/main.js
+http://192.168.1.12:3000/vendor.js

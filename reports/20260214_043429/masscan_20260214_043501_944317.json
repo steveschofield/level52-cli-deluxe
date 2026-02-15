@@ -1,0 +1,59 @@
+[
+{   "ip": "192.168.1.244",   "timestamp": "1771061702", "ports": [ {"port": 139, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061704", "ports": [ {"port": 5900, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061704", "ports": [ {"port": 57075, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061704", "ports": [ {"port": 514, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061705", "ports": [ {"port": 57240, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061707", "ports": [ {"port": 55543, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061708", "ports": [ {"port": 23, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061708", "ports": [ {"port": 2121, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061708", "ports": [ {"port": 513, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061710", "ports": [ {"port": 445, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061711", "ports": [ {"port": 3306, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061714", "ports": [ {"port": 111, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061714", "ports": [ {"port": 8009, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061717", "ports": [ {"port": 53, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061717", "ports": [ {"port": 25, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061718", "ports": [ {"port": 6667, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061718", "ports": [ {"port": 8787, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061720", "ports": [ {"port": 1524, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061721", "ports": [ {"port": 8180, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061721", "ports": [ {"port": 21, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061723", "ports": [ {"port": 22, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061725", "ports": [ {"port": 5432, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061725", "ports": [ {"port": 80, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061725", "ports": [ {"port": 1099, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061726", "ports": [ {"port": 2049, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061726", "ports": [ {"port": 58544, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061726", "ports": [ {"port": 3632, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061726", "ports": [ {"port": 6697, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+,
+{   "ip": "192.168.1.244",   "timestamp": "1771061727", "ports": [ {"port": 512, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 64} ] }
+]

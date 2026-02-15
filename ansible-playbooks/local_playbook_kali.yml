@@ -1,0 +1,452 @@
+---
+# Guardian CLI Deluxe - Kali Linux Setup Playbook
+# This playbook installs all required security tools for Guardian CLI
+# Usage: ansible-playbook -K local_playbook_kali.yml
+
+- name: Setup Guardian CLI Deluxe on Kali Linux
+  hosts: localhost
+  connection: local
+  become: yes
+  vars:
+    go_tools_dir: "/opt/go-tools"
+    tools_dir: "/opt/guardian-tools"
+    user_home: "{{ lookup('env', 'HOME') }}"
+    normal_user: "{{ lookup('env', 'USER') }}"
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    # Base dependencies
+    - name: Install base dependencies
+      apt:
+        name:
+          - git
+          - curl
+          - wget
+          - build-essential
+          - python3
+          - python3-pip
+          - python3-venv
+          - golang-go
+          - npm
+          - nodejs
+          - cargo
+          - rustc
+          - docker.io
+          - docker-compose
+        state: present
+
+    - name: Enable and start Docker service
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+    - name: Add user to docker group
+      user:
+        name: "{{ normal_user }}"
+        groups: docker
+        append: yes
+
+    # Create directories for tools
+    - name: Create tools directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: "{{ normal_user }}"
+        group: "{{ normal_user }}"
+      loop:
+        - "{{ go_tools_dir }}"
+        - "{{ tools_dir }}"
+        - "{{ user_home }}/.local/bin"
+
+    # Install testssl.sh
+    - name: Clone testssl.sh
+      git:
+        repo: https://github.com/drwetter/testssl.sh.git
+        dest: "{{ tools_dir }}/testssl"
+        version: master
+        update: yes
+      become_user: "{{ normal_user }}"
+
+    - name: Create testssl symlink
+      file:
+        src: "{{ tools_dir }}/testssl/testssl.sh"
+        dest: /usr/local/bin/testssl
+        state: link
+
+    # Install kiterunner
+    - name: Download and install kiterunner
+      block:
+        - name: Get latest kiterunner release
+          uri:
+            url: https://api.github.com/repos/assetnote/kiterunner/releases/latest
+            return_content: yes
+          register: kr_release
+
+        - name: Download kiterunner
+          get_url:
+            url: "{{ kr_release.json.assets | selectattr('name', 'match', '.*linux.*amd64.*') | map(attribute='browser_download_url') | first }}"
+            dest: "/tmp/kiterunner.tar.gz"
+            mode: '0644'
+
+        - name: Extract kiterunner
+          unarchive:
+            src: /tmp/kiterunner.tar.gz
+            dest: /usr/local/bin
+            remote_src: yes
+
+    # Install jwt_tool
+    - name: Clone jwt_tool
+      git:
+        repo: https://github.com/ticarpi/jwt_tool.git
+        dest: "{{ tools_dir }}/jwt_tool"
+        version: master
+        update: yes
+      become_user: "{{ normal_user }}"
+
+    - name: Create jwt_tool symlink
+      file:
+        src: "{{ tools_dir }}/jwt_tool/jwt_tool.py"
+        dest: /usr/local/bin/jwt_tool
+        state: link
+
+    # Install graphql-cop
+    - name: Clone graphql-cop
+      git:
+        repo: https://github.com/dolevf/graphql-cop.git
+        dest: "{{ tools_dir }}/graphql-cop"
+        version: master
+        update: yes
+      become_user: "{{ normal_user }}"
+
+    - name: Install graphql-cop dependencies
+      pip:
+        requirements: "{{ tools_dir }}/graphql-cop/requirements.txt"
+        virtualenv: "{{ tools_dir }}/graphql-cop/venv"
+        virtualenv_command: python3 -m venv
+      become_user: "{{ normal_user }}"
+
+    - name: Create graphqlcop wrapper
+      copy:
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/graphql-cop
+          source venv/bin/activate
+          python graphql-cop.py "$@"
+        dest: /usr/local/bin/graphqlcop
+        mode: '0755'
+
+    # Install Arjun
+    - name: Install arjun via pip
+      pip:
+        name: arjun
+        state: present
+        executable: pip3
+
+    # Install XSStrike
+    - name: Clone XSStrike
+      git:
+        repo: https://github.com/s0md3v/XSStrike.git
+        dest: "{{ tools_dir }}/XSStrike"
+        version: master
+        update: yes
+      become_user: "{{ normal_user }}"
+
+    - name: Install XSStrike dependencies
+      pip:
+        requirements: "{{ tools_dir }}/XSStrike/requirements.txt"
+        virtualenv: "{{ tools_dir }}/XSStrike/venv"
+        virtualenv_command: python3 -m venv
+      become_user: "{{ normal_user }}"
+
+    - name: Create xsstrike wrapper
+      copy:
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/XSStrike
+          source venv/bin/activate
+          python xsstrike.py "$@"
+        dest: /usr/local/bin/xsstrike
+        mode: '0755'
+
+    # Install CMSeeK
+    - name: Clone CMSeeK
+      git:
+        repo: https://github.com/Tuhinshubhra/CMSeeK.git
+        dest: "{{ tools_dir }}/CMSeeK"
+        version: master
+        update: yes
+      become_user: "{{ normal_user }}"
+
+    - name: Install CMSeeK dependencies
+      pip:
+        requirements: "{{ tools_dir }}/CMSeeK/requirements.txt"
+        virtualenv: "{{ tools_dir }}/CMSeeK/venv"
+        virtualenv_command: python3 -m venv
+      become_user: "{{ normal_user }}"
+
+    - name: Create cmseek wrapper
+      copy:
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/CMSeeK
+          source venv/bin/activate
+          python cmseek.py "$@"
+        dest: /usr/local/bin/cmseek
+        mode: '0755'
+
+    # Install retire.js
+    - name: Install retire.js globally via npm
+      npm:
+        name: retire
+        global: yes
+        state: present
+
+    # Install LinkFinder
+    - name: Clone LinkFinder
+      git:
+        repo: https://github.com/GerbenJavado/LinkFinder.git
+        dest: "{{ tools_dir }}/LinkFinder"
+        version: master
+        update: yes
+      become_user: "{{ normal_user }}"
+
+    - name: Install LinkFinder dependencies
+      pip:
+        requirements: "{{ tools_dir }}/LinkFinder/requirements.txt"
+        virtualenv: "{{ tools_dir }}/LinkFinder/venv"
+        virtualenv_command: python3 -m venv
+      become_user: "{{ normal_user }}"
+
+    - name: Install linkfinder-py via pip
+      pip:
+        name: linkfinder-py
+        state: present
+        executable: pip3
+
+    - name: Create linkfinder wrapper
+      copy:
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/LinkFinder
+          source venv/bin/activate
+          python linkfinder.py "$@"
+        dest: /usr/local/bin/linkfinder
+        mode: '0755'
+
+    # Install xnLinkFinder
+    - name: Clone xnLinkFinder
+      git:
+        repo: https://github.com/xnl-h4ck3r/xnLinkFinder.git
+        dest: "{{ tools_dir }}/xnLinkFinder"
+        version: main
+        update: yes
+      become_user: "{{ normal_user }}"
+
+    - name: Install xnLinkFinder dependencies
+      pip:
+        requirements: "{{ tools_dir }}/xnLinkFinder/requirements.txt"
+        virtualenv: "{{ tools_dir }}/xnLinkFinder/venv"
+        virtualenv_command: python3 -m venv
+      become_user: "{{ normal_user }}"
+
+    - name: Create xnlinkfinder wrapper
+      copy:
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/xnLinkFinder
+          source venv/bin/activate
+          python xnLinkFinder.py "$@"
+        dest: /usr/local/bin/xnlinkfinder
+        mode: '0755'
+
+    # Install ParamSpider
+    - name: Clone ParamSpider
+      git:
+        repo: https://github.com/devanshbatham/ParamSpider.git
+        dest: "{{ tools_dir }}/ParamSpider"
+        version: master
+        update: yes
+      become_user: "{{ normal_user }}"
+
+    - name: Install ParamSpider dependencies
+      pip:
+        requirements: "{{ tools_dir }}/ParamSpider/requirements.txt"
+        virtualenv: "{{ tools_dir }}/ParamSpider/venv"
+        virtualenv_command: python3 -m venv
+      become_user: "{{ normal_user }}"
+
+    - name: Create paramspider wrapper
+      copy:
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/ParamSpider
+          source venv/bin/activate
+          python paramspider.py "$@"
+        dest: /usr/local/bin/paramspider
+        mode: '0755'
+
+    # Install schemathesis
+    - name: Install schemathesis via pip
+      pip:
+        name: schemathesis
+        state: present
+        executable: pip3
+
+    # Install feroxbuster (Rust)
+    - name: Download and install feroxbuster
+      block:
+        - name: Get latest feroxbuster release
+          uri:
+            url: https://api.github.com/repos/epi052/feroxbuster/releases/latest
+            return_content: yes
+          register: ferox_release
+
+        - name: Download feroxbuster
+          get_url:
+            url: "{{ ferox_release.json.assets | selectattr('name', 'match', '.*x86_64-linux.*') | map(attribute='browser_download_url') | first }}"
+            dest: "/tmp/feroxbuster.tar.gz"
+            mode: '0644'
+
+        - name: Extract feroxbuster
+          unarchive:
+            src: /tmp/feroxbuster.tar.gz
+            dest: /usr/local/bin
+            remote_src: yes
+            extra_opts: [--strip-components=1]
+
+    # Install godeye (god-eye)
+    - name: Install godeye via go
+      shell: go install github.com/Vyntral/god-eye@latest
+      environment:
+        GOPATH: "{{ go_tools_dir }}"
+        PATH: "{{ go_tools_dir }}/bin:{{ ansible_env.PATH }}"
+      become_user: "{{ normal_user }}"
+
+    - name: Create godeye symlink
+      file:
+        src: "{{ go_tools_dir }}/bin/god-eye"
+        dest: /usr/local/bin/godeye
+        state: link
+      ignore_errors: yes
+
+    # Install CORScanner
+    - name: Clone CORScanner
+      git:
+        repo: https://github.com/chenjj/CORScanner.git
+        dest: "{{ tools_dir }}/CORScanner"
+        version: master
+        update: yes
+      become_user: "{{ normal_user }}"
+
+    - name: Install CORScanner dependencies
+      pip:
+        requirements: "{{ tools_dir }}/CORScanner/requirements.txt"
+        virtualenv: "{{ tools_dir }}/CORScanner/venv"
+        virtualenv_command: python3 -m venv
+      become_user: "{{ normal_user }}"
+
+    - name: Create corsscanner wrapper
+      copy:
+        content: |
+          #!/bin/bash
+          cd {{ tools_dir }}/CORScanner
+          source venv/bin/activate
+          python cors_scan.py "$@"
+        dest: /usr/local/bin/corsscanner
+        mode: '0755'
+
+    # Install trivy
+    - name: Download and install trivy
+      block:
+        - name: Download trivy install script
+          get_url:
+            url: https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh
+            dest: /tmp/trivy-install.sh
+            mode: '0755'
+
+        - name: Install trivy
+          shell: /tmp/trivy-install.sh -b /usr/local/bin
+
+    # Install BloodHound (requires Neo4j)
+    - name: Install BloodHound dependencies
+      apt:
+        name:
+          - default-jre
+          - neo4j
+        state: present
+      ignore_errors: yes
+
+    - name: Download BloodHound
+      get_url:
+        url: https://github.com/BloodHoundAD/BloodHound/releases/latest/download/BloodHound-linux-x64.zip
+        dest: /tmp/bloodhound.zip
+        mode: '0644'
+      ignore_errors: yes
+
+    - name: Extract BloodHound
+      unarchive:
+        src: /tmp/bloodhound.zip
+        dest: "{{ tools_dir }}"
+        remote_src: yes
+      ignore_errors: yes
+
+    # Add tools to PATH
+    - name: Add Go tools to PATH for user
+      lineinfile:
+        path: "{{ user_home }}/.bashrc"
+        line: 'export PATH="{{ go_tools_dir }}/bin:$PATH"'
+        create: yes
+        owner: "{{ normal_user }}"
+        group: "{{ normal_user }}"
+
+    - name: Add local bin to PATH
+      lineinfile:
+        path: "{{ user_home }}/.bashrc"
+        line: 'export PATH="{{ user_home }}/.local/bin:$PATH"'
+        create: yes
+        owner: "{{ normal_user }}"
+        group: "{{ normal_user }}"
+
+    # Final message
+    - name: Display completion message
+      debug:
+        msg: |
+          ========================================
+          Guardian CLI Deluxe setup complete!
+          ========================================
+
+          Tools installed:
+          - testssl
+          - kiterunner
+          - jwt_tool
+          - graphqlcop
+          - arjun
+          - xsstrike
+          - cmseek
+          - retire
+          - linkfinder
+          - xnlinkfinder
+          - paramspider
+          - schemathesis
+          - feroxbuster
+          - godeye
+          - corsscanner
+          - trivy
+          - bloodhound
+
+          Next steps:
+          1. Logout and login again (or run: newgrp docker)
+          2. Reload your shell: source ~/.bashrc
+          3. Navigate to guardian-cli-deluxe directory
+          4. Create Python venv: python3 -m venv venv
+          5. Activate venv: source venv/bin/activate
+          6. Install Guardian: pip install -e .
+          7. Run setup script: ./setup.sh
+          8. Test: python -m cli.main workflow run --name recon --target <target>
+          ========================================

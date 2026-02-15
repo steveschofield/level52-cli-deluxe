@@ -1,0 +1,36 @@
+/home/kali/code/guardian-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u http://192.168.1.12:5280
+/usr/bin/nmap -sV -sC -T4 -oX - -p 80,443,8080,8443,3000,5000,8000 -sV -sC 192.168.1.12
+/home/kali/code/guardian-cli-deluxe/venv/bin/wafw00f -v -a http://192.168.1.12:5280
+/home/kali/code/guardian-cli-deluxe/venv/bin/sslyze 192.168.1.12:5280 --json_out=- --certinfo --sslv2 --sslv3 --tlsv1 --tlsv1_1 --tlsv1_2 --tlsv1_3 --reneg --resum --heartbleed --robot --openssl_ccs --compression --http_headers --timeout 10 --quiet
+curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Header-Check/1.0 -L -k http://192.168.1.12:5280
+/home/kali/code/guardian-cli-deluxe/venv/bin/whatweb --log-json=reports/20260201_083637/whatweb_20260201_085344_701167.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.12:5280
+/home/kali/code/guardian-cli-deluxe/venv/bin/cmseek -u http://192.168.1.12:5280 --batch --random-agent
+/home/kali/code/guardian-cli-deluxe/tools/.bin/katana -silent -jsonl -d 3 -c 25 -list reports/20260201_083637/katana_20260201_083637.txt
+/home/kali/code/guardian-cli-deluxe/venv/bin/waybackurls http://192.168.1.12:5280
+/home/kali/code/guardian-cli-deluxe/tools/.bin/kiterunner scan http://192.168.1.12:5280 -w ./tools/vendor/kiterunner/routes-small.kite
+/home/kali/code/guardian-cli-deluxe/venv/bin/subjs -i reports/20260201_083637/subjs_20260201_083637.txt
+/home/kali/code/guardian-cli-deluxe/venv/bin/xnLinkFinder -i reports/20260201_083637/xnlinkfinder_20260201_083637.txt
+/home/kali/code/guardian-cli-deluxe/venv/bin/python -m linkfinder -i http://192.168.1.12:5280 -o cli
+/usr/bin/feroxbuster -u http://192.168.1.12:5280 --json -w /usr/share/seclists/Discovery/Web-Content/api/api-endpoints.txt -x json,xml,php,asp,aspx,jsp
+/home/kali/code/guardian-cli-deluxe/venv/bin/paramspider -d 192.168.1.12:5280
+/home/kali/code/guardian-cli-deluxe/venv/bin/arjun -u http://192.168.1.12:5280 --json -oJ arjun_1769954553.json
+/home/kali/code/guardian-cli-deluxe/venv/bin/commix --url http://192.168.1.12:5280 --batch --level 2
+/usr/bin/nikto -h http://192.168.1.12:5280 -Tuning x -timeout 10 -nointeractive
+/home/kali/code/guardian-cli-deluxe/tools/.bin/nuclei -l reports/20260201_083637/nuclei_20260201_083637.txt -jsonl -o reports/20260201_083637/nuclei_20260201_090335.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50
+/home/kali/code/guardian-cli-deluxe/venv/bin/schemathesis run http://192.168.1.12:5280/openapi.json --url http://192.168.1.12:5280 --tls-verify=false
+/home/kali/code/guardian-cli-deluxe/venv/bin/python /home/kali/code/guardian-cli-deluxe/tools/vendor/graphql-cop/graphql-cop.py -t http://192.168.1.12:5280/graphql
+/home/kali/code/guardian-cli-deluxe/venv/bin/dalfox file reports/20260201_083637/dalfox_20260201_083637.txt --format json --deep-domxss
+/home/kali/code/guardian-cli-deluxe/venv/bin/xsstrike -u http://192.168.1.12:5280 --crawl --json
+/home/kali/code/guardian-cli-deluxe/venv/bin/python /home/kali/code/guardian-cli-deluxe/tools/vendor/guardian_tools/csrf_tester.py --url http://192.168.1.12:5280 --insecure
+/home/kali/code/guardian-cli-deluxe/venv/bin/python /home/kali/code/guardian-cli-deluxe/tools/vendor/guardian_tools/upload_scanner.py --url http://192.168.1.12:5280 --insecure
+curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Cookie-Analyzer/1.0 -L -k http://192.168.1.12:5280
+/home/kali/code/guardian-cli-deluxe/venv/bin/python /home/kali/code/guardian-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.12:5280 -t 10 -T 10 -j
+curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.12:5280
+curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, */* -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.12:5280
+curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.12:5280
+curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.12:5280
+curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.12:5280
+curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.12:5280
+python3 /home/kali/code/guardian-cli-deluxe/scripts/zap_docker_daemon_scan.py --image ghcr.io/zaproxy/zaproxy:stable --api-url http://127.0.0.1:8080 --target http://192.168.1.12:5280 --max-minutes 45 --startup-timeout 180 --spider --ajax-spider --active --ignore-robots --seed-file reports/20260201_083637/zap_seed_20260201_083637.txt --username-field username --password-field password --json-out reports/20260201_083637/zap/zap_full_20260201_100238.json --html-out reports/20260201_083637/zap/zap_full_20260201_100238.html --md-out reports/20260201_083637/zap/zap_full_20260201_100238.md

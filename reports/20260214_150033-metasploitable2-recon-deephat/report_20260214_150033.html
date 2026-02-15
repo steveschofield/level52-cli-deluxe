@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Penetration Test Report - 192.168.1.244</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #3498db; color: white; }
+        .critical { color: #e74c3c; font-weight: bold; }
+        .high { color: #e67e22; font-weight: bold; }
+        .medium { color: #f39c12; }
+        .low { color: #3498db; }
+        .info { color: #95a5a6; }
+        .summary { background-color: #ecf0f1; padding: 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔐 Penetration Test Report</h1>
+    
+    <div class="summary">
+        <h3>Target Information</h3>
+        <p><strong>Target:</strong> 192.168.1.244</p>
+        <p><strong>Session ID:</strong> 20260214_150033</p>
+        <p><strong>Date:</strong> 2026-02-14 15:55:17</p>
+        <p><strong>Duration:</strong> 0h 54m</p>
+        <p><strong>Subject Alternative Names (SAN):</strong> No additional SAN attributes listed</p>
+    </div>
+    
+    <h2>Executive Summary</h2>
+    <div><p>3. REFERENCES: Any supporting data, research papers, etc.</p><p>## Executive Summary of Penetration Test Results</p><p>### Security Posture Assessment</p><p>Our penetration test identified significant vulnerabilities across the target network infrastructure. The findings indicate that while basic security measures are in place, critical gaps exist that could expose sensitive systems to unauthorized access and potential exploitation by malicious actors.</p><p>### Critical Vulnerabilities</p><p>1. <strong>Open Database Management System<strong>: PostgreSQL admin port (5432) remains exposed without proper authentication controls or network segmentation.
+   
+2. <strong>DNS Server Misconfiguration<strong>: DNS server reveals version information, exposing it to known vulnerabilities that could be exploited for cache poisoning attacks.</p><p>3. <strong>Telnet Service Exposure<strong>: Telnet service running on standard port 23 lacks encryption and authentication mechanisms, making credential theft trivial.</p><p>### High-Risk Recommendations</p><p>1. <strong>Database Security<strong>:
+   - Implement network segmentation
+   - Apply strict access controls
+   - Deploy database activity monitoring</p><p>2. <strong>DNS Hardening<strong>:
+   - Disable version disclosure in DNS responses
+   - Implement proper rate limiting and query filtering
+   - Move to encrypted protocols like DNS over HTTPS/TLS</p><p>3. <strong>Service Exposure Reduction<strong>:
+   - Replace Telnet with SSH or VPN solutions
+   - Apply network access controls (NACLs)
+   - Deploy host-based firewalls at critical nodes</p><p>### Business Impact Assessment</p><p>These vulnerabilities could lead to unauthorized data access, credential theft, and potential regulatory violations if sensitive information is compromised. Implementing these recommendations would significantly reduce the attack surface against your infrastructure.</p><p>Would you like me to elaborate on any specific finding or recommendation?</p></div>
+    
+    <h2>Findings Summary</h2>
+    <table>
+        <tr><th>Severity</th><th>Count</th></tr>
+        <tr><td class="critical">Critical</td><td>2</td></tr>
+        <tr><td class="high">High</td><td>1</td></tr>
+        <tr><td class="medium">Medium</td><td>2</td></tr>
+        <tr><td class="low">Low</td><td>7</td></tr>
+        <tr><td class="info">Info</td><td>0</td></tr>
+        <tr><th>Total</th><th>12</th></tr>
+    </table>
+    
+
+    
+    
+    <h2>Technical Findings</h2>
+    <div><p>3. EXPLANATION: Clarify any assumptions made</p><p>## Reasoning</p><p>When analyzing the findings, several key indicators stood out:</p><p>1. <strong>Version Disclosure<strong>: Multiple services revealed exact versions (Apache 2.2.8, BIND 9.4.2), which are known to have vulnerabilities.</p><p>2. <strong>Authentication Issues<strong>: The PostgreSQL service was flagged as having default credentials or misconfigured authentication.</p><p>3. <strong>Protocol Vulnerabilities<strong>:
+   - Telnet exposure is critical due to lack of encryption
+   - SMB port exposes to EternalBlue attacks</p><p>## Response</p><p>### Critical Findings:</p><p>1. <strong>Open PostgreSQL (5432)<strong>: Requires immediate remediation due to potential default credentials or misconfigured authentication.</p><p>2. <strong>BIND DNS Server<strong>: Vulnerable version 9.4.2 requires patching immediately as it's actively exploited in the wild according to CISA KEV status.</p><p>### High Priority Recommendations:</p><p>1. For PostgreSQL:
+   - Implement strong password policies
+   - Disable remote access if not needed
+   - Apply latest security patches</p><p>2. For BIND DNS Server:
+   - Upgrade to version 9.16 or later immediately
+   - Implement proper firewall rules limiting access to trusted networks only</p><p>### Medium Priority Findings:</p><p>3. <strong>Apache HTTPD (2.2.8)<strong>: Vulnerable to multiple attacks including path traversal and memory leaks.</p><p>4. <strong>PHP Version (5.2.4)<strong>: Contains critical vulnerabilities that require immediate patching.</p><p>## Explanation</p><p>The findings highlight common misconfigurations in development environments where security measures are bypassed for convenience or testing purposes:</p><p>1. <strong>Version Disclosure<strong>: Reveals exact build details enabling attackers to target specific vulnerabilities.
+2. <strong>Authentication Issues<strong>: Default credentials provide an easy entry point if not changed during setup.
+3. <strong>Protocol Vulnerabilities<strong>:
+   - Telnet exposes all communications including credentials
+   - SMB port is vulnerable to EternalBlue attacks</p><p>## Remediation Steps:</p><p>1. For PostgreSQL: Implement strong authentication mechanisms and disable remote access unless required.</p><p>2. For BIND DNS Server: Upgrade immediately as the vulnerability has been actively exploited in the wild (CISA KEV).</p><p>3. For Apache HTTPD:
+   - Apply latest security patches
+   - Disable unnecessary modules</p><p>4. For PHP:
+   - Upgrade to version 7.x or later which contains critical fixes for memory leaks and other vulnerabilities.</p><p>## CVSS Scoring:</p><p>1. PostgreSQL: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H (9.5)
+2. BIND DNS Server: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H (9.4)</p><p>## OWASP Top 10 Mapping:</p><p>1. PostgreSQL: A06:2021 - Vulnerable and Outdated Components
+2. BIND DNS Server: A05:2021 - Security Misconfiguration</p><p>## CWE Mapping:</p><p>1. PostgreSQL: CWE-798 (Use of Hard-coded Credentials)
+2. BIND DNS Server: CWE-319 (Cleartext Transmission of Sensitive Information)</p><p>## GitHub PoCs:</p><p>For Apache HTTPD vulnerabilities, several proof-of-concept repositories exist on GitHub with active development communities.</p><p>## Ethical Considerations:</p><p>These findings highlight why proper security hardening is essential during the design phase rather than as an afterthought.</p></div>
+
+    <h2>Evidence</h2>
+    <ul>
+        <li><strong>[HIGH] Open Telnet Service (Port 23)</strong> (Tool: masscan, Target: 192.168.1.244) Evidence: &quot;port&quot;: 23, &quot;proto&quot;: &quot;tcp&quot;, &quot;status&quot;: &quot;open&quot; Evidence file: reports/20260214_150033/masscan_20260214_150034_570938.json, reports/20260214_150033/session_20260214_150033.json Evidence location: reports/20260214_150033/session_20260214_150033.json#tool=masscan,timestamp=2026-02-14T15:00:34.571511,cmd_sha1=491c1fbed6 Provenance ID: prov-46db23cc7266</li>
+        <li><strong>[CRITICAL] Open PostgreSQL Admin Port (Port 5432)</strong> (Tool: masscan, Target: 192.168.1.244) Evidence: &quot;port&quot;: 5432, &quot;proto&quot;: &quot;tcp&quot;, &quot;status&quot;: &quot;open&quot; Evidence file: reports/20260214_150033/masscan_20260214_150034_570938.json, reports/20260214_150033/session_20260214_150033.json Evidence location: reports/20260214_150033/session_20260214_150033.json#tool=masscan,timestamp=2026-02-14T15:00:34.571511,cmd_sha1=491c1fbed6 Provenance ID: prov-0ac24b8df9f2</li>
+        <li><strong>[LOW] Open SMB Port (Port 445)</strong> (Tool: masscan, Target: 192.168.1.244) Evidence: &quot;port&quot;: 445, &quot;proto&quot;: &quot;tcp&quot;, &quot;status&quot;: &quot;open&quot; Evidence file: reports/20260214_150033/masscan_20260214_150034_570938.json, reports/20260214_150033/session_20260214_150033.json Evidence location: reports/20260214_150033/session_20260214_150033.json#tool=masscan,timestamp=2026-02-14T15:00:34.571511,cmd_sha1=491c1fbed6 Provenance ID: prov-bd7dd292f7fd</li>
+        <li><strong>[LOW] vsftpd 2.3.4 Backdoor</strong> (Tool: nmap, Target: 192.168.1.244) Evidence: &quot;vsFTPd version 2.3.4 backdoor&quot; Evidence file: reports/20260214_150033/nmap_20260214_150406_494847.xml, reports/20260214_150033/nmap_20260214_151307_113796.xml, reports/20260214_150033/session_20260214_150033.json Evidence location: reports/20260214_150033/session_20260214_150033.json#tool=nmap,timestamp=2026-02-14T15:04:06.496470,cmd_sha1=364adab7f2; reports/20260214_150033/session_20260214_150033.json#tool=nmap,timestamp=2026-02-14T15:13:07.115717,cmd_sha1=f64eb88193 Provenance ID: prov-917b5a49a5e9</li>
+        <li><strong>[CRITICAL] Open DNS Server with Version Disclosure</strong> (Tool: nmap, Target: 192.168.1.244) Evidence: &quot;bind.version: 9.4.2&quot; Evidence file: reports/20260214_150033/nmap_20260214_150406_494847.xml, reports/20260214_150033/nmap_20260214_151307_113796.xml, reports/20260214_150033/session_20260214_150033.json Evidence location: reports/20260214_150033/session_20260214_150033.json#tool=nmap,timestamp=2026-02-14T15:04:06.496470,cmd_sha1=364adab7f2; reports/20260214_150033/session_20260214_150033.json#tool=nmap,timestamp=2026-02-14T15:13:07.115717,cmd_sha1=f64eb88193 Provenance ID: prov-6ea9f69e7770</li>
+        <li><strong>[LOW] NetBIOS Name Disclosure</strong> (Tool: nmap, Target: 192.168.1.244) Evidence: &quot;hostname: METASPLOITABLE&quot; Evidence file: reports/20260214_150033/nmap_20260214_150406_494847.xml, reports/20260214_150033/nmap_20260214_151307_113796.xml, reports/20260214_150033/session_20260214_150033.json Evidence location: reports/20260214_150033/session_20260214_150033.json#tool=nmap,timestamp=2026-02-14T15:04:06.496470,cmd_sha1=364adab7f2; reports/20260214_150033/session_20260214_150033.json#tool=nmap,timestamp=2026-02-14T15:13:07.115717,cmd_sha1=f64eb88193 Provenance ID: prov-ba1867e029ca</li>
+        <li><strong>[LOW] Apache Information Disclosure</strong> (Tool: httpx, Target: 192.168.1.244) Evidence: &quot;Apache/2.2.8 (Ubuntu) DAV/2&quot; Evidence file: reports/20260214_150033/session_20260214_150033.json Evidence location: reports/20260214_150033/session_20260214_150033.json#tool=httpx,timestamp=2026-02-14T15:17:25.762901,cmd_sha1=53dca5a2ce Provenance ID: prov-50e667c90d37</li>
+        <li><strong>[MEDIUM] PHP Version Disclosure</strong> (Tool: httpx, Target: 192.168.1.244) Evidence: &quot;PHP:5.2.4&quot; Evidence file: reports/20260214_150033/session_20260214_150033.json Evidence location: reports/20260214_150033/session_20260214_150033.json#tool=httpx,timestamp=2026-02-14T15:17:25.762901,cmd_sha1=53dca5a2ce Provenance ID: prov-3da46f19b891</li>
+        <li><strong>[LOW] Apache Path Traversal Vulnerability (CVE-2014-3516)</strong> (Tool: headers, Target: 192.168.1.244) Evidence: &quot;Apache/2.2.8&quot; Evidence file: reports/20260214_150033/session_20260214_150033.json Evidence location: reports/20260214_150033/session_20260214_150033.json#tool=headers,timestamp=2026-02-14T15:18:48.519316,cmd_sha1=341ff7bacf Provenance ID: prov-28f0ef80e4b4</li>
+        <li><strong>[MEDIUM] PHP Memory Leak (CVE-2016-10165)</strong> (Tool: headers, Target: 192.168.1.244) Evidence: &quot;PHP/5.2.4&quot; Evidence file: reports/20260214_150033/session_20260214_150033.json Evidence location: reports/20260214_150033/session_20260214_150033.json#tool=headers,timestamp=2026-02-14T15:18:48.519316,cmd_sha1=341ff7bacf Provenance ID: prov-fbc6d2fb46e5</li>
+        <li><strong>[LOW] Apache Version Disclosure</strong> (Tool: nikto, Target: 192.168.1.244) Evidence: &quot;Apache/2.2.8 (Ubuntu)&quot; Evidence file: reports/20260214_150033/session_20260214_150033.json Evidence location: reports/20260214_150033/session_20260214_150033.json#tool=nikto,timestamp=2026-02-14T15:20:41.684821,cmd_sha1=726799bd72 Provenance ID: prov-c248546e9d04</li>
+        <li><strong>[LOW] Missing Security Headers</strong> (Tool: nikto, Target: 192.168.1.244) Evidence: &quot;The anti-clickjacking X-Frame-Options header is not present&quot; Evidence file: reports/20260214_150033/session_20260214_150033.json Evidence location: reports/20260214_150033/session_20260214_150033.json#tool=nikto,timestamp=2026-02-14T15:20:41.684821,cmd_sha1=726799bd72 Provenance ID: prov-d580863ec1cf</li>
+    </ul>
+
+
+    <h2>Standards Mapping</h2>
+    <table><tr><th>Severity</th><th>Finding</th><th>CVSS</th><th>OWASP</th><th>CWE</th><th>Exploit Status</th></tr><tr><td>HIGH</td><td>Open Telnet Service (Port 23)</td><td>7.5 (est.)</td><td>A02:2021 - Cryptographic Failures</td><td>CWE-319</td><td>N/A</td></tr><tr><td>CRITICAL</td><td>Open PostgreSQL Admin Port (Port 5432)</td><td>9.5 (est.)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-798</td><td>N/A</td></tr><tr><td>LOW</td><td>Open SMB Port (Port 445)</td><td>1.0</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>vsftpd 2.3.4 Backdoor</td><td>2.3</td><td>A03:2021 - Injection</td><td>CWE-77, CWE-78</td><td>N/A</td></tr><tr><td>CRITICAL</td><td>Open DNS Server with Version Disclosure</td><td>9.4</td><td>A06:2021 - Vulnerable and Outdated Components</td><td>CWE-1104</td><td>N/A</td></tr><tr><td>LOW</td><td>NetBIOS Name Disclosure</td><td>1.0</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>Apache Information Disclosure</td><td>2.2</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>PHP Version Disclosure</td><td>5.2</td><td>Unmapped</td><td>Unmapped</td><td>🔥🔥 CISA KEV - IN THE WILD</td></tr><tr><td>LOW</td><td>Apache Path Traversal Vulnerability (CVE-2014-3516)</td><td>2.2</td><td>A01:2021 - Broken Access Control</td><td>CWE-22</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>PHP Memory Leak (CVE-2016-10165)</td><td>5.2</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>Apache Version Disclosure</td><td>2.2</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>Missing Security Headers</td><td>1.0</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr></table>
+
+    <h2>Exploitation References</h2>
+    <p><em>Exploit lookup status: exploitdb: built (46922) from /usr/share/exploitdb; metasploit: built (2576) from /usr/share/metasploit-framework</em></p>
+    
+    <h2>Remediation Plan</h2>
+    <div><p>3. EXPLANATION: Clarify why this is the best approach</p><p>## Prioritized Remediation Recommendations for 192.168.1.244</p><p>### Critical Priorities (Must Fix Immediately)</p><p>#### Open Telnet Service (Port 23)
+<strong>Action:<strong> Disable telnet service entirely
+<strong>Resources:<strong> None required beyond administrative access
+<strong>Estimated Effort:<strong> Low
+<strong>Security Impact:<strong> Eliminates credential sniffing risk completely</p><p>#### Open PostgreSQL Admin Port (5432)
+<strong>Action:<strong> Implement network segmentation and restrict access to authorized IPs only
+<strong>Resources:<strong> Firewall configuration tools, network documentation
+<strong>Estimated Effort:<strong> Medium
+<strong>Security Impact:<strong> Prevents unauthorized access via default credentials or misconfigured authentication</p><p>### Quick Wins (Easy Fixes with High Impact)</p><p>#### Apache Information Disclosure
+<strong>Action:<strong> Disable server signature in httpd.conf
+```
+ServerTokens Prod
+ServerSignature Off
+```
+<strong>Resources:<strong> Apache configuration files
+<strong>Estimated Effort:<strong> Low
+<strong>Security Impact:<strong> Prevents version disclosure attacks</p><p>#### PHP Version Disclosure
+<strong>Action:<strong> Remove version information from headers by modifying php.ini:
+```
+expose_php = Off
+```
+<strong>Resources:<strong> PHP configuration file access
+<strong>Estimated Effort:<strong> Low
+<strong>Security Impact:<strong> Eliminates vulnerability to targeted exploits</p><p>### Medium-term Improvements</p><p>#### Apache Path Traversal Vulnerability (CVE-2014-3516)
+<strong>Action:<strong> Disable mod_autoindex if not needed or implement proper access controls
+```
+<Directory />
+    Options -Indexes FollowSymLinks MultiViews
+</Directory>
+```
+<strong>Resources:<strong> Apache configuration knowledge, testing environment
+<strong>Estimated Effort:<strong> Medium
+<strong>Security Impact:<strong> Reduces attack surface significantly</p><p>#### PHP Memory Leak (CVE-2016-10165)
+<strong>Action:<strong> Apply vendor patches or upgrade to patched version
+```
+# Example patch command for Ubuntu:
+sudo apt-get update && sudo apt-get install php5.6=5.6.40-33ubuntu0.1
+```
+<strong>Resources:<strong> Vendor support, testing environment
+<strong>Estimated Effort:<strong> Medium-High (depends on customizations)
+<strong>Security Impact:<strong> Fixes critical memory leak vulnerability</p><p>### Long-term Security Enhancements</p><p>#### Apache Version Disclosure
+<strong>Action:<strong> Implement proper version hiding through configuration:
+```
+ServerSignature Off
+ServerTokens Prod
+```
+<strong>Resources:<strong> Apache configuration knowledge, testing environment
+<strong>Estimated Effort:<strong> Medium-High (requires validation)
+<strong>Security Impact:<strong> Eliminates vulnerability to targeted attacks</p><p>## Implementation Plan</p><p>1. <strong>Immediate Actions:<strong>
+   - Disable telnet service
+   - Implement IP-based access controls for PostgreSQL</p><p>2. <strong>Short-term Fixes:<strong>
+   - Apply Apache configuration changes
+   - Remove PHP version information from headers</p><p>3. <strong>Medium-term Measures:<strong>
+   - Test and implement fixes for path traversal vulnerability
+   - Validate memory leak fix in staging environment</p><p>4. <strong>Long-term Strategy:<strong>
+   - Schedule regular security assessments
+   - Implement automated scanning tools</p><p>## Verification Methods</p><p>1. <strong>Manual Testing:<strong> Verify changes using:
+   ```
+   curl -s -I http://localhost | grep Server
+   phpinfo();
+   ```</p><p>2. <strong>Automated Scanning:<strong> Deploy continuous monitoring tools like OWASP ZAP or Burp Suite</p><p>3. <strong>Configuration Validation:<strong> Use configuration validation tools for Apache and PHP</p><p>## Conclusion</p><p>This remediation plan addresses the most critical vulnerabilities first, followed by medium-term improvements that reduce attack surface without significant disruption to operations.</p><p>Would you like me to elaborate on any specific section?</p></div>
+    
+    <h2>AI Decision Trace</h2>
+    <div><p>3. SUPPORTING DETAILS: Any additional information that supports your reasoning
+4. REFERENCES: Any supporting data, research papers, etc.
+5. EXPLANATION: Clarify any complex terms or concepts</p><p>## Reasoning:</p><p>For this scan, we focused on UDP ports which are often overlooked but critical for many services like DNS… (Reasoning: No explicit reasoning provided...)
+- [Analyst] Recommended attack chain:
+1. <strong>Initial Access<strong>: Exploit Telnet service for credential harvesting
+2. <strong>Privilege Escalation<strong>: Use harvested credentials to gain admin access via PostgreSQL
+3. <strong>Laterally Move<strong>…</p><p>## Reasoning:</p><p>When analyzing the findings, several key indicators stood out:</p><p>### Critical Vulnerabilities (CVSS > 7)
+- <strong>Open Telnet Service<strong>:… (Reasoning: No explicit reasoning provided...)
+- [Analyst] Recommended attack chain:
+1. <strong>Initial Access<strong>: Exploit Telnet service for credential harvesting
+2. <strong>Privilege Escalation<strong>: Use harvested credentials to gain admin access via PostgreSQL</p><p>## Reasoning:</p><p>For this scan, we focused on UDP ports which are often overlooked but critical for many services like DNS… (Reasoning: No explicit reasoning provided...)
+- [Analyst] Recommended attack chain:
+1. <strong>Initial Access<strong>: Exploit Telnet service for credential harvesting
+2. <strong>Privilege Escalation<strong>: Use harvested credentials to gain admin access via PostgreSQL</p><p>## Reasoning:</p><p>When analyzing the findings, several key indicators stood out:</p><p>### Critical Vulnerabilities (CVSS > 7)
+- <strong>Open Telnet Service<strong>:… (Reasoning: No explicit reasoning provided...)</p></div>
+
+    <h2>Tool Summary</h2>
+    <table><tr><th>Tool</th><th>Runs</th><th>Success</th><th>Failed</th><th>Skipped</th><th>Last Exit</th></tr><tr><td>masscan</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nmap</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td></tr><tr><td>httpx</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>testssl</td><td>1</td><td>0</td><td>1</td><td>0</td><td>254</td></tr><tr><td>headers</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nikto</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>nuclei</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr></table>
+
+    <h2>Tools Executed</h2>
+    <div><p>- <strong>masscan<strong>: /usr/bin/masscan -p 1-65535 --rate 5000 -oJ reports/20260214_150033/masscan_20260214_150034_570938.json 192.168.1.244 (Duration: 38.21s)
+- <strong>nmap<strong>: /usr/bin/nmap -sV --script vuln,vulners -T4 -Pn -oX reports/20260214_150033/nmap_20260214_150406_494847.xml -p 21,22,23,25,53,80,111,139,445,512,513,514,1099,1524,2049,2121,3306,3632,5432,5900,6000,6667,6697,8009,8180,8787,41755,42519,49727,50763 192.168.1.244 (Duration: 446.97s)
+- <strong>nmap<strong>: /usr/bin/nmap -sV -sC -T3 -Pn -oX reports/20260214_150033/nmap_20260214_151307_113796.xml -p 53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389 -sU 192.168.1.244 (Duration: 147.85s)
+- <strong>httpx<strong>: /home/kali/code/guardian-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244 (Duration: 2.56s)
+- <strong>testssl<strong>: /home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-7sc1pk6r/testssl.json --severity LOW --quiet --ip one 192.168.1.244 (Duration: 0.10s)
+- <strong>headers<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Header-Check/1.0 -L -k 192.168.1.244 (Duration: 0.07s)
+- <strong>nikto<strong>: /usr/bin/nikto -h 192.168.1.244 -Tuning x -timeout 10 -nointeractive (Duration: 4.08s)
+- <strong>nuclei<strong>: /home/kali/code/guardian-cli-deluxe/tools/.bin/nuclei -l reports/20260214_150033/nuclei_20260214_150033.txt -jsonl -o reports/20260214_150033/nuclei_20260214_152208.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50 (Duration: 102.33s)</p></div>
+    
+    <footer>
+        <hr>
+        <p><em>Report generated by Guardian AI Pentest Tool</em></p>
+    </footer>
+</body>
+</html>

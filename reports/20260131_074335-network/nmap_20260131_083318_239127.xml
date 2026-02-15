@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.98 scan initiated Sat Jan 31 08:33:18 2026 as: /usr/lib/nmap/nmap -&#45;privileged -sV -sC -T4 -oX - -p 445,445,445,445 -&#45;script smb-os-discovery,smb-enum-shares,smb-enum-users 192.168.1.232 -->
+<nmaprun scanner="nmap" args="/usr/lib/nmap/nmap -&#45;privileged -sV -sC -T4 -oX - -p 445,445,445,445 -&#45;script smb-os-discovery,smb-enum-shares,smb-enum-users 192.168.1.232" start="1769866398" startstr="Sat Jan 31 08:33:18 2026" version="7.98" xmloutputversion="1.05">
+<scaninfo type="syn" protocol="tcp" numservices="1" services="445"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<hosthint><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.232" addrtype="ipv4"/>
+<address addr="00:15:5D:FC:98:5D" addrtype="mac" vendor="Microsoft"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<host starttime="1769866398" endtime="1769866414"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.232" addrtype="ipv4"/>
+<address addr="00:15:5D:FC:98:5D" addrtype="mac" vendor="Microsoft"/>
+<hostnames>
+<hostname name="win2008-1.localdomain" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="445"><state state="open" reason="syn-ack" reason_ttl="128"/><service name="microsoft-ds" product="Windows Server 2008 R2 Standard 7601 Service Pack 1 microsoft-ds" ostype="Windows Server 2008 R2 - 2012" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service></port>
+</ports>
+<hostscript><script id="smb-os-discovery" output="&#xa;  OS: Windows Server 2008 R2 Standard 7601 Service Pack 1 (Windows Server 2008 R2 Standard 6.1)&#xa;  OS CPE: cpe:/o:microsoft:windows_server_2008::sp1&#xa;  Computer name: win2008-1&#xa;  NetBIOS computer name: WIN2008-1\x00&#xa;  Domain name: ss.hackme&#xa;  Forest name: ss.hackme&#xa;  FQDN: win2008-1.ss.hackme&#xa;  System time: 2026-01-31T05:33:24-08:00&#xa;"><elem key="os">Windows Server 2008 R2 Standard 7601 Service Pack 1</elem>
+<elem key="lanmanager">Windows Server 2008 R2 Standard 6.1</elem>
+<elem key="server">WIN2008-1\x00</elem>
+<elem key="date">2026-01-31T05:33:24-08:00</elem>
+<elem key="fqdn">win2008-1.ss.hackme</elem>
+<elem key="domain_dns">ss.hackme</elem>
+<elem key="forest_dns">ss.hackme</elem>
+<elem key="workgroup">SS\x00</elem>
+<elem key="cpe">cpe:/o:microsoft:windows_server_2008::sp1</elem>
+</script><script id="smb-enum-shares" output="&#xa;  note: ERROR: Enumerating shares failed, guessing at common ones (NT_STATUS_ACCESS_DENIED)&#xa;  account_used: &lt;blank&gt;&#xa;  \\192.168.1.232\ADMIN$: &#xa;    warning: Couldn&apos;t get details for share: NT_STATUS_ACCESS_DENIED&#xa;    Anonymous access: &lt;none&gt;&#xa;  \\192.168.1.232\C$: &#xa;    warning: Couldn&apos;t get details for share: NT_STATUS_ACCESS_DENIED&#xa;    Anonymous access: &lt;none&gt;&#xa;  \\192.168.1.232\IPC$: &#xa;    warning: Couldn&apos;t get details for share: NT_STATUS_ACCESS_DENIED&#xa;    Anonymous access: READ"><elem key="note">ERROR: Enumerating shares failed, guessing at common ones (NT_STATUS_ACCESS_DENIED)</elem>
+<elem key="account_used">&lt;blank&gt;</elem>
+<table key="\\192.168.1.232\ADMIN$">
+<elem key="warning">Couldn&apos;t get details for share: NT_STATUS_ACCESS_DENIED</elem>
+<elem key="Anonymous access">&lt;none&gt;</elem>
+</table>
+<table key="\\192.168.1.232\C$">
+<elem key="warning">Couldn&apos;t get details for share: NT_STATUS_ACCESS_DENIED</elem>
+<elem key="Anonymous access">&lt;none&gt;</elem>
+</table>
+<table key="\\192.168.1.232\IPC$">
+<elem key="warning">Couldn&apos;t get details for share: NT_STATUS_ACCESS_DENIED</elem>
+<elem key="Anonymous access">READ</elem>
+</table>
+</script></hostscript><times srtt="3276" rttvar="3865" to="100000"/>
+</host>
+<runstats><finished time="1769866414" timestr="Sat Jan 31 08:33:34 2026" summary="Nmap done at Sat Jan 31 08:33:34 2026; 1 IP address (1 host up) scanned in 15.80 seconds" elapsed="15.80" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

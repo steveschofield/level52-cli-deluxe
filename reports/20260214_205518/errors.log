@@ -1,0 +1,4 @@
+2026-02-14T20:56:03.080100: RuntimeError - OpenRouter request failed after retries: Client error '404 Not Found' for url 'https://openrouter.ai/api/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+Context: {'workflow': 'recon', 'target': '192.168.1.244'}
+---

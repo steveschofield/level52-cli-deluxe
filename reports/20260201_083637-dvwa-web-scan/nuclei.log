@@ -1,0 +1,6 @@
+[2026-02-01T09:03:35.093730] target=http://192.168.1.12:5280 exit=0 duration=2227.555889s findings=0
+command: /home/kali/code/guardian-cli-deluxe/tools/.bin/nuclei -l reports/20260201_083637/nuclei_20260201_083637.txt -jsonl -o reports/20260201_083637/nuclei_20260201_090335.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50
+targets: reports/20260201_083637/nuclei_20260201_083637.txt
+jsonl: reports/20260201_083637/nuclei_20260201_090335.jsonl
+output: <empty>
+

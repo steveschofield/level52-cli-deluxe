@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.98 scan initiated Sat Feb 14 18:49:21 2026 as: /usr/lib/nmap/nmap -&#45;privileged -sV -sC -T3 -Pn -oX reports/20260214_183454/nmap_20260214_184920_960457.xml -p 53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389 -sU 192.168.1.232 -->
+<nmaprun scanner="nmap" args="/usr/lib/nmap/nmap -&#45;privileged -sV -sC -T3 -Pn -oX reports/20260214_183454/nmap_20260214_184920_960457.xml -p 53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389 -sU 192.168.1.232" start="1771112961" startstr="Sat Feb 14 18:49:21 2026" version="7.98" xmloutputversion="1.05">
+<scaninfo type="udp" protocol="udp" numservices="35" services="53,67-69,88,111,123,135,137-138,161-162,389,445,500,514,520,623,1194,1434,1701,1812-1813,1900,2049,3389,3478,4500,4789,5004-5005,5060-5061,5353,11211"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<hosthint><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.232" addrtype="ipv4"/>
+<address addr="00:15:5D:FC:98:5D" addrtype="mac" vendor="Microsoft"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<host starttime="1771112961" endtime="1771113159"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.232" addrtype="ipv4"/>
+<address addr="00:15:5D:FC:98:5D" addrtype="mac" vendor="Microsoft"/>
+<hostnames>
+<hostname name="win2008-1.localdomain" type="PTR"/>
+</hostnames>
+<ports><extraports state="closed" count="29">
+<extrareasons reason="port-unreach" count="29" proto="udp" ports="67-69,88,111,135,161-162,389,445,514,520,623,1194,1434,1701,1812-1813,1900,2049,3389,3478,4789,5004-5005,5060-5061,5353,11211"/>
+</extraports>
+<port protocol="udp" portid="53"><state state="open" reason="udp-response" reason_ttl="128"/><service name="domain" product="Microsoft DNS" version="6.1.7601 (1DB1446A)" extrainfo="Windows Server 2008 R2 SP1" ostype="Windows" method="probed" conf="10"><cpe>cpe:/a:microsoft:dns</cpe><cpe>cpe:/o:microsoft:windows_server_2008:r2:sp1</cpe></service><script id="dns-nsid" output="&#xa;  bind.version: Microsoft DNS 6.1.7601 (1DB1446A)"><elem key="bind.version">Microsoft DNS 6.1.7601 (1DB1446A)</elem>
+</script><script id="dns-recursion" output="Recursion appears to be enabled"/></port>
+<port protocol="udp" portid="123"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="ntp" method="table" conf="3"/></port>
+<port protocol="udp" portid="137"><state state="open" reason="udp-response" reason_ttl="128"/><service name="netbios-ns" product="Microsoft Windows netbios-ssn" extrainfo="workgroup: SS" hostname="WIN2008-1" ostype="Windows" method="probed" conf="10"><cpe>cpe:/o:microsoft:windows</cpe></service><script id="nbns-interfaces" output="&#xa;  hostname: WIN2008-1&#xa;  interfaces: &#xa;    192.168.1.232"><elem key="hostname">WIN2008-1</elem>
+<table key="interfaces">
+<elem>192.168.1.232</elem>
+</table>
+</script></port>
+<port protocol="udp" portid="138"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="netbios-dgm" method="table" conf="3"/></port>
+<port protocol="udp" portid="500"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="isakmp" method="table" conf="3"/></port>
+<port protocol="udp" portid="4500"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="nat-t-ike" method="table" conf="3"/></port>
+</ports>
+<hostscript><script id="nbstat" output="NetBIOS name: WIN2008-1, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: 00:15:5d:fc:98:5d (Microsoft)"/></hostscript><times srtt="5421" rttvar="1919" to="100000"/>
+</host>
+<runstats><finished time="1771113159" timestr="Sat Feb 14 18:52:39 2026" summary="Nmap done at Sat Feb 14 18:52:39 2026; 1 IP address (1 host up) scanned in 198.70 seconds" elapsed="198.70" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

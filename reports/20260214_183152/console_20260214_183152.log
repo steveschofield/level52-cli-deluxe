@@ -1,0 +1,110 @@
+2026-02-14 18:31:52,496 - guardian - INFO - Initialized Ollama model: DeepHat/DeepHat-V1-7B @ http://192.168.1.69:11434
+2026-02-14 18:31:52,499 - guardian - INFO - Prompt templates: set=deephat_v1_7b paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/deephat_v1_7b/reporter.py
+2026-02-14 18:31:52,507 - guardian - INFO - Loaded skill configuration from config/skills.yaml
+2026-02-14 18:31:52,507 - guardian - INFO - ✓ Loaded 'planner' skill (optimized for deephat_v1_7b)
+2026-02-14 18:31:52,841 - guardian - WARNING - Tool godeye is not installed or not in PATH
+2026-02-14 18:31:52,922 - guardian - WARNING - BloodHound MCP image not found. Run: docker pull ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+2026-02-14 18:31:53,224 - guardian - INFO - Loaded skill configuration from config/skills.yaml
+2026-02-14 18:31:53,224 - guardian - INFO - ✓ Loaded 'analyst' skill (optimized for deephat_v1_7b)
+2026-02-14 18:31:53,240 - guardian - INFO - [CISAKEVClient] Loaded CISA KEV from cache (1518 entries)
+2026-02-14 18:31:53,243 - guardian - INFO - OSINT enrichment enabled: CISA KEV, GitHub, EPSS, OSV
+2026-02-14 18:31:53,243 - guardian - INFO - Tool available: nmap
+2026-02-14 18:31:53,244 - guardian - INFO - Tool available: subfinder
+2026-02-14 18:31:53,244 - guardian - INFO - Tool available: nuclei
+2026-02-14 18:31:53,244 - guardian - INFO - Tool available: whatweb
+2026-02-14 18:31:53,245 - guardian - INFO - Tool available: wafw00f
+2026-02-14 18:31:53,245 - guardian - INFO - Tool available: nikto
+2026-02-14 18:31:53,245 - guardian - INFO - Tool available: testssl
+2026-02-14 18:31:53,246 - guardian - INFO - Tool available: sqlmap
+2026-02-14 18:31:53,246 - guardian - INFO - Tool available: ffuf
+2026-02-14 18:31:53,247 - guardian - INFO - Tool available: kiterunner
+2026-02-14 18:31:53,247 - guardian - INFO - Tool available: wpscan
+2026-02-14 18:31:53,248 - guardian - INFO - Tool available: sslyze
+2026-02-14 18:31:53,249 - guardian - INFO - Tool available: headers
+2026-02-14 18:31:53,249 - guardian - INFO - Tool available: masscan
+2026-02-14 18:31:53,249 - guardian - INFO - Tool available: amass
+2026-02-14 18:31:53,250 - guardian - INFO - Tool available: whois
+2026-02-14 18:31:53,250 - guardian - INFO - Tool available: hydra
+2026-02-14 18:31:53,251 - guardian - INFO - Tool available: jwt_tool
+2026-02-14 18:31:53,251 - guardian - INFO - Tool available: graphql-cop
+2026-02-14 18:31:53,251 - guardian - INFO - Tool available: upload-scanner
+2026-02-14 18:31:53,252 - guardian - INFO - Tool available: csrf-tester
+2026-02-14 18:31:53,252 - guardian - INFO - Tool available: enum4linux-ng
+2026-02-14 18:31:53,253 - guardian - INFO - Tool available: enum4linux
+2026-02-14 18:31:53,253 - guardian - INFO - Tool available: smbclient
+2026-02-14 18:31:53,253 - guardian - INFO - Tool available: showmount
+2026-02-14 18:31:53,254 - guardian - INFO - Tool available: snmpwalk
+2026-02-14 18:31:53,255 - guardian - INFO - Tool available: onesixtyone
+2026-02-14 18:31:53,255 - guardian - INFO - Tool available: arjun
+2026-02-14 18:31:53,256 - guardian - INFO - Tool available: xsstrike
+2026-02-14 18:31:53,256 - guardian - INFO - Tool available: gitleaks
+2026-02-14 18:31:53,256 - guardian - INFO - Tool available: cmseek
+2026-02-14 18:31:53,257 - guardian - INFO - Tool available: dnsrecon
+2026-02-14 18:31:53,257 - guardian - INFO - Tool available: dnsx
+2026-02-14 18:31:53,258 - guardian - INFO - Tool available: shuffledns
+2026-02-14 18:31:53,258 - guardian - INFO - Tool available: puredns
+2026-02-14 18:31:53,258 - guardian - INFO - Tool available: retire
+2026-02-14 18:31:53,259 - guardian - INFO - Tool available: naabu
+2026-02-14 18:31:53,259 - guardian - INFO - Tool available: asnmap
+2026-02-14 18:31:53,260 - guardian - INFO - Tool available: waybackurls
+2026-02-14 18:31:53,260 - guardian - INFO - Tool available: subjs
+2026-02-14 18:31:53,260 - guardian - INFO - Tool available: linkfinder
+2026-02-14 18:31:53,261 - guardian - INFO - Tool available: xnlinkfinder
+2026-02-14 18:31:53,261 - guardian - INFO - Tool available: paramspider
+2026-02-14 18:31:53,262 - guardian - INFO - Tool available: schemathesis
+2026-02-14 18:31:53,262 - guardian - INFO - Tool available: trufflehog
+2026-02-14 18:31:53,263 - guardian - INFO - Tool available: metasploit
+2026-02-14 18:31:53,263 - guardian - INFO - Tool available: zap
+2026-02-14 18:31:53,263 - guardian - INFO - Tool available: dalfox
+2026-02-14 18:31:53,264 - guardian - INFO - Tool available: commix
+2026-02-14 18:31:53,264 - guardian - INFO - Tool available: feroxbuster
+2026-02-14 18:31:53,265 - guardian - WARNING - Tool missing: godeye (install manually)
+2026-02-14 18:31:53,265 - guardian - INFO - Tool available: cors-scanner
+2026-02-14 18:31:53,265 - guardian - INFO - Tool available: cookie-analyzer
+2026-02-14 18:31:53,266 - guardian - INFO - Tool available: error-detector
+2026-02-14 18:31:53,266 - guardian - INFO - Tool available: ssrf-scanner
+2026-02-14 18:31:53,267 - guardian - INFO - Tool available: xxe-scanner
+2026-02-14 18:31:53,267 - guardian - INFO - Tool available: deserialization-scanner
+2026-02-14 18:31:53,267 - guardian - INFO - Tool available: auth-scanner
+2026-02-14 18:31:53,268 - guardian - INFO - Tool available: idor-scanner
+2026-02-14 18:31:53,268 - guardian - INFO - Tool available: semgrep
+2026-02-14 18:31:53,269 - guardian - INFO - Tool available: trivy
+2026-02-14 18:31:53,269 - guardian - INFO - Tool available: bloodhound
+2026-02-14 18:31:53,269 - guardian - INFO - Tool available: httpx
+2026-02-14 18:31:53,270 - guardian - INFO - Tool available: katana
+2026-02-14 18:31:53,270 - guardian - WARNING - Missing tools: godeye. Some functionality will be limited.
+2026-02-14 18:31:53,271 - guardian - INFO - Starting workflow: network for target: 192.168.1.232
+2026-02-14 18:31:53,293 - guardian - INFO - Workflow Progress [--------------------] 1/33 (0%) ETA n/a
+2026-02-14 18:31:53,294 - guardian - INFO - Executing step: host_discovery
+2026-02-14 18:31:53,295 - guardian - INFO - Tool Agent selecting tool: nmap
+2026-02-14 18:31:53,295 - guardian - INFO - Executing: /usr/bin/nmap -T4 -Pn -oX reports/20260214_183152/nmap_20260214_183153_295844.xml -sn -PE -PP -PM 192.168.1.232
+2026-02-14 18:31:53,307 - guardian - INFO - Tool nmap finished in 0.01s (status=completed, exit=0, stdout=197B, stderr=0B)
+2026-02-14 18:31:53,309 - guardian - INFO - Tool Executed: nmap
+2026-02-14 18:31:53,310 - guardian - INFO - Analyst Agent analyzing results...
+2026-02-14 18:31:53,311 - guardian - INFO - [Analyst] LLM request: system_prompt=969 chars, prompt=2538 chars
+2026-02-14 18:32:51,995 - guardian - INFO - [Analyst] LLM response: 538 chars
+2026-02-14 18:32:52,019 - guardian - INFO - AI Decision [Analyst]: 3. ATTACK CHAIN SUMMARY (if applicable): How vulnerabilities interact
+
+## Reasoning:
+
+For this scan of 192.168.1.232, the output indicates no open ports were found which is unusual for a Windows server. This could mean:
+- The target uses stealth scanning techniques
+- Firewall rules block all common ports
+- Target is misconfigured or offline
+
+## Response:
+
+No actionable exploitation opportunities identified.
+
+## ATTACK CHAIN SUMMARY (if applicable):
+
+None detected as individual findings are isolated and non-chainable vulnerabilities.
+2026-02-14 18:32:52,030 - guardian - INFO - [Analyst] AnalysisComplete: No evidence-backed findings; output deemed informational.
+2026-02-14 18:32:52,032 - guardian - INFO - Found 0 findings from nmap
+2026-02-14 18:32:52,037 - guardian - INFO - Session saved to: reports/20260214_183152/session_20260214_183152.json
+2026-02-14 18:32:52,039 - guardian - INFO - Exported tool commands: reports/20260214_183152/payloads_20260214_183152.txt
+2026-02-14 18:32:52,040 - guardian - INFO - Workflow Progress [--------------------] 2/33 (3%) ETA ~1879s
+2026-02-14 18:32:52,041 - guardian - INFO - Executing step: fast_host_sweep
+2026-02-14 18:32:52,042 - guardian - INFO - Tool Agent selecting tool: masscan
+2026-02-14 18:32:52,045 - guardian - INFO - Executing: /usr/bin/masscan -p 1-65535 --rate 5000 -oJ reports/20260214_183152/masscan_20260214_183252_044266.json 192.168.1.232
+2026-02-14 18:33:09,771 - guardian - INFO - Tool masscan finished in 17.72s (status=cancelled, exit=n/a, stdout=0B, stderr=0B)

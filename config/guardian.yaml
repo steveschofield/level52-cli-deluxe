@@ -1,0 +1,827 @@
+# Guardian Configuration File
+# Default settings for AI-powered penetration testing
+
+# AI Configuration
+ai:
+  # Supported providers: gemini, ollama, openrouter, huggingface
+  provider: openrouter
+  model: "openrouter/free"
+  # model: "qwen/qwen3-coder:free"
+  base_url: "https://openrouter.ai/api/v1"
+  #
+  # Ollama example:
+  # provider: ollama
+  # model: "llama3.1:8b"          # Auto-uses llama3_1_8b prompts
+  # model: "deepseek-r1:8b"       # Auto-uses deepseek_r1_8b prompts
+  # model: "llama3.2:3b"          # Auto-uses llama3_2_3b prompts
+  # model: "DeepHat/DeepHat-V1-7B"  # Auto-uses deephat_v1_7b prompts
+  # base_url: "http://192.168.1.69:11434"
+  #
+  # Gemini (Vertex AI via ADC) example (recommended for higher limits):
+  # - Install deps: pip install -U google-genai
+  # - Authenticate: gcloud auth application-default login
+  # - Configure project id OR project number below (NOT an API key):
+  
+  # provider: gemini
+  # model: "gemini-3-flash-preview"
+  # temperature: 0.2
+  # vertexai: true
+  # project: "project-id-"
+  # location: "global"
+
+  # Hugging Face Serverless Inference API example:
+  # - Create a token (fine-grained is recommended) and set env HF_TOKEN
+  # - Model is a Hub repo id, e.g. meta-llama/Meta-Llama-3-8B-Instruct
+  # - Use base_url: https://router.huggingface.co/hf-inference/models
+  #
+  # Hugging Face Router (OpenAI-compatible) example:
+  # - Use base_url: https://router.huggingface.co/v1
+  # provider: huggingface
+  # model: "deepseek-ai/DeepSeek-R1"
+  # base_url: "https://router.huggingface.co/v1"
+  # hf_max_retries: 4
+
+  temperature: 0.2
+
+  # Prompt set to use - optimizes prompts for different LLM capabilities
+  # Options: "default", "llama3_2_3b", "llama3_1_8b", "deepseek_r1_8b", "deephat_v1_7b"
+  # Auto-detects from model name if not specified
+  # prompt_set: "llama3_2_3b"   # Explicitly set for llama3.2:3b
+  # prompt_set: "llama3_1_8b"   # Explicitly set for llama3.1:8b
+  # prompt_set: "deepseek_r1_8b"  # Explicitly set for deepseek-r1:8b
+  # prompt_set: "deephat_v1_7b"   # Explicitly set for DeepHat
+  # Leave commented for auto-detection based on model name
+
+  # Log full LLM request/response payloads to JSONL
+  log_llm_io_file: true
+  log_llm_full_io: true
+
+  max_tokens: 2048
+  # Request timeout for provider HTTP calls (seconds). Some providers may still impose their own limits.
+  timeout: 600
+  # Overall time budget for an LLM call at the agent level (seconds).
+  # If unset, Guardian falls back to `ai.timeout`.
+  llm_timeout_seconds: 600
+  # Model-specific timeout overrides (seconds) for slower models
+  model_timeouts:
+    deephat_v1_7b: 1200     # 20 minutes for DeepHat (slower, verbose model)
+    llama3_2_3b: 300        # 5 minutes for Llama 3.2 3B (faster)
+    llama3_1_8b: 600        # 10 minutes for Llama 3.1 8B
+  # Retries for LLM timeouts (set to 0 to disable).
+  llm_retry_count: 2
+  llm_retry_backoff_seconds: 2
+  llm_retry_max_backoff_seconds: 30
+  llm_retry_jitter_seconds: 0.5
+  max_input_chars: 100000
+  # Max characters of tool output to include in LLM prompts (larger = more context, more tokens/cost)
+  max_tool_output_chars: 25000
+  # Optional: desired context window size (only enforced for Ollama via num_ctx; other providers may ignore).
+  context_window: 200000
+
+# Penetration Testing Settings
+pentest:
+  # Safety mode prevents automatic execution of risky commands
+  safe_mode: false
+  
+  # Maximum number of tools to run in parallel
+  max_parallel_tools: 5
+  
+  # Require user confirmation before executing any tool
+  require_confirmation: false
+  
+  # Maximum scan depth for recursive operations
+  max_depth: 5
+  
+  # Request timeout for tools (seconds)
+  tool_timeout: 900
+
+  # Endpoint health check + adaptive throttling (for fragile targets)
+  health_check:
+    enabled: true
+    tools: ["nuclei", "graphql-cop"]
+    # Optional: override probe URL (supports {target})
+    # url: "{target}/health"
+    timeout_seconds: 5
+    samples: 3
+    slow_threshold_ms: 800
+    max_retries: 2
+    backoff_seconds: 5
+    backoff_multiplier: 2.0
+    slow_rate_multiplier: 0.5
+    slow_min_rate: 5
+    slow_delay_seconds: 5
+    insecure: true
+
+# Output Settings
+output:
+  # Default format: markdown, html, json
+  format: markdown
+  
+  # Save path for reports and outputs
+  save_path: ./reports
+  
+  # Include AI reasoning in reports
+  include_reasoning: true
+  
+  # Verbosity level: quiet, normal, verbose, debug
+  verbosity: normal
+  
+  # Memory optimization settings
+  compress_large_outputs: true
+  max_output_size_mb: 50
+  truncate_verbose_tools: true
+
+# Reporting Enhancements
+reporting:
+  # Deduplicate findings across tools
+  deduplicate_findings: true
+  merge_duplicate_evidence: true
+  # Confidence scoring
+  enable_confidence_scoring: true
+  min_confidence: "medium"
+  verbose_reporting: false
+  # Set true to suppress findings below min_confidence
+  filter_low_confidence: false
+  # Require each reported finding to have traceable evidence references
+  # (artifact + execution location) before inclusion in final report.
+  require_evidence_traceability: true
+  # Cap AI decision trace prompt size to reduce long LLM generations/timeouts.
+  max_ai_trace_entries: 40
+  max_ai_trace_decision_chars: 120
+  # Maximum total characters for AI trace in report generation (reduces token usage)
+  max_ai_trace_chars: 5000
+
+# Exploit References (Metasploit + Exploit-DB)
+exploits:
+  enabled: true
+  # Automatically attempt exploitation when vulnerabilities are found
+  # WARNING: Only enable in authorized testing environments
+  auto_exploit: false
+  # Require confirmation before each auto-exploit attempt
+  auto_exploit_require_confirmation: true
+  # Only auto-exploit findings with these severities
+  auto_exploit_min_severity: "critical"  # Options: critical, high, medium, low
+  # Maximum number of auto-exploit attempts per session
+  auto_exploit_max_attempts: 5
+  # Cache directory for local lookup JSON
+  cache_dir: ~/.guardian/cache/exploits
+  # Refresh cache after N days (0 = rebuild every run)
+  cache_ttl_days: 7
+  # Optional: point to local exploit-db repo (e.g., /usr/share/exploitdb on Kali)
+  exploitdb_path: /usr/share/exploitdb
+  # Optional: point to metasploit-framework install (e.g., /usr/share/metasploit-framework)
+  metasploit_path: /usr/share/metasploit-framework
+  # Match only by CVE (recommended). Set true to enable fuzzy keyword matching.
+  enable_fuzzy_match: false
+
+# OSINT (Open Source Intelligence) Enrichment
+osint:
+  # Enable OSINT enrichment for vulnerability findings
+  enabled: true
+  # Cache TTL for all OSINT sources (hours)
+  cache_ttl_hours: 24
+
+  sources:
+    # CISA Known Exploited Vulnerabilities Catalog
+    # Source: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+    # Identifies CVEs actively exploited in the wild
+    # Cost: FREE | Rate Limit: None (static JSON file)
+    cisa_kev:
+      enabled: true
+      # TTL for CISA KEV cache (hours)
+      cache_ttl_hours: 24
+      # Automatically escalate KEV findings to CRITICAL severity
+      priority_flag: true
+
+    # GitHub Exploit PoC Search
+    # Searches GitHub for community exploit proof-of-concepts
+    # Cost: FREE | Rate Limit: 60/hour (no auth), 5000/hour (with token)
+    github:
+      enabled: true
+      # GitHub Personal Access Token (optional but recommended)
+      # Get from: https://github.com/settings/tokens
+      # Required scopes: public_repo (read-only)
+      # Set via environment variable: GITHUB_TOKEN
+      token: "${GITHUB_TOKEN:-}"  # Leave empty to use unauthenticated (60 requests/hour)
+      # Minimum stars for a repository to be included
+      min_stars: 10
+      # Maximum number of PoC repositories to show per CVE
+      max_results: 5
+      # Request timeout (seconds)
+      timeout: 10
+
+    # EPSS (Exploit Prediction Scoring System)
+    # Provides exploitation probability predictions from FIRST.org
+    # Cost: FREE | Rate Limit: None (public API)
+    epss:
+      enabled: true
+      # Request timeout (seconds)
+      timeout: 10
+      # Threshold for high-risk classification (0-1)
+      high_risk_threshold: 0.7
+
+    # OSV (Open Source Vulnerabilities)
+    # Distributed vulnerability database for open source packages
+    # Cost: FREE | Rate Limit: None
+    osv:
+      enabled: true
+      # Request timeout (seconds)
+      timeout: 10
+      # Include vulnerability aliases (CVE, GHSA, etc.)
+      include_aliases: true
+
+# Scope Validation
+scope:
+  # Blacklisted IP ranges (CIDR notation)
+  blacklist:
+  #  - 127.0.0.0/8
+  
+  # Require explicit scope file for scanning
+  require_scope_file: false
+  
+  # Maximum number of targets per scan
+  max_targets: 100
+
+# Tool Configuration
+tools:
+  # Optional: resolve tools from custom paths (falls back to PATH)
+  auto_discover: true
+  paths:
+    # godeye: /usr/local/bin/god-eye
+    # nmap: /usr/bin/nmap
+    # nuclei: /usr/local/bin/nuclei
+
+  nmap:
+    enabled: true
+    # Recon / baseline enumeration
+    default_args: "-sV -sC"
+    # Vulnerability script sweep (NSE "vuln" category + vulners script)
+    # Example: nmap -sV --script vuln,vulners <target>
+    vuln_args: "-sV --script vuln,vulners"
+    timing: T4
+
+  amass:
+    enabled: true
+    args: "-passive"
+
+  whois:
+    enabled: true
+
+  ffuf:
+    enabled: true
+    wordlist: "/usr/share/wordlists/dirb/common.txt"
+    vhost_wordlist: "/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt"
+    threads: 40
+    timeout: 10
+    follow_redirects: false
+
+  kiterunner:
+    enabled: true
+    # binary: "kr"
+    wordlist: "./tools/vendor/kiterunner/routes-small.json"
+    # args: "scan {target} -w /path/to/routes.json"
+
+  hydra:
+    enabled: true
+    # Adjust module/paths for your target (default uses HTTPS GET to "/").
+    args: "-L /usr/share/seclists/Usernames/top-usernames-shortlist.txt -P /usr/share/seclists/Passwords/Common-Credentials/10k-most-common.txt -s 443 {target} https-get /"
+
+  jwt_tool:
+    enabled: true
+    # If you have a JWT, set token or add headers/cookies via args.
+    # token: "eyJhbGciOi..."
+    args: "-t {target} -M pb {token}"
+
+  graphql_cop:
+    enabled: true
+    # script: "./tools/vendor/graphql-cop/graphql-cop.py"
+    args: "-t {target}/graphql"
+
+  upload_scanner:
+    enabled: true
+    args: "--url {target}"
+    insecure: true
+
+  csrf_tester:
+    enabled: true
+    args: "--url {target}"
+    insecure: true
+
+  # jsparser removed - replaced by linkfinder/xnlinkfinder (modern, actively maintained)
+  # Use linkfinder or xnlinkfinder instead for JavaScript parsing
+
+  retire:
+    enabled: true
+    insecure: true
+    max_scripts: 20
+
+  testssl:
+    enabled: true
+    ip: one
+
+  masscan:
+    enabled: true
+    ports: "1-65535"
+    rate: 10000
+
+  #enum4linux:
+  #  enabled: true
+  #  args: "-a"
+    # Null session defaults (avoid interactive password prompts; works only if anonymous is allowed)
+  #  username:
+  #  password:
+  
+  enum4linux:
+    name: "enum4linux"
+    description: "SMB/NetBIOS enumeration tool"
+    command: "enum4linux"
+    
+    # NULL SESSION CONFIGURATION
+    # For null session testing, DO NOT include -u or -p flags
+    # The tool will automatically attempt null session authentication
+    
+    default_args: "-a"  # All simple enumeration
+    
+    # Null session mode (default)
+    null_session:
+      enabled: true
+      args: "-a {target}"
+      description: "Perform enumeration with null session (no credentials)"
+    
+    # Authenticated session mode (optional, use only when credentials are provided)
+    authenticated_session:
+      enabled: false
+      args: "-u {username} -p {password} -a {target}"
+      description: "Perform enumeration with provided credentials"
+    
+    # Additional enumeration options
+    options:
+      shares: "-S"              # Enumerate shares
+      users: "-U"               # Enumerate users  
+      groups: "-G"              # Enumerate groups
+      password_policy: "-P"     # Get password policy
+      os_info: "-o"            # Get OS information
+      printer_info: "-i"        # Get printer information
+      all: "-a"                 # All simple enumeration
+      verbose: "-v"             # Verbose output
+    
+    # Timeout settings
+    timeout: 300  # 5 minutes
+    
+    # Output format
+    output:
+      format: "text"
+      save_to_file: true
+      
+  enum4linux-ng:
+    name: "enum4linux-ng"
+    description: "Next generation SMB/NetBIOS enumeration tool"
+    command: "enum4linux-ng.py"
+    
+    # NULL SESSION CONFIGURATION for enum4linux-ng
+    # Same principle: no -u or -p flags for null session
+    
+    default_args: "-A"  # All enumeration
+    
+    # Null session mode (default)
+    null_session:
+      enabled: true
+      args: "-A {target}"
+      description: "Perform enumeration with null session (no credentials)"
+    
+    # Authenticated session mode (optional)
+    authenticated_session:
+      enabled: false
+      args: "-u {username} -p {password} -A {target}"
+      description: "Perform enumeration with provided credentials"
+    
+    # Additional options
+    options:
+      all: "-A"                    # All enumeration
+      shares: "-S"                 # Enumerate shares
+      users: "-U"                  # Enumerate users
+      groups: "-G"                 # Enumerate groups
+      json_output: "-oJ {filepath}"  # JSON output
+      yaml_output: "-oY {filepath}"  # YAML output
+      verbose: "-v"                # Verbose output
+      
+    # Timeout settings
+    timeout: 300  # 5 minutes
+    
+    # Output format
+    output:
+      format: "yaml"
+      save_to_file: true
+
+  smbclient:
+    enabled: true
+    # username: "guest"
+    # password: ""
+
+  showmount:
+    enabled: true
+
+  onesixtyone:
+    enabled: true
+    # wordlist: "/usr/share/seclists/Discovery/SNMP/snmp-default-community-strings.txt"
+    community: "public"
+
+  snmpwalk:
+    enabled: true
+    version: "2c"
+    community: "public"
+
+    args: "-v"
+    
+  httpx:
+    enabled: true
+    threads: 50
+    timeout: 10
+    
+  subfinder:
+    enabled: true
+    sources: ["crtsh", "hackertarget"]
+
+  godeye:
+    enabled: true
+    # Concurrency settings (default: 500 workers)
+    concurrency: 500
+    # Connection timeout in seconds
+    timeout: 10
+    # Ports to scan (optional, leave empty for default common ports)
+    ports: "80,443,8080,8443,8000,8888"
+    # Custom DNS resolvers (optional)
+    # resolvers: ["8.8.8.8", "1.1.1.1"]
+    # Custom wordlist for DNS brute-forcing (optional)
+    # wordlist: "/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt"
+
+    # Scan control flags
+    no_brute: false        # Set true to disable DNS brute-force
+    no_probe: false        # Set true to disable HTTP probing
+    no_ports: false        # Set true to disable port scanning
+    no_takeover: false     # Set true to disable takeover detection
+    active_only: false     # Set true to show only HTTP 2xx/3xx responses
+
+    # AI integration (requires Ollama)
+    enable_ai: true        # Set true to enable AI-powered analysis
+    ai_url: "http://192.168.1.69:11434"  # Ollama API endpoint
+    # AI models for analysis
+    fast_model: "llama3.2:3b"      # Fast triage model
+    deep_model: "qwen2.5-coder:7b"      # Deep analysis model
+    ai_cascade: true       # Use cascade approach (fast -> deep)
+    ai_deep: false         # Enable deep AI analysis on all findings
+    multi_agent: false     # Enable 8 specialized AI agents (slower but thorough)
+
+    # Verbose output
+    verbose: false
+
+    # Longer timeout for comprehensive scans
+    tool_timeout: 900
+
+  dnsx:
+    enabled: true
+    # Query multiple DNS record types; in safe_mode we avoid AXFR attempts.
+    recon: true
+    threads: 50
+    
+  nuclei:
+    enabled: true
+    severity: ["critical", "high"]
+    # Nuclei can take longer than the default workflow timeout depending on template set/target size.
+    tool_timeout: 900
+    # Nuclei logs are now per-session (in session directory)
+    # log_file: "./reports/nuclei.log"
+    templates_paths:
+      - ~/nuclei-templates
+    # Nuclei tags are template-defined (run `nuclei -tgl` to see what's available in your template set).
+    # This set aims for broad OWASP-style coverage without running the entire template corpus.
+    tags: ["cve", "rce", "sqli", "xss", "default", "default-login"]
+    rate_limit: 50
+  
+  schemathesis:
+    enabled: true
+    # Required: OpenAPI schema URL or path
+    schema: "{target}/openapi.json"
+    # Optional: base URL for the API (defaults to target)
+    # base_url: "https://api.example.com"
+    tls_verify: false
+    # Optional tuning
+    # workers: 4
+    # checks: "all"
+    # max_examples: 50
+
+  naabu:
+    enabled: true
+    rate: 1000
+    top_ports: 100
+    exclude_cdn: true
+
+  katana:
+    enabled: true
+    depth: 3
+    concurrency: 25
+
+  asnmap:
+    enabled: true
+    include_org: true
+
+  shuffledns:
+    enabled: true
+    # Requires a resolvers list file (one IP per line)
+    resolvers: "wordlists/SecLists/Discovery/DNS/resolvers.txt"
+    # Common subdomain wordlist for permutation bruteforce
+    wordlist: "wordlists/SecLists/Discovery/DNS/subdomains-top1million-20000.txt"
+
+  puredns:
+    enabled: true
+    # Uses the same resolver list as shuffledns
+    resolvers: "wordlists/SecLists/Discovery/DNS/resolvers.txt"
+    # Optional wordlist support
+    # wordlist: "wordlists/SecLists/Discovery/DNS/subdomains-top1million-20000.txt"
+
+  metasploit:
+    enabled: false
+    # module: "exploit/windows/smb/ms17_010_eternalblue"
+    # rhosts: "{target}"
+    # extra_commands: "set RPORT 445"
+
+  waybackurls:
+    enabled: true
+
+  zap:
+    enabled: true
+    # Run mode: "docker" recommended, or "local" for a locally-installed ZAP script.
+    mode: docker
+    docker_image: "ghcr.io/zaproxy/zaproxy:stable"
+    startup_timeout: 180
+    # baseline = passive (safer), full = active scan (requires pentest.safe_mode: false)
+    scan: full
+    # Time budget for the scan scripts (minutes)
+    max_minutes: 45
+    # Use AJAX spider for SPA apps (daemon mode when enabled)
+    ajax_spider: true
+    # Ignore robots.txt for deeper crawl
+    ignore_robots: true
+    # Seed URLs (comma-separated) or a file of URLs
+    # seed_urls: ""
+    # seed_urls_file: ""
+    seed_urls_from_context: true
+    # Create an authenticated context (optional; use for login-required apps)
+    # context_name: "Guardian"
+    # include_regex: "https://example.com.*"
+    # login_url: "https://example.com/login"
+    # login_request_data: "username={username}&password={password}"
+    # username: "testuser"
+    # password: "testpass"
+    # username_field: "username"
+    # password_field: "password"
+    # logged_in_regex: "Logout"
+    # logged_out_regex: "Login"
+    # Export HAR when using daemon mode (useful for importing into proxy tools)
+    export_har: false
+    # Run additional ZAP scan when available
+    run_additional_scan: true
+
+  # CORS Scanner - Detect CORS misconfigurations
+  cors_scanner:
+    enabled: true
+    threads: 10
+    timeout: 10
+
+  # Cookie Analyzer - Check cookie security flags
+  cookie_analyzer:
+    enabled: true
+    timeout: 10
+    insecure: true
+
+  # Error Detector - Find information disclosure via error messages
+  error_detector:
+    enabled: true
+    timeout: 15
+
+  # SSRF Scanner - Server-Side Request Forgery detection
+  ssrf_scanner:
+    enabled: true
+    timeout: 10
+
+  # XXE Scanner - XML External Entity injection detection
+  xxe_scanner:
+    enabled: true
+    timeout: 10
+
+  # Deserialization Scanner - Insecure deserialization detection
+  deserialization_scanner:
+    enabled: true
+    timeout: 10
+
+  # Authentication Scanner - Auth bypass and session management testing
+  auth_scanner:
+    enabled: true
+    timeout: 10
+
+  # IDOR Scanner - Authorization bypass and IDOR detection
+  idor_scanner:
+    enabled: true
+    timeout: 10
+
+
+# Whitebox Analysis Settings (Source Code Security Testing)
+# Enable SAST tools to analyze source code and correlate findings with dynamic testing
+whitebox:
+  # Global enable/disable for whitebox analysis
+  enabled: true
+
+  # SAST Tools Configuration
+  tools:
+    # Semgrep - Static Application Security Testing
+    # Detects: SQLi, XSS, auth bypass, crypto issues, injection flaws
+    # Cost: FREE
+    semgrep:
+      enabled: true
+      # Rulesets to use (more = slower but comprehensive)
+      # Options: "auto" (curated), "p/owasp-top-ten", "p/security-audit", "p/ci"
+      rulesets:
+        - "auto"
+        - "p/owasp-top-ten"
+      # Filter by severity: ERROR, WARNING, INFO
+      severity: ["ERROR", "WARNING"]
+
+    # Trivy - Comprehensive Vulnerability Scanner
+    # Detects: CVEs in dependencies, IaC misconfigs, container issues
+    # Cost: FREE
+    trivy:
+      enabled: true
+      # Scanners to run: vuln, config, secret
+      scanners: ["vuln", "config", "secret"]
+      # Severity filter
+      severity: ["CRITICAL", "HIGH", "MEDIUM"]
+
+    # Gitleaks - Secret Detection
+    # Detects: API keys, passwords, tokens in code/git history
+    # Cost: FREE
+    gitleaks:
+      enabled: true
+
+    # TruffleHog - Advanced Secret Scanning
+    # Detects: High-entropy secrets, verified credentials
+    # Cost: FREE
+    trufflehog:
+      enabled: true
+
+  # Correlation Settings
+  # Maps SAST findings to dynamic testing targets
+  correlation:
+    enabled: true
+    # Prioritize URLs that match SAST-identified vulnerable endpoints
+    prioritize_sast_findings: true
+    # Automatically extract API endpoints from source code
+    auto_extract_endpoints: true
+    # Use discovered secrets for authenticated testing
+    use_found_credentials: true
+    # Minimum confidence for SAST/DAST correlation (0.0-1.0)
+    confidence_threshold: 0.7
+
+# MCP (Model Context Protocol) Security Servers
+# Enables integration with Dockerized security tools via MCP protocol
+# Source: https://github.com/FuzzingLabs/mcp-security-hub
+mcp:
+  # Enable MCP server integration
+  enabled: true
+
+  # Docker network for MCP containers (optional)
+  # docker_network: guardian-mcp
+
+  # MCP Servers Configuration
+  servers:
+    # BloodHound - Active Directory Attack Path Analysis
+    # Provides 75+ tools for AD security assessment
+    # Requires: Neo4j with SharpHound data imported
+    bloodhound:
+      enabled: false
+      image: ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+      # Neo4j connection settings
+      neo4j_uri: bolt://localhost:7687
+      neo4j_user: neo4j
+      neo4j_password: "${BLOODHOUND_NEO4J_PASSWORD:-}"
+      timeout: 300
+      capabilities: []
+      # Key tools available:
+      # - find_path_to_da: Find paths to Domain Admins
+      # - get_kerberoastable_users: Find Kerberoastable accounts
+      # - get_asreproastable_users: Find AS-REP roastable users
+      # - get_unconstrained_delegation: Find delegation issues
+      # - get_acl_abuse_paths: Find ACL abuse opportunities
+
+    # Uncomment to enable additional MCP servers:
+
+    # radare2:
+    #   image: ghcr.io/fuzzinglabs/radare2-mcp:latest
+    #   timeout: 300
+    #   volumes:
+    #     - "${SAMPLES_DIR:-/tmp/samples}:/samples:ro"
+    #   # 32 binary analysis tools
+
+    # yara:
+    #   image: ghcr.io/fuzzinglabs/yara-mcp:latest
+    #   timeout: 120
+    #   volumes:
+    #     - "${YARA_RULES:-/opt/yara-rules}:/rules:ro"
+    #   # Malware pattern matching
+
+    # prowler:
+    #   image: ghcr.io/fuzzinglabs/prowler-mcp:latest
+    #   timeout: 600
+    #   env:
+    #     - AWS_PROFILE=${AWS_PROFILE:-default}
+    #   # AWS/Azure/GCP security auditing
+
+    # hashcat:
+    #   image: ghcr.io/fuzzinglabs/hashcat-mcp:latest
+    #   timeout: 3600
+    #   # Password cracking (requires GPU passthrough for performance)
+
+
+# Workflow Settings
+workflows:
+  # Default workflow timeout (seconds)
+  timeout: 3600
+  # Save session progress after each step (enables resume support)
+  save_progress: true
+  
+  # Optional: run Planner checkpoints during scripted workflows (recon/web/network)
+  # Autonomous runs Planner by default
+  use_planner: false
+  # Valid values: step names (e.g. "port_scanning"), step types ("analysis", "report"), or "all"
+  planner_checkpoints: ["port_scanning", "web_discovery", "analysis", "report"]
+  # Optional: per-step tool preferences for built-in workflows
+  # tool_preferences:
+  #   recon:
+  #     port_scanning:
+  #       preferred: ["naabu"]
+  #       primary: "nmap"
+  #   web:
+  #     web_discovery:
+  #       preferred: ["httpx"]
+  
+  # Save intermediate results
+  save_intermediate: true
+  
+  # Resume from checkpoint on failure
+  resume_on_failure: true
+
+# Logging
+logging:
+  # Enable audit logging
+  enabled: true
+  
+  # Log file path
+  path: ./logs/guardian.log
+  
+  # Log level: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  level: INFO
+  
+  # Log AI decisions
+  log_ai_decisions: true
+  
+  # Log LLM requests and responses
+  log_llm_requests: true
+  log_llm_responses: true
+  
+  # Debug mode
+  debug: true
+  
+  # Log tool executions and outputs
+  log_tool_executions: true
+  
+  # Log workflow progress
+  log_workflow_progress: true
+  
+  # Log memory/context updates
+  log_memory_updates: true
+  
+  # Rotate log files when they get large
+  rotate_logs: true
+  max_log_size_mb: 100
+
+# Error Handling
+error_handling:
+  # Enable comprehensive error handling
+  enabled: true
+  
+  # Continue on recoverable errors
+  continue_on_recoverable: true
+  
+  # Retry attempts for transient failures
+  max_retries: 3
+  
+  # Backoff delay for retries (seconds)
+  retry_delay: 30
+  
+  # Log all errors to file
+  log_errors: true
+
+  # DeepHat (cybersecurity specialized) example:
+  # provider: ollama
+  # model: "DeepHat/DeepHat-V1-7B:latest"
+  # prompt_set: "deephat_v1_7b"  # Red team focused prompts
+  # temperature: 0.3  # Slightly higher for creative exploitation analysis

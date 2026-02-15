@@ -1,0 +1,438 @@
+# =============================================================================
+# GUARDIAN HOMELAB TEST TARGETS
+# =============================================================================
+#
+# HOW TO USE:
+# 1. Edit this file to add your homelab targets below
+# 2. Run: python scripts/homelab_test.py --dry-run  (to validate)
+# 3. Run: python scripts/homelab_test.py --live     (to execute scans)
+#
+# Each target specifies which workflow(s) it should be tested with:
+#   - recon:          Subdomain enum, port scan, service detection
+#   - web_pentest:    Web app vuln scanning, SQLi, XSS, etc.
+#   - network_pentest: Network service exploitation, SMB, etc.
+#   - autonomous:     AI-driven full pentest
+#
+# =============================================================================
+
+settings:
+  # SAFETY: Set to true only when ready to run real scans
+  live_testing: false
+  tool_timeout: 120
+  parallel_tests: 2
+  results_dir: "./test_results"
+
+
+# =============================================================================
+# RECON TARGETS
+# -----------------------------------------------------------------------------
+# Targets for reconnaissance workflow testing
+# Tools: subfinder, amass, nmap, dnsx, httpx, whois
+# =============================================================================
+
+targets:
+
+  # ---------- YOUR RECON TARGETS HERE ----------
+
+  # Example: External domain (passive recon only)
+  - name: "my-domain"
+    description: "My external domain for passive recon"
+    type: "domain"
+    domain: "yourdomain.com"            # <-- CHANGE THIS
+    workflows:
+      - recon
+    passive_only: true                   # Only passive tools (no active scanning)
+    tags: ["recon", "external"]
+
+  # Example: Internal network range
+  - name: "homelab-subnet"
+    description: "Main homelab network"
+    type: "network"
+    cidr: "192.168.1.0/24"              # <-- CHANGE THIS to your subnet
+    workflows:
+      - recon
+      - network_pentest
+    expectations:
+      min_hosts: 5
+    tags: ["recon", "internal"]
+
+
+# =============================================================================
+# WEB PENTEST TARGETS
+# -----------------------------------------------------------------------------
+# Targets for web application security testing
+# Tools: nuclei, sqlmap, xsstrike, feroxbuster, nikto, zap
+# =============================================================================
+
+  # ---------- YOUR WEB TARGETS HERE ----------
+
+  # Example: OWASP Juice Shop (vulnerable by design)
+  - name: "juice-shop"
+    description: "OWASP Juice Shop local instance"
+    type: "web_application"
+    host: "localhost"                    # <-- CHANGE if remote
+    port: 3000                           # <-- CHANGE to your port
+    url: "http://localhost:3000"         # <-- CHANGE to full URL
+    workflows:
+      - web_pentest
+    expectations:
+      min_findings: 5
+      should_find: ["sql-injection", "xss"]
+    tags: ["web", "vuln-app"]
+
+  # Example: DVWA (Damn Vulnerable Web App)
+  - name: "dvwa"
+    description: "DVWA test instance"
+    type: "web_application"
+    url: "http://192.168.1.50/dvwa"      # <-- CHANGE THIS
+    workflows:
+      - web_pentest
+    tags: ["web", "vuln-app"]
+
+  # Example: Your actual web app (staging environment)
+  - name: "staging-webapp"
+    description: "Staging environment web app"
+    type: "web_application"
+    url: "https://staging.yourapp.local" # <-- CHANGE THIS
+    workflows:
+      - web_pentest
+    # If you have source code for whitebox testing:
+    # source_path: "/path/to/source/code"
+    tags: ["web", "staging"]
+
+
+# =============================================================================
+# NETWORK PENTEST TARGETS
+# -----------------------------------------------------------------------------
+# Targets for network infrastructure testing
+# Tools: nmap, masscan, enum4linux, smbclient, rpcclient
+# =============================================================================
+
+  # ---------- YOUR NETWORK TARGETS HERE ----------
+
+  # Example: Linux server
+  - name: "ubuntu-server"
+    description: "Ubuntu homelab server"
+    type: "host"
+    host: "192.168.1.244"                # <-- CHANGE THIS
+    workflows:
+      - recon
+      - network_pentest
+    tags: ["network", "linux"]
+
+  # Example: Windows server
+  - name: "windows-server"
+    description: "Windows Server in homelab"
+    type: "host"
+    host: "192.168.1.232"                 # <-- CHANGE THIS
+    workflows:
+      - network_pentest
+    tags: ["network", "windows"]
+
+  # Example: Metasploitable (vulnerable by design)
+  - name: "metasploitable"
+    description: "Metasploitable VM"
+    type: "host"
+    host: "192.168.1.232"                # <-- CHANGE THIS
+    workflows:
+      - recon
+      - network_pentest
+      - web_pentest
+    expectations:
+      min_findings: 10
+    tags: ["network", "vuln-vm"]
+
+
+# =============================================================================
+# ACTIVE DIRECTORY TARGETS (if you have AD lab)
+# =============================================================================
+
+  # Example: Domain Controller
+  - name: "ad-dc"
+    description: "Active Directory Domain Controller"
+    type: "active_directory"
+    host: "192.168.1.126"                  # <-- CHANGE THIS
+    domain: "ss.hackme"                  # <-- CHANGE THIS
+    workflows:
+      - network_pentest
+      - active_directory
+    tags: ["network", "ad", "windows"]
+
+
+# =============================================================================
+# AUTONOMOUS WORKFLOW TARGETS
+# -----------------------------------------------------------------------------
+# Targets for AI-driven autonomous penetration testing
+# The AI decides which tools to run based on findings
+# Tools: All available tools, AI-selected dynamically
+# =============================================================================
+
+  # ---------- YOUR AUTONOMOUS TARGETS HERE ----------
+
+  # Example: Full autonomous test against vulnerable app
+  - name: "autonomous-juice-shop"
+    description: "AI-driven pentest of Juice Shop"
+    type: "web_application"
+    url: "http://localhost:3000"         # <-- CHANGE THIS
+    workflows:
+      - autonomous
+    # Autonomous-specific settings
+    autonomous_config:
+      max_steps: 25                      # Max AI decision steps
+      max_duration_minutes: 60           # Hard timeout
+      ai_model: "gemini"                 # or "ollama", "openrouter"
+      safety_mode: true                  # Prevent destructive actions
+    expectations:
+      min_findings: 3
+    tags: ["autonomous", "ai", "web"]
+
+  # Example: Autonomous network assessment
+  - name: "autonomous-network"
+    description: "AI-driven network security assessment"
+    type: "network"
+    cidr: "192.168.1.0/24"               # <-- CHANGE THIS
+    workflows:
+      - autonomous
+    autonomous_config:
+      max_steps: 30
+      max_duration_minutes: 90
+      focus_areas: ["service_exploitation", "credential_testing"]
+      safety_mode: true
+    tags: ["autonomous", "ai", "network"]
+
+  # Example: Combined autonomous test (web + network)
+  - name: "autonomous-full-lab"
+    description: "Full autonomous assessment of homelab"
+    type: "mixed"
+    targets:                             # Multiple targets for autonomous mode
+      - "http://192.168.1.50:3000"       # Juice Shop
+      - "192.168.1.244"                  # Linux server
+      - "192.168.1.232"                   # Windows server
+    workflows:
+      - autonomous
+    autonomous_config:
+      max_steps: 50
+      max_duration_minutes: 120
+      ai_model: "gemini"
+      whitebox_enabled: false
+      generate_report: true
+    tags: ["autonomous", "ai", "full-scope"]
+
+
+# =============================================================================
+# TEST SCENARIOS
+# -----------------------------------------------------------------------------
+# Predefined test combinations for common use cases
+# Run with: python scripts/homelab_test.py --scenario <name>
+# =============================================================================
+
+scenarios:
+
+  # Quick validation that everything works
+  smoke:
+    description: "Quick smoke test (fastest)"
+    targets: ["juice-shop"]
+    workflows: ["web"]
+    timeout_minutes: 5
+
+  # ----- RECON SCENARIOS -----
+  recon:
+    description: "Run RECON workflow against all recon targets"
+    targets: ["my-domain", "homelab-subnet"]
+    workflows: ["recon"]
+    timeout_minutes: 30
+
+  # ----- WEB SCENARIOS -----
+  web:
+    description: "Run WEB workflow against all web targets"
+    targets: ["juice-shop", "dvwa", "staging-webapp"]
+    workflows: ["web_pentest"]
+    timeout_minutes: 60
+
+  # ----- NETWORK SCENARIOS -----
+  network:
+    description: "Run NETWORK workflow against all network targets"
+    targets: ["ubuntu-server", "windows-server", "metasploitable"]
+    workflows: ["network_pentest"]
+    timeout_minutes: 45
+
+  # ----- AUTONOMOUS SCENARIOS -----
+  autonomous:
+    description: "Run AUTONOMOUS AI-driven workflow"
+    targets: ["autonomous-juice-shop", "autonomous-network"]
+    workflows: ["autonomous"]
+    timeout_minutes: 120
+
+  # ----- COMBINED SCENARIOS -----
+  full:
+    description: "Run ALL workflows against ALL targets"
+    targets: ["all"]
+    workflows: ["all"]
+    timeout_minutes: 180
+
+  # Quick test of all 4 workflows
+  all_workflows:
+    description: "Test all 4 workflows (recon, web, network, autonomous)"
+    targets: ["juice-shop", "homelab-subnet", "ubuntu-server", "autonomous-juice-shop"]
+    workflows: ["recon", "web_pentest", "network_pentest", "autonomous"]
+    timeout_minutes: 90
+
+
+# =============================================================================
+# REQUIRED TOOLS
+# -----------------------------------------------------------------------------
+# Tools that must be installed for each workflow
+# Check with: python scripts/homelab_test.py --check-tools
+# =============================================================================
+
+required_tools:
+
+  # RECON workflow tools
+  recon:
+    core:
+      - nmap
+      - subfinder
+      - httpx
+      - dnsx
+      - amass
+      - whois
+    optional:
+      - puredns
+      - masscan
+      - naabu
+      - whatweb
+
+  # WEB workflow tools
+  web_pentest:
+    core:
+      - nuclei
+      - feroxbuster
+      - sqlmap
+      - httpx
+      - nikto
+    vulnerability_scanners:
+      - xsstrike
+      - dalfox
+      - cors_scanner     # custom
+      - ssrf_scanner     # custom
+      - xxe_scanner      # custom
+      - idor_scanner     # custom
+      - auth_scanner     # custom
+      - csrf_tester      # custom
+      - deserialization_scanner  # custom
+    web_analysis:
+      - wafw00f
+      - sslyze
+      - testssl
+      - whatweb
+      - cmseek
+      - wpscan
+    api_testing:
+      - arjun
+      - paramspider
+      - kiterunner
+      - ffuf
+      - graphql_cop
+      - schemathesis
+    js_analysis:
+      - linkfinder
+      - subjs
+      - xnlinkfinder
+      - retire
+    secrets:
+      - gitleaks
+      - trufflehog
+    sast:
+      - semgrep
+      - trivy
+    exploitation:
+      - zap
+      - jwt_tool
+      - hydra
+
+  # NETWORK workflow tools
+  network_pentest:
+    core:
+      - nmap
+      - masscan
+    enumeration:
+      - enum4linux
+      - enum4linux_ng
+      - smbclient
+      - snmpwalk
+      - onesixtyone
+      - showmount
+    exploitation:
+      - metasploit
+      - hydra
+    active_directory:
+      - bloodhound
+
+  # AUTONOMOUS workflow tools (AI selects from all available)
+  autonomous:
+    # AI can use any tool, but these are commonly selected
+    primary:
+      - nmap
+      - nuclei
+      - httpx
+      - subfinder
+      - feroxbuster
+      - sqlmap
+    # Full tool inventory available to AI
+    all_available:
+      - amass
+      - arjun
+      - auth_scanner
+      - bloodhound
+      - cmseek
+      - cookie_analyzer
+      - cors_scanner
+      - csrf_tester
+      - dalfox
+      - deserialization_scanner
+      - dnsx
+      - enum4linux
+      - enum4linux_ng
+      - error_detector
+      - feroxbuster
+      - ffuf
+      - gitleaks
+      - graphql_cop
+      - headers
+      - httpx
+      - hydra
+      - idor_scanner
+      - jwt_tool
+      - kiterunner
+      - linkfinder
+      - masscan
+      - metasploit
+      - naabu
+      - nikto
+      - nmap
+      - nuclei
+      - onesixtyone
+      - paramspider
+      - puredns
+      - retire
+      - schemathesis
+      - semgrep
+      - showmount
+      - smbclient
+      - snmpwalk
+      - sqlmap
+      - sslyze
+      - ssrf_scanner
+      - subfinder
+      - subjs
+      - testssl
+      - trivy
+      - trufflehog
+      - wafw00f
+      - whatweb
+      - whois
+      - wpscan
+      - xnlinkfinder
+      - xsstrike
+      - xxe_scanner
+      - zap

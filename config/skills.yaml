@@ -1,0 +1,393 @@
+# Guardian AI Skills Configuration
+# Configure which AI agents/skills are loaded based on target type and engagement
+
+# Global skill settings
+global:
+  # Enable/disable AI-driven decision making
+  ai_enabled: true
+
+  # Log AI decisions for transparency
+  log_ai_decisions: true
+
+  # Verbosity level for AI outputs (minimal, normal, detailed)
+  verbosity: normal
+
+  # Confidence threshold for auto-execution (0.0-1.0)
+  # AI must have this confidence level to proceed without asking
+  auto_execute_threshold: 0.8
+
+# Skill modules available
+# Each skill can be enabled/disabled globally or per target type
+skills:
+  analyst:
+    enabled: true
+    description: "Interprets scan results and identifies vulnerabilities"
+    required_for: ["all"]
+
+  planner:
+    enabled: true
+    description: "Decides next steps in penetration testing workflow"
+    required_for: ["all"]
+
+  reporter:
+    enabled: true
+    description: "Generates professional penetration test reports"
+    required_for: ["all"]
+
+  tool_selector:
+    enabled: true
+    description: "Selects appropriate tools for each pentesting task"
+    required_for: ["all"]
+
+  exploitation:
+    enabled: true
+    description: "Handles exploit selection and execution strategy"
+    required_for: ["network", "web", "api", "autonomous"]
+    # Only activate if exploitation is authorized
+    requires_authorization: true
+
+  osint:
+    enabled: true
+    description: "Open-source intelligence gathering and correlation"
+    required_for: ["recon", "domain", "osint"]
+    # Always safe - passive only
+    safe_mode_compatible: true
+
+  validation:
+    enabled: true
+    description: "Validates findings and eliminates false positives"
+    required_for: ["all"]
+    # Recommended for quality assurance
+    recommended: true
+
+  post_exploit:
+    enabled: true
+    description: "Post-exploitation enumeration and privilege escalation"
+    required_for: ["autonomous", "exploitation"]
+    # Requires successful exploitation first
+    requires_authorization: true
+
+# Target-specific skill profiles
+# Define which skills are active for different target types
+profiles:
+  # Web application testing
+  web:
+    skills:
+      - analyst
+      - planner
+      - reporter
+      - tool_selector
+      - validation
+      - exploitation  # If auto-exploit enabled
+
+    tool_preferences:
+      # Prefer web-specific tools
+      port_scanner: nmap
+      web_scanner: nuclei
+      directory_brute: feroxbuster
+      xss_scanner: dalfox
+      sqli_scanner: sqlmap
+
+    analyst_settings:
+      # Focus on web vulnerabilities
+      focus_areas:
+        - xss
+        - sqli
+        - authentication
+        - authorization
+        - csrf
+        - ssrf
+      severity_bias: high  # Be aggressive on web vulns
+
+  # Network infrastructure testing
+  network:
+    skills:
+      - analyst
+      - planner
+      - reporter
+      - tool_selector
+      - validation
+      - exploitation
+      - post_exploit  # If exploitation succeeds
+
+    tool_preferences:
+      port_scanner: masscan  # Fast network scanning
+      service_scanner: nmap
+      vuln_scanner: nuclei
+
+    analyst_settings:
+      focus_areas:
+        - remote_code_execution
+        - authentication_bypass
+        - unpatched_services
+        - misconfigurations
+      severity_bias: critical  # Focus on RCE and critical vulns
+
+  # API security testing
+  api:
+    skills:
+      - analyst
+      - planner
+      - reporter
+      - tool_selector
+      - validation
+
+    tool_preferences:
+      api_scanner: kiterunner
+      fuzzer: ffuf
+      schema_fuzzer: schemathesis  # If OpenAPI available
+
+    analyst_settings:
+      focus_areas:
+        - broken_authentication
+        - excessive_data_exposure
+        - broken_object_level_authorization
+        - injection
+        - mass_assignment
+      severity_bias: high
+
+  # Reconnaissance / OSINT only
+  recon:
+    skills:
+      - analyst
+      - planner
+      - reporter
+      - tool_selector
+      - osint  # Primary skill
+      - validation
+
+    tool_preferences:
+      subdomain_enum: subfinder
+      dns_enum: dnsrecon
+      passive_osint: amass
+
+    analyst_settings:
+      focus_areas:
+        - information_disclosure
+        - subdomain_discovery
+        - technology_identification
+        - credential_leaks
+      severity_bias: info  # Reconnaissance is mostly informational
+
+  # OSINT-focused engagement
+  osint:
+    skills:
+      - osint  # Primary and required
+      - analyst
+      - reporter
+      - validation
+
+    # No active scanning tools
+    tool_preferences:
+      passive_only: true
+
+    analyst_settings:
+      focus_areas:
+        - breach_intelligence
+        - subdomain_enumeration
+        - technology_profiling
+        - people_enumeration
+      severity_bias: info
+
+  # Autonomous AI-driven testing
+  autonomous:
+    skills:
+      - analyst
+      - planner  # Critical for autonomous decisions
+      - reporter
+      - tool_selector
+      - validation
+      - exploitation
+      - post_exploit
+      - osint
+
+    # All skills enabled for maximum autonomy
+    planner_settings:
+      # Allow AI to make more decisions
+      auto_select_tools: true
+      auto_escalate: true  # Automatically try privilege escalation
+      max_decision_depth: 20  # Maximum autonomous decisions
+
+    analyst_settings:
+      focus_areas:
+        - all  # No restrictions
+      severity_bias: balanced
+
+  # Cloud infrastructure testing
+  cloud:
+    skills:
+      - analyst
+      - planner
+      - reporter
+      - tool_selector
+      - validation
+      - osint  # For cloud asset discovery
+
+    tool_preferences:
+      # Cloud-specific tooling
+      cloud_enum: asnmap
+      storage_enum: cloud_enum  # Custom tool
+
+    analyst_settings:
+      focus_areas:
+        - misconfigured_storage
+        - exposed_secrets
+        - iam_issues
+        - network_exposure
+      severity_bias: critical
+
+  # WordPress-specific testing
+  wordpress:
+    skills:
+      - analyst
+      - planner
+      - reporter
+      - tool_selector
+      - validation
+
+    tool_preferences:
+      cms_scanner: wpscan
+      plugin_scanner: wpscan
+      vuln_scanner: nuclei
+
+    analyst_settings:
+      focus_areas:
+        - plugin_vulnerabilities
+        - theme_vulnerabilities
+        - weak_credentials
+        - xmlrpc_abuse
+      severity_bias: high
+
+  # Quick vulnerability scan
+  quick_scan:
+    skills:
+      - analyst
+      - tool_selector
+      - validation  # Important for quick scans to reduce noise
+
+    # Minimal skill set for speed
+    tool_preferences:
+      fast_mode: true
+
+    analyst_settings:
+      # Only report high/critical
+      min_severity: high
+      focus_areas:
+        - remote_code_execution
+        - authentication_bypass
+        - critical_misconfigurations
+
+# Skill behavior modifiers
+modifiers:
+  # Safe mode - restrict skills to non-destructive actions
+  safe_mode:
+    disabled_skills:
+      - exploitation
+      - post_exploit
+
+    analyst_settings:
+      # Don't recommend exploits in safe mode
+      suggest_exploits: false
+
+  # Stealth mode - minimize detection
+  stealth_mode:
+    planner_settings:
+      # Select stealthy tools
+      prefer_passive: true
+      avoid_noisy_scans: true
+
+    tool_selector_settings:
+      # Rate limiting
+      rate_limit: slow
+      # Avoid certain tools
+      blacklist:
+        - masscan  # Too noisy
+        - nikto    # Generates lots of traffic
+
+  # Thorough mode - maximum coverage
+  thorough_mode:
+    planner_settings:
+      # Use all available tools
+      max_tools: unlimited
+      redundancy: high  # Run multiple tools for same objective
+
+    validation_settings:
+      # Strict validation in thorough mode
+      require_multi_tool_confirmation: true
+
+# Model-specific skill optimizations
+# Different AI models may have different prompts per skill
+model_optimizations:
+  llama3_1_8b:
+    # Optimized prompts for Llama 3.1 8B
+    prompt_style: concise
+    max_context_per_skill: 2000
+
+  llama3_2_3b:
+    # Smaller model - simpler prompts
+    prompt_style: minimal
+    max_context_per_skill: 1000
+    # Disable complex skills on small models
+    disabled_skills:
+      - post_exploit  # Too complex for 3B model
+
+  deepseek_r1_8b:
+    # Reasoning-focused model
+    prompt_style: reasoning
+    max_context_per_skill: 3000
+    # Excellent for analysis
+    preferred_skills:
+      - analyst
+      - validation
+
+  deephat_v1_7b:
+    # Red team optimized model
+    prompt_style: tactical
+    preferred_skills:
+      - exploitation
+      - post_exploit
+      - osint
+
+# Integration settings
+integrations:
+  # Metasploit integration for exploitation skill
+  metasploit:
+    enabled: true
+    path: /usr/share/metasploit-framework
+    # Use resource scripts for automation
+    use_resource_scripts: true
+
+  # ExploitDB integration
+  exploitdb:
+    enabled: true
+    path: /usr/share/exploitdb
+    # Auto-search for CVE matches
+    auto_search: true
+
+  # OSINT data sources
+  osint_sources:
+    # Certificate Transparency
+    crtsh: true
+    # Shodan (requires API key)
+    shodan: false
+    # SecurityTrails (requires API key)
+    securitytrails: false
+    # HaveIBeenPwned (free tier)
+    hibp: true
+
+# Logging and debugging
+logging:
+  # Log all skill activations
+  log_skill_usage: true
+
+  # Log AI prompts (for debugging)
+  log_prompts: false  # Set to true for debugging
+
+  # Log AI responses
+  log_responses: true
+
+  # Skill performance metrics
+  track_performance: true
+
+  # Save skill decisions to file
+  decision_log: reports/ai_decisions.log

@@ -1,0 +1,731 @@
+2026-02-14 20:58:11,415 - guardian - INFO - Initialized OpenRouter model: openrouter/free @ https://openrouter.ai/api/v1
+2026-02-14 20:58:11,417 - guardian - INFO - Prompt templates: set=default paths=/home/kali/code/guardian-cli-deluxe/ai/prompt_templates/__init__.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/analyst.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/planner.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/reporter.py, /home/kali/code/guardian-cli-deluxe/ai/prompt_templates/tool_selector.py
+2026-02-14 20:58:11,427 - guardian - INFO - Loaded skill configuration from config/skills.yaml
+2026-02-14 20:58:11,428 - guardian - INFO - ✓ Loaded 'planner' skill (default prompts)
+2026-02-14 20:58:11,720 - guardian - WARNING - Tool godeye is not installed or not in PATH
+2026-02-14 20:58:11,755 - guardian - WARNING - BloodHound MCP image not found. Run: docker pull ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+2026-02-14 20:58:11,958 - guardian - INFO - Loaded skill configuration from config/skills.yaml
+2026-02-14 20:58:11,959 - guardian - INFO - ✓ Loaded 'analyst' skill (default prompts)
+2026-02-14 20:58:11,963 - guardian - INFO - [CISAKEVClient] Loaded CISA KEV from cache (1518 entries)
+2026-02-14 20:58:11,963 - guardian - INFO - OSINT enrichment enabled: CISA KEV, GitHub, EPSS, OSV
+2026-02-14 20:58:11,964 - guardian - INFO - Tool available: nmap
+2026-02-14 20:58:11,964 - guardian - INFO - Tool available: subfinder
+2026-02-14 20:58:11,964 - guardian - INFO - Tool available: nuclei
+2026-02-14 20:58:11,965 - guardian - INFO - Tool available: whatweb
+2026-02-14 20:58:11,965 - guardian - INFO - Tool available: wafw00f
+2026-02-14 20:58:11,966 - guardian - INFO - Tool available: nikto
+2026-02-14 20:58:11,966 - guardian - INFO - Tool available: testssl
+2026-02-14 20:58:11,966 - guardian - INFO - Tool available: sqlmap
+2026-02-14 20:58:11,967 - guardian - INFO - Tool available: ffuf
+2026-02-14 20:58:11,967 - guardian - INFO - Tool available: kiterunner
+2026-02-14 20:58:11,967 - guardian - INFO - Tool available: wpscan
+2026-02-14 20:58:11,968 - guardian - INFO - Tool available: sslyze
+2026-02-14 20:58:11,968 - guardian - INFO - Tool available: headers
+2026-02-14 20:58:11,969 - guardian - INFO - Tool available: masscan
+2026-02-14 20:58:11,969 - guardian - INFO - Tool available: amass
+2026-02-14 20:58:11,969 - guardian - INFO - Tool available: whois
+2026-02-14 20:58:11,970 - guardian - INFO - Tool available: hydra
+2026-02-14 20:58:11,970 - guardian - INFO - Tool available: jwt_tool
+2026-02-14 20:58:11,971 - guardian - INFO - Tool available: graphql-cop
+2026-02-14 20:58:11,971 - guardian - INFO - Tool available: upload-scanner
+2026-02-14 20:58:11,971 - guardian - INFO - Tool available: csrf-tester
+2026-02-14 20:58:11,972 - guardian - INFO - Tool available: enum4linux-ng
+2026-02-14 20:58:11,972 - guardian - INFO - Tool available: enum4linux
+2026-02-14 20:58:11,972 - guardian - INFO - Tool available: smbclient
+2026-02-14 20:58:11,973 - guardian - INFO - Tool available: showmount
+2026-02-14 20:58:11,973 - guardian - INFO - Tool available: snmpwalk
+2026-02-14 20:58:11,974 - guardian - INFO - Tool available: onesixtyone
+2026-02-14 20:58:11,974 - guardian - INFO - Tool available: arjun
+2026-02-14 20:58:11,974 - guardian - INFO - Tool available: xsstrike
+2026-02-14 20:58:11,975 - guardian - INFO - Tool available: gitleaks
+2026-02-14 20:58:11,975 - guardian - INFO - Tool available: cmseek
+2026-02-14 20:58:11,975 - guardian - INFO - Tool available: dnsrecon
+2026-02-14 20:58:11,976 - guardian - INFO - Tool available: dnsx
+2026-02-14 20:58:11,976 - guardian - INFO - Tool available: shuffledns
+2026-02-14 20:58:11,977 - guardian - INFO - Tool available: puredns
+2026-02-14 20:58:11,977 - guardian - INFO - Tool available: retire
+2026-02-14 20:58:11,977 - guardian - INFO - Tool available: naabu
+2026-02-14 20:58:11,978 - guardian - INFO - Tool available: asnmap
+2026-02-14 20:58:11,978 - guardian - INFO - Tool available: waybackurls
+2026-02-14 20:58:11,978 - guardian - INFO - Tool available: subjs
+2026-02-14 20:58:11,979 - guardian - INFO - Tool available: linkfinder
+2026-02-14 20:58:11,979 - guardian - INFO - Tool available: xnlinkfinder
+2026-02-14 20:58:11,980 - guardian - INFO - Tool available: paramspider
+2026-02-14 20:58:11,980 - guardian - INFO - Tool available: schemathesis
+2026-02-14 20:58:11,980 - guardian - INFO - Tool available: trufflehog
+2026-02-14 20:58:11,981 - guardian - INFO - Tool available: metasploit
+2026-02-14 20:58:11,981 - guardian - INFO - Tool available: zap
+2026-02-14 20:58:11,981 - guardian - INFO - Tool available: dalfox
+2026-02-14 20:58:11,982 - guardian - INFO - Tool available: commix
+2026-02-14 20:58:11,982 - guardian - INFO - Tool available: feroxbuster
+2026-02-14 20:58:11,983 - guardian - WARNING - Tool missing: godeye (install manually)
+2026-02-14 20:58:11,983 - guardian - INFO - Tool available: cors-scanner
+2026-02-14 20:58:11,983 - guardian - INFO - Tool available: cookie-analyzer
+2026-02-14 20:58:11,984 - guardian - INFO - Tool available: error-detector
+2026-02-14 20:58:11,984 - guardian - INFO - Tool available: ssrf-scanner
+2026-02-14 20:58:11,985 - guardian - INFO - Tool available: xxe-scanner
+2026-02-14 20:58:11,985 - guardian - INFO - Tool available: deserialization-scanner
+2026-02-14 20:58:11,985 - guardian - INFO - Tool available: auth-scanner
+2026-02-14 20:58:11,986 - guardian - INFO - Tool available: idor-scanner
+2026-02-14 20:58:11,986 - guardian - INFO - Tool available: semgrep
+2026-02-14 20:58:11,986 - guardian - INFO - Tool available: trivy
+2026-02-14 20:58:11,987 - guardian - INFO - Tool available: bloodhound
+2026-02-14 20:58:11,987 - guardian - INFO - Tool available: httpx
+2026-02-14 20:58:11,988 - guardian - INFO - Tool available: katana
+2026-02-14 20:58:11,988 - guardian - WARNING - Missing tools: godeye. Some functionality will be limited.
+2026-02-14 20:58:11,988 - guardian - INFO - Starting workflow: recon for target: 192.168.1.244
+2026-02-14 20:58:11,999 - guardian - INFO - Workflow Progress [--------------------] 1/22 (0%) ETA n/a
+2026-02-14 20:58:11,999 - guardian - INFO - Executing step: passive_osint_amass
+2026-02-14 20:58:12,000 - guardian - INFO - Skipping passive_osint_amass: target is IP
+2026-02-14 20:58:12,001 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 20:58:12,002 - guardian - INFO - Workflow Progress [--------------------] 2/22 (4%) ETA ~0s
+2026-02-14 20:58:12,002 - guardian - INFO - Executing step: whois_lookup
+2026-02-14 20:58:12,003 - guardian - INFO - Skipping whois_lookup: target is IP
+2026-02-14 20:58:12,003 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 20:58:12,004 - guardian - INFO - Workflow Progress [#-------------------] 3/22 (9%) ETA ~0s
+2026-02-14 20:58:12,004 - guardian - INFO - Executing step: asn_lookup
+2026-02-14 20:58:12,005 - guardian - INFO - Skipping asn_lookup: target is IP
+2026-02-14 20:58:12,005 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 20:58:12,005 - guardian - INFO - Workflow Progress [##------------------] 4/22 (13%) ETA ~0s
+2026-02-14 20:58:12,006 - guardian - INFO - Executing step: subdomain_discovery
+2026-02-14 20:58:12,006 - guardian - INFO - Skipping subdomain_discovery: target is IP
+2026-02-14 20:58:12,007 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 20:58:12,007 - guardian - INFO - Workflow Progress [###-----------------] 5/22 (18%) ETA ~0s
+2026-02-14 20:58:12,008 - guardian - INFO - Executing step: shuffledns_permutations
+2026-02-14 20:58:12,008 - guardian - INFO - Skipping shuffledns_permutations: target is IP
+2026-02-14 20:58:12,009 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 20:58:12,009 - guardian - INFO - Workflow Progress [####----------------] 6/22 (22%) ETA ~0s
+2026-02-14 20:58:12,009 - guardian - INFO - Executing step: puredns_resolution
+2026-02-14 20:58:12,010 - guardian - INFO - Skipping puredns_resolution: target is IP
+2026-02-14 20:58:12,010 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 20:58:12,011 - guardian - INFO - Workflow Progress [#####---------------] 7/22 (27%) ETA ~0s
+2026-02-14 20:58:12,011 - guardian - INFO - Executing step: dns_enumeration
+2026-02-14 20:58:12,012 - guardian - INFO - Skipping dns_enumeration: target is IP
+2026-02-14 20:58:12,012 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 20:58:12,013 - guardian - INFO - Workflow Progress [######--------------] 8/22 (31%) ETA ~0s
+2026-02-14 20:58:12,013 - guardian - INFO - Executing step: dnsrecon_enum
+2026-02-14 20:58:12,013 - guardian - INFO - Skipping dnsrecon_enum: target is IP
+2026-02-14 20:58:12,014 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 20:58:12,014 - guardian - INFO - Workflow Progress [#######-------------] 9/22 (36%) ETA ~0s
+2026-02-14 20:58:12,015 - guardian - INFO - Executing step: godeye_recon
+2026-02-14 20:58:12,015 - guardian - INFO - Skipping godeye_recon: target is IP
+2026-02-14 20:58:12,016 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 20:58:12,016 - guardian - INFO - Workflow Progress [########------------] 10/22 (40%) ETA ~0s
+2026-02-14 20:58:12,017 - guardian - INFO - Executing step: masscan_discovery_cidr
+2026-02-14 20:58:12,017 - guardian - INFO - Skipping masscan_discovery_cidr: target is not CIDR/range
+2026-02-14 20:58:12,018 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 20:58:12,018 - guardian - INFO - Workflow Progress [#########-----------] 11/22 (45%) ETA ~0s
+2026-02-14 20:58:12,018 - guardian - INFO - Executing step: masscan_discovery_single_node
+2026-02-14 20:58:12,019 - guardian - INFO - Tool Agent selecting tool: masscan
+2026-02-14 20:58:12,020 - guardian - INFO - Executing: /usr/bin/masscan -p 1-65535 --rate 5000 -oJ reports/20260214_205811/masscan_20260214_205812_019955.json 192.168.1.244
+2026-02-14 20:58:49,992 - guardian - INFO - Tool masscan finished in 37.97s (status=completed, exit=0, stdout=0B, stderr=5405B)
+2026-02-14 20:58:49,995 - guardian - INFO - Tool Executed: masscan
+2026-02-14 20:58:49,997 - guardian - INFO - Analyst Agent analyzing results...
+2026-02-14 20:58:49,999 - guardian - INFO - [Analyst] LLM request: system_prompt=1007 chars, prompt=5548 chars
+2026-02-14 21:00:21,156 - guardian - INFO - [Analyst] LLM usage: model=z-ai/glm-4.5-air:free tokens(prompt=2410, completion=2048, total=4458)
+2026-02-14 21:00:21,160 - guardian - INFO - [Analyst] LLM response: 0 chars
+2026-02-14 21:00:21,162 - guardian - INFO - AI Decision [Analyst]: 
+2026-02-14 21:00:21,164 - guardian - INFO - [Analyst] AnalysisComplete: No evidence-backed findings; output deemed informational.
+2026-02-14 21:00:21,165 - guardian - INFO - Found 0 findings from masscan
+2026-02-14 21:00:21,167 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 21:00:21,168 - guardian - INFO - Exported tool commands: reports/20260214_205811/payloads_20260214_205811.txt
+2026-02-14 21:00:21,170 - guardian - INFO - Workflow Progress [##########----------] 12/22 (50%) ETA ~142s
+2026-02-14 21:00:21,171 - guardian - INFO - Executing step: port_scan_main_domain
+2026-02-14 21:00:21,172 - guardian - INFO - Skipping port_scan_main_domain: target is IP
+2026-02-14 21:00:21,174 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 21:00:21,175 - guardian - INFO - Exported tool commands: reports/20260214_205811/payloads_20260214_205811.txt
+2026-02-14 21:00:21,176 - guardian - INFO - Workflow Progress [##########----------] 13/22 (54%) ETA ~129s
+2026-02-14 21:00:21,176 - guardian - INFO - Executing step: nmap_vuln_scan
+2026-02-14 21:00:21,177 - guardian - INFO - Tool Agent selecting tool: nmap
+2026-02-14 21:00:21,178 - guardian - INFO - Executing: /usr/bin/nmap -sV --script vuln,vulners -T4 -Pn -oX reports/20260214_205811/nmap_20260214_210021_178405.xml -p 21,22,23,25,53,80,111,139,445,512,513,514,1099,1524,2049,2121,3306,3632,5432,5900,6000,6667,6697,8009,8180,8787,41755,42519,49727 192.168.1.244
+2026-02-14 21:07:46,560 - guardian - INFO - Tool nmap finished in 445.38s (status=completed, exit=0, stdout=126997B, stderr=0B)
+2026-02-14 21:07:46,562 - guardian - INFO - Tool Executed: nmap
+2026-02-14 21:07:46,562 - guardian - INFO - Analyst Agent analyzing results...
+2026-02-14 21:07:46,563 - guardian - INFO - [Analyst] LLM request: system_prompt=1007 chars, prompt=3685 chars
+2026-02-14 21:07:58,038 - guardian - INFO - [Analyst] LLM usage: model=nvidia/nemotron-3-nano-30b-a3b:free tokens(prompt=2000, completion=2048, total=4048)
+2026-02-14 21:07:58,042 - guardian - INFO - [Analyst] LLM response: 1024 chars
+2026-02-14 21:07:58,043 - guardian - INFO - AI Decision [Analyst]: **  
+
+### FINDING: vsftpd 2.3.4 backdoor remote code execution (CVE‑2011‑2523)  
+SEVERITY: Critical  
+EVIDENCE: `<script id="ftp-vsftpd-backdoor" output="&#xa;  VULNERABLE:&#xa;  vsFTPd version 2.3.4 backdoor&#xa;    State: VULNERABLE (Exploitable)&#xa;    IDs:  CVE:CVE-2011-2523  BID:48539&#xa;      vsFTPd version 2.3.4 backdoor, this was reported on 2011-07-04.&#xa;    Disclosure date: 2011-07-03&#xa;    Exploit results:&#xa;      Shell command: id&#xa;      Results: uid=0(root) gid=0(root)&#xa;    References:&#xa;      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-2523&#xa;      ...">`  
+DESCRIPTION: The scanner detected that the FTP service on **192.168.1.244** runs **vsftpd 2.3.4**, which contains a known backdoor that allows arbitrary command execution. The script explicitly marks the issue as “VULNERABLE (Exploitable)” and demonstrates proof‑of‑concept execution of the `id` command resulting in **uid=0(root)**, confirming full administrative compromise.  
+IMPACT: An attacker can obtain a root
+2026-02-14 21:07:58,071 - guardian - INFO - [Analyst] AnalysisComplete: No evidence-backed findings; output deemed informational.
+2026-02-14 21:07:58,072 - guardian - INFO - Found 0 findings from nmap
+2026-02-14 21:07:58,073 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 21:07:58,074 - guardian - INFO - Exported URLs for manual testing: reports/20260214_205811/urls_20260214_205811.txt
+2026-02-14 21:07:58,075 - guardian - INFO - Exported tool commands: reports/20260214_205811/payloads_20260214_205811.txt
+2026-02-14 21:07:58,076 - guardian - INFO - Workflow Progress [###########---------] 14/22 (59%) ETA ~527s
+2026-02-14 21:07:58,076 - guardian - INFO - Executing step: nmap_common_udp_scan
+2026-02-14 21:07:58,077 - guardian - INFO - Tool Agent selecting tool: nmap
+2026-02-14 21:07:58,078 - guardian - INFO - Executing: /usr/bin/nmap -sV -sC -T3 -Pn -oX reports/20260214_205811/nmap_20260214_210758_078014.xml -p 53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389 -sU 192.168.1.244
+2026-02-14 21:10:25,027 - guardian - INFO - Tool nmap finished in 146.95s (status=completed, exit=0, stdout=1843B, stderr=0B)
+2026-02-14 21:10:25,028 - guardian - INFO - Tool Executed: nmap
+2026-02-14 21:10:25,028 - guardian - INFO - Analyst Agent analyzing results...
+2026-02-14 21:10:25,029 - guardian - INFO - [Analyst] LLM request: system_prompt=1007 chars, prompt=3448 chars
+2026-02-14 21:10:36,992 - guardian - INFO - [Analyst] LLM usage: model=stepfun/step-3.5-flash:free tokens(prompt=1345, completion=2048, total=3393)
+2026-02-14 21:10:36,998 - guardian - INFO - [Analyst] LLM response: 3366 chars
+2026-02-14 21:10:37,001 - guardian - INFO - AI Decision [Analyst]: ### REASONING
+
+I analyzed the nmap XML output for the target 192.168.1.244. The scan identified 5 open UDP ports with service details and script outputs. I evaluated each finding based on concrete evidence from the output, assessing severity by considering common vulnerabilities associated with the detected services and versions, as well as misconfigurations indicated by script results. I avoided speculation and only reported issues with direct evidence. The host appears to be a legacy Linux/Unix system (Metasploitable) with several high-risk network services exposed.
+
+Key observations:
+- **Port 53/UDP (DNS)**: ISC BIND 9.4.2 with recursion enabled. This version is outdated (released ~2008) and recursion allows the server to be used in amplification attacks.
+- **Port 69/UDP (TFTP)**: TFTP service running, but version detection failed. TFTP typically lacks authentication, making it a risk for unauthorized file access.
+- **Port 111/UDP (rpcbind)**: Exposes multiple RPC services (NFS, mountd, nlockmgr, status) via `rpcinfo`. This is a major information disclosure and attack surface enlargement.
+- **Port 137/UDP (NetBIOS-ns)**: Reveals hostname (METASPLOITABLE), workgroup (WORKGROUP), and OS hint (Windows). This facilitates network enumeration.
+- **Port 2049/UDP (NFS)**: NFS service (versions 2-4) exposed. NFS is notoriously misconfigured and can allow unauthorized file system access if exports are permissive.
+- **No tool errors** are present; all findings are based on direct scan evidence.
+
+I rated vulnerabilities considering exploitability and impact. Outdated software (BIND 9.4.2) and services with known abuse patterns (NFS, rpcbind, TFTP) received High severity. Information disclosure (NetBIOS) and unauthenticated TFTP received Medium. DNS recursion alone is a misconfiguration that enables attacks, so combined with the old version, it's High.
+
+---
+
+### RESPONSE
+
+### FINDING: DNS Recursion Enabled on Outdated BIND
+SEVERITY: High
+EVIDENCE: `<service name="domain" product="ISC BIND" version="9.4.2" ...><script id="dns-recursion" output="Recursion appears to be enabled"/>`
+DESCRIPTION: The DNS server (ISC BIND 9.4.2) has recursion enabled. This allows the server to resolve queries on behalf of external clients. Combined with the outdated version (9.4.2, EOL ~2010), this is a high-risk configuration.
+IMPACT: Recursive DNS servers can be abused for DNS amplification DDoS attacks. The outdated BIND version likely contains multiple unpatched vulnerabilities (e.g., CVE-2010-3613, CVE-2011-0414) that could allow remote code execution or denial-of-service.
+RECOMMENDATION: Disable recursion for external clients in BIND configuration (`recursion no;` or use `allow-recursion` for internal networks only). Upgrade BIND to a supported, patched version.
+CVSS: 7.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H) - based on typical DDoS amplification vector and known RCEs in old BIND.
+CWE: CWE-400 (Uncontrolled Resource Consumption), CWE-20 (Improper Input Validation)
+OWASP: A05:2021 – Security Misconfiguration
+
+### FINDING: TFTP Service Running Without Authentication
+SEVERITY: Medium
+EVIDENCE: `<port protocol="udp" portid="69"><service name="tftp" ...><script id="tftp-version" output="... errmsg: No such file or directory"/>`
+DESCRIPTION: A TFTP server is listening on UDP port 69. The script output indicates the service is running but
+2026-02-14 21:10:37,016 - guardian - INFO - [Analyst] AnalysisComplete: No evidence-backed findings; output deemed informational.
+2026-02-14 21:10:37,017 - guardian - INFO - Found 0 findings from nmap
+2026-02-14 21:10:37,018 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 21:10:37,019 - guardian - INFO - Exported URLs for manual testing: reports/20260214_205811/urls_20260214_205811.txt
+2026-02-14 21:10:37,020 - guardian - INFO - Exported tool commands: reports/20260214_205811/payloads_20260214_205811.txt
+2026-02-14 21:10:37,020 - guardian - INFO - Workflow Progress [############--------] 15/22 (63%) ETA ~595s
+2026-02-14 21:10:37,021 - guardian - INFO - Executing step: http_probing
+2026-02-14 21:10:37,022 - guardian - INFO - Tool Agent selecting tool: httpx
+2026-02-14 21:10:37,022 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244
+2026-02-14 21:10:38,598 - guardian - INFO - Tool httpx finished in 1.57s (status=completed, exit=0, stdout=550B, stderr=0B)
+2026-02-14 21:10:38,599 - guardian - INFO - Tool Executed: httpx
+2026-02-14 21:10:38,599 - guardian - INFO - Analyst Agent analyzing results...
+2026-02-14 21:10:38,600 - guardian - INFO - [Analyst] LLM request: system_prompt=1007 chars, prompt=1644 chars
+2026-02-14 21:11:37,863 - guardian - INFO - [Analyst] LLM usage: model=nousresearch/hermes-3-llama-3.1-405b:free tokens(prompt=693, completion=601, total=1294)
+2026-02-14 21:11:37,866 - guardian - INFO - [Analyst] LLM response: 1561 chars
+2026-02-14 21:11:37,868 - guardian - INFO - AI Decision [Analyst]: ### FINDING: Outdated Software Versions
+SEVERITY: Medium
+EVIDENCE: "webserver":"Apache/2.2.8 (Ubuntu) DAV/2", "tech":["Apache HTTP Server:2.2.8","PHP:5.2.4","Ubuntu","mod_dav:2"]
+DESCRIPTION: The target is running outdated, unsupported versions of Ubuntu, Apache, and PHP that likely have known vulnerabilities.
+IMPACT: Potential for exploitation of known vulnerabilities in the software stack.
+RECOMMENDATION: Upgrade to supported, patched versions of the operating system and software components.
+CVSS: CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H (7.5)
+CWE: CWE-1026: Insecure Software Dependencies
+
+### FINDING: Exposed WebDAV Interface
+SEVERITY: Low
+EVIDENCE: "webserver":"Apache/2.2.8 (Ubuntu) DAV/2", "tech":["mod_dav:2"]
+DESCRIPTION: The WebDAV extension is enabled on the Apache server, which if misconfigured could allow unauthorized file access.
+IMPACT: Potential for unauthorized read/write access to web server files/directories.
+RECOMMENDATION: Ensure WebDAV is properly secured with strong authentication and access controls. Disable if not needed.
+CVSS: CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N (4.8)
+CWE: CWE-219: Sensitive Data Exposure due to Insecure Configuration
+
+SUMMARY: The httpx output shows the target is running outdated software versions and has WebDAV enabled, which could potentially be exploited if proper security controls are not in place. However, no directly exploitable vulnerabilities are confirmed. Upgrading the software stack and ensuring strong configuration are recommended to harden the server's security posture.
+2026-02-14 21:11:37,874 - guardian - INFO - [Analyst] AnalysisComplete: No evidence-backed findings; output deemed informational.
+2026-02-14 21:11:37,875 - guardian - INFO - Found 0 findings from httpx
+2026-02-14 21:11:37,878 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 21:11:37,880 - guardian - INFO - Exported URLs for manual testing: reports/20260214_205811/urls_20260214_205811.txt
+2026-02-14 21:11:37,881 - guardian - INFO - Exported tool commands: reports/20260214_205811/payloads_20260214_205811.txt
+2026-02-14 21:11:37,882 - guardian - INFO - Workflow Progress [#############-------] 16/22 (68%) ETA ~564s
+2026-02-14 21:11:37,884 - guardian - INFO - Executing step: security_assessment
+2026-02-14 21:11:37,884 - guardian - INFO - Skipping security_assessment: target is IP
+2026-02-14 21:11:37,886 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 21:11:37,887 - guardian - INFO - Exported URLs for manual testing: reports/20260214_205811/urls_20260214_205811.txt
+2026-02-14 21:11:37,888 - guardian - INFO - Exported tool commands: reports/20260214_205811/payloads_20260214_205811.txt
+2026-02-14 21:11:37,889 - guardian - INFO - Workflow Progress [##############------] 17/22 (72%) ETA ~483s
+2026-02-14 21:11:37,890 - guardian - INFO - Executing step: ssl_tls_scan
+2026-02-14 21:11:37,891 - guardian - INFO - Tool Agent selecting tool: testssl
+2026-02-14 21:11:37,892 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-8tgaks8c/testssl.json --severity LOW --quiet --ip one 192.168.1.244
+2026-02-14 21:11:37,952 - guardian - INFO - Tool testssl completed in 0.06s (exit 254)
+2026-02-14 21:11:37,953 - guardian - INFO - Tool Executed: testssl
+2026-02-14 21:11:37,953 - guardian - WARNING - Tool execution failed: [1;35mFatal error: "--ip=one" plus supplying an IP address doesn't work[m
+
+2026-02-14 21:11:37,955 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 21:11:37,955 - guardian - INFO - Exported URLs for manual testing: reports/20260214_205811/urls_20260214_205811.txt
+2026-02-14 21:11:37,956 - guardian - INFO - Exported tool commands: reports/20260214_205811/payloads_20260214_205811.txt
+2026-02-14 21:11:37,956 - guardian - INFO - Workflow Progress [###############-----] 18/22 (77%) ETA ~402s
+2026-02-14 21:11:37,957 - guardian - INFO - Executing step: security_headers
+2026-02-14 21:11:37,957 - guardian - INFO - Tool Agent selecting tool: headers
+2026-02-14 21:11:37,958 - guardian - INFO - Executing: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Header-Check/1.0 -L -k 192.168.1.244
+2026-02-14 21:11:37,996 - guardian - INFO - Tool headers finished in 0.04s (status=completed, exit=0, stdout=176B, stderr=0B)
+2026-02-14 21:11:37,996 - guardian - INFO - Tool Executed: headers
+2026-02-14 21:11:37,997 - guardian - INFO - Analyst Agent analyzing results...
+2026-02-14 21:11:37,997 - guardian - INFO - [Analyst] LLM request: system_prompt=1007 chars, prompt=1272 chars
+2026-02-14 21:11:54,121 - guardian - INFO - [Analyst] LLM usage: model=arcee-ai/trinity-large-preview:free tokens(prompt=560, completion=864, total=1424)
+2026-02-14 21:11:54,124 - guardian - INFO - [Analyst] LLM response: 2419 chars
+2026-02-14 21:11:54,126 - guardian - INFO - AI Decision [Analyst]: ### FINDING: Outdated Apache Web Server
+SEVERITY: Critical
+EVIDENCE: "Server: Apache/2.2.8 (Ubuntu) DAV/2"
+DESCRIPTION: Apache version 2.2.8 is extremely outdated and no longer supported, containing numerous known vulnerabilities.
+IMPACT: Remote code execution, denial of service, information disclosure, and server compromise are possible.
+RECOMMENDATION: Upgrade Apache to the latest stable version immediately.
+CVSS: 9.8+ (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)
+CWE: CWE-1203
+OWASP: A06:2021 - Vulnerable and Outdated Components
+
+### FINDING: Outdated PHP Version
+SEVERITY: Critical
+EVIDENCE: "X-Powered-By: PHP/5.2.4-2ubuntu5.10"
+DESCRIPTION: PHP version 5.2.4 is extremely outdated and no longer supported, containing numerous known vulnerabilities.
+IMPACT: Remote code execution, information disclosure, and server compromise are possible.
+RECOMMENDATION: Upgrade PHP to the latest stable version immediately.
+CVSS: 9.8+ (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)
+CWE: CWE-1203
+OWASP: A06:2021 - Vulnerable and Outdated Components
+
+### FINDING: WebDAV Enabled
+SEVERITY: High
+EVIDENCE: "Server: Apache/2.2.8 (Ubuntu) DAV/2"
+DESCRIPTION: WebDAV module is enabled, which can be exploited for file upload attacks and unauthorized access.
+IMPACT: Unauthorized file upload, directory traversal, and potential server compromise.
+RECOMMENDATION: Disable WebDAV if not needed, or restrict access to authorized users only.
+CVSS: 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N)
+CWE: CWE-434
+OWASP: A5:2021 - Security Misconfiguration
+
+### FINDING: Information Disclosure
+SEVERITY: Medium
+EVIDENCE: "Server: Apache/2.2.8 (Ubuntu) DAV/2" and "X-Powered-By: PHP/5.2.4-2ubuntu5.10"
+DESCRIPTION: Server and PHP versions are explicitly disclosed, providing attackers with valuable information for targeted attacks.
+IMPACT: Enables attackers to identify specific vulnerabilities for the disclosed versions.
+RECOMMENDATION: Configure server to hide version information in headers.
+CVSS: 4.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)
+CWE: CWE-7
+OWASP: A01:2021 - Broken Access Control
+
+SUMMARY: The target system shows critical security issues with outdated Apache and PHP versions, both of which are no longer supported and contain numerous known vulnerabilities. The WebDAV module is enabled, adding another attack vector. Immediate action is required to upgrade the software and secure the server configuration.
+2026-02-14 21:11:54,136 - guardian - INFO - [Analyst] AnalysisComplete: Found 3 issues from headers
+2026-02-14 21:11:54,138 - guardian - INFO - Found 3 findings from headers
+2026-02-14 21:11:54,142 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 21:11:54,144 - guardian - INFO - Exported URLs for manual testing: reports/20260214_205811/urls_20260214_205811.txt
+2026-02-14 21:11:54,145 - guardian - INFO - Exported tool commands: reports/20260214_205811/payloads_20260214_205811.txt
+2026-02-14 21:11:54,146 - guardian - INFO - Workflow Progress [################----] 19/22 (81%) ETA ~328s
+2026-02-14 21:11:54,147 - guardian - INFO - Executing step: web_vuln_scan_nikto
+2026-02-14 21:11:54,147 - guardian - INFO - Tool Agent selecting tool: nikto
+2026-02-14 21:11:54,148 - guardian - INFO - Executing: /usr/bin/nikto -h 192.168.1.244 -Tuning x -timeout 10 -nointeractive
+2026-02-14 21:11:58,050 - guardian - INFO - Tool nikto finished in 3.90s (status=completed, exit=1, stdout=1750B, stderr=0B)
+2026-02-14 21:11:58,054 - guardian - INFO - Tool Executed: nikto
+2026-02-14 21:11:58,055 - guardian - INFO - Analyst Agent analyzing results...
+2026-02-14 21:11:58,057 - guardian - INFO - [Analyst] LLM request: system_prompt=1007 chars, prompt=2844 chars
+2026-02-14 21:12:04,516 - guardian - INFO - [Analyst] LLM usage: model=liquid/lfm-2.5-1.2b-thinking:free tokens(prompt=1072, completion=2048, total=3120)
+2026-02-14 21:12:04,520 - guardian - INFO - [Analyst] LLM response: 10 chars
+2026-02-14 21:12:04,522 - guardian - INFO - AI Decision [Analyst]: REASONING:
+2026-02-14 21:12:04,525 - guardian - INFO - [Analyst] AnalysisComplete: No evidence-backed findings; output deemed informational.
+2026-02-14 21:12:04,526 - guardian - INFO - Found 0 findings from nikto
+2026-02-14 21:12:04,530 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 21:12:04,532 - guardian - INFO - Exported URLs for manual testing: reports/20260214_205811/urls_20260214_205811.txt
+2026-02-14 21:12:04,534 - guardian - INFO - Exported tool commands: reports/20260214_205811/payloads_20260214_205811.txt
+2026-02-14 21:12:04,535 - guardian - INFO - Workflow Progress [#################---] 20/22 (86%) ETA ~249s
+2026-02-14 21:12:04,536 - guardian - INFO - Executing step: vulnerability_scan
+2026-02-14 21:12:04,537 - guardian - INFO - Tool Agent selecting tool: nuclei
+2026-02-14 21:12:04,634 - guardian - INFO - Executing: /home/kali/code/guardian-cli-deluxe/tools/.bin/nuclei -l reports/20260214_205811/nuclei_20260214_205811.txt -jsonl -o reports/20260214_205811/nuclei_20260214_211204.jsonl -severity critical,high -tags cve,rce,sqli,xss,default,default-login -t /home/kali/nuclei-templates/http -silent -rate-limit 50
+2026-02-14 21:13:46,166 - guardian - INFO - Tool nuclei finished in 101.53s (status=completed, exit=0, stdout=4177B, stderr=0B)
+2026-02-14 21:13:46,170 - guardian - INFO - Tool Executed: nuclei
+2026-02-14 21:13:46,171 - guardian - INFO - Analyst Agent analyzing results...
+2026-02-14 21:13:46,173 - guardian - INFO - [Analyst] LLM request: system_prompt=1007 chars, prompt=1853 chars
+2026-02-14 21:14:20,796 - guardian - INFO - [Analyst] LLM usage: model=meta-llama/llama-3.2-3b-instruct:free tokens(prompt=781, completion=522, total=1303)
+2026-02-14 21:14:20,802 - guardian - INFO - [Analyst] LLM response: 2314 chars
+2026-02-14 21:14:20,805 - guardian - INFO - AI Decision [Analyst]: **REASONING**
+
+To analyze the tool output, I followed the provided framework, focusing on evidence verification, exploitability assessment, impact evaluation, false positive check, and mitigation recommendations. I extracted the relevant information from the output, including the NUCLEI_JSONL_CONDENSED, NUCLEI_MATCHES, NUCLEI_BY_SEVERITY, and NUCLEI_RESULTS_JSON sections.
+
+I verified the evidence by checking the exact quote/snippet from the output, ensuring that I did not infer vulnerabilities without proof. I distinguished between confirmed vulnerabilities and potential issues, rating generic headers as Low/Info unless explicitly flagged by tools. I also treated tool/runtime errors as tooling issues and returned no findings.
+
+**RESPONSE**
+
+### FINDING 1: Remote Code Execution (RCE) Vulnerability
+
+SEVERITY: High
+EVIDENCE: `template-id":"CVE-2012-1823","name":"PHP CGI v5.3.12/5.4.2 Remote Code Execution"`
+DESCRIPTION: The output indicates a confirmed high-severity vulnerability, CVE-2012-1823, which is a remote code execution vulnerability in PHP CGI versions 5.3.12 and 5.4.2.
+IMPACT: An attacker could execute arbitrary code on the vulnerable system, potentially leading to unauthorized access, data tampering, or system compromise.
+RECOMMENDATION: Update PHP to the latest version (5.6.40 or later) and ensure that the `allow_url_include` and `auto_prepend_file` options are disabled.
+CVSS: 9.3 (base score and vector)
+
+### FINDING 2: Potential Information Disclosure
+
+SEVERITY: Info
+EVIDENCE: `tags":["cve","cve2012","kev","vulhub","rce","php","vkev","vuln"]`
+DESCRIPTION: The output includes a list of tags related to the vulnerability, which may indicate potential information disclosure.
+IMPACT: An attacker could potentially use this information to identify vulnerabilities in the system or gain insights into the system's configuration.
+RECOMMENDATION: Review the tags and ensure that sensitive information is not exposed.
+CVSS: N/A (Info)
+
+**No security findings in output**
+
+**SUMMARY**: The output indicates a confirmed high-severity vulnerability, CVE-2012-1823, which requires immediate attention. Additionally, the potential information disclosure is noted, but it is not considered a security finding. The system's security posture is compromised due to the identified vulnerability.
+2026-02-14 21:14:20,813 - guardian - INFO - [Analyst] AnalysisComplete: No evidence-backed findings; output deemed informational.
+2026-02-14 21:14:20,814 - guardian - INFO - Found 0 findings from nuclei
+2026-02-14 21:14:20,817 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 21:14:20,820 - guardian - INFO - Exported URLs for manual testing: reports/20260214_205811/urls_20260214_205811.txt
+2026-02-14 21:14:20,822 - guardian - INFO - Exported tool commands: reports/20260214_205811/payloads_20260214_205811.txt
+2026-02-14 21:14:20,823 - guardian - INFO - Workflow Progress [##################--] 21/22 (90%) ETA ~193s
+2026-02-14 21:14:20,825 - guardian - INFO - Executing step: analyze_results
+2026-02-14 21:14:20,826 - guardian - INFO - Running correlation analysis...
+2026-02-14 21:14:20,827 - guardian - INFO - [Analyst] LLM request: system_prompt=1007 chars, prompt=576 chars
+2026-02-14 21:14:22,800 - guardian - INFO - [Analyst] LLM usage: model=liquid/lfm-2.5-1.2b-instruct:free tokens(prompt=409, completion=575, total=984)
+2026-02-14 21:14:22,804 - guardian - INFO - [Analyst] LLM response: 2006 chars
+2026-02-14 21:14:22,806 - guardian - INFO - AI Decision [Analyst]: **  
+**Security Posture Assessment:**  
+- **Critical Risks:**  
+  - Outdated Apache Web Server (High severity): Known exploits exist for outdated versions.  
+  - Outdated PHP Version (High severity): Vulnerable to SQL injection, XSS, and other web application attacks.  
+  - WebDAV Enabled (High severity): Misconfigured services can expose sensitive data.  
+- **Patterns:** All three issues are interrelated—outdated software increases exposure to attacks, and WebDAV enables additional attack surfaces.  
+
+- **Attack Chain Visualization:**  
+1. Exploit outdated Apache/PHP vulnerabilities.  
+2. Leverage WebDAV misconfiguration to escalate privileges.  
+3. Use the exposed services to conduct lateral movement or data exfiltration.  
+
+- **Prioritization by Exploitability:**  
+1. Critical: Outdated Apache + PHP.  
+2. High: WebDAV enabled.  
+3. Medium: Outdated WebDAV (if not actively exploited).  
+
+- **Impact Evaluation:**  
+All findings pose significant risks, with critical issues directly impacting system integrity and confidentiality.  
+
+- **False Positives Check:** No false positives detected in the raw output.  
+
+- **Actionable Recommendations:**  
+  - Immediately patch Apache and PHP to the latest versions.  
+  - Disable WebDAV unless absolutely necessary.  
+  - Conduct a full vulnerability scan to confirm remediation.  
+  - Implement stricter CORS and CSP headers to mitigate WebDAV risks.  
+  - Monitor logs for suspicious activity related to the Apache and PHP versions.  
+
+**Next Testing Steps:**  
+- Perform a comprehensive vulnerability assessment.  
+- Validate patch effectiveness.  
+- Review server configuration for WebDAV hardening.  
+- Conduct penetration testing on exposed services.  
+
+**Final Recommendation:** Address critical issues first to reduce exposure, then proceed with remediation and validation.  
+  
+  
+The analysis confirms a high-risk environment driven by outdated software and misconfigurations. Immediate patching and configuration hardening are essential.
+2026-02-14 21:14:22,816 - guardian - INFO - Correlation analysis complete
+2026-02-14 21:14:22,819 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 21:14:22,822 - guardian - INFO - Exported URLs for manual testing: reports/20260214_205811/urls_20260214_205811.txt
+2026-02-14 21:14:22,824 - guardian - INFO - Exported tool commands: reports/20260214_205811/payloads_20260214_205811.txt
+2026-02-14 21:14:22,826 - guardian - INFO - Workflow Progress [###################-] 22/22 (95%) ETA ~84s
+2026-02-14 21:14:22,827 - guardian - INFO - Executing step: generate_report
+2026-02-14 21:14:22,829 - guardian - INFO - Generating markdown report...
+2026-02-14 21:14:22,829 - guardian - INFO - [Reporter] GeneratingReport: Format: markdown
+2026-02-14 21:14:22,832 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=573 chars
+2026-02-14 21:14:34,076 - guardian - INFO - [Reporter] LLM usage: model=upstage/solar-pro-3:free tokens(prompt=428, completion=1156, total=1584)
+2026-02-14 21:14:34,079 - guardian - INFO - [Reporter] LLM response: 1611 chars
+2026-02-14 21:14:34,080 - guardian - INFO - AI Decision [Reporter]: **EXECUTIVE SUMMARY**  
+The penetration test of 192.168.1.244 revealed a high-risk security posture that could expose your organization to severe threats. Two critical vulnerabilities stem from outdated web server software (Apache) and scripting components (PHP), which attackers routinely exploit to gain unauthorized access, steal data, or disrupt operations. These flaws could lead to costly breaches, regulatory violations, or downtime affecting critical business services. Additionally, WebDAV—a file-sharing feature—was enabled without proper safeguards, creating an easy pathway for attackers to upload malicious content or exfiltrate sensitive information.  
+
+The most urgent risks include:  
+- **Immediate exploitation**: Outdated software versions likely contain unpatched vulnerabilities that attackers could weaponize within minutes, risking data theft or system takeover.  
+- **Expanded attack surface**: WebDAV’s presence increases the likelihood of unauthorized access, potentially compromising internal files or enabling ransomware attacks.  
+
+**High-Level Recommendations**:  
+1. **Patch Immediately**: Update Apache and PHP to current versions to eliminate known vulnerabilities and prevent exploitation.  
+2. **Disable Unnecessary Services**: Turn off WebDAV unless essential, and enforce strict access controls if retained.  
+3. **Implement Automated Updates**: Establish a patch management process to ensure timely fixes for all systems, reducing future exposure.  
+These steps will mitigate immediate threats, strengthen compliance posture, and protect business operations from disruption.
+2026-02-14 21:14:34,190 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=4022 chars
+2026-02-14 21:14:43,306 - guardian - INFO - [Reporter] LLM usage: model=qwen/qwen3-4b:free tokens(prompt=1582, completion=2048, total=3630)
+2026-02-14 21:14:43,310 - guardian - INFO - [Reporter] LLM response: 4026 chars
+2026-02-14 21:14:43,312 - guardian - INFO - AI Decision [Reporter]: 1. **REASONING**  
+   I processed the provided findings to generate a structured technical report section. For each finding, I extracted the required fields (title, severity, component, technical description, evidence, impact, exploitation info, remediation, CVSS, and OWASP mapping) while strictly adhering to the data provided. I prioritized CISA KEV status, CVE identifiers, and exploitation details from the input. Since no CISA KEV status or exploit references were present in the findings, I marked them as "N/A" and focused on the explicit data. Remediation steps were tailored to each component, and CVSS scores were included as per the input. The report was formatted to meet the user’s professional and structured requirements.  
+
+---
+
+2. **RESPONSE**  
+
+### **Technical Findings**  
+
+#### **1. [CRITICAL] Outdated Apache Web Server**  
+- **Affected Component/Service**: Apache Web Server (version 2.2.8)  
+- **Technical Description**: The Apache server is running an outdated, unsupported version (2.2.8) with no security updates. This version is vulnerable to numerous known exploits.  
+- **Evidence & Proof of Concept**:  
+  - **Header**: `Server: Apache/2.2.8 (Ubuntu) DAV/2`  
+  - **Source**: `artifact=reports/20260214_205811/session_20260214_205811.json | location=reports/20260214_205811/session_20260214_205811.json#tool=headers,timestamp=2026-02-14T21:11:37.958844,cmd_sha1=341ff7bacf`  
+- **Impact Analysis**:  
+  - **CVSS v3.1 Score**: 9.8 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)  
+  - **OWASP 2021**: A06:2021 - Vulnerable and Outdated Components (CWE-1203)  
+  - **Impact**: High (confidentiality, integrity, and availability of the server are at risk).  
+- **Exploitation Information**:  
+  - **CISA KEV Status**: N/A  
+  - **CVE Identifiers**: N/A  
+  - **Known Exploits**:  
+    - **Metasploit Modules**: N/A  
+    - **Exploit-DB IDs**: N/A  
+    - **GitHub PoCs**: N/A  
+  - **Exploitation Attempt Status**: N/A  
+- **Remediation Steps**:  
+  1. Upgrade Apache to a supported version (e.g., 2.4.26+).  
+  2. Verify the update and retest for vulnerabilities.  
+  3. Monitor for new CVEs related to the old version.  
+
+---
+
+#### **2. [CRITICAL] Outdated PHP Version**  
+- **Affected Component/Service**: PHP (version 5.2.4)  
+- **Technical Description**: PHP 5.2.4 is an outdated, unsupported version with no security updates. It is vulnerable to multiple exploits.  
+- **Evidence & Proof of Concept**:  
+  - **Header**: `X-Powered-By: PHP/5.2.4-2ubuntu5.10`  
+  - **Source**: `artifact=reports/20260214_205811/session_20260214_205811.json | location=reports/20260214_205811/session_20260214_205811.json#tool=headers,timestamp=2026-02-14T21:11:37.958844,cmd_sha1=341ff7bacf`  
+- **Impact Analysis**:  
+  - **CVSS v3.1 Score**: 9.8 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)  
+  - **OWASP 2021**: A06:2021 - Vulnerable and Outdated Components (CWE-1203)  
+  - **Impact**: High (confidentiality, integrity, and availability of the application are at risk).  
+- **Exploitation Information**:  
+  - **CISA KEV Status**: N/A  
+  - **CVE Identifiers**: N/A  
+  - **Known Exploits**:  
+    - **Metasploit Modules**: N/A  
+    - **Exploit-DB IDs**: N/A  
+    - **GitHub PoCs**: N/A  
+  - **Exploitation Attempt Status**: N/A  
+- **Remediation Steps**:  
+  1. Upgrade PHP to a supported version (e.g., 7.4+).  
+  2. Test the application for compatibility after the update.  
+  3. Monitor for new CVEs related to the old version.  
+
+---
+
+#### **3. [HIGH] WebDAV Enabled**  
+- **Affected Component/Service**: Apache WebDAV Module  
+- **Technical Description**: WebDAV is enabled on the server, which allows for file upload attacks and unauthorized access.  
+- **Evidence & Proof of Concept**:  
+  - **Header**: `Server: Apache/2.2.8 (Ubuntu) DAV/2`  
+  - **Source**: `artifact=reports/20260214_205811/session_20260214_205811.json | location=reports/20260214_205811/session_20260214_205811.json#tool=headers,timestamp=2026-02-14T21:11:37.958844,cmd_sha1=341ff7bacf`  
+- **Impact Analysis**:  
+  - **CVSS v3.1 Score**: 7
+2026-02-14 21:14:43,334 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=2530 chars
+2026-02-14 21:15:08,497 - guardian - INFO - [Reporter] LLM usage: model=stepfun/step-3.5-flash:free tokens(prompt=1066, completion=2048, total=3114)
+2026-02-14 21:15:08,501 - guardian - INFO - [Reporter] LLM response: 1958 chars
+2026-02-14 21:15:08,503 - guardian - INFO - AI Decision [Reporter]: ### 1. REASONING
+
+**Decision-Making Process:**
+
+1. **Severity & CVSS Prioritization:** The two CRITICAL findings (CVSS 9.8) represent immediate, high-impact risks due to end-of-life software with unpatched vulnerabilities. The HIGH finding (CVSS 7.5) is also urgent but is a configuration issue that can be mitigated more quickly. The CRITICAL items drive the overall remediation timeline because they require a fundamental system upgrade.
+
+2. **Root Cause Analysis:** Both CRITICAL findings (Apache 2.2.8, PHP 5.2.4) stem from an outdated, unsupported operating system (implied by Ubuntu version and package ages). The most effective remediation is a full OS upgrade to a supported release, which will resolve both issues simultaneously. The HIGH finding (WebDAV) is an independent configuration weakness that can be disabled immediately as a temporary mitigation.
+
+3. **Effort vs. Impact Balance:** 
+   - **Quick Wins:** Low-effort, high-impact actions that can be completed immediately to reduce attack surface while planning larger projects.
+   - **Critical Priorities:** Address the root cause (unsupported OS) but require significant planning and downtime. These are non-negotiable due to the severity.
+   - **Medium-term:** Build on the upgraded system to establish sustainable security hygiene.
+   - **Long-term:** Implement advanced, proactive defenses beyond basic patching.
+
+4. **Dependency Logic:** The OS upgrade (Critical Priority) must precede medium/long-term enhancements because those assume a supported, stable foundation. Disabling WebDAV (Quick Win) can and should happen immediately, even before the OS upgrade.
+
+5. **Resource Realism:** Estimated efforts account for testing, rollback planning, and potential application compatibility issues common when upgrading from such legacy versions (Ubuntu 8.04/10.04 era). Staging environment is strongly recommended.
+
+---
+
+### 2. RESPONSE: Prioritized Remediation Action Plan
+
+**Target System
+2026-02-14 21:15:08,510 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=2538 chars
+2026-02-14 21:15:17,714 - guardian - INFO - [Reporter] LLM usage: model=nvidia/nemotron-3-nano-30b-a3b:free tokens(prompt=924, completion=1201, total=2125)
+2026-02-14 21:15:17,718 - guardian - INFO - [Reporter] LLM response: 1158 chars
+2026-02-14 21:15:17,720 - guardian - INFO - AI Decision [Reporter]: The penetration test of 192.168.1.244 identified two **CRITICAL** vulnerabilities (vsftpd 2.3.4 backdoor RCE – CVE‑2011‑2523 and Apache 2.2.8 outdated server) and several **MEDIUM** issues related to outdated software versions. These findings indicate a high‑risk security posture that could allow remote code execution and web‑application compromise.  
+
+**Recommendation:**  
+1. **Immediate remediation** – Upgrade vsftpd to a supported version and apply patches for the CVE‑2011‑2523 vulnerability; replace Apache 2.2.8 with a maintained release (e.g., Apache 2.4) and update all associated modules.  
+2. **Patch management** – Conduct a comprehensive audit of all services on the host to identify and remediate additional outdated components.  
+3. **Network segmentation** – Restrict inbound access to only required ports and services, and enforce firewall rules to limit exposure.  
+4. **Continuous monitoring** – Deploy vulnerability scanning and patch‑management processes to prevent recurrence of legacy software on production assets.  
+
+Implementing these steps will significantly reduce the attack surface and mitigate the critical risks identified.
+2026-02-14 21:15:17,727 - guardian - INFO - Report saved to: reports/20260214_205811/report_20260214_205811.md
+2026-02-14 21:15:17,728 - guardian - INFO - Generating html report...
+2026-02-14 21:15:17,729 - guardian - INFO - [Reporter] GeneratingReport: Format: html
+2026-02-14 21:15:17,730 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=573 chars
+2026-02-14 21:15:43,051 - guardian - INFO - [Reporter] LLM usage: model=z-ai/glm-4.5-air:free tokens(prompt=370, completion=718, total=1088)
+2026-02-14 21:15:43,056 - guardian - INFO - [Reporter] LLM response: 1264 chars
+2026-02-14 21:15:43,059 - guardian - INFO - AI Decision [Reporter]: **EXECUTIVE SUMMARY:**
+
+Our penetration test of the target system identified critical security vulnerabilities that pose immediate risks to your organization. Within just 17 minutes of testing, we discovered three significant issues that could allow attackers to gain unauthorized access to your systems. The outdated web server and application software contain known vulnerabilities that are actively exploited by attackers worldwide, potentially leading to data breaches, service disruption, and significant financial losses. Additionally, the enabled WebDAV functionality creates an unnecessary risk by allowing potential file upload capabilities that could be leveraged for malicious purposes.
+
+We recommend immediate action to address these critical vulnerabilities. First, prioritize updating your Apache web server and PHP application to the latest supported versions to patch known security flaws. Second, disable WebDAV functionality unless it is essential for business operations. These steps should be treated as urgent priorities to prevent potential security incidents. Implementing a regular patch management process and conducting periodic security assessments will help maintain a stronger security posture and prevent similar issues in the future.
+2026-02-14 21:15:43,065 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=4022 chars
+2026-02-14 21:15:58,365 - guardian - INFO - [Reporter] LLM usage: model=arcee-ai/trinity-mini:free tokens(prompt=1322, completion=2048, total=3370)
+2026-02-14 21:15:58,369 - guardian - INFO - [Reporter] LLM response: 3788 chars
+2026-02-14 21:15:58,371 - guardian - INFO - AI Decision [Reporter]: 
+
+### REASONING  
+The userrequested a detailed technical findings section for a penetration testing report, adhering to a strict framework. I analyzed each provided finding, ensuring compliance with data integrity rules by only using information explicitly present in the input. For each finding, I structured the response to include:  
+1. **Title and severity** (e.g., `[CRITICAL] Outdated Apache Web Server`).  
+2. **Affected component/service** (e.g., Apache 2.2.8).  
+3. **Technical description** (e.g., outdated versions with known vulnerabilities).  
+4. **Evidence and proof of concept** (e.g., server headers).  
+5. **Impact analysis** (e.g., CVSS scores and CWE/OWASP mappings).  
+6. **Exploitation Information** (e.g., N/A for Metasploit/EDB if not mentioned).  
+7. **Remediation steps** (e.g., upgrade software).  
+8. **CVSS v3.1 score/vector** (e.g., `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H`).  
+9. **OWASP/CWE mapping** (e.g., A06:2021).  
+
+I prioritized clarity for both technical and executive audiences, avoided exaggeration, and strictly avoided inventing exploit references not present in the input.  
+
+---
+
+### RESPONSE  
+#### Technical Findings  
+
+**1. [CRITICAL] Outdated Apache Web Server**  
+**Affected Component/Service**: Apache HTTP Server 2.2.8 (Ubuntu)  
+**Technical Description**: The Apache web server is running version 2.2.8, which is end-of-life and contains numerous unpatched vulnerabilities.  
+**Evidence**:  
+- Server header: `Server: Apache/2.2.8 (Ubuntu) DAV/2`  
+- Evidence Source: `artifact=reports/20260214_205811/session_20260214_205811.json`  
+**Impact Analysis**:  
+- **CVSS v3.1**: `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H` (9.8)  
+- **OWASP Top 10 (2021)**: A06:2021 (Vulnerable and Outdated Components)  
+- **CWE**: CWE-1203 (Improper Limitation of a Pathname to a Restricted Directory)  
+**Exploitation Information**:  
+- **CISA KEV Status**: Not mentioned in input.  
+- **CVEs**: Not listed in input.  
+- **Public Exploits**: Metasploit modules: N/A; Exploit-DB IDs: N/A; GitHub PoCs: N/A.  
+- **Exploitation Attempt**: Not attempted or reported.  
+**Remediation Steps**:  
+1. Upgrade Apache to a supported version (e.g., 2.4.x or later).  
+2. Remove or disable the DAV module if not required.  
+
+---  
+
+**2. [CRITICAL] Outdated PHP Version**  
+**Affected Component/Service**: PHP 5.2.4 (Ubuntu)  
+**Technical Description**: The PHP runtime is version 5.2.4, which is unsupported and vulnerable to multiple exploits.  
+**Evidence**:  
+- X-Powered-By header: `X-Powered-By: PHP/5.2.4-2ubuntu5.10`  
+- Evidence Source: `artifact=reports/20260214_205811/session_20260214_205811.json`  
+**Impact Analysis**:  
+- **CVSS v3.1**: `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H` (9.8)  
+- **OWASP Top 10 (2021)**: A06:2021 (Vulnerable and Outdated Components)  
+- **CWE**: CWE-1203 (Improper Limitation of a Pathname to a Restricted Directory)  
+**Exploitation Information**:  
+- **CISA KEV Status**: Not mentioned in input.  
+- **CVEs**: Not listed in input.  
+- **Public Exploits**: Metasploit modules: N/A; Exploit-DB IDs: N/A; GitHub PoCs: N/A.  
+- **Exploitation Attempt**: Not attempted or reported.  
+**Remediation Steps**:  
+1. Upgrade PHP to a supported version (e.g., 7.4.x or later).  
+2. Ensure all PHP extensions are updated to their latest versions.  
+
+---  
+
+**3. [HIGH] WebDAV Enabled**  
+**Affected Component/Service**: Apache WebDAV Module  
+**Technical Description**: The WebDAV module is active, enabling file upload and directory listing, which can be exploited for unauthorized access.  
+**Evidence**:  
+- Server header: `Server: Apache/2.2.8 (Ubuntu) DAV/2`  
+- Evidence Source: `artifact=reports/20260214_205811/session_20260214_205811.json`  
+**Impact Analysis**:  
+- **CVSS v3.1**: `CVSS:3.1/AV:N/AC:L/PR:N/UI:N
+2026-02-14 21:15:58,389 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=2530 chars
+2026-02-14 21:16:29,410 - guardian - INFO - [Reporter] LLM usage: model=meta-llama/llama-3.2-3b-instruct:free tokens(prompt=1001, completion=552, total=1553)
+2026-02-14 21:16:29,416 - guardian - INFO - [Reporter] LLM response: 2623 chars
+2026-02-14 21:16:29,418 - guardian - INFO - AI Decision [Reporter]: **Prioritized Remediation Recommendations**
+
+**1. Quick Wins (easy fixes with high impact)**
+
+**[CRITICAL] Update Apache Web Server to Latest Version**
+
+* Specific action steps:
+	+ Update Apache Web Server to the latest version (e.g., Apache 2.4 or later)
+	+ Disable outdated modules (e.g., mod_dav)
+* Required resources/tools:
+	+ Access to the target system
+	+ Apache Web Server configuration files
+* Estimated effort: 1-2 hours
+* Security impact: High (removes known vulnerabilities and outdated components)
+
+**2. Critical Priorities (must fix immediately)**
+
+**[CRITICAL] Update PHP Version to Latest Version**
+
+* Specific action steps:
+	+ Update PHP version to the latest version (e.g., PHP 7.4 or later)
+	+ Disable outdated extensions (e.g., php5-mysql)
+* Required resources/tools:
+	+ Access to the target system
+	+ PHP configuration files
+* Estimated effort: 1-2 hours
+* Security impact: High (removes known vulnerabilities and outdated components)
+
+**3. Medium-term Improvements**
+
+**[HIGH] Disable WebDAV Module**
+
+* Specific action steps:
+	+ Disable the WebDAV module in Apache Web Server configuration
+	+ Update Apache Web Server configuration files
+* Required resources/tools:
+	+ Access to the target system
+	+ Apache Web Server configuration files
+* Estimated effort: 30 minutes to 1 hour
+* Security impact: Medium (prevents file upload attacks and unauthorized access)
+
+**4. Long-term Security Enhancements**
+
+**[CRITICAL] Implement Regular Security Updates and Patching**
+
+* Specific action steps:
+	+ Establish a regular security update and patching schedule
+	+ Automate updates and patches for Apache Web Server and PHP
+* Required resources/tools:
+	+ Access to the target system
+	+ Security update and patching tools (e.g., apt, yum)
+* Estimated effort: Ongoing (regularly scheduled updates and patches)
+
+**REASONING**
+
+The prioritized remediation recommendations are based on the severity of the vulnerabilities and the potential impact on the system. The [CRITICAL] updates to Apache Web Server and PHP versions are recommended immediately to remove known vulnerabilities and outdated components. The [HIGH] WebDAV module is disabled to prevent file upload attacks and unauthorized access. The [CRITICAL] implementation of regular security updates and patching is recommended to ensure ongoing security enhancements.
+
+**RESPONSE**
+
+The recommended remediation plan is designed to address the identified vulnerabilities and improve the overall security posture of the system. By following these recommendations, the organization can reduce the risk of exploitation and protect against known vulnerabilities.
+2026-02-14 21:16:29,428 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=3405 chars
+2026-02-14 21:16:33,880 - guardian - INFO - [Reporter] LLM usage: model=liquid/lfm-2.5-1.2b-thinking:free tokens(prompt=1145, completion=1518, total=2663)
+2026-02-14 21:16:33,885 - guardian - INFO - [Reporter] LLM response: 598 chars
+2026-02-14 21:16:33,888 - guardian - INFO - AI Decision [Reporter]: The critical vulnerability in `vsftpd 2.3.4` (CVSS 9.1) necessitates immediate remediation due to its high impact and exploitability. Outdated Apache versions introduce known exploits, posing severe risks to system integrity and confidentiality. Remediation prioritizes updating the server software to patch vulnerabilities, followed by testing post-update. Secondary findings, such as open ports, require monitoring and configuration adjustments. This response balances technical specificity with business urgency, ensuring stakeholders understand the urgency while maintaining actionable clarity.
+2026-02-14 21:16:33,891 - guardian - INFO - Report saved to: reports/20260214_205811/report_20260214_205811.html
+2026-02-14 21:16:33,895 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 21:16:33,898 - guardian - INFO - Exported URLs for manual testing: reports/20260214_205811/urls_20260214_205811.txt
+2026-02-14 21:16:33,900 - guardian - INFO - Exported tool commands: reports/20260214_205811/payloads_20260214_205811.txt
+2026-02-14 21:16:33,901 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=722 chars
+2026-02-14 21:16:39,037 - guardian - INFO - [Planner] LLM usage: model=qwen/qwen3-4b:free tokens(prompt=393, completion=1104, total=1497)
+2026-02-14 21:16:39,040 - guardian - INFO - [Planner] LLM response: 1204 chars
+2026-02-14 21:16:39,041 - guardian - INFO - AI Decision [Planner]: **Strategic Insights and Recommendations**:  
+   1. **Immediate Exploitation of Critical Vulnerabilities**:  
+      - Target the outdated Apache and PHP versions using known exploits (e.g., Apache 2.4.7+ mod_ssl vulnerabilities, PHP 7.0+ deserialization flaws).  
+      - Validate if the system is vulnerable to CVE-2023-3963 (Apache 2.4.7+ mod_ssl) or CVE-2023-3964 (PHP 7.0+).  
+   2. **WebDAV Exploitation**:  
+      - Test for WebDAV-related attacks (e.g., `PROPFIND` requests, file injection). Use tools like `nikto` or custom scripts to exploit WebDAV for privilege escalation or data exfiltration.  
+   3. **Deep Dive into Web Application Vulnerabilities**:  
+      - Use `nikto` or `nuclei` to scan for PHP deserialization flaws, SQLi, or XSS in the web application.  
+   4. **Risk Mitigation**:  
+      - Prioritize patching Apache and PHP to resolve the critical vulnerabilities.  
+      - Disable WebDAV if not required for business operations.  
+   5. **Final Risk Rating**: **High (CRITICAL)**. The target is at significant risk of unauthorized access, data exfiltration, or system compromise due to outdated software and enabled WebDAV. Immediate action is required to mitigate these risks.
+2026-02-14 21:16:39,050 - guardian - INFO - Session saved to: reports/20260214_205811/session_20260214_205811.json
+2026-02-14 21:16:39,053 - guardian - INFO - Exported URLs for manual testing: reports/20260214_205811/urls_20260214_205811.txt
+2026-02-14 21:16:39,055 - guardian - INFO - Exported tool commands: reports/20260214_205811/payloads_20260214_205811.txt
+2026-02-14 21:16:39,056 - guardian - INFO - Tool execution summary:
+2026-02-14 21:16:39,058 - guardian - INFO - - masscan: success (runs=1, success=1, failed=0, skipped=0)
+2026-02-14 21:16:39,059 - guardian - INFO - - nmap: success (runs=2, success=2, failed=0, skipped=0)
+2026-02-14 21:16:39,061 - guardian - INFO - - httpx: success (runs=1, success=1, failed=0, skipped=0)
+2026-02-14 21:16:39,062 - guardian - INFO - - testssl: failed (runs=1, success=0, failed=1, skipped=0)
+2026-02-14 21:16:39,063 - guardian - INFO - - headers: success (runs=1, success=1, failed=0, skipped=0)
+2026-02-14 21:16:39,065 - guardian - INFO - - nikto: failed (runs=1, success=0, failed=1, skipped=0)
+2026-02-14 21:16:39,066 - guardian - INFO - - nuclei: success (runs=1, success=1, failed=0, skipped=0)

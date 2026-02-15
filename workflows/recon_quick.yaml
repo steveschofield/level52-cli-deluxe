@@ -1,0 +1,45 @@
+# Advanced Reconnaissance Workflow
+# Uses Subfinder for subdomain enumeration and Masscan for rapid port discovery
+
+name: recon_quick
+description: Deep reconnaissance using Subfinder and Masscan
+version: 1.0.0
+author: Guardian AI
+
+steps:
+  - name: subdomain_enum
+    tool: subfinder
+    description: Passive subdomain enumeration
+    args:
+      # Keep this workflow low-noise; bruteforce/permutation steps can be added later.
+      sources: ["crtsh", "hackertarget"]
+
+  - name: port_scan_fast
+    tool: naabu
+    description: Fast TCP port discovery of discovered assets
+    args:
+      rate: 1000
+    dependencies:
+      - subdomain_enum
+
+  - name: service_discovery
+    tool: nmap
+    description: Detailed service version detection on found ports
+    args:
+      scan_type: "-sV -sC"
+    dependencies:
+      - port_scan_fast
+
+  - name: web_probing
+    tool: httpx
+    description: Probe for working HTTP services
+    dependencies:
+      - subdomain_enum
+
+  - name: web_vuln_scan_nikto
+    tool: nikto
+    description: Baseline web vulnerability scan of discovered HTTP services
+    args:
+      format: "csv"
+    dependencies:
+      - web_probing
