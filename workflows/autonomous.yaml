@@ -19,10 +19,34 @@ whitebox:
   ai_analysis: true
   feed_to_autonomous: true  # SAST findings inform AI decision-making
 
+# Run ZAP early to build a rich seed URL set before the AI takes over.
+# When whitebox is available, seed URLs from source analysis accelerate
+# discovery. Without source, ZAP spiders from the target URL alone.
+pre_steps:
+  - name: http_discovery
+    type: tool
+    tool: httpx
+    objective: "Discover web services and fingerprint technologies"
+    parameters:
+      tech_detect: true
+
+  - name: zap_early_scan
+    type: tool
+    tool: zap
+    objective: "Spider the target early to build a rich URL set for autonomous decisions"
+    condition: zap_available
+    parameters:
+      use_whitebox_seeds: true
+      spider: true
+      ajax_spider: true
+    dependencies:
+      - http_discovery
+
 initial_phase: reconnaissance
 
 # AI will use these guidelines
 ai_guidelines:
+  - "Use ZAP seed URLs from the early scan to inform tool targeting"
   - "Start with passive reconnaissance"
   - "Progress from low-impact to high-impact actions"
   - "Always analyze results before next step"

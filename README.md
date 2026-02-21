@@ -1,8 +1,16 @@
+<<<<<<< Updated upstream
 # 🔐 Level52 
+=======
+# 🔐 Level52 Enterprise
+>>>>>>> Stashed changes
 
 # AI-Powered Penetration Testing Automation Platform
 
+<<<<<<< Updated upstream
 **Level52 ** is an AI-powered penetration testing automation framework designed for internal security teams. It combines modern LLM providers with industry-standard security tools to deliver intelligent, automated security assessments.
+=======
+**Level52 cli** is an AI-powered penetration testing automation framework designed for internal security teams. It combines modern LLM providers with industry-standard security tools to deliver intelligent, automated security assessments.
+>>>>>>> Stashed changes
 
 ---
 
@@ -33,6 +41,27 @@ python -m cli.main init
 # 3. Test installation
 source venv/bin/activate (need this before)
 python -m cli.main workflow run --name recon --target <approved-test-target>
+
+```bash
+python -m cli.main workflow run --name network --target <approved-test-target>
+
+```bash
+python -m cli.main workflow run --name web --target <approved-test-target>
+
+```bash
+python -m cli.main workflow run --name autonomous --target <approved-test-target>
+```
+
+```
+
+```
+
+```
+
+```
+
+```
+
 ```
 
 ---
@@ -176,43 +205,20 @@ Each scan generates:
 
 ## 🛠️ Tool Arsenal
 
-For the full list of tools and how they are used, see the workflow files in `workflows/`.
+Tool coverage below reflects the implemented `tools/*.py` modules in this repo.
+For execution order and usage by workflow, see `workflows/`.
 
-**Core Tools (Always Available):**
+**Network, Recon, and Enumeration**
 
-- **[nmap](https://nmap.org/)** - Port scanning and service detection (vuln profile runs `--script vuln,vulners` by default; configurable)
-- **[nuclei](https://github.com/projectdiscovery/nuclei)** - Vulnerability scanning (15min timeout)
-- **[subfinder](https://github.com/projectdiscovery/subfinder)** - Subdomain enumeration
-- **[ffuf](https://github.com/ffuf/ffuf)** - Directory/file brute forcing
-- **[testssl](https://github.com/drwetter/testssl.sh)** - SSL/TLS analysis
-- **[gitleaks](https://github.com/zricethezav/gitleaks)** - Secret detection
-- **[arjun](https://github.com/s0md3v/Arjun)** - Parameter discovery
-- **[xsstrike](https://github.com/s0md3v/XSStrike)** - XSS testing
-- **[dnsrecon](https://github.com/darkoperator/dnsrecon)** - DNS enumeration
-- **[godeye](https://github.com/Vyntral/god-eye)** - Subdomain reconnaissance with AI analysis
+- `amass`, `asnmap`, `dnsrecon`, `dnsx`, `ffuf`, `httpx`, `katana`, `masscan`, `naabu`, `nmap`, `nuclei`, `onesixtyone`, `puredns`, `shuffledns`, `showmount`, `smbclient`, `snmpwalk`, `subfinder`, `subjs`, `waybackurls`, `whois`
 
-**Additional Tools** (installed via setup.sh):
+**Web, API, and AppSec Testing**
 
-- **[httpx](https://github.com/projectdiscovery/httpx)** - HTTP probing
-- **[katana](https://github.com/projectdiscovery/katana)** - Advanced web crawling
-- **[nikto](https://github.com/sullo/nikto)** - Web vulnerability scanner
-- **[sqlmap](https://github.com/sqlmapproject/sqlmap)** - SQL injection testing
-- **[wpscan](https://github.com/wpscanteam/wpscan)** - WordPress security scanner
-- **[sslyze](https://github.com/nabla-c0d3/sslyze)** - SSL/TLS configuration analysis
-- **[dnsx](https://github.com/projectdiscovery/dnsx)** - Fast DNS toolkit
-- **[shuffledns](https://github.com/projectdiscovery/shuffledns)** - DNS permutation enumeration
-- **[puredns](https://github.com/d3mondev/puredns)** - High-confidence DNS resolver
-- **[wafw00f](https://github.com/EnableSecurity/wafw00f)** - WAF detection
-- **[whatweb](https://github.com/urbanadventurer/WhatWeb)** - Web technology identification
-- **[metasploit](https://github.com/rapid7/metasploit-framework)** - Exploitation framework
-- **[zap](https://github.com/zaproxy/zaproxy)** - OWASP ZAP (Docker-based)
+- `arjun`, `cmseek`, `commix`, `cors_scanner`, `csrf_tester`, `dalfox`, `deserialization_scanner`, `feroxbuster`, `graphql_cop`, `idor_scanner`, `jwt_tool`, `kiterunner`, `linkfinder`, `nikto`, `paramspider`, `retire`, `schemathesis`, `sqlmap`, `sslyze`, `ssrf_scanner`, `testssl`, `upload_scanner`, `wafw00f`, `whatweb`, `wpscan`, `xnlinkfinder`, `xsstrike`, `xxe_scanner`, `zap`
 
-**Application Security Tools:**
+**Infrastructure, Secrets, and Code Analysis**
 
-- **[dalfox](https://github.com/hahwul/dalfox)** - Advanced XSS scanner and parameter analysis
-- **[commix](https://github.com/commixproject/commix)** - Command injection testing framework
-- **[feroxbuster](https://github.com/epi052/feroxbuster)** - Fast API endpoint and content discovery
-- **[trufflehog](https://github.com/trufflesecurity/trufflehog)** - Secret scanning
+- `bloodhound`, `enum4linux`, `enum4linux_ng`, `error_detector`, `gitleaks`, `godeye`, `headers`, `hydra`, `metasploit`, `semgrep`, `trivy`, `trufflehog`, `auth_scanner`, `cookie_analyzer`
 
 **Platform Notes:**
 
