@@ -133,8 +133,6 @@ This directory contains wrappers for various penetration testing tools.
 - **graphql-cop**: GraphQL security testing
   - Installation: `git clone https://github.com/dolevf/graphql-cop.git` (run `./setup.sh` to wire a wrapper)
 
-- **kiterunner**: API route discovery without OpenAPI
-  - Installation: `go install github.com/assetnote/kiterunner@latest` (binary: `kr`)
 
 
 - **upload-scanner**: File upload testing

@@ -80,7 +80,6 @@ class ToolPathResolver:
                 "testssl.sh",
                 "sslyze",
                 "arjun",
-                "kiterunner",
                 "feroxbuster",
             ]
             for tool in common_tools:

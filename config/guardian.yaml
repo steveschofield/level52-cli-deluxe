@@ -4,18 +4,18 @@
 # AI Configuration
 ai:
   # Supported providers: gemini, ollama, openrouter, huggingface
-  provider: openrouter
-  model: "openrouter/free"
+  #provider: openrouter
+  #model: "openrouter/free"
   # model: "qwen/qwen3-coder:free"
-  base_url: "https://openrouter.ai/api/v1"
+  #base_url: "https://openrouter.ai/api/v1"
   #
   # Ollama example:
-  # provider: ollama
+  provider: ollama
   # model: "llama3.1:8b"          # Auto-uses llama3_1_8b prompts
   # model: "deepseek-r1:8b"       # Auto-uses deepseek_r1_8b prompts
   # model: "llama3.2:3b"          # Auto-uses llama3_2_3b prompts
-  # model: "DeepHat/DeepHat-V1-7B"  # Auto-uses deephat_v1_7b prompts
-  # base_url: "http://192.168.1.69:11434"
+  model: "DeepHat/DeepHat-V1-7B"  # Auto-uses deephat_v1_7b prompts
+  base_url: "http://192.168.1.124:11434"
   #
   # Gemini (Vertex AI via ADC) example (recommended for higher limits):
   # - Install deps: pip install -U google-genai
@@ -274,12 +274,6 @@ tools:
     threads: 40
     timeout: 10
     follow_redirects: false
-
-  kiterunner:
-    enabled: true
-    # binary: "kr"
-    wordlist: "./tools/vendor/kiterunner/routes-small.json"
-    # args: "scan {target} -w /path/to/routes.json"
 
   hydra:
     enabled: true

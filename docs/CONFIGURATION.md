@@ -142,7 +142,7 @@ tools:
 Some workflow steps only run when required arguments or tokens are present:
 
 - **Web workflow:** `tools.hydra` (userlist/passlist/service or `args`), `tools.jwt_tool` (`token` or `args`),
-  `tools.graphql_cop.args`, `tools.kiterunner.wordlist` (or `args`),
+  `tools.graphql_cop.args`,
   `tools.upload_scanner.args`, `tools.csrf_tester.args`.
 - **Vhost enumeration:** `tools.ffuf.vhost_wordlist` controls the wordlist used by the web workflow.
 - **Recon workflow:** `tools.whatweb` / `tools.retire` affect technology detection.

@@ -104,20 +104,6 @@
         state: link
 
     # ===========================================
-    # Install kiterunner (kr)
-    # ===========================================
-    - name: Download kiterunner latest release
-      ansible.builtin.shell: |
-        KR_VERSION=$(curl -s https://api.github.com/repos/assetnote/kiterunner/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
-        curl -sSL "https://github.com/assetnote/kiterunner/releases/download/v${KR_VERSION}/kiterunner_${KR_VERSION}_linux_amd64.tar.gz" -o /tmp/kiterunner.tar.gz
-        tar -xzf /tmp/kiterunner.tar.gz -C /tmp/
-        mv /tmp/kr /usr/local/bin/kr
-        chmod +x /usr/local/bin/kr
-        rm -f /tmp/kiterunner.tar.gz
-      args:
-        creates: /usr/local/bin/kr
-
-    # ===========================================
     # Install jwt_tool
     # ===========================================
     - name: Clone jwt_tool repository
@@ -784,7 +770,7 @@
           Guardian CLI Location: {{ guardian_dir }}
 
           All security tools installed:
-            ✓ testssl          ✓ kiterunner      ✓ jwt_tool
+            ✓ testssl          ✓ jwt_tool
             ✓ graphqlcop       ✓ arjun           ✓ xsstrike
             ✓ cmseek           ✓ retire          ✓ linkfinder
             ✓ xnlinkfinder     ✓ paramspider     ✓ schemathesis

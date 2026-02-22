@@ -42,7 +42,6 @@ The Dockerfile is missing several tools that we added to the Ansible playbook:
 | Tool         | Status in Dockerfile    |
 | ------------ | ----------------------- |
 | testssl      | ✅ Included (line 332)  |
-| kiterunner   | ❌**MISSING**     |
 | jwt_tool     | ✅ Included (line 361)  |
 | graphql-cop  | ✅ Included (line 375)  |
 | arjun        | ✅ Included (line 290)  |
@@ -60,7 +59,6 @@ The Dockerfile is missing several tools that we added to the Ansible playbook:
 
 **Missing Tools**:
 
-1. **kiterunner** - API endpoint discovery
 2. **retire.js** - JavaScript vulnerability scanner
 
 ---
@@ -122,17 +120,8 @@ Add after line 410 (after git-cloned tools section):
 
 ```dockerfile
 # ============================================================================
-# STAGE 9: Install Missing Tools (kiterunner, retire.js)
 # ============================================================================
 
-# Install kiterunner
-RUN KR_VERSION=$(curl -s https://api.github.com/repos/assetnote/kiterunner/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/') && \
-    curl -sSL "https://github.com/assetnote/kiterunner/releases/download/v${KR_VERSION}/kiterunner_${KR_VERSION}_linux_amd64.tar.gz" -o /tmp/kiterunner.tar.gz && \
-    tar -xzf /tmp/kiterunner.tar.gz -C /tmp/ && \
-    mv /tmp/kr /usr/local/bin/kr && \
-    chmod +x /usr/local/bin/kr && \
-    rm -f /tmp/kiterunner.tar.gz && \
-    kr --version
 
 # Install retire.js via npm
 RUN npm install -g retire && \
@@ -181,16 +170,6 @@ RUN echo "Installing Trivy..." && \
 # STAGE 9: Install Additional Missing Tools
 # ============================================================================
 
-# Install kiterunner (API endpoint discovery)
-RUN echo "Installing kiterunner..." && \
-    KR_VERSION=$(curl -s https://api.github.com/repos/assetnote/kiterunner/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/') && \
-    echo "Kiterunner version: ${KR_VERSION}" && \
-    curl -sSL "https://github.com/assetnote/kiterunner/releases/download/v${KR_VERSION}/kiterunner_${KR_VERSION}_linux_amd64.tar.gz" -o /tmp/kiterunner.tar.gz && \
-    tar -xzf /tmp/kiterunner.tar.gz -C /tmp/ && \
-    mv /tmp/kr /usr/local/bin/kr && \
-    chmod +x /usr/local/bin/kr && \
-    rm -f /tmp/kiterunner.tar.gz && \
-    kr --version || echo "kiterunner installed (version check may fail)"
 
 # Install retire.js (JavaScript library vulnerability scanner)
 RUN echo "Installing retire.js..." && \
@@ -244,13 +223,12 @@ docker build -f Dockerfile.kali -t guardian-test . 2>&1 | tee build.log
 docker run -it --rm level52-cli-deluxe:test /bin/bash
 
 # Inside container, verify tools
-which testssl kr jwt_tool graphqlcop xsstrike cmseek \
+which testssl jwt_tool graphqlcop xsstrike cmseek \
       linkfinder xnlinkfinder paramspider feroxbuster \
       godeye corsscanner trivy retire
 
 # Check versions
 trivy --version
-kr --version
 retire --version
 feroxbuster --version
 
@@ -305,7 +283,6 @@ Some RUN commands can be combined to run in parallel.
 ## ✅ Final Checklist Before Build
 
 - [ ] Replace Trivy installation (lines 184-191)
-- [ ] Add kiterunner installation
 - [ ] Add retire.js installation
 - [ ] Fix god-eye installation
 - [ ] Verify Guardian source copied before pip install

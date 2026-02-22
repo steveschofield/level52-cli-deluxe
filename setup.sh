@@ -212,6 +212,18 @@ WRAPPER
     log_success "Created wrapper: ${name}"
 }
 
+create_venv_shim() {
+    local name="$1"
+    local target="$2"
+
+    cat > "${VENV_BIN}/${name}" <<SHIM
+#!/usr/bin/env bash
+exec "${target}" "\$@"
+SHIM
+    chmod +x "${VENV_BIN}/${name}"
+    log_success "Created shim: ${name} -> ${target}"
+}
+
 install_system_binary() {
     local bin="$1"
     local apt_pkg="$2"
@@ -424,27 +436,33 @@ install_go_tools() {
     go_install_and_link "github.com/rverton/webanalyze/cmd/webanalyze@latest" "webanalyze"
 
     # God-eye - comprehensive recon and security assessment
-    if [[ -x "${VENV_BIN}/god-eye" ]]; then
-        log_info "god-eye already installed"
+    if [[ -x "${VENV_BIN}/godeye" ]]; then
+        log_info "godeye already installed"
+    elif [[ -x "${VENV_BIN}/god-eye" ]]; then
+        log_info "god-eye already installed; adding godeye shim"
+        create_venv_shim "godeye" "${VENV_BIN}/god-eye"
+    elif command -v godeye >/dev/null 2>&1; then
+        link_into_venv "$(command -v godeye)" "godeye"
+        [[ ! -x "${VENV_BIN}/god-eye" ]] && create_venv_shim "god-eye" "${VENV_BIN}/godeye"
     elif command -v god-eye >/dev/null 2>&1; then
         link_into_venv "$(command -v god-eye)" "god-eye"
+        [[ ! -x "${VENV_BIN}/godeye" ]] && create_venv_shim "godeye" "${VENV_BIN}/god-eye"
     elif command -v go >/dev/null 2>&1; then
         safe_git_clone "https://github.com/Vyntral/god-eye.git" "${TOOLS_DIR}/god-eye"
         if [[ -d "${TOOLS_DIR}/god-eye/cmd/god-eye" ]]; then
             log_info "Building god-eye from source..."
             retry "$MAX_RETRIES" "$RETRY_DELAY" \
                 "cd '${TOOLS_DIR}/god-eye' && go build -o '${TOOLS_DIR}/god-eye/god-eye' ./cmd/god-eye" || true
-            [[ -x "${TOOLS_DIR}/god-eye/god-eye" ]] && link_into_venv "${TOOLS_DIR}/god-eye/god-eye" "god-eye"
+            if [[ -x "${TOOLS_DIR}/god-eye/god-eye" ]]; then
+                link_into_venv "${TOOLS_DIR}/god-eye/god-eye" "god-eye"
+                create_venv_shim "godeye" "${VENV_BIN}/god-eye"
+            fi
         else
             log_warn "god-eye source layout unexpected; skipping build"
         fi
     else
         log_warn "go not found; skipping god-eye"
     fi
-
-    # Kiterunner - only try GitHub release (go install path is broken upstream)
-    install_github_release_and_link "assetnote/kiterunner" "kr" || \
-        log_warn "kr (kiterunner) installation failed - GitHub release not available for this OS/arch"
 
     log_success "Go tools installed"
 }
@@ -860,6 +878,17 @@ install_system_tools() {
     install_system_binary "amass" "amass" "amass"
     install_system_binary "masscan" "masscan" "masscan"
     install_system_binary "nmap" "nmap" "nmap"
+    install_system_binary "docker" "docker.io" "docker"
+    install_system_binary "podman" "podman" "podman"
+
+    if [[ ! -x "${VENV_BIN}/docker" ]] && command -v podman >/dev/null 2>&1; then
+        create_venv_shim "docker" "$(command -v podman)"
+    fi
+
+    if command -v sudo >/dev/null 2>&1 && sudo -n true 2>/dev/null && command -v systemctl >/dev/null 2>&1; then
+        sudo systemctl enable --now docker 2>/dev/null || true
+        sudo systemctl enable --now podman.socket 2>/dev/null || true
+    fi
 
     # SecLists
     if [[ "${OS}" == "debian" ]]; then
@@ -940,14 +969,6 @@ install_npm_tools() {
 install_wordlists() {
     log_info "Setting up wordlists..."
 
-    # Kiterunner wordlists
-    local kr_dest="${TOOLS_DIR}/kiterunner/routes-small.json"
-    if [[ ! -f "$kr_dest" ]]; then
-        mkdir -p "${TOOLS_DIR}/kiterunner"
-        local url="https://wordlists-cdn.assetnote.io/rawdata/kiterunner/routes-small.json.tar.gz"
-        curl -sL "$url" | tar -xz -C "${TOOLS_DIR}/kiterunner" 2>/dev/null || true
-    fi
-
     # SecLists (optional - large download)
     local wordlist_dir="${BASE_DIR}/wordlists"
     if [[ ! -d "${wordlist_dir}/SecLists" ]]; then
@@ -986,6 +1007,16 @@ ZAP
 docker run --rm -u zap -p 8080:8080 -i ghcr.io/zaproxy/zaproxy:stable "$@"
 EOF
     chmod +x "${VENV_BIN}/zap-docker"
+
+    if command -v docker >/dev/null 2>&1 || command -v podman >/dev/null 2>&1 || [[ -x "${VENV_BIN}/docker" ]]; then
+        cat > "${VENV_BIN}/zap" << 'EOF'
+#!/usr/bin/env bash
+exec "$(dirname "$0")/zap-docker" "$@"
+EOF
+        chmod +x "${VENV_BIN}/zap"
+    else
+        log_warn "No container runtime available; skipping zap launcher shim"
+    fi
 
     log_success "ZAP hybrid mode configured"
 }
@@ -1066,7 +1097,9 @@ verify_installation() {
         "webanalyze"
         "sstimap"
         "dnsgen"
-        "god-eye"
+        "godeye"
+        "zap"
+        "docker"
     )
 
     echo ""

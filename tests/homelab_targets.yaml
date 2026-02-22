@@ -330,7 +330,6 @@ required_tools:
     api_testing:
       - arjun
       - paramspider
-      - kiterunner
       - ffuf
       - graphql_cop
       - schemathesis
@@ -403,7 +402,6 @@ required_tools:
       - hydra
       - idor_scanner
       - jwt_tool
-      - kiterunner
       - linkfinder
       - masscan
       - metasploit

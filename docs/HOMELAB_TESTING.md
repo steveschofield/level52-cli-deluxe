@@ -234,7 +234,7 @@ python scripts/homelab_test.py --scenario all_workflows --live
 - **Scanners**: nuclei, nikto, zap, feroxbuster, ffuf
 - **Injection**: sqlmap, xsstrike, dalfox, commix
 - **Custom**: cors_scanner, ssrf_scanner, xxe_scanner, idor_scanner, auth_scanner, csrf_tester, deserialization_scanner
-- **API**: arjun, paramspider, kiterunner, graphql_cop, schemathesis
+- **API**: arjun, paramspider, ffuf, graphql_cop, schemathesis
 - **JS**: linkfinder, subjs, xnlinkfinder, retire
 - **Secrets**: gitleaks, trufflehog
 - **SAST**: semgrep, trivy

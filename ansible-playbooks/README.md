@@ -114,7 +114,6 @@ ansible-playbook -i inventory/hosts.ini remote_playbook_guardian_enhanced.yml
 - ✅ **gitleaks** - Secret scanner
 - ✅ **puredns** - DNS resolver
 - ✅ **godeye** - Subdomain recon with AI
-- ✅ **kiterunner (kr)** - API endpoint discovery
 
 #### Python-based Tools
 
@@ -309,7 +308,6 @@ After running the playbook, verify tools are installed:
 ```bash
 # Check individual tools
 which testssl
-which kiterunner
 which jwt_tool
 which graphqlcop
 which xsstrike

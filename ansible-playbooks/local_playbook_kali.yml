@@ -79,27 +79,6 @@
         dest: /usr/local/bin/testssl
         state: link
 
-    # Install kiterunner
-    - name: Download and install kiterunner
-      block:
-        - name: Get latest kiterunner release
-          uri:
-            url: https://api.github.com/repos/assetnote/kiterunner/releases/latest
-            return_content: yes
-          register: kr_release
-
-        - name: Download kiterunner
-          get_url:
-            url: "{{ kr_release.json.assets | selectattr('name', 'match', '.*linux.*amd64.*') | map(attribute='browser_download_url') | first }}"
-            dest: "/tmp/kiterunner.tar.gz"
-            mode: '0644'
-
-        - name: Extract kiterunner
-          unarchive:
-            src: /tmp/kiterunner.tar.gz
-            dest: /usr/local/bin
-            remote_src: yes
-
     # Install jwt_tool
     - name: Clone jwt_tool
       git:
@@ -423,7 +402,6 @@
 
           Tools installed:
           - testssl
-          - kiterunner
           - jwt_tool
           - graphqlcop
           - arjun

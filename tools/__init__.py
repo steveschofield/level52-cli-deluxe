@@ -11,7 +11,6 @@ from .nikto import NiktoTool
 from .testssl import TestSSLTool
 from .sqlmap import SQLMapTool
 from .ffuf import FFufTool
-from .kiterunner import KiterunnerTool
 from .wpscan import WPScanTool
 from .sslyze import SSLyzeTool
 from .headers import HeadersTool
@@ -78,7 +77,6 @@ __all__ = [
     "TestSSLTool",
     "SQLMapTool",
     "FFufTool",
-    "KiterunnerTool",
     "WPScanTool",
     "SSLyzeTool",
     "HeadersTool",

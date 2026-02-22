@@ -868,12 +868,6 @@ class WorkflowEngine:
             if not args:
                 self.logger.info(f"Skipping {step_name}: {tool_name} args not configured")
                 return None
-        if tool_name == "kiterunner":
-            args = tool_kwargs.get("args") if isinstance(tool_kwargs, dict) else None
-            wordlist = tool_kwargs.get("wordlist") if isinstance(tool_kwargs, dict) else None
-            if not (args or wordlist or tool_cfg.get("args") or tool_cfg.get("wordlist")):
-                self.logger.info(f"Skipping {step_name}: kiterunner args/wordlist not configured")
-                return None
         if tool_name == "jwt_tool":
             args = tool_kwargs.get("args") if isinstance(tool_kwargs, dict) else None
             token = tool_kwargs.get("token") if isinstance(tool_kwargs, dict) else None
@@ -1131,23 +1125,6 @@ class WorkflowEngine:
                                 continue
                         merged_host_ports[host] = sorted(set(existing + normalized))
                     self.memory.context["host_open_ports"] = merged_host_ports
-            if tool_name == "kiterunner":
-                urls = parsed.get("urls") or []
-                paths = parsed.get("paths") or []
-                combined = []
-                if isinstance(urls, list):
-                    combined.extend([u for u in urls if u])
-                if paths:
-                    try:
-                        from urllib.parse import urlparse
-                        parsed_target = urlparse(self.target if "://" in self.target else f"https://{self.target}")
-                        base = f"{parsed_target.scheme}://{parsed_target.netloc}"
-                        combined.extend([f"{base}{p}" for p in paths if str(p).startswith("/")])
-                    except Exception:
-                        pass
-                if combined:
-                    self.memory.update_context("urls", combined)
-                    self.memory.update_context("discovered_assets", combined)
             # jsparser removed - use linkfinder/xnlinkfinder instead
             if tool_name in ("linkfinder", "xnlinkfinder"):
                 urls = parsed.get("urls") or []
@@ -1958,7 +1935,6 @@ class WorkflowEngine:
                 {"name": "metadata_extraction", "type": "action", "action": "metadata_extraction"},
                 {"name": "crawl", "type": "tool", "tool": crawl_tool},
                 {"name": "vhost_enumeration", "type": "tool", "tool": "ffuf", "parameters": {"append_fuzz": False}},
-                {"name": "api_route_discovery", "type": "tool", "tool": "kiterunner"},
                 {"name": "vulnerability_scan", "type": "tool", "tool": "nuclei", "parameters": {"tool_timeout": 900}},
                 {"name": "api_testing", "type": "multi_tool", "tools": [
                     {"tool": "schemathesis", "parameters": {"tool_timeout": 900}},

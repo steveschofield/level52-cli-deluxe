@@ -214,7 +214,7 @@ For execution order and usage by workflow, see `workflows/`.
 
 **Web, API, and AppSec Testing**
 
-- `arjun`, `cmseek`, `commix`, `cors_scanner`, `csrf_tester`, `dalfox`, `deserialization_scanner`, `feroxbuster`, `graphql_cop`, `idor_scanner`, `jwt_tool`, `kiterunner`, `linkfinder`, `nikto`, `paramspider`, `retire`, `schemathesis`, `sqlmap`, `sslyze`, `ssrf_scanner`, `testssl`, `upload_scanner`, `wafw00f`, `whatweb`, `wpscan`, `xnlinkfinder`, `xsstrike`, `xxe_scanner`, `zap`
+- `arjun`, `cmseek`, `commix`, `cors_scanner`, `csrf_tester`, `dalfox`, `deserialization_scanner`, `feroxbuster`, `graphql_cop`, `idor_scanner`, `jwt_tool`, `linkfinder`, `nikto`, `paramspider`, `retire`, `schemathesis`, `sqlmap`, `sslyze`, `ssrf_scanner`, `testssl`, `upload_scanner`, `wafw00f`, `whatweb`, `wpscan`, `xnlinkfinder`, `xsstrike`, `xxe_scanner`, `zap`
 
 **Infrastructure, Secrets, and Code Analysis**
 

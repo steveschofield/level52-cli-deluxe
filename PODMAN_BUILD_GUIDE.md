@@ -434,7 +434,7 @@ podman export <container-id> -o guardian.tar
 
 ```bash
 # After build completes
-podman run --rm level52-cli-deluxe:latest which testssl kr jwt_tool trivy
+podman run --rm level52-cli-deluxe:latest which testssl jwt_tool trivy
 
 # Test Guardian
 podman run --rm level52-cli-deluxe:latest python -m cli.main --help

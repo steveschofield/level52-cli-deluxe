@@ -86,7 +86,6 @@ Guardian CLI Deluxe is a comprehensive AI-powered penetration testing framework 
 - ✅ **Historical**: waybackurls
 
 #### Web Application Testing (25+ tools)
-- ✅ **Discovery**: httpx, katana, feroxbuster, ffuf, kiterunner
 - ✅ **Vulnerability Scanning**: nuclei, nikto, ZAP, dalfox
 - ✅ **Specialized**: sqlmap, xsstrike, commix, arjun, jwt_tool
 - ✅ **Technology**: whatweb, wafw00f, retire.js, cmseek
@@ -478,7 +477,6 @@ Guardian CLI Deluxe is a **mature and comprehensive penetration testing framewor
 ### DAST Tools (45+)
 - **Recon**: nmap, masscan, amass, subfinder, dnsx, dnsrecon, puredns, shuffledns, httpx, katana, naabu, asnmap, waybackurls, godeye
 - **Web Vuln**: nuclei, nikto, ZAP, dalfox, xsstrike, sqlmap, commix, arjun, jwt_tool, graphql-cop, schemathesis
-- **Web Discovery**: feroxbuster, ffuf, kiterunner, linkfinder, paramspider, subjs, xnlinkfinder
 - **Tech Detection**: whatweb, wafw00f, retire.js, cmseek, headers
 - **Network**: nmap, masscan, enum4linux, smbclient, showmount, onesixtyone, snmpwalk
 - **Specialized**: testssl, sslyze, hydra, metasploit

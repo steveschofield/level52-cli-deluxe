@@ -413,27 +413,6 @@ RUN npm install -g retire && \
 # SecLists (comprehensive wordlist collection)
 RUN git clone --depth 1 https://github.com/danielmiessler/SecLists.git /opt/wordlists/SecLists
 
-# Kiterunner wordlists
-RUN mkdir -p /opt/wordlists/kiterunner && \
-    curl -sL https://wordlists-cdn.assetnote.io/rawdata/kiterunner/routes-small.json.tar.gz | \
-    tar -xz -C /opt/wordlists/kiterunner 2>/dev/null || true
-
-
-# ============================================================================
-# STAGE 9: Install Additional Missing Tools (ADDED)
-# ============================================================================
-
-# Install kiterunner (API endpoint discovery)
-RUN echo "Installing kiterunner..." && \
-    KR_VERSION=$(curl -s https://api.github.com/repos/assetnote/kiterunner/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/') && \
-    echo "Kiterunner version: ${KR_VERSION}" && \
-    curl -sSL "https://github.com/assetnote/kiterunner/releases/download/v${KR_VERSION}/kiterunner_${KR_VERSION}_linux_amd64.tar.gz" -o /tmp/kiterunner.tar.gz && \
-    tar -xzf /tmp/kiterunner.tar.gz -C /tmp/ && \
-    mv /tmp/kr /usr/local/bin/kr && \
-    chmod +x /usr/local/bin/kr && \
-    rm -f /tmp/kiterunner.tar.gz && \
-    (kr --version || echo "kiterunner installed (version check may fail)")
-
 # Install retire.js (JavaScript library vulnerability scanner)
 RUN echo "Installing retire.js..." && \
     npm config set prefix /usr/local && \

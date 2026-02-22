@@ -1,5 +1,4 @@
 shannon-uncontained*
-tools/vendor/kiterunner/routes-small.json
 # Python
 __pycache__/
 *.py[cod]

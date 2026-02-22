@@ -375,18 +375,6 @@
         dest: /usr/local/bin/testssl
         state: link
 
-    # kiterunner
-    - name: Download and install kiterunner
-      ansible.builtin.shell: |
-        KR_VERSION=$(curl -s https://api.github.com/repos/assetnote/kiterunner/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
-        curl -sSL "https://github.com/assetnote/kiterunner/releases/download/v${KR_VERSION}/kiterunner_${KR_VERSION}_linux_amd64.tar.gz" -o /tmp/kiterunner.tar.gz
-        tar -xzf /tmp/kiterunner.tar.gz -C /tmp/
-        mv /tmp/kr /usr/local/bin/kr
-        chmod +x /usr/local/bin/kr
-        rm -f /tmp/kiterunner.tar.gz
-      args:
-        creates: /usr/local/bin/kr
-
     # jwt_tool
     - name: Clone jwt_tool
       ansible.builtin.git:

@@ -55,7 +55,7 @@ echo "========================================="
 echo " Go Tools"
 echo "========================================="
 GO_FAILED=0
-for tool in ffuf waybackurls gau dalfox gitleaks puredns subjs webanalyze kr; do
+for tool in ffuf waybackurls gau dalfox gitleaks puredns subjs webanalyze; do
     check_tool "$tool" "Go" || ((GO_FAILED++))
 done
 

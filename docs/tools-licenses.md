@@ -9,7 +9,6 @@ This document lists the external tools used by Guardian and their upstream licen
 - trufflehog
 - hydra (THC-Hydra)
 - Arjun
-- kiterunner
 - SSLyze
 
 ### Apache-2.0
@@ -88,4 +87,3 @@ The following tools are referenced by wrappers but the upstream license needs ma
 - upload_scanner
 - csrf_tester
 - base_tool
-

@@ -4,7 +4,6 @@
 
 Based on your error message, these tools were missing:
 ```
-testssl, kiterunner, jwt, graphqlcop, arjun, xsstrike, cmseek,
 retire, linkfinder, xnlinkfinder, paramspider, schemathesis,
 feroxbuster, godeye, corsscanner, trivy, bloodhound
 ```
@@ -68,7 +67,6 @@ The enhanced playbook adds these installations:
 - `corsscanner` → /usr/local/bin/corsscanner
 
 ### Binary Downloads
-- `kiterunner` (kr) → /usr/local/bin/kr
 - `feroxbuster` → /usr/local/bin/feroxbuster
 - `trivy` → /usr/local/bin/trivy
 
@@ -102,7 +100,6 @@ ssh 52pickup@<your-vm-ip>
 
 # Check all tools are in PATH
 which testssl        # Should return /usr/local/bin/testssl
-which kr             # Should return /usr/local/bin/kr
 which jwt_tool       # Should return /usr/local/bin/jwt_tool
 which graphqlcop     # Should return /usr/local/bin/graphqlcop
 which xsstrike       # Should return /usr/local/bin/xsstrike
@@ -176,7 +173,6 @@ pip install -r requirements.txt
 | Component | Original Playbook | Enhanced Playbook |
 |-----------|-------------------|-------------------|
 | testssl | ❌ Missing | ✅ Installed |
-| kiterunner | ❌ Missing | ✅ Installed |
 | jwt_tool | ❌ Missing | ✅ Installed |
 | graphqlcop | ❌ Missing | ✅ Installed |
 | arjun | ❌ Missing | ✅ Installed |

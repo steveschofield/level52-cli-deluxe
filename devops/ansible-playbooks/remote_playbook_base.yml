@@ -1,6 +1,6 @@
 ---
 - name: Run playbook on remote ubuntu servers
-  hosts: guardian_workers
+  hosts: localhost
   become: yes
   gather_facts: false
   vars:

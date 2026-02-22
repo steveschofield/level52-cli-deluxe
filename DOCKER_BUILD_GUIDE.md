@@ -6,7 +6,6 @@ The following critical issues have been **FIXED** in `Dockerfile.kali`:
 
 1. ✅ **Trivy Installation** - Changed from broken apt repo to binary installation
 2. ✅ **god-eye Installation** - Changed to `go install` method (more reliable)
-3. ✅ **kiterunner Added** - API endpoint discovery tool
 4. ✅ **retire.js Added** - JavaScript vulnerability scanner
 
 **Backup Created**: `Dockerfile.kali.backup.TIMESTAMP`
@@ -71,7 +70,6 @@ Inside the container, run these verification commands:
 # Check critical binaries
 echo "=== Checking Binaries ==="
 which testssl && echo "✓ testssl"
-which kr && echo "✓ kiterunner"
 which jwt_tool && echo "✓ jwt_tool"
 which graphqlcop && echo "✓ graphqlcop"
 which xsstrike && echo "✓ xsstrike"
@@ -89,7 +87,6 @@ which retire && echo "✓ retire"
 echo ""
 echo "=== Tool Versions ==="
 trivy --version
-kr --version || echo "kr installed (version check may not work)"
 retire --version
 feroxbuster --version
 
@@ -149,7 +146,6 @@ ls -lh /guardian/reports/
 | 6 | Python dependencies | 3-5 min | Low |
 | 7 | Python security tools | 5-10 min | Low |
 | 8 | Git-cloned tools | 5-10 min | Low |
-| 9 | **NEW: kiterunner + retire.js** | 2-3 min | ✅ **ADDED** |
 | 10-16 | Wordlists, Guardian setup, verification | 10-15 min | Low |
 | **TOTAL** | | **45-85 min** | |
 
@@ -363,7 +359,7 @@ echo "Starting Guardian Docker image verification..."
 
 docker run --rm level52-cli-deluxe:latest /bin/bash -c '
     echo "=== Checking Tools ==="
-    TOOLS="testssl kr jwt_tool graphqlcop xsstrike cmseek linkfinder xnlinkfinder paramspider feroxbuster godeye corsscanner trivy retire"
+    TOOLS="testssl jwt_tool graphqlcop xsstrike cmseek linkfinder xnlinkfinder paramspider feroxbuster godeye corsscanner trivy retire"
     for tool in $TOOLS; do
         if which $tool >/dev/null 2>&1; then
             echo "✓ $tool"

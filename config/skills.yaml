@@ -133,7 +133,7 @@ profiles:
       - validation
 
     tool_preferences:
-      api_scanner: kiterunner
+      api_scanner: ffuf
       fuzzer: ffuf
       schema_fuzzer: schemathesis  # If OpenAPI available
 
