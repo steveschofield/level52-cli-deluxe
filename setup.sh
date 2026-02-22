@@ -21,6 +21,7 @@ VENV_DIR="${BASE_DIR}/venv"
 VENV_BIN=""
 TOOLS_DIR="${BASE_DIR}/tools/vendor"
 BIN_DIR="${BASE_DIR}/tools/.bin"
+TOOL_VENVS_DIR="${BASE_DIR}/tools/.venvs"
 
 # Retry settings (can override via environment)
 MAX_RETRIES="${MAX_RETRIES:-3}"
@@ -46,6 +47,36 @@ else
 fi
 
 log_info "Detected OS: ${OS}"
+
+cleanup_legacy_trivy_repo() {
+    local trivy_list="/etc/apt/sources.list.d/trivy.list"
+
+    [[ "${OS}" == "debian" ]] || return 0
+    [[ -f "${trivy_list}" ]] || return 0
+
+    # Older setup versions wrote an invalid Kali entry:
+    #   deb .../trivy-repo/deb kali-rolling main
+    # This breaks all apt-get update calls.
+    local has_bad_entry=0
+    if grep -q "trivy-repo/deb kali-rolling" "${trivy_list}" 2>/dev/null; then
+        has_bad_entry=1
+    elif command -v sudo >/dev/null 2>&1 && sudo grep -q "trivy-repo/deb kali-rolling" "${trivy_list}" 2>/dev/null; then
+        has_bad_entry=1
+    fi
+
+    [[ "${has_bad_entry}" -eq 1 ]] || return 0
+    log_warn "Detected legacy broken Trivy apt source (kali-rolling); removing it"
+
+    if [[ -w "${trivy_list}" ]]; then
+        rm -f "${trivy_list}" 2>/dev/null || true
+    elif command -v sudo >/dev/null 2>&1; then
+        sudo rm -f "${trivy_list}" 2>/dev/null || log_warn "Could not remove ${trivy_list}; apt may fail until removed manually"
+    else
+        log_warn "Cannot remove ${trivy_list} without elevated permissions"
+    fi
+}
+
+cleanup_legacy_trivy_repo
 
 # ============================================================================
 # RETRY LOGIC
@@ -302,7 +333,7 @@ ensure_node_and_npm
 # Note: ensure_rust is lazy-loaded - only called by feroxbuster if binary download fails
 
 log_info "Using virtualenv: ${VIRTUAL_ENV}"
-mkdir -p "${TOOLS_DIR}" "${BIN_DIR}"
+mkdir -p "${TOOLS_DIR}" "${BIN_DIR}" "${TOOL_VENVS_DIR}"
 
 # Install project and core dependencies
 log_info "Installing level52-cli-deluxe and core dependencies..."
@@ -319,6 +350,8 @@ log_info "Installing Python 3.12 compatible dependencies..."
     "urllib3>=2.0.0" \
     "charset-normalizer>=3.0.0" \
     "attrs>=22.2.0" \
+    "rich>=13.7.0" \
+    "click>=8.2.1" \
     --quiet
 
 # Install langchain ecosystem
@@ -605,19 +638,39 @@ install_enum4linux_ng() {
 install_semgrep() {
     log_info "Installing Semgrep (SAST - code vulnerability scanner)..."
 
-    # Check if already installed
-    if command -v semgrep >/dev/null 2>&1; then
-        log_success "Semgrep already installed: $(semgrep --version 2>/dev/null | head -n1)"
+    # Prefer venv-linked semgrep if already available
+    if [[ -x "${VENV_BIN}/semgrep" ]]; then
+        log_success "Semgrep already installed: $("${VENV_BIN}/semgrep" --version 2>/dev/null | head -n1)"
         return 0
     fi
 
-    # Install via pip (recommended method)
-    "${VENV_BIN}/pip" install --upgrade semgrep --quiet || {
-        log_error "Failed to install Semgrep via pip"
+    # Reuse system semgrep if present and link it into venv
+    if command -v semgrep >/dev/null 2>&1; then
+        link_into_venv "$(command -v semgrep)" "semgrep"
+        log_success "Semgrep linked from system install"
+        return 0
+    fi
+
+    # Install Semgrep in isolated tool venv to avoid dependency conflicts
+    local semgrep_venv="${TOOL_VENVS_DIR}/semgrep"
+    if [[ ! -x "${semgrep_venv}/bin/python" ]]; then
+        "${VENV_BIN}/python" -m venv "${semgrep_venv}" || {
+            log_error "Failed to create Semgrep isolated virtualenv"
+            return 1
+        }
+    fi
+
+    "${semgrep_venv}/bin/pip" install --upgrade pip setuptools wheel --quiet || {
+        log_error "Failed to prepare Semgrep isolated virtualenv"
+        return 1
+    }
+    "${semgrep_venv}/bin/pip" install --upgrade semgrep --quiet || {
+        log_error "Failed to install Semgrep in isolated virtualenv"
         return 1
     }
 
-    log_success "Semgrep installed successfully"
+    link_into_venv "${semgrep_venv}/bin/semgrep" "semgrep"
+    log_success "Semgrep installed successfully (isolated venv)"
 
     # Verify installation
     if "${VENV_BIN}/semgrep" --version >/dev/null 2>&1; then
@@ -630,43 +683,70 @@ install_semgrep() {
 install_trivy() {
     log_info "Installing Trivy (vulnerability/secret/config scanner)..."
 
-    # Check if already installed
-    if command -v trivy >/dev/null 2>&1; then
-        log_success "Trivy already installed: $(trivy --version 2>/dev/null | head -n1)"
+    # Prefer venv-linked trivy if already available
+    if [[ -x "${VENV_BIN}/trivy" ]]; then
+        log_success "Trivy already installed: $("${VENV_BIN}/trivy" --version 2>/dev/null | head -n1)"
         return 0
     fi
 
-    # Detect architecture
-    ARCH=$(uname -m)
-    case "${ARCH}" in
-        x86_64) TRIVY_ARCH="64bit" ;;
-        aarch64|arm64) TRIVY_ARCH="ARM64" ;;
-        *) log_error "Unsupported architecture: ${ARCH}"; return 1 ;;
-    esac
+    # Reuse system trivy if present and link it into venv
+    if command -v trivy >/dev/null 2>&1; then
+        link_into_venv "$(command -v trivy)" "trivy"
+        log_success "Trivy linked from system install"
+        return 0
+    fi
 
-    # Install on Debian/Ubuntu
-    if [[ "${OS}" == "debian" ]]; then
+    local distro_id=""
+    local distro_codename=""
+    if [[ -f /etc/os-release ]]; then
+        # shellcheck disable=SC1091
+        source /etc/os-release
+        distro_id="${ID:-}"
+        distro_codename="${VERSION_CODENAME:-}"
+    fi
+    if [[ -z "${distro_codename}" ]] && command -v lsb_release >/dev/null 2>&1; then
+        distro_codename="$(lsb_release -sc 2>/dev/null || true)"
+    fi
+
+    # Debian/Ubuntu apt repo works reliably; Kali and other derivatives should use binary
+    local use_apt_repo=0
+    if [[ "${OS}" == "debian" ]] \
+        && [[ "${distro_id}" =~ ^(debian|ubuntu)$ ]] \
+        && command -v sudo >/dev/null 2>&1 \
+        && sudo -n true 2>/dev/null; then
+        use_apt_repo=1
+    fi
+
+    if [[ "${use_apt_repo}" -eq 1 ]]; then
         log_info "Installing Trivy via apt..."
+        local repo_codename="${distro_codename:-bookworm}"
 
-        # Add Trivy repository
         sudo apt-get update -qq
-        sudo apt-get install -y -qq wget apt-transport-https gnupg lsb-release >/dev/null 2>&1 || true
+        sudo apt-get install -y -qq wget apt-transport-https gnupg ca-certificates lsb-release >/dev/null 2>&1 || true
 
-        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo gpg --dearmor -o /usr/share/keyrings/trivy.gpg 2>/dev/null || true
-        echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/trivy.list >/dev/null
+        if command -v curl >/dev/null 2>&1; then
+            curl -fsSL https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo gpg --dearmor -o /usr/share/keyrings/trivy.gpg
+        else
+            wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo gpg --dearmor -o /usr/share/keyrings/trivy.gpg
+        fi
 
+        sudo rm -f /etc/apt/sources.list.d/trivy.list 2>/dev/null || true
+        echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb ${repo_codename} main" | sudo tee /etc/apt/sources.list.d/trivy.list >/dev/null
         sudo apt-get update -qq
         sudo apt-get install -y trivy >/dev/null 2>&1 || {
             log_warn "apt installation failed, trying binary download..."
             install_trivy_binary
         }
     else
-        # Fallback to binary installation
+        log_info "Skipping apt repo for distro '${distro_id:-unknown}' (codename '${distro_codename:-unknown}'); using binary install"
         install_trivy_binary
     fi
 
     # Verify installation
-    if command -v trivy >/dev/null 2>&1; then
+    if [[ -x "${VENV_BIN}/trivy" ]]; then
+        log_success "Trivy installed successfully: $("${VENV_BIN}/trivy" --version | head -n1)"
+    elif command -v trivy >/dev/null 2>&1; then
+        link_into_venv "$(command -v trivy)" "trivy"
         log_success "Trivy installed successfully: $(trivy --version | head -n1)"
     else
         log_warn "Trivy installation completed but command not found in PATH"
@@ -676,28 +756,68 @@ install_trivy() {
 install_trivy_binary() {
     log_info "Installing Trivy from binary release..."
 
-    # Download latest release
-    TRIVY_VERSION=$(curl -s https://api.github.com/repos/aquasecurity/trivy/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+    local trivy_arch
+    case "$(uname -m)" in
+        x86_64) trivy_arch="64bit" ;;
+        aarch64|arm64) trivy_arch="ARM64" ;;
+        *) log_error "Unsupported architecture for Trivy binary: $(uname -m)"; return 1 ;;
+    esac
 
-    if [[ -z "${TRIVY_VERSION}" ]]; then
-        TRIVY_VERSION="0.48.3"  # Fallback version
-        log_warn "Could not detect latest version, using ${TRIVY_VERSION}"
+    # Download latest release
+    local trivy_version
+    if command -v curl >/dev/null 2>&1; then
+        trivy_version="$(curl -s https://api.github.com/repos/aquasecurity/trivy/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')"
+    elif command -v wget >/dev/null 2>&1; then
+        trivy_version="$(wget -qO - https://api.github.com/repos/aquasecurity/trivy/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')"
+    else
+        trivy_version=""
     fi
 
-    TRIVY_URL="https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-${TRIVY_ARCH}.tar.gz"
+    if [[ -z "${trivy_version}" ]]; then
+        trivy_version="0.48.3"  # Fallback version
+        log_warn "Could not detect latest version, using ${trivy_version}"
+    fi
 
-    log_info "Downloading Trivy ${TRIVY_VERSION}..."
-    curl -sL "${TRIVY_URL}" -o /tmp/trivy.tar.gz || {
-        log_error "Failed to download Trivy"
+    local trivy_url="https://github.com/aquasecurity/trivy/releases/download/v${trivy_version}/trivy_${trivy_version}_Linux-${trivy_arch}.tar.gz"
+    local tmp_dir
+    tmp_dir="$(mktemp -d)"
+
+    log_info "Downloading Trivy ${trivy_version}..."
+    if command -v curl >/dev/null 2>&1; then
+        curl -sL "${trivy_url}" -o "${tmp_dir}/trivy.tar.gz" || {
+            log_error "Failed to download Trivy"
+            rm -rf "${tmp_dir}"
+            return 1
+        }
+    elif command -v wget >/dev/null 2>&1; then
+        wget -qO "${tmp_dir}/trivy.tar.gz" "${trivy_url}" || {
+            log_error "Failed to download Trivy"
+            rm -rf "${tmp_dir}"
+            return 1
+        }
+    else
+        log_error "Neither curl nor wget is available for Trivy download"
+        rm -rf "${tmp_dir}"
+        return 1
+    fi
+
+    tar -xzf "${tmp_dir}/trivy.tar.gz" -C "${tmp_dir}" || {
+        log_error "Failed to extract Trivy archive"
+        rm -rf "${tmp_dir}"
         return 1
     }
 
-    tar -xzf /tmp/trivy.tar.gz -C /tmp/
-    sudo mv /tmp/trivy /usr/local/bin/trivy
-    sudo chmod +x /usr/local/bin/trivy
-    rm -f /tmp/trivy.tar.gz
+    if [[ ! -x "${tmp_dir}/trivy" ]]; then
+        log_error "Trivy binary missing after extraction"
+        rm -rf "${tmp_dir}"
+        return 1
+    fi
 
-    log_success "Trivy binary installed to /usr/local/bin/trivy"
+    install -m 0755 "${tmp_dir}/trivy" "${BIN_DIR}/trivy"
+    rm -rf "${tmp_dir}"
+    link_into_venv "${BIN_DIR}/trivy" "trivy"
+
+    log_success "Trivy binary installed to ${BIN_DIR}/trivy"
 }
 
 # ============================================================================
@@ -916,6 +1036,8 @@ fix_dependency_conflicts() {
         "urllib3>=2.0.0" \
         "attrs>=22.2.0" \
         "charset-normalizer>=3.0.0" \
+        "rich>=13.7.0" \
+        "click>=8.2.1" \
         2>/dev/null || true
 
     log_success "Dependencies fixed"
