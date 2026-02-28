@@ -9,6 +9,11 @@ class DummyLLM:
         raise RuntimeError("Not used in these tests")
 
 
+class FailingLLM:
+    async def generate_with_reasoning(self, prompt: str, system_prompt: str):
+        raise RuntimeError("ollama backend crashed")
+
+
 @pytest.fixture()
 def agent():
     memory = PentestMemory(target="example.com")
@@ -97,3 +102,19 @@ Summary: No security findings in this output.
     findings = agent._parse_findings(ai_response, tool="httpx", target="example.com")
     assert findings == []
 
+
+@pytest.mark.asyncio
+async def test_interpret_output_returns_empty_result_when_llm_fails():
+    memory = PentestMemory(target="example.com")
+    agent = AnalystAgent(config={}, llm_client=FailingLLM(), memory=memory)
+
+    result = await agent.interpret_output(
+        tool="httpx",
+        target="http://example.com",
+        command="httpx -json",
+        output='{"url":"http://example.com","status_code":200}',
+    )
+
+    assert result["findings"] == []
+    assert "LLM backend error" in result["summary"]
+    assert result["tool"] == "httpx"

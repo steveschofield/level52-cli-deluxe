@@ -303,17 +303,17 @@ class ZapTool(BaseTool):
             f"cat /zap/wrk/{shlex.quote(json_name)} 2>/dev/null || true"
         )
 
+        runtime = shutil.which("docker") or shutil.which("podman") or "docker"
         return [
             "bash",
             "-lc",
             " ".join(
                 [
-                    "docker",
+                    shlex.quote(runtime),
                     "run",
                     "--rm",
-                    "--pull=missing",
                     "-v",
-                    f"{shlex.quote(host_out)}:/zap/wrk",
+                    f"{shlex.quote(host_out)}:/zap/wrk:rw",
                     image,
                     "bash",
                     "-lc",

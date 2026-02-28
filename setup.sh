@@ -154,10 +154,16 @@ safe_git_clone() {
 link_into_venv() {
     local src="$1"
     local name="$2"
+    local dest="${VENV_BIN}/${name}"
+
+    if [[ "${src}" == "${dest}" ]]; then
+        log_info "${name} already linked in virtualenv"
+        return 0
+    fi
 
     if [[ -x "${src}" ]]; then
-        ln -sf "${src}" "${VENV_BIN}/${name}" 2>/dev/null || cp "${src}" "${VENV_BIN}/${name}"
-        chmod +x "${VENV_BIN}/${name}" 2>/dev/null || true
+        ln -sf "${src}" "${dest}" 2>/dev/null || cp "${src}" "${dest}"
+        chmod +x "${dest}" 2>/dev/null || true
         log_success "Linked ${name}"
     else
         log_warn "Source not executable: ${src}"
@@ -222,6 +228,22 @@ exec "${target}" "\$@"
 SHIM
     chmod +x "${VENV_BIN}/${name}"
     log_success "Created shim: ${name} -> ${target}"
+}
+
+resolve_container_runtime() {
+    if [[ -x "${VENV_BIN}/docker" ]]; then
+        echo "${VENV_BIN}/docker"
+        return 0
+    fi
+    if command -v docker >/dev/null 2>&1; then
+        command -v docker
+        return 0
+    fi
+    if command -v podman >/dev/null 2>&1; then
+        command -v podman
+        return 0
+    fi
+    return 1
 }
 
 install_system_binary() {
@@ -987,14 +1009,36 @@ install_wordlists() {
 install_zap_hybrid() {
     log_info "Setting up ZAP hybrid mode..."
 
-    if command -v docker >/dev/null 2>&1 && docker ps >/dev/null 2>&1; then
-        docker pull ghcr.io/zaproxy/zaproxy:stable 2>/dev/null || true
+    local runtime=""
+    runtime="$(resolve_container_runtime 2>/dev/null || true)"
+
+    if [[ -n "${runtime}" ]]; then
+        if "${runtime}" info >/dev/null 2>&1 || "${runtime}" ps >/dev/null 2>&1; then
+            if "${runtime}" pull ghcr.io/zaproxy/zaproxy:stable; then
+                log_success "Pulled ZAP container image"
+            else
+                log_warn "Failed to pull ZAP container image via ${runtime}"
+            fi
+        else
+            log_warn "Container runtime found but not ready (${runtime}); skipping ZAP image pull"
+        fi
+    else
+        log_warn "No container runtime found; skipping ZAP image pull"
     fi
 
     cat > "${VENV_BIN}/guardian-zap" << 'ZAP'
 #!/usr/bin/env bash
-if command -v docker >/dev/null 2>&1 && docker ps >/dev/null 2>&1; then
-    docker images ghcr.io/zaproxy/zaproxy:stable -q | grep -q . && echo "docker" && exit 0
+runtime=""
+if [[ -x "$(dirname "$0")/docker" ]]; then
+    runtime="$(dirname "$0")/docker"
+elif command -v docker >/dev/null 2>&1; then
+    runtime="$(command -v docker)"
+elif command -v podman >/dev/null 2>&1; then
+    runtime="$(command -v podman)"
+fi
+
+if [[ -n "${runtime}" ]] && ("${runtime}" info >/dev/null 2>&1 || "${runtime}" ps >/dev/null 2>&1); then
+    "${runtime}" images ghcr.io/zaproxy/zaproxy:stable -q | grep -q . && echo "docker" && exit 0
 fi
 command -v zap.sh >/dev/null 2>&1 && echo "native" && exit 0
 echo "none" >&2 && exit 1
@@ -1004,7 +1048,19 @@ ZAP
     # ZAP Docker wrapper
     cat > "${VENV_BIN}/zap-docker" << 'EOF'
 #!/usr/bin/env bash
-docker run --rm -u zap -p 8080:8080 -i ghcr.io/zaproxy/zaproxy:stable "$@"
+runtime=""
+if [[ -x "$(dirname "$0")/docker" ]]; then
+    runtime="$(dirname "$0")/docker"
+elif command -v docker >/dev/null 2>&1; then
+    runtime="$(command -v docker)"
+elif command -v podman >/dev/null 2>&1; then
+    runtime="$(command -v podman)"
+else
+    echo "No container runtime available for ZAP" >&2
+    exit 1
+fi
+
+exec "${runtime}" run --rm -p 8080:8080 ghcr.io/zaproxy/zaproxy:stable "$@"
 EOF
     chmod +x "${VENV_BIN}/zap-docker"
 

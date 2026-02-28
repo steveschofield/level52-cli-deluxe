@@ -22,6 +22,7 @@ Requires:
 import asyncio
 import json
 import os
+import shutil
 from typing import List, Dict, Any, Optional
 from tools.base_tool import BaseTool
 
@@ -96,19 +97,31 @@ class BloodhoundTool(BaseTool):
         self.tool_name = "bloodhound"
         super().__init__(config)
 
+    def _container_runtime(self) -> str | None:
+        env_runtime = os.environ.get("GUARDIAN_CONTAINER_RUNTIME", "").strip()
+        if env_runtime:
+            resolved = shutil.which(env_runtime) if not os.path.isabs(env_runtime) else env_runtime
+            if resolved and os.path.isfile(resolved) and os.access(resolved, os.X_OK):
+                return resolved
+
+        docker = shutil.which("docker")
+        if docker:
+            return docker
+
+        podman = shutil.which("podman")
+        if podman:
+            return podman
+
+        return None
+
     def _check_installation(self) -> bool:
         """Check if Docker/Podman and the MCP image are available"""
         docker_image = getattr(self, "docker_image", "ghcr.io/fuzzinglabs/bloodhound-mcp:latest")
         try:
             import subprocess
-            import shutil
 
             # Check Docker or Podman is available
-            container_cmd = None
-            if shutil.which("docker"):
-                container_cmd = "docker"
-            elif shutil.which("podman"):
-                container_cmd = "podman"
+            container_cmd = self._container_runtime()
 
             if not container_cmd:
                 self.logger.warning("Docker/Podman not available for BloodHound MCP")
@@ -156,7 +169,7 @@ class BloodhoundTool(BaseTool):
                 - max_depth: Maximum path depth (default: 10)
         """
         cmd = [
-            "docker", "run", "-i", "--rm",
+            self._container_runtime() or "docker", "run", "-i", "--rm",
             "--network", "host",  # Connect to local Neo4j
             "-e", f"NEO4J_URI={self.neo4j_uri}",
             "-e", f"NEO4J_USER={self.neo4j_user}",

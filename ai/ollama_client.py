@@ -4,6 +4,7 @@ Uses langchain-ollama ChatOllama to talk to a local Ollama server
 """
 
 import os
+import re
 from typing import Optional, Dict, Any
 
 from langchain_ollama import ChatOllama
@@ -38,6 +39,7 @@ class OllamaClient:
             self.context_window = int(self.context_window) if self.context_window is not None else None
         except Exception:
             self.context_window = None
+        self.context_window = self._sanitize_context_window(self.context_window)
 
         try:
             options: Dict[str, Any] = {}  # avoid unsupported defaults
@@ -55,6 +57,59 @@ class OllamaClient:
         except Exception as e:
             self.logger.error(f"Failed to initialize Ollama client: {e}")
             raise
+
+    def _parse_model_billions(self) -> Optional[float]:
+        """Best-effort parse of model size from tags like qwen3.5:35b or model-7.6b."""
+        model = (self.model_name or "").lower()
+        match = re.search(r"[:\-]([0-9]+(?:\.[0-9]+)?)b\b", model)
+        if not match:
+            match = re.search(r"\b([0-9]+(?:\.[0-9]+)?)b\b", model)
+        if not match:
+            return None
+        try:
+            return float(match.group(1))
+        except Exception:
+            return None
+
+    def _default_safe_context_limit(self) -> int:
+        """
+        Pick a conservative num_ctx cap for local Ollama models.
+        Large context windows can crash the runner during KV cache allocation
+        even when the actual prompt is small.
+        """
+        model_size_b = self._parse_model_billions()
+        if model_size_b is None:
+            return 32768
+        if model_size_b >= 30:
+            return 16384
+        if model_size_b >= 20:
+            return 24576
+        if model_size_b >= 10:
+            return 32768
+        return 65536
+
+    def _sanitize_context_window(self, requested: Optional[int]) -> Optional[int]:
+        if requested is None:
+            return None
+        if requested <= 0:
+            return None
+
+        ai_config = self.config.get("ai", {})
+        configured_limit = ai_config.get("max_safe_context_window") or os.getenv("OLLAMA_MAX_SAFE_CTX")
+        try:
+            safe_limit = int(configured_limit) if configured_limit is not None else self._default_safe_context_limit()
+        except Exception:
+            safe_limit = self._default_safe_context_limit()
+
+        if requested > safe_limit:
+            self.logger.warning(
+                "Requested Ollama context window %s exceeds conservative safe limit %s for model %s; clamping num_ctx",
+                requested,
+                safe_limit,
+                self.model_name,
+            )
+            return safe_limit
+        return requested
 
     async def generate(
         self,

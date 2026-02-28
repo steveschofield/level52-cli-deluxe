@@ -12,7 +12,10 @@ and provides detailed progress visibility.
 from __future__ import annotations
 
 import argparse
+import grp
 import logging
+import os
+import shutil
 import subprocess
 import sys
 import time
@@ -96,7 +99,7 @@ def _wait_for_api(api_url: str, timeout_s: int = 180) -> None:
     raise RuntimeError(f"Timed out waiting for ZAP daemon API to become ready (after {attempt} attempts)")
 
 
-def _capture_docker_logs(container_name: str, log_file: str) -> None:
+def _capture_docker_logs(runtime: str, container_name: str, log_file: str) -> None:
     """Capture Docker container logs to a file."""
     try:
         logger.info(f"Capturing Docker container logs to: {log_file}")
@@ -104,7 +107,7 @@ def _capture_docker_logs(container_name: str, log_file: str) -> None:
         log_path.parent.mkdir(parents=True, exist_ok=True)
 
         result = subprocess.run(
-            ["docker", "logs", container_name],
+            [runtime, "logs", container_name],
             capture_output=True,
             text=True,
             timeout=10,
@@ -122,24 +125,94 @@ def _capture_docker_logs(container_name: str, log_file: str) -> None:
         logger.warning(f"Failed to capture Docker logs: {e}")
 
 
-def _check_docker_available() -> bool:
-    """Check if Docker is available and running."""
+def _resolve_container_runtime() -> str | None:
+    """Resolve the container runtime used by the framework."""
+    candidates: list[str] = []
+
+    env_runtime = os.environ.get("GUARDIAN_CONTAINER_RUNTIME", "").strip()
+    if env_runtime:
+        candidates.append(env_runtime)
+
+    path_runtime = shutil.which("docker")
+    if path_runtime:
+        candidates.append(path_runtime)
+
+    podman_runtime = shutil.which("podman")
+    if podman_runtime:
+        candidates.append(podman_runtime)
+
+    seen: set[str] = set()
+    for candidate in candidates:
+        if candidate in seen:
+            continue
+        seen.add(candidate)
+        if os.path.isabs(candidate):
+            if os.path.isfile(candidate) and os.access(candidate, os.X_OK):
+                return candidate
+        else:
+            resolved = shutil.which(candidate)
+            if resolved:
+                return resolved
+    return None
+
+
+def _docker_socket_hint(stderr_text: str) -> str | None:
+    text = (stderr_text or "").lower()
+    if "permission denied" not in text or "docker.sock" not in text:
+        return None
+
+    sock_path = "/var/run/docker.sock"
+    details = [f"Permission denied accessing {sock_path}."]
+    try:
+        st = os.stat(sock_path)
+        group_name = grp.getgrgid(st.st_gid).gr_name
+        details.append(f"Socket group is '{group_name}'.")
+        if st.st_gid not in os.getgroups():
+            details.append(f"Current user is not in '{group_name}'.")
+    except Exception:
+        pass
+    details.append("Add the user to the docker group or run with a runtime the user can access.")
+    return " ".join(details)
+
+
+def _check_container_runtime_available(runtime: str) -> tuple[bool, str | None]:
+    """Check if the chosen container runtime is available and running."""
     try:
         result = subprocess.run(
-            ["docker", "ps"],
+            [runtime, "info"],
             capture_output=True,
+            text=True,
             timeout=5,
         )
-        return result.returncode == 0
-    except Exception:
-        return False
+        if result.returncode == 0:
+            return True, None
+        hint = _docker_socket_hint(result.stderr)
+        if hint:
+            return False, hint
+        result = subprocess.run(
+            [runtime, "ps"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        if result.returncode == 0:
+            return True, None
+        hint = _docker_socket_hint(result.stderr)
+        if hint:
+            return False, hint
+        stderr = (result.stderr or "").strip()
+        stdout = (result.stdout or "").strip()
+        detail = stderr or stdout or f"{runtime} returned exit code {result.returncode}"
+        return False, detail
+    except Exception as exc:
+        return False, str(exc)
 
 
-def _get_container_info(container_name: str) -> dict:
-    """Get Docker container information."""
+def _get_container_info(runtime: str, container_name: str) -> dict:
+    """Get container information from the active runtime."""
     try:
         result = subprocess.run(
-            ["docker", "inspect", container_name],
+            [runtime, "inspect", container_name],
             capture_output=True,
             text=True,
             timeout=10,
@@ -223,13 +296,20 @@ def main(argv: list[str] | None = None) -> int:
     logger.info(f"  ZAP Log Dir: {args.zap_log_dir or '(not mounted)'}")
     logger.info("=" * 70)
 
-    # Check Docker availability
+    runtime = _resolve_container_runtime()
     logger.info("Checking Docker availability...")
-    if not _check_docker_available():
+    if not runtime:
         logger.error("Docker is not available or not running")
         logger.error("Please ensure Docker is installed and the daemon is running")
         return 1
-    logger.info("✓ Docker is available")
+    runtime_ok, runtime_error = _check_container_runtime_available(runtime)
+    if not runtime_ok:
+        logger.error("Docker is not available or not running")
+        if runtime_error:
+            logger.error(runtime_error)
+        logger.error("Please ensure Docker is installed and the daemon is running")
+        return 1
+    logger.info(f"✓ Docker is available via: {runtime}")
 
     api_url = args.api_url.rstrip("/")
     parsed = urlparse(api_url)
@@ -237,7 +317,7 @@ def main(argv: list[str] | None = None) -> int:
 
     # Build Docker command
     docker_cmd = [
-        "docker",
+        runtime,
         "run",
         "-d",
         "--rm",
@@ -375,7 +455,7 @@ def main(argv: list[str] | None = None) -> int:
         logger.info(f"  Port Mapping: {port}:8080")
 
         # Get container info
-        container_info = _get_container_info(args.container_name)
+        container_info = _get_container_info(runtime, args.container_name)
         if container_info:
             state = container_info.get("State", {})
             logger.debug(f"Container state: {state.get('Status')}")
@@ -420,7 +500,7 @@ def main(argv: list[str] | None = None) -> int:
             # Capture Docker logs on failure
             if args.docker_log:
                 logger.info("Capturing Docker logs due to scan failure...")
-                _capture_docker_logs(args.container_name, args.docker_log)
+                _capture_docker_logs(runtime, args.container_name, args.docker_log)
 
         return scan_returncode
 
@@ -434,7 +514,7 @@ def main(argv: list[str] | None = None) -> int:
         # Capture Docker logs on unexpected error
         if container_started and args.docker_log:
             logger.info("Capturing Docker logs due to error...")
-            _capture_docker_logs(args.container_name, args.docker_log)
+            _capture_docker_logs(runtime, args.container_name, args.docker_log)
 
         return 1
 
@@ -449,7 +529,7 @@ def main(argv: list[str] | None = None) -> int:
 
             # Capture final Docker logs if requested (even on success)
             if args.docker_log:
-                _capture_docker_logs(args.container_name, args.docker_log)
+                _capture_docker_logs(runtime, args.container_name, args.docker_log)
 
             # Check if ZAP log was written
             if args.zap_log_dir:
@@ -462,7 +542,7 @@ def main(argv: list[str] | None = None) -> int:
 
             logger.info(f"Stopping container: {args.container_name}")
             stop_result = subprocess.run(
-                ["docker", "stop", args.container_name],
+                [runtime, "stop", args.container_name],
                 capture_output=True,
                 text=True,
                 timeout=30,

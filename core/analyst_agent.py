@@ -114,7 +114,18 @@ class AnalystAgent(BaseAgent):
             output=output
         )
 
-        result = await self.think(prompt, self.prompts["ANALYST_SYSTEM_PROMPT"])
+        try:
+            result = await self.think(prompt, self.prompts["ANALYST_SYSTEM_PROMPT"])
+        except Exception as e:
+            msg = f"Analysis skipped due to LLM backend error: {e}"
+            self.logger.warning(f"[Analyst] {msg}")
+            self.log_action("AnalysisComplete", msg)
+            return {
+                "findings": [],
+                "summary": msg,
+                "reasoning": msg,
+                "tool": tool
+            }
         
         # Parse findings from AI response
         findings = self._parse_findings(result["response"], tool, target)
