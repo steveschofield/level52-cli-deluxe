@@ -1,6 +1,0 @@
-https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/&#xa;
-https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/</elem
-https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0143&#xa;
-https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0143</elem
-https://technet.microsoft.com/en-us/library/security/ms17-010.aspx&#xa;
-https://technet.microsoft.com/en-us/library/security/ms17-010.aspx</elem

@@ -136,14 +136,16 @@ class NucleiTool(BaseTool):
                 if http_only is None:
                     http_only = True
             else:
-                out_dir = Path((self.config or {}).get("output", {}).get("save_path", "./reports"))
-                out_dir.mkdir(parents=True, exist_ok=True)
-                ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-                targets_file = out_dir / f"nuclei_targets_{ts}.txt"
-                with open(targets_file, "w", encoding="utf-8") as f:
-                    f.write(f"http://{target_str}\nhttps://{target_str}\n")
-                command.extend(["-l", str(targets_file)])
-                self._last_targets_file = str(targets_file)
+                import tempfile as _tempfile, uuid as _uuid
+                targets_fd, targets_path = _tempfile.mkstemp(prefix="guardian-nuclei-targets-", suffix=".txt")
+                try:
+                    with os.fdopen(targets_fd, "w", encoding="utf-8") as f:
+                        f.write(f"http://{target_str}\nhttps://{target_str}\n")
+                except Exception:
+                    os.close(targets_fd)
+                    raise
+                command.extend(["-l", targets_path])
+                self._last_targets_file = targets_path
                 if http_only is None:
                     http_only = False
         

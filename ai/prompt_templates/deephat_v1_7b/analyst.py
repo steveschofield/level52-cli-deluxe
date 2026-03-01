@@ -106,7 +106,33 @@ Entry → Exploitation → Privilege Escalation → Objective
 
 MITRE ATT&CK Mapping: TTPs identified
 Exploitation Difficulty: Overall assessment
-Recommended Next Actions: Red team next steps"""
+Recommended Next Actions: Red team next steps
+
+TARGET PRIORITY RANKING
+
+Rank each discovered host by manual testing priority. Focus on old and complex targets first.
+
+Score signals:
+- Domain registered before 2010: +3
+- EOL or >3yr old CMS/framework version: +3 each
+- Outdated JS libraries (retire.js): +2 each
+- Old server version (Apache 2.2, PHP 5.x, IIS 6): +3
+- >5 open services: +2, >10 services: +4
+- Multiple frameworks/CMS: +2
+- Auth surface (login pages, OAuth, API keys, admin panels): +2 to +3
+- Missing security headers: +1 each
+- SSL/TLS issues: +2
+- CVEs in detected versions: +4 each
+- Nikto/nuclei hits: +3
+
+For each host:
+HOST: <hostname or IP>
+SCORE: <total>
+REASONS: <what drove the score>
+PRIORITY: HIGH (>=10) / MEDIUM (5-9) / LOW (<5)
+FIRST TESTS: <what to hit manually first>
+
+Sort by SCORE descending."""
 
 ANALYST_FALSE_POSITIVE_PROMPT = """Red team validation: Is this exploitable?
 

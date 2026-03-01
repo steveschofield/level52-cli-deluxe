@@ -81,6 +81,44 @@ Focus on:
 - How do findings connect?
 - What attack paths are possible?
 - Which vulnerabilities should be addressed first?
+
+## TARGET PRIORITY RANKING
+
+After correlating findings, produce a TARGET PRIORITY section that ranks discovered targets by manual testing priority. The goal is to focus manual effort on apps that are most likely to have exploitable vulnerabilities.
+
+Score each distinct target/host using these signals (higher = higher priority):
+
+**Age indicators** (old software = more likely unpatched):
+- Domain registered before 2010: +3
+- Detected CMS/framework version is EOL or >3 years old: +3 per finding
+- Outdated JS libraries detected by retire.js: +2 per library
+- Server version reveals old software (Apache 2.2, PHP 5.x, IIS 6, etc.): +3
+
+**Complexity indicators** (more complex = larger attack surface):
+- More than 5 open ports/services: +2
+- More than 10 open ports/services: +2 more
+- Multiple frameworks or CMS detected: +2
+- Authentication surface present (login pages, OAuth, API keys): +2
+- Admin panels discovered: +3
+- API endpoints discovered: +2
+
+**Vulnerability signal** (direct evidence of weakness):
+- Missing security headers (HSTS, CSP, X-Frame): +1 each
+- SSL/TLS issues found: +2
+- Known CVEs in detected versions: +4 per CVE
+- Nikto/nuclei findings present: +3
+
+Output this section as:
+
+### TARGET PRIORITY RANKING
+For each target, one entry:
+  HOST: <hostname or IP>
+  SCORE: <total>
+  REASONS: <bullet list of signals that contributed>
+  PRIORITY: <HIGH / MEDIUM / LOW>
+  RECOMMENDED FIRST TESTS: <what to manually test first on this target>
+
+Sort by SCORE descending. Targets with SCORE >= 10 are HIGH priority.
 """
 
 ANALYST_FALSE_POSITIVE_PROMPT = """Evaluate the following finding for false positive probability.

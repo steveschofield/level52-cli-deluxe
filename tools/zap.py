@@ -435,9 +435,29 @@ class ZapTool(BaseTool):
                         }
                     )
 
+        # Collect all discovered URLs: spider, AJAX spider, and alert instances
+        seen_urls: set[str] = set()
+        discovered_urls: list[str] = []
+
+        def _add_url(u: str) -> None:
+            u = (u or "").strip()
+            if u and u.startswith("http") and u not in seen_urls:
+                seen_urls.add(u)
+                discovered_urls.append(u)
+
+        for u in data.get("spider_urls") or []:
+            _add_url(u)
+        for u in data.get("ajax_spider_urls") or []:
+            _add_url(u)
+        for alert in alerts:
+            _add_url(alert.get("url") or "")
+            for inst in alert.get("instances") or []:
+                _add_url(inst.get("uri") or inst.get("url") or "")
+
         return {
             "alerts": alerts,
             "count": len(alerts),
+            "urls": discovered_urls,
             "summary": {
                 "sites": len(data.get("site") or []),
             },

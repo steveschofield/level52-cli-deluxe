@@ -123,6 +123,34 @@ steps:
     parameters:
       tech_detect: true
 
+  - name: tech_fingerprint
+    type: tool
+    tool: whatweb
+    objective: "Deep CMS and technology fingerprinting to identify versions and age indicators"
+    dependencies:
+      - http_probing
+
+  - name: js_extraction
+    type: tool
+    tool: subjs
+    objective: "Extract JavaScript file URLs from all discovered web assets"
+    dependencies:
+      - http_probing
+
+  - name: js_vuln_scan
+    type: tool
+    tool: retire
+    objective: "Detect outdated and vulnerable JavaScript libraries"
+    dependencies:
+      - js_extraction
+
+  - name: auth_surface_detection
+    type: tool
+    tool: auth_scanner
+    objective: "Map authentication surface: login pages, OAuth endpoints, API key patterns, admin panels"
+    dependencies:
+      - http_probing
+
   - name: security_assessment
     type: tool
     tool: godeye

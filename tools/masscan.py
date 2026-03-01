@@ -119,6 +119,16 @@ class MasscanTool(BaseTool):
             if err_text and (not raw or process.returncode != 0):
                 raw = (raw + "\n" + err_text).strip()
 
+            # Detect raw-socket permission failure and surface a clear message
+            if process.returncode != 0 and err_text and any(
+                kw in err_text.lower()
+                for kw in ("operation not permitted", "permission denied", "socket", "cap_net_raw")
+            ):
+                self.logger.error(
+                    "masscan needs raw-socket access. Fix with: "
+                    "sudo setcap cap_net_raw,cap_net_admin+eip $(readlink -f $(which masscan))"
+                )
+
             parsed = self.parse_output(file_text.strip() or out_text)
 
             result = {

@@ -1,2 +1,0 @@
-2026-02-14 21:00:49,282 - guardian - INFO - Initialized OpenRouter model: xiaomi/mimo-v2-flash:free @ https://openrouter.ai/api/v1
-2026-02-14 21:00:49,521 - guardian - ERROR - OpenRouter API error: HTTP 404: The free MiMo-V2-Flash period has ended. To continue using this model, please migrate to the paid slug: xiaomi/mimo-v2-flash (code=404) | Hint: remove ':free' from the model slug or choose another available model.

@@ -85,10 +85,7 @@ class SSLyzeTool(BaseTool):
         # Connectivity options
         if config.get("slow_connection"):
             command.append("--slow_connection")
-        
-        # Quiet mode
-        command.append("--quiet")
-        
+
         return command
     
     def parse_output(self, output: str) -> Dict[str, Any]:

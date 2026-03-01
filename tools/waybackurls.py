@@ -18,8 +18,16 @@ class WaybackurlsTool(BaseTool):
         """Build waybackurls command"""
         command = ["waybackurls"]
 
-        if kwargs.get("from_file"):
-            command.extend(["-l", kwargs["from_file"]])
+        from_file = kwargs.get("from_file")
+        if from_file:
+            # waybackurls has no -l flag; accepts domains as positional args or stdin.
+            # Read domain list from file and pass each as a separate argument.
+            try:
+                with open(from_file) as fh:
+                    domains = [ln.strip() for ln in fh if ln.strip()]
+                command.extend(domains if domains else [target])
+            except OSError:
+                command.append(target)
         else:
             command.append(target)
 

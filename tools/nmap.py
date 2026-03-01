@@ -53,8 +53,11 @@ class NmapTool(BaseTool):
         if args:
             command.extend(str(args).split())
         
-        # Timing template
+        # Timing template — validate against known nmap timing templates
         timing = kwargs.get("timing") or config.get("timing", "T4")
+        if timing not in {"T0", "T1", "T2", "T3", "T4", "T5"}:
+            self.logger.warning(f"nmap: invalid timing '{timing}', falling back to T4")
+            timing = "T4"
         command.append(f"-{timing}")
 
         # Treat hosts as online to handle environments where ICMP is blocked.

@@ -1,7 +1,9 @@
+import os
+import json
+import tempfile
+import uuid
 from typing import List, Dict, Any
 from tools.base_tool import BaseTool
-import json
-import os
 
 class TrivyTool(BaseTool):
     """Wrapper for Trivy - Comprehensive vulnerability scanner for containers, filesystems, and IaC"""
@@ -48,7 +50,7 @@ class TrivyTool(BaseTool):
         cmd.append("--quiet")
 
         # Output file
-        self.output_file = f"trivy_{self._get_timestamp()}.json"
+        self.output_file = os.path.join(tempfile.gettempdir(), f"guardian-trivy-{uuid.uuid4().hex}.json")
         cmd.extend(["-o", self.output_file])
 
         # Target
@@ -82,8 +84,8 @@ class TrivyTool(BaseTool):
             "raw_output": output
         }
 
-        if not os.path.exists(self.output_file):
-            self.logger.warning(f"Trivy output file not found: {self.output_file}")
+        if not hasattr(self, "output_file") or not os.path.exists(self.output_file):
+            self.logger.warning("Trivy output file not found")
             return result
 
         try:
@@ -129,7 +131,10 @@ class TrivyTool(BaseTool):
                     result["summary"]["total_secrets"] += 1
 
             # Cleanup output file
-            os.remove(self.output_file)
+            try:
+                os.remove(self.output_file)
+            except OSError:
+                pass
 
         except Exception as e:
             self.logger.error(f"Error parsing Trivy output: {e}")
@@ -226,7 +231,4 @@ class TrivyTool(BaseTool):
 
         return ""
 
-    def _get_timestamp(self) -> int:
-        """Get current timestamp for unique filenames"""
-        import time
-        return int(time.time())
+

@@ -648,6 +648,8 @@ def main(argv: Optional[list[str]] = None) -> int:
         # ====================================================================
         # PHASE: Spider Scan
         # ====================================================================
+        spider_urls: list[str] = []
+        ajax_spider_urls: list[str] = []
         if args.spider:
             timer.start("Spider Scan")
 
@@ -686,7 +688,8 @@ def main(argv: Optional[list[str]] = None) -> int:
             # Get spider results
             results_url = _api_url(api_base, "spider", "view", "results", {"apikey": api_key, "scanId": scan_id})
             results = _get_json(results_url).get("results", [])
-            logger.info(f"✓ Spider scan completed - discovered {len(results)} URLs")
+            spider_urls = [u for u in results if isinstance(u, str) and u.startswith("http")]
+            logger.info(f"✓ Spider scan completed - discovered {len(spider_urls)} URLs")
 
             timer.end()
 
@@ -717,7 +720,11 @@ def main(argv: Optional[list[str]] = None) -> int:
 
                 # Get AJAX spider results
                 ajax_results = _get_json(_api_url(api_base, "spiderAjax", "view", "results", {"apikey": api_key})).get("results", [])
-                logger.info(f"✓ AJAX spider completed - discovered {len(ajax_results)} URLs")
+                for r in ajax_results:
+                    url = r if isinstance(r, str) else (r.get("requestHeader", "") or "").split("\n")[0].split(" ")[1] if isinstance(r, dict) else ""
+                    if url and url.startswith("http"):
+                        ajax_spider_urls.append(url)
+                logger.info(f"✓ AJAX spider completed - discovered {len(ajax_spider_urls)} URLs")
             except Exception as e:
                 warnings.append(f"AJAX spider failed: {e}")
                 logger.error(f"AJAX spider failed: {e}")
@@ -885,6 +892,8 @@ def main(argv: Optional[list[str]] = None) -> int:
             "har_error": har_error,
             "alerts": alerts,
             "count": len(alerts),
+            "spider_urls": spider_urls,
+            "ajax_spider_urls": ajax_spider_urls,
             "timing": timing_summary,
             "timestamp": datetime.now().isoformat(),
         }
@@ -896,6 +905,15 @@ def main(argv: Optional[list[str]] = None) -> int:
                 json_path.parent.mkdir(parents=True, exist_ok=True)
                 json_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
                 logger.info(f"✓ JSON report written to: {json_path}")
+
+                # Write discovered URLs to a companion text file for easy inspection
+                all_urls = list(dict.fromkeys(spider_urls + ajax_spider_urls))
+                if all_urls:
+                    urls_path = json_path.with_name(json_path.stem + "_urls.txt")
+                    urls_path.write_text("\n".join(all_urls) + "\n", encoding="utf-8")
+                    logger.info(f"✓ Spider URLs written to: {urls_path} ({len(all_urls)} URLs)")
+                else:
+                    logger.info("No spider URLs to write (spider may not have run or found nothing)")
             except Exception as e:
                 logger.error(f"Failed to write JSON report: {e}")
                 sys.stderr.write(f"Warning: Failed to write JSON report: {e}\n")

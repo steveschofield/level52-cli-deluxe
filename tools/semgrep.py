@@ -2,6 +2,8 @@ from typing import List, Dict, Any
 from tools.base_tool import BaseTool
 import json
 import os
+import tempfile
+import uuid
 
 class SemgrepTool(BaseTool):
     """Wrapper for Semgrep - Static Application Security Testing (SAST)"""
@@ -44,7 +46,7 @@ class SemgrepTool(BaseTool):
         cmd.append(target)
 
         # Output file
-        self.output_file = f"semgrep_{self._get_timestamp()}.json"
+        self.output_file = os.path.join(tempfile.gettempdir(), f"guardian-semgrep-{uuid.uuid4().hex}.json")
         cmd.extend(["-o", self.output_file])
 
         return cmd
@@ -72,8 +74,8 @@ class SemgrepTool(BaseTool):
             "raw_output": output
         }
 
-        if not os.path.exists(self.output_file):
-            self.logger.warning(f"Semgrep output file not found: {self.output_file}")
+        if not hasattr(self, "output_file") or not os.path.exists(self.output_file):
+            self.logger.warning("Semgrep output file not found")
             return result
 
         try:
@@ -120,7 +122,10 @@ class SemgrepTool(BaseTool):
                     })
 
             # Cleanup output file
-            os.remove(self.output_file)
+            try:
+                os.remove(self.output_file)
+            except OSError:
+                pass
 
         except Exception as e:
             self.logger.error(f"Error parsing Semgrep output: {e}")
@@ -249,7 +254,4 @@ class SemgrepTool(BaseTool):
 
         return ""
 
-    def _get_timestamp(self) -> int:
-        """Get current timestamp for unique filenames"""
-        import time
-        return int(time.time())
+

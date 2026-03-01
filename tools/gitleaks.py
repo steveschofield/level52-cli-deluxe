@@ -1,7 +1,9 @@
+import os
+import json
+import tempfile
+import uuid
 from typing import List, Dict, Any
 from tools.base_tool import BaseTool
-import json
-import os
 
 class GitleaksTool(BaseTool):
     """Wrapper for Gitleaks - Secret Scanning Tool"""
@@ -25,7 +27,7 @@ class GitleaksTool(BaseTool):
             cmd.extend(["--source", target])
             
         # Output to JSON
-        self.output_file = f"gitleaks_{self._get_timestamp()}.json"
+        self.output_file = os.path.join(tempfile.gettempdir(), f"guardian-gitleaks-{uuid.uuid4().hex}.json")
         cmd.extend(["--report-path", self.output_file, "--report-format", "json"])
         
         if kwargs.get("verbose"):
@@ -40,22 +42,21 @@ class GitleaksTool(BaseTool):
             "raw_output": output
         }
         
-        if os.path.exists(self.output_file):
-            try:
-                with open(self.output_file, 'r') as f:
-                    data = json.load(f)
-                    
-                if isinstance(data, list):
-                    result["leaks"] = data
-                    result["count"] = len(data)
-            
-                # Cleanup
-                os.remove(self.output_file)
-            except Exception as e:
-                self.logger.error(f"Error parsing Gitleaks JSON: {e}")
-                
-        return result
+        if not hasattr(self, "output_file") or not os.path.exists(self.output_file):
+            return result
 
-    def _get_timestamp(self):
-        import time
-        return int(time.time())
+        try:
+            with open(self.output_file, 'r') as f:
+                data = json.load(f)
+            if isinstance(data, list):
+                result["leaks"] = data
+                result["count"] = len(data)
+        except Exception as e:
+            self.logger.error(f"Error parsing Gitleaks JSON: {e}")
+        finally:
+            try:
+                os.remove(self.output_file)
+            except OSError:
+                pass
+
+        return result

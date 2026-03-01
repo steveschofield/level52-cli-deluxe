@@ -999,7 +999,7 @@ class WorkflowEngine:
 
         # If we have discovered URLs, run URL-first scanners using the URL list.
         # NOTE: only enable for tools that accept a `from_file` input in our wrappers.
-        if tool_name in {"katana", "nuclei", "dalfox", "subjs", "xnlinkfinder", "httpx"}:
+        if tool_name in {"katana", "nuclei", "dalfox", "subjs", "xnlinkfinder", "httpx", "waybackurls"}:
             urls = self._get_discovered_urls()
             if urls and "from_file" not in tool_kwargs:
                 url_file = self._write_urls_file(urls, name=f"{tool_name}_{self.memory.session_id}.txt")
@@ -1094,7 +1094,14 @@ class WorkflowEngine:
             parsed = result.get("parsed") if isinstance(result.get("parsed"), dict) else {}
 
             # Persist high-signal context from discovery tools.
-            if tool_name in {"httpx", "katana"}:
+            # All tools that return a "urls" list feed into the shared URL context
+            # so subsequent tools (nuclei, dalfox, ffuf, etc.) can use them.
+            _URL_DISCOVERY_TOOLS = {
+                "httpx", "katana", "zap",
+                "linkfinder", "xnlinkfinder",
+                "waybackurls", "subjs", "paramspider",
+            }
+            if tool_name in _URL_DISCOVERY_TOOLS:
                 urls = parsed.get("urls") or []
                 if isinstance(urls, list) and urls:
                     self.memory.update_context("urls", urls)
@@ -1127,11 +1134,7 @@ class WorkflowEngine:
                     self.memory.context["host_open_ports"] = merged_host_ports
             # jsparser removed - use linkfinder/xnlinkfinder instead
             if tool_name in ("linkfinder", "xnlinkfinder"):
-                urls = parsed.get("urls") or []
                 scripts = parsed.get("scripts") or []
-                if isinstance(urls, list) and urls:
-                    self.memory.update_context("urls", urls)
-                    self.memory.update_context("discovered_assets", urls)
                 if isinstance(scripts, list) and scripts:
                     self.memory.update_context("client_side_scripts", scripts)
             if tool_name == "testssl":

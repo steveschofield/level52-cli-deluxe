@@ -1,1 +1,0 @@
-/usr/bin/nmap -T4 -Pn -oX reports/20260214_183152/nmap_20260214_183153_295844.xml -sn -PE -PP -PM 192.168.1.232

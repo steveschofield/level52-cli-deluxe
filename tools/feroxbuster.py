@@ -3,6 +3,7 @@ Feroxbuster tool wrapper for directory and API endpoint discovery
 """
 
 import json
+import os
 from typing import Dict, Any, List
 from tools.base_tool import BaseTool
 
@@ -23,7 +24,15 @@ class FeroxbusterTool(BaseTool):
         
         # API-focused wordlists
         if kwargs.get("api_mode"):
-            command.extend(["-w", "/usr/share/seclists/Discovery/Web-Content/api/api-endpoints.txt"])
+            api_wordlist = (
+                self.config.get("tools", {}).get("feroxbuster", {}).get("api_wordlist")
+                or os.environ.get("GUARDIAN_API_WORDLIST")
+                or "/usr/share/seclists/Discovery/Web-Content/api/api-endpoints.txt"
+            )
+            if os.path.isfile(api_wordlist):
+                command.extend(["-w", api_wordlist])
+            else:
+                self.logger.warning(f"feroxbuster: api wordlist not found: {api_wordlist} — skipping -w")
             command.extend(["-x", "json,xml,php,asp,aspx,jsp"])
         
         if kwargs.get("wordlist"):

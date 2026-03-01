@@ -366,6 +366,20 @@ ensure_go
 ensure_node_and_npm
 # Note: ensure_rust is lazy-loaded - only called by feroxbuster if binary download fails
 
+# Export Go bin into PATH for the current setup session so go_install_and_link works
+# even on fresh installs where ~/.profile hasn't been re-sourced yet.
+if command -v go >/dev/null 2>&1; then
+    _GOPATH_BIN="$(go env GOBIN 2>/dev/null || true)"
+    if [[ -z "${_GOPATH_BIN}" ]]; then
+        _GOPATH_BIN="$(go env GOPATH 2>/dev/null || true)"
+        _GOPATH_BIN="${_GOPATH_BIN:-${GOPATH:-$HOME/go}}/bin"
+    fi
+    if [[ -d "${_GOPATH_BIN}" ]] && [[ ":${PATH}:" != *":${_GOPATH_BIN}:"* ]]; then
+        export PATH="${PATH}:${_GOPATH_BIN}"
+        log_info "Added Go bin to PATH for this session: ${_GOPATH_BIN}"
+    fi
+fi
+
 log_info "Using virtualenv: ${VIRTUAL_ENV}"
 mkdir -p "${TOOLS_DIR}" "${BIN_DIR}" "${TOOL_VENVS_DIR}"
 
@@ -437,6 +451,13 @@ install_projectdiscovery_tools() {
     go_install_and_link "github.com/projectdiscovery/interactsh/cmd/interactsh-client@latest" "interactsh-client"
 
     log_success "ProjectDiscovery tools installed"
+
+    # Update nuclei templates on first install
+    local nuclei_bin="${VENV_BIN}/nuclei"
+    if [[ -x "${nuclei_bin}" ]]; then
+        log_info "Updating nuclei templates (may take a minute)..."
+        "${nuclei_bin}" -update-templates 2>/dev/null || log_warn "nuclei template update failed (non-fatal)"
+    fi
 }
 
 # ============================================================================
@@ -617,7 +638,7 @@ install_feroxbuster() {
 }
 
 install_nikto() {
-    install_system_binary "nikto" "nikto" "nikto"
+    install_system_binary "nikto" "nikto"
 }
 
 install_wpscan() {
@@ -891,17 +912,17 @@ install_python_tools() {
 install_system_tools() {
     log_info "Installing system tools..."
 
-    install_system_binary "smbclient" "smbclient" "samba"
-    install_system_binary "showmount" "nfs-common" "nfs-utils"
-    install_system_binary "snmpwalk" "snmp" "net-snmp"
-    install_system_binary "onesixtyone" "onesixtyone" "onesixtyone"
-    install_system_binary "whois" "whois" "whois"
-    install_system_binary "hydra" "hydra" "hydra"
-    install_system_binary "amass" "amass" "amass"
-    install_system_binary "masscan" "masscan" "masscan"
-    install_system_binary "nmap" "nmap" "nmap"
-    install_system_binary "docker" "docker.io" "docker"
-    install_system_binary "podman" "podman" "podman"
+    install_system_binary "smbclient" "smbclient"
+    install_system_binary "showmount" "nfs-common"
+    install_system_binary "snmpwalk" "snmp"
+    install_system_binary "onesixtyone" "onesixtyone"
+    install_system_binary "whois" "whois"
+    install_system_binary "hydra" "hydra"
+    install_system_binary "amass" "amass"
+    install_system_binary "masscan" "masscan"
+    install_system_binary "nmap" "nmap"
+    install_system_binary "docker" "docker.io"
+    install_system_binary "podman" "podman"
 
     if [[ ! -x "${VENV_BIN}/docker" ]] && command -v podman >/dev/null 2>&1; then
         create_venv_shim "docker" "$(command -v podman)"
@@ -912,9 +933,23 @@ install_system_tools() {
         sudo systemctl enable --now podman.socket 2>/dev/null || true
     fi
 
-    # SecLists
-    if [[ "${OS}" == "debian" ]]; then
-        install_system_binary "seclists" "seclists" ""
+    # Add current user to docker group so docker runs without sudo
+    if command -v docker >/dev/null 2>&1 && command -v sudo >/dev/null 2>&1 && sudo -n true 2>/dev/null; then
+        if ! groups "${USER:-$(id -un)}" 2>/dev/null | grep -q '\bdocker\b'; then
+            log_info "Adding ${USER:-$(id -un)} to docker group..."
+            sudo usermod -aG docker "${USER:-$(id -un)}" 2>/dev/null || true
+            log_warn "Docker group updated. Run 'newgrp docker' or re-login to activate without sudo."
+        else
+            log_info "User already in docker group"
+        fi
+    fi
+
+    # SecLists - install wordlist package (not a binary, just data files)
+    if [[ "${OS}" == "debian" ]] && command -v sudo >/dev/null 2>&1 && sudo -n true 2>/dev/null; then
+        if ! dpkg -l seclists >/dev/null 2>&1; then
+            log_info "Installing seclists wordlist package..."
+            sudo apt-get install -y seclists 2>/dev/null || log_warn "seclists package not available; wordlists will be cloned from git"
+        fi
     fi
 
     log_success "System tools installed"
@@ -928,27 +963,31 @@ configure_masscan_caps() {
         return 0
     fi
 
+    # setcap does not follow symlinks — resolve to the real binary path
+    local masscan_real
+    masscan_real="$(readlink -f "${masscan_bin}" 2>/dev/null || realpath "${masscan_bin}" 2>/dev/null || echo "${masscan_bin}")"
+
     if command -v getcap >/dev/null 2>&1; then
-        if getcap "${masscan_bin}" 2>/dev/null | grep -q "cap_net_raw"; then
-            log_info "masscan already has network capabilities"
+        if getcap "${masscan_real}" 2>/dev/null | grep -q "cap_net_raw"; then
+            log_info "masscan already has network capabilities (${masscan_real})"
             return 0
         fi
     fi
 
     if [[ "${EUID}" -eq 0 ]]; then
-        setcap cap_net_raw,cap_net_admin+eip "${masscan_bin}" 2>/dev/null || true
+        setcap cap_net_raw,cap_net_admin+eip "${masscan_real}" 2>/dev/null || true
     elif command -v sudo >/dev/null 2>&1 && sudo -n true 2>/dev/null; then
-        sudo setcap cap_net_raw,cap_net_admin+eip "${masscan_bin}" 2>/dev/null || true
+        sudo setcap cap_net_raw,cap_net_admin+eip "${masscan_real}" 2>/dev/null || true
     else
-        log_warn "masscan needs sudo or setcap for non-root use"
+        log_warn "masscan: cannot set capabilities without sudo — masscan will require sudo to run"
         return 0
     fi
 
     if command -v getcap >/dev/null 2>&1; then
-        if getcap "${masscan_bin}" 2>/dev/null | grep -q "cap_net_raw"; then
-            log_success "Configured masscan capabilities for non-root use"
+        if getcap "${masscan_real}" 2>/dev/null | grep -q "cap_net_raw"; then
+            log_success "masscan capabilities set on ${masscan_real} — runs without sudo"
         else
-            log_warn "Failed to set masscan capabilities (requires sudo)"
+            log_warn "Failed to set masscan capabilities — masscan will require sudo"
         fi
     fi
 }
@@ -1087,8 +1126,23 @@ install_smart_scanner() {
 TARGET="$1"
 OUT="${2:-.}"
 if command -v masscan >/dev/null 2>&1; then
-    sudo masscan "$TARGET" -p1-65535 --rate=10000 -oL "$OUT/masscan.txt" 2>/dev/null
-    PORTS=$(awk '/open/{print $3}' "$OUT/masscan.txt" | cut -d'/' -f1 | paste -sd, || echo "1-65535")
+    MASSCAN_BIN="$(command -v masscan)"
+    MASSCAN_REAL="$(readlink -f "${MASSCAN_BIN}" 2>/dev/null || echo "${MASSCAN_BIN}")"
+    # Use sudo only if masscan lacks cap_net_raw AND we are not root
+    NEED_SUDO=0
+    if [[ "${EUID}" -ne 0 ]]; then
+        if command -v getcap >/dev/null 2>&1; then
+            getcap "${MASSCAN_REAL}" 2>/dev/null | grep -q "cap_net_raw" || NEED_SUDO=1
+        else
+            NEED_SUDO=1
+        fi
+    fi
+    if [[ "${NEED_SUDO}" -eq 1 ]]; then
+        sudo masscan "$TARGET" -p1-65535 --rate=10000 -oL "$OUT/masscan.txt" 2>/dev/null
+    else
+        masscan "$TARGET" -p1-65535 --rate=10000 -oL "$OUT/masscan.txt" 2>/dev/null
+    fi
+    PORTS=$(awk '/open/{print $3}' "$OUT/masscan.txt" | cut -d'/' -f1 | paste -sd, 2>/dev/null || echo "1-65535")
 else
     PORTS="1-65535"
 fi

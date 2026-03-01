@@ -439,7 +439,26 @@ def main(argv: list[str] | None = None) -> int:
         logger.info("=" * 70)
         logger.info(f"Docker command: {' '.join(docker_cmd[:10])}...")  # Log partial command
 
-        result = subprocess.run(docker_cmd, capture_output=True, text=True, timeout=30)
+        # Ensure the image is present locally before starting the container.
+        # docker run -d will attempt a pull inline which can exceed a short timeout.
+        image_check = subprocess.run(
+            [runtime, "image", "inspect", image],
+            capture_output=True, text=True, timeout=10,
+        )
+        if image_check.returncode != 0:
+            logger.info(f"Image {image} not found locally — pulling (this may take a few minutes)...")
+            pull_result = subprocess.run(
+                [runtime, "pull", image],
+                capture_output=True, text=True, timeout=600,
+            )
+            if pull_result.returncode != 0:
+                logger.error(f"Failed to pull image {image}: {pull_result.stderr}")
+                return 1
+            logger.info(f"✓ Image {image} pulled successfully")
+        else:
+            logger.info(f"✓ Image {image} already present locally")
+
+        result = subprocess.run(docker_cmd, capture_output=True, text=True, timeout=60)
 
         if result.returncode != 0:
             logger.error("Failed to start Docker container")

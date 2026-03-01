@@ -1,7 +1,9 @@
+import os
+import json
+import tempfile
+import uuid
 from typing import List, Dict, Any
 from tools.base_tool import BaseTool
-import json
-import os
 
 class DnsReconTool(BaseTool):
     """Wrapper for DnsRecon - DNS Enumeration Script"""
@@ -10,7 +12,7 @@ class DnsReconTool(BaseTool):
         cmd = ["dnsrecon", "-d", target]
         
         # Output to JSON
-        self.output_file = f"dnsrecon_{self._get_timestamp()}.json"
+        self.output_file = os.path.join(tempfile.gettempdir(), f"guardian-dnsrecon-{uuid.uuid4().hex}.json")
         cmd.extend(["-j", self.output_file])
         
         # Tool options
@@ -31,21 +33,20 @@ class DnsReconTool(BaseTool):
             "raw_output": output
         }
         
-        if os.path.exists(self.output_file):
-            try:
-                with open(self.output_file, 'r') as f:
-                    data = json.load(f)
-                    
-                if isinstance(data, list):
-                    result["records"] = data
-            
-                # Cleanup
-                os.remove(self.output_file)
-            except Exception as e:
-                self.logger.error(f"Error parsing DnsRecon JSON: {e}")
-                
-        return result
+        if not hasattr(self, "output_file") or not os.path.exists(self.output_file):
+            return result
 
-    def _get_timestamp(self):
-        import time
-        return int(time.time())
+        try:
+            with open(self.output_file, 'r') as f:
+                data = json.load(f)
+            if isinstance(data, list):
+                result["records"] = data
+        except Exception as e:
+            self.logger.error(f"Error parsing DnsRecon JSON: {e}")
+        finally:
+            try:
+                os.remove(self.output_file)
+            except OSError:
+                pass
+
+        return result

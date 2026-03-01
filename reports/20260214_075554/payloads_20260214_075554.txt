@@ -1,7 +1,0 @@
-/usr/bin/masscan -p 1-65535 --rate 5000 -oJ reports/20260214_075554/masscan_20260214_075555_876218.json 192.168.1.244
-/usr/bin/nmap -sV --script vuln,vulners -T4 -Pn -oX reports/20260214_075554/nmap_20260214_075709_327194.xml -p 23,139,513,514,8009,8787,57075,58544 192.168.1.244
-/usr/bin/nmap -sV -sC -T3 -Pn -oX reports/20260214_075554/nmap_20260214_075728_151119.xml -p 53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389 -sU 192.168.1.244
-/home/kali/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.244
-/home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-an637vw5/testssl.json --severity LOW --quiet --ip one 192.168.1.244
-curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Header-Check/1.0 -L -k 192.168.1.244
-/usr/bin/nikto -h 192.168.1.244 -Tuning x -timeout 10 -nointeractive

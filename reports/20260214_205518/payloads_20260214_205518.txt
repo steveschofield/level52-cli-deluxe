@@ -1,1 +1,0 @@
-/usr/bin/masscan -p 1-65535 --rate 5000 -oJ reports/20260214_205518/masscan_20260214_205518_558363.json 192.168.1.244
