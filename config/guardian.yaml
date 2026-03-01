@@ -269,6 +269,18 @@ tools:
   whois:
     enabled: true
 
+  gobuster:
+    enabled: true
+    wordlist: "/usr/share/wordlists/dirb/common.txt"
+    api_wordlist: "/usr/share/seclists/Discovery/Web-Content/api/api-endpoints.txt"
+    threads: 10          # keep low — gobuster is aggressive; raise if target can handle it
+    delay_ms: 100        # ms between requests per thread — courtesy throttle
+    request_timeout: 10  # seconds per HTTP request
+    extensions: ""       # e.g. "php,html,txt" — empty = dirs only
+    follow_redirects: false
+    insecure: false      # set true to skip TLS cert verification
+    exclude_codes: "404" # comma-separated status codes to suppress
+
   ffuf:
     enabled: true
     wordlist: "/usr/share/wordlists/dirb/common.txt"

@@ -84,7 +84,7 @@ profiles:
       # Prefer web-specific tools
       port_scanner: nmap
       web_scanner: nuclei
-      directory_brute: feroxbuster
+      directory_brute: gobuster
       xss_scanner: dalfox
       sqli_scanner: sqlmap
 

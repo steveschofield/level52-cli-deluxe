@@ -5,7 +5,7 @@ import pytest
 from tools.sslyze import SSLyzeTool
 from tools.headers import HeadersTool
 from tools.subjs import SubjsTool
-from tools.feroxbuster import FeroxbusterTool
+from tools.gobuster import GobusterTool
 from tools.arjun import ArjunTool
 from tools.nikto import NiktoTool
 from tools.schemathesis import SchemathesisTool
@@ -23,7 +23,7 @@ class TestExitCodeHandling:
         (SSLyzeTool, [0, 2], [1, 3, 127]),
         (HeadersTool, [0, 60], [1, 2, 127]),
         (SubjsTool, [0, 2], [1, 3, 127]),
-        (FeroxbusterTool, [0, 2], [1, 3, 127]),
+        (GobusterTool, [0, 1], [2, 3, 127]),
         (ArjunTool, [0, 2], [1, 3, 127]),
         (NiktoTool, [0, 1], [2, 3, 127]),
         (SchemathesisTool, [0, 1], [2, 3, 127]),

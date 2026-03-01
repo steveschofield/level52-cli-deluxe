@@ -35,7 +35,7 @@ Available Tools (pick only those appropriate for the target type and objective):
 - showmount: NFS export enumeration
 - onesixtyone: SNMP community brute force
 - snmpwalk: SNMP enumeration
-- feroxbuster: Fast content discovery and brute forcing (Rust-based, JSON output)
+- gobuster: Fast directory/path brute forcing (Go-based, dir mode)
 - ffuf: Fast web fuzzing (paths/params)
 - sqlmap: SQL injection testing (use carefully)
 - wpscan: WordPress scanning (use carefully)
@@ -108,7 +108,7 @@ AVAILABLE TOOLS (avoid DNS/subdomain tools on IP-only targets; schemathesis requ
 - showmount: NFS export enumeration
 - onesixtyone: SNMP community brute force
 - snmpwalk: SNMP enumeration
-- feroxbuster: Fast content discovery (Rust-based)
+- gobuster: Fast directory/path brute forcing (Go-based)
 - ffuf: Web fuzzing
 - sqlmap: SQL injection testing
 - wpscan: WordPress scanning

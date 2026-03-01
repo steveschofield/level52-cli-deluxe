@@ -310,36 +310,6 @@ ensure_node_and_npm() {
     fi
 }
 
-ensure_rust() {
-    # Check if cargo is already available
-    if command -v cargo >/dev/null 2>&1; then
-        log_success "Rust/cargo already installed ($(cargo --version 2>/dev/null || echo 'version unknown'))"
-        return 0
-    fi
-
-    log_info "Installing Rust toolchain via rustup..."
-
-    # Download and run rustup installer (non-interactive)
-    if command -v curl >/dev/null 2>&1; then
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable --profile minimal 2>/dev/null || {
-            log_warn "Rust installation failed - feroxbuster will use binary download fallback"
-            return 1
-        }
-
-        # Source cargo env for current shell
-        if [[ -f "${HOME}/.cargo/env" ]]; then
-            source "${HOME}/.cargo/env"
-        fi
-
-        if command -v cargo >/dev/null 2>&1; then
-            log_success "Rust installed successfully ($(cargo --version))"
-            return 0
-        fi
-    fi
-
-    log_warn "Could not install Rust - feroxbuster will rely on binary downloads"
-    return 1
-}
 
 # ============================================================================
 # INITIAL SETUP
@@ -364,7 +334,7 @@ VENV_BIN="${VIRTUAL_ENV}/bin"
 
 ensure_go
 ensure_node_and_npm
-# Note: ensure_rust is lazy-loaded - only called by feroxbuster if binary download fails
+
 
 # Export Go bin into PATH for the current setup session so go_install_and_link works
 # even on fresh installs where ~/.profile hasn't been re-sourced yet.
@@ -593,47 +563,41 @@ install_sstimap() {
     [[ -f "${TOOLS_DIR}/SSTImap/sstimap.py" ]] && write_python_wrapper_into_venv "${TOOLS_DIR}/SSTImap/sstimap.py" "sstimap"
 }
 
-install_feroxbuster() {
-    # Strategy: Binary download (fast) → Cargo compile (slow but reliable)
+install_gobuster() {
+    # Strategy: apt (Kali/Debian) → go install fallback
 
     # 1. Check if already installed
-    if command -v feroxbuster >/dev/null 2>&1; then
-        ln -sf "$(command -v feroxbuster)" "${VENV_BIN}/feroxbuster" 2>/dev/null || true
-        log_success "Linked existing feroxbuster"
+    if command -v gobuster >/dev/null 2>&1; then
+        ln -sf "$(command -v gobuster)" "${VENV_BIN}/gobuster" 2>/dev/null || true
+        log_success "Linked existing gobuster ($(gobuster version 2>/dev/null | head -1 || echo 'version unknown'))"
         return 0
     fi
 
-    # 2. Try GitHub pre-built binary (FAST - preferred method)
-    log_info "Attempting feroxbuster binary download from GitHub releases..."
-    if install_github_release_and_link "epi052/feroxbuster" "feroxbuster"; then
-        log_success "Feroxbuster installed via binary download"
-        return 0
-    fi
-
-    # 3. Fallback: Compile from source with cargo (SLOW but works when binaries unavailable)
-    log_warn "Binary download failed, attempting cargo build..."
-
-    # Ensure Rust is available for compilation
-    ensure_rust || {
-        log_error "Feroxbuster installation failed - no binary available and Rust not installed"
-        return 1
-    }
-
-    if command -v cargo >/dev/null 2>&1; then
-        log_info "Compiling feroxbuster from source (this may take 2-5 minutes)..."
-        cargo install feroxbuster 2>/dev/null || {
-            log_error "Cargo build failed"
-            return 1
-        }
-
-        if command -v feroxbuster >/dev/null 2>&1; then
-            link_into_venv "$(command -v feroxbuster)" "feroxbuster"
-            log_success "Feroxbuster compiled and installed successfully"
+    # 2. Try apt (Kali/Debian have gobuster in repos)
+    if [[ "${OS}" == "debian" ]] && command -v sudo >/dev/null 2>&1 && sudo -n true 2>/dev/null; then
+        log_info "Installing gobuster via apt..."
+        if sudo apt-get install -y gobuster 2>/dev/null; then
+            ln -sf "$(command -v gobuster)" "${VENV_BIN}/gobuster" 2>/dev/null || true
+            log_success "gobuster installed via apt"
             return 0
         fi
     fi
 
-    log_error "All feroxbuster installation methods failed"
+    # 3. Fallback: go install (Go is already required for other tools)
+    if command -v go >/dev/null 2>&1; then
+        log_info "Installing gobuster via go install..."
+        go install github.com/OJ/gobuster/v3@latest 2>/dev/null || {
+            log_error "gobuster go install failed"
+            return 1
+        }
+        if command -v gobuster >/dev/null 2>&1; then
+            link_into_venv "$(command -v gobuster)" "gobuster"
+            log_success "gobuster installed via go install"
+            return 0
+        fi
+    fi
+
+    log_error "gobuster installation failed — install manually: apt install gobuster"
     return 1
 }
 
@@ -1201,7 +1165,7 @@ verify_installation() {
         "katana"
         "gitleaks"
         "trufflehog"
-        "feroxbuster"
+        "gobuster"
         "sqlmap"
         "nmap"
         "webanalyze"
@@ -1278,7 +1242,7 @@ install_commix
 install_graphql_cop
 install_jwt_tool
 install_sstimap          # Replaces tplmap
-install_feroxbuster
+install_gobuster
 install_nikto
 install_wpscan
 install_corscanner

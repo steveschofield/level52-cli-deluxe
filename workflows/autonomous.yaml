@@ -42,6 +42,14 @@ pre_steps:
     dependencies:
       - http_discovery
 
+  - name: gobuster_discovery
+    type: tool
+    tool: gobuster
+    objective: "Directory brute-force using wordlist enriched with ZAP-discovered paths"
+    parameters: {}
+    dependencies:
+      - zap_early_scan
+
 initial_phase: reconnaissance
 
 # AI will use these guidelines

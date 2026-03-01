@@ -51,7 +51,7 @@ from .metasploit import MetasploitTool
 from .zap import ZapTool
 from .dalfox import DalfoxTool
 from .commix import CommixTool
-from .feroxbuster import FeroxbusterTool
+from .gobuster import GobusterTool
 from .godeye import GodEyeTool
 from .cors_scanner import CORSScannerTool
 from .cookie_analyzer import CookieAnalyzerTool

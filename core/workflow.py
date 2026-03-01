@@ -899,6 +899,12 @@ class WorkflowEngine:
                     tool_kwargs = dict(tool_kwargs or {})
                     tool_kwargs.setdefault("seed_urls_file", str(url_file))
 
+        if tool_name == "gobuster" and "wordlist" not in (tool_kwargs or {}):
+            enriched = self._build_gobuster_wordlist()
+            if enriched:
+                tool_kwargs = dict(tool_kwargs or {})
+                tool_kwargs["wordlist"] = str(enriched)
+
         if tool_name == "retire" and isinstance(tool_kwargs, dict):
             script_urls = tool_kwargs.get("script_urls")
             if not script_urls:
@@ -1401,6 +1407,67 @@ class WorkflowEngine:
                 self.logger.error(f"Auto-exploit error for {finding.title}: {str(e)}")
                 finding.metadata["exploitation_attempted"] = True
                 finding.metadata["exploitation_error"] = str(e)
+
+    def _build_gobuster_wordlist(self) -> Optional[Path]:
+        """
+        Build an enriched wordlist for gobuster by combining:
+          1. The configured base wordlist (dirb/common.txt or similar)
+          2. Path segments extracted from all URLs discovered so far
+             (ZAP spider, katana crawl, waybackurls, etc.)
+
+        Writes a deduplicated file to the session output dir and returns its path.
+        Returns None if no base wordlist is available and no URLs exist.
+        """
+        from urllib.parse import urlparse as _urlparse
+
+        cfg = (self.config or {}).get("tools", {}).get("gobuster", {}) or {}
+        base_wordlist = cfg.get("wordlist") or "/usr/share/wordlists/dirb/common.txt"
+
+        words: set = set()
+
+        # 1. Load base wordlist
+        base_path = Path(base_wordlist)
+        if base_path.is_file():
+            try:
+                for line in base_path.read_text(encoding="utf-8", errors="replace").splitlines():
+                    w = line.strip()
+                    if w and not w.startswith("#"):
+                        words.add(w)
+            except Exception:
+                pass
+
+        # 2. Extract path components from discovered URLs
+        urls = self._get_discovered_urls()
+        for url in urls:
+            try:
+                path = _urlparse(url).path
+                # Strip leading slash and split into segments
+                parts = [p for p in path.strip("/").split("/") if p]
+                for part in parts:
+                    # Add bare segment (e.g. "api", "v1", "admin")
+                    words.add(part)
+                    # Also add without extension (e.g. "index" from "index.php")
+                    stem = part.rsplit(".", 1)[0] if "." in part else part
+                    if stem:
+                        words.add(stem)
+            except Exception:
+                continue
+
+        if not words:
+            return None
+
+        output_dir = Path(self.config.get("output", {}).get("save_path", "./reports"))
+        output_dir.mkdir(parents=True, exist_ok=True)
+        wordlist_path = output_dir / f"gobuster_wordlist_{self.memory.session_id}.txt"
+
+        with open(wordlist_path, "w", encoding="utf-8") as f:
+            f.write("\n".join(sorted(words)) + "\n")
+
+        self.logger.info(
+            f"Built gobuster wordlist: {len(words)} words "
+            f"(base={base_path.name}, urls={len(urls)})"
+        )
+        return wordlist_path
 
     def _write_urls_file(self, urls: List[str], name: str) -> Path:
         output_dir = Path(self.config.get("output", {}).get("save_path", "./reports"))

@@ -80,7 +80,7 @@ class ToolPathResolver:
                 "testssl.sh",
                 "sslyze",
                 "arjun",
-                "feroxbuster",
+                "gobuster",
             ]
             for tool in common_tools:
                 if tool in available:
