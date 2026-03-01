@@ -87,7 +87,7 @@ class AnalystAgent(BaseAgent):
         # Special handling for ZAP: smart filter alerts before AI analysis
         if tool == "zap":
             try:
-                parsed = json.loads(output) if output else {}
+                parsed = json.loads(output, strict=False) if output else {}
                 if parsed.get("alerts"):
                     original_count = len(parsed["alerts"])
                     parsed["alerts"] = self._smart_filter_zap_alerts(parsed["alerts"])

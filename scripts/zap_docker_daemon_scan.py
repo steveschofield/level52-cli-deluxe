@@ -441,6 +441,7 @@ def main(argv: list[str] | None = None) -> int:
 
         # Ensure the image is present locally before starting the container.
         # docker run -d will attempt a pull inline which can exceed a short timeout.
+        image = args.image
         image_check = subprocess.run(
             [runtime, "image", "inspect", image],
             capture_output=True, text=True, timeout=10,
