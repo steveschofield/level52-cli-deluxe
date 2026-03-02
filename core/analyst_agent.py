@@ -145,7 +145,21 @@ class AnalystAgent(BaseAgent):
                 evidence.strip("\"'"),
                 evidence.strip("`\"'"),
             ]
-            if not any(c and c.lower() in output_lower for c in candidates):
+
+            def _grounded(ev: str) -> bool:
+                """Return True if ev (or a meaningful chunk of it) appears in output."""
+                ev = ev.strip()
+                if not ev:
+                    return False
+                if ev.lower() in output_lower:
+                    return True
+                # LLMs sometimes reformat JSON as standalone objects — try matching
+                # the longest contiguous alphanumeric+punctuation run ≥40 chars.
+                words = re.split(r'[\s{}\[\]]+', ev)
+                chunks = [w.strip('",') for w in words if len(w.strip('",')) >= 40]
+                return any(c.lower() in output_lower for c in chunks)
+
+            if not any(_grounded(c) for c in candidates):
                 continue
 
             # High/medium severity from low-signal tools is often speculative; downgrade unless we have a strong signature.
