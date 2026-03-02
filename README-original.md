@@ -117,7 +117,6 @@ Guardian will use these automatically if present:
 | **testssl**                                         | SSL/TLS testing            | `git clone https://github.com/drwetter/testssl.sh`                                                                     |
 | **sslyze**                                          | SSL/TLS analysis           | `pip install sslyze`                                                                                                   |
 | **ffuf / dirsearch**                                | Content brute force        | `go install github.com/ffuf/ffuf/v2@latest` / `pip install dirsearch`                                                 |
-| **katana**                                          | Crawling & URL harvest     | `go install github.com/projectdiscovery/katana/cmd/katana@latest`                                                     |
 | **waybackurls / subjs**                             | Historical/JS URL harvest  | `go install tomnomnom/waybackurls@latest` / `go install github.com/lc/subjs@latest`                                  |
 | **linkfinder / xnLinkFinder**                       | JS endpoint discovery      | `pip install "linkfinder @ git+https://github.com/GerbenJavado/LinkFinder.git"` / `pip install xnlinkfinder`         |
 | **arjun / paramspider**                             | Parameter discovery        | `pip install arjun` / `pip install "paramspider @ git+https://github.com/devanshbatham/ParamSpider.git"`             |
@@ -440,7 +439,7 @@ guardian-cli/
 │   ├── nmap.py, naabu.py
 │   ├── httpx.py, nuclei.py, nikto.py, sqlmap.py, wpscan.py
 │   ├── subfinder.py, asnmap.py, dnsx.py, shuffledns.py, puredns.py, altdns.py
-│   ├── katana.py, waybackurls.py, subjs.py
+│   ├── waybackurls.py, subjs.py
 │   ├── dirsearch.py, ffuf.py
 │   ├── linkfinder.py, xnlinkfinder.py, paramspider.py, arjun.py, schemathesis.py
 │   ├── gitleaks.py, trufflehog.py, cmseek.py
@@ -559,7 +558,7 @@ which httpx
 
 **macOS Compatibility**
 
-- Ensure httpx and katana are installed on PATH before running web workflows.
+- Ensure httpx is installed on PATH before running web workflows.
 - Run `./setup.sh` to install compatible tools via `go install`
 
 **Windows Command Not Found**

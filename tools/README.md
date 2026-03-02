@@ -49,10 +49,6 @@ This directory contains wrappers for various penetration testing tools.
   - Installation: `pip install wafw00f`
   - Features: Detect WAF products, identify vendors
 
-- **Katana**: Web crawler
-  - Installation: `go install github.com/projectdiscovery/katana/cmd/katana@latest`
-  - Features: Fast crawling with depth control, JSONL output
-
 ### OSINT / DNS
 - **Amass**: Passive OSINT and asset discovery
   - Installation: `apt-get install amass` (Kali) or `snap install amass`

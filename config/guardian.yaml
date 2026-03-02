@@ -525,11 +525,6 @@ tools:
     top_ports: 100
     exclude_cdn: true
 
-  katana:
-    enabled: true
-    depth: 3
-    concurrency: 25
-
   asnmap:
     enabled: true
     include_org: true

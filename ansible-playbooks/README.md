@@ -105,7 +105,6 @@ ansible-playbook -i inventory/hosts.ini remote_playbook_guardian_enhanced.yml
 - ✅ **nuclei** - Vulnerability scanner (ProjectDiscovery)
 - ✅ **subfinder** - Subdomain discovery (ProjectDiscovery)
 - ✅ **dnsx** - DNS toolkit (ProjectDiscovery)
-- ✅ **katana** - Web crawler (ProjectDiscovery)
 - ✅ **naabu** - Port scanner (ProjectDiscovery)
 - ✅ **ffuf** - Web fuzzer
 - ✅ **waybackurls** - Wayback machine URL fetcher

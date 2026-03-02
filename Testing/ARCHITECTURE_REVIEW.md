@@ -475,7 +475,7 @@ Guardian CLI Deluxe is a **mature and comprehensive penetration testing framewor
 - semgrep, trivy, gitleaks, trufflehog
 
 ### DAST Tools (45+)
-- **Recon**: nmap, masscan, amass, subfinder, dnsx, dnsrecon, puredns, shuffledns, httpx, katana, naabu, asnmap, waybackurls, godeye
+- **Recon**: nmap, masscan, amass, subfinder, dnsx, dnsrecon, puredns, shuffledns, httpx, naabu, asnmap, waybackurls, godeye
 - **Web Vuln**: nuclei, nikto, ZAP, dalfox, xsstrike, sqlmap, commix, arjun, jwt_tool, graphql-cop, schemathesis
 - **Tech Detection**: whatweb, wafw00f, retire.js, cmseek, headers
 - **Network**: nmap, masscan, enum4linux, smbclient, showmount, onesixtyone, snmpwalk

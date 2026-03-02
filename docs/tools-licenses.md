@@ -52,7 +52,6 @@ This document lists the external tools used by Guardian and their upstream licen
 - dnsx
 - shuffledns
 - puredns
-- katana
 - nuclei
 - ffuf
 - gitleaks

@@ -406,9 +406,6 @@ install_projectdiscovery_tools() {
     install_github_release_and_link "projectdiscovery/dnsx" "dnsx" || \
         go_install_and_link "github.com/projectdiscovery/dnsx/cmd/dnsx@latest" "dnsx"
 
-    install_github_release_and_link "projectdiscovery/katana" "katana" || \
-        go_install_and_link "github.com/projectdiscovery/katana/cmd/katana@latest" "katana"
-
     install_github_release_and_link "projectdiscovery/naabu" "naabu" || \
         go_install_and_link "github.com/projectdiscovery/naabu/v2/cmd/naabu@latest" "naabu"
 
@@ -1162,7 +1159,6 @@ verify_installation() {
         "subfinder"
         "ffuf"
         "dalfox"
-        "katana"
         "gitleaks"
         "trufflehog"
         "gobuster"

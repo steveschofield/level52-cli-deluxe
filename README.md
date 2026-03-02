@@ -210,7 +210,7 @@ For execution order and usage by workflow, see `workflows/`.
 
 **Network, Recon, and Enumeration**
 
-- `amass`, `asnmap`, `dnsrecon`, `dnsx`, `ffuf`, `httpx`, `katana`, `masscan`, `naabu`, `nmap`, `nuclei`, `onesixtyone`, `puredns`, `shuffledns`, `showmount`, `smbclient`, `snmpwalk`, `subfinder`, `subjs`, `waybackurls`, `whois`
+- `amass`, `asnmap`, `dnsrecon`, `dnsx`, `ffuf`, `httpx`, `masscan`, `naabu`, `nmap`, `nuclei`, `onesixtyone`, `puredns`, `shuffledns`, `showmount`, `smbclient`, `snmpwalk`, `subfinder`, `subjs`, `waybackurls`, `whois`
 
 **Web, API, and AppSec Testing**
 

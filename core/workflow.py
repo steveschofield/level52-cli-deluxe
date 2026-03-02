@@ -1016,9 +1016,9 @@ class WorkflowEngine:
 
         # If we have discovered URLs, pass the master seed file to URL-first scanners.
         # The master seed file (urls_{session_id}.txt) is the single source of truth:
-        # whitebox endpoints + ZAP spider + gobuster paths + katana crawl all feed into it.
+        # whitebox endpoints + ZAP spider + gobuster paths all feed into it.
         # NOTE: only enable for tools that accept a `from_file` input in our wrappers.
-        if tool_name in {"katana", "nuclei", "dalfox", "subjs", "xnlinkfinder", "httpx", "waybackurls"}:
+        if tool_name in {"nuclei", "dalfox", "subjs", "xnlinkfinder", "httpx", "waybackurls"}:
             if "from_file" not in tool_kwargs:
                 seed = self.memory.metadata.get("master_seed_file")
                 if seed and Path(seed).exists():
@@ -1122,7 +1122,7 @@ class WorkflowEngine:
             # All tools that return a "urls" list feed into the shared URL context
             # so subsequent tools (nuclei, dalfox, ffuf, etc.) can use them.
             _URL_DISCOVERY_TOOLS = {
-                "httpx", "katana", "zap", "gobuster",
+                "httpx", "zap", "gobuster",
                 "linkfinder", "xnlinkfinder",
                 "waybackurls", "subjs", "paramspider",
             }
@@ -2062,13 +2062,8 @@ class WorkflowEngine:
 
     def _load_workflow(self, workflow_name: str) -> List[Dict[str, Any]]:
         """Load workflow definition with OS-specific tool selection"""
-        import platform
-        is_macos = platform.system().lower() == "darwin"
-        
-        # Use unified tooling across platforms
         web_probing_tool = "httpx"
-        crawl_tool = "katana"
-        
+
         # Predefined workflows
         workflows = {
             "recon": [
@@ -2115,7 +2110,6 @@ class WorkflowEngine:
                     {"tool": "whatweb"},
                 ]},
                 {"name": "metadata_extraction", "type": "action", "action": "metadata_extraction"},
-                {"name": "crawl", "type": "tool", "tool": crawl_tool},
                 {"name": "vhost_enumeration", "type": "tool", "tool": "ffuf", "parameters": {"append_fuzz": False}},
                 {"name": "vulnerability_scan", "type": "tool", "tool": "nuclei", "parameters": {"tool_timeout": 900}},
                 {"name": "api_testing", "type": "multi_tool", "tools": [

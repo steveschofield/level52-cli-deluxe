@@ -100,7 +100,7 @@ Both Docker and native setups now include:
 
 #### ProjectDiscovery Suite
 
-- ✅ httpx, nuclei, subfinder, dnsx, katana, naabu, shuffledns, asnmap, interactsh-client
+- ✅ httpx, nuclei, subfinder, dnsx, naabu, shuffledns, asnmap, interactsh-client
 
 #### Go Tools
 
