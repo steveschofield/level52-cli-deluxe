@@ -16,6 +16,11 @@ from tools.base_tool import BaseTool
 class NmapTool(BaseTool):
     """Nmap port scanner wrapper"""
     
+    def is_success_exit_code(self, exit_code: int) -> bool:
+        # nmap exits 0 on success, but exits 1 when host is down or no ports
+        # are open — both are valid completed scans, not errors.
+        return exit_code in (0, 1)
+
     def get_command(self, target: str, **kwargs) -> List[str]:
         """Build nmap command"""
         config = self.config.get("tools", {}).get("nmap", {})

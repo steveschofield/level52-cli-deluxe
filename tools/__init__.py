@@ -117,7 +117,7 @@ __all__ = [
     "ZapTool",
     "DalfoxTool",
     "CommixTool",
-    "FeroxbusterTool",
+    "GobusterTool",
     "GodEyeTool",
     "CORSScannerTool",
     "CookieAnalyzerTool",

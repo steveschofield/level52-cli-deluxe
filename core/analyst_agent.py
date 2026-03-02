@@ -105,7 +105,13 @@ class AnalystAgent(BaseAgent):
         except Exception:
             max_chars = 20000
         if max_chars > 0 and len(output) > max_chars:
-            output = output[:max_chars] + "\n... (truncated)"
+            # Snap to the last complete line so we never send a half-parsed JSON
+            # record to the LLM (common with JSONL tool output like nuclei).
+            truncated = output[:max_chars]
+            last_newline = truncated.rfind("\n")
+            if last_newline > max_chars // 2:
+                truncated = truncated[:last_newline]
+            output = truncated + "\n... (truncated)"
         
         prompt = self.prompts["ANALYST_INTERPRET_PROMPT"].format(
             tool=tool,
@@ -153,10 +159,11 @@ class AnalystAgent(BaseAgent):
                     return False
                 if ev.lower() in output_lower:
                     return True
-                # LLMs sometimes reformat JSON as standalone objects — try matching
-                # the longest contiguous alphanumeric+punctuation run ≥40 chars.
+                # LLMs sometimes reformat JSON — try matching the longest distinct
+                # tokens. Use ≥15 chars to catch path strings like /api/v1/admin
+                # while ignoring noise like "id" or "true".
                 words = re.split(r'[\s{}\[\]]+', ev)
-                chunks = [w.strip('",') for w in words if len(w.strip('",')) >= 40]
+                chunks = [w.strip('",') for w in words if len(w.strip('",')) >= 15]
                 return any(c.lower() in output_lower for c in chunks)
 
             if not any(_grounded(c) for c in candidates):

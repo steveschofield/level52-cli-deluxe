@@ -40,7 +40,10 @@ class XnlinkfinderTool(BaseTool):
 
     def get_command(self, target: str, **kwargs) -> List[str]:
         binary = self._binary or "xnLinkFinder"
-        input_target = kwargs.get("from_file") or target
+        from_file = kwargs.get("from_file")
+        if from_file:
+            from_file = os.path.expandvars(os.path.expanduser(str(from_file)))
+        input_target = from_file or target
         command = [binary, "-i", input_target]
         if kwargs.get("domain"):
             command.extend(["-d", kwargs["domain"]])

@@ -459,6 +459,13 @@ def main(argv: list[str] | None = None) -> int:
         else:
             logger.info(f"✓ Image {image} already present locally")
 
+        # Remove any leftover container with the same name from a previous run
+        # before starting a fresh one.  Errors are intentionally ignored.
+        subprocess.run(
+            [runtime, "rm", "-f", args.container_name],
+            capture_output=True, timeout=15,
+        )
+
         result = subprocess.run(docker_cmd, capture_output=True, text=True, timeout=60)
 
         if result.returncode != 0:

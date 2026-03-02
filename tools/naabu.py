@@ -15,6 +15,10 @@ class NaabuTool(BaseTool):
         super().__init__(config)
         self.tool_name = "naabu"
 
+    def is_success_exit_code(self, exit_code: int) -> bool:
+        # naabu exits 0 on success and 1 when no open ports found — both valid.
+        return exit_code in (0, 1)
+
     def get_command(self, target: str, **kwargs) -> List[str]:
         """Build naabu command"""
         config = self.config.get("tools", {}).get("naabu", {})

@@ -48,10 +48,10 @@ class SourceCodeAnalyzer:
         }
 
         # Initialize tools
-        self.semgrep = SemgrepTool(logger=logger)
-        self.trivy = TrivyTool(logger=logger)
-        self.gitleaks = GitleaksTool(logger=logger)
-        self.trufflehog = TrufflehogTool(logger=logger)
+        self.semgrep = SemgrepTool(config)
+        self.trivy = TrivyTool(config)
+        self.gitleaks = GitleaksTool(config)
+        self.trufflehog = TrufflehogTool(config)
 
     async def analyze(self) -> Dict[str, Any]:
         """
@@ -129,7 +129,12 @@ class SourceCodeAnalyzer:
 
         except Exception as e:
             self.logger.error(f"Semgrep analysis failed: {e}")
-            self.findings["sast_results"]["semgrep"] = {"error": str(e)}
+            self.findings["sast_results"]["semgrep"] = {
+                "error": str(e),
+                "findings": [],
+                "summary": {"total": 0, "by_severity": {}, "by_category": {}},
+                "vulnerable_endpoints": [],
+            }
 
     async def _run_trivy(self) -> None:
         """Run Trivy vulnerability scan"""
@@ -154,7 +159,13 @@ class SourceCodeAnalyzer:
 
         except Exception as e:
             self.logger.error(f"Trivy analysis failed: {e}")
-            self.findings["sast_results"]["trivy"] = {"error": str(e)}
+            self.findings["sast_results"]["trivy"] = {
+                "error": str(e),
+                "vulnerabilities": [],
+                "misconfigurations": [],
+                "secrets": [],
+                "summary": {"total_vulns": 0, "total_misconfigs": 0, "total_secrets": 0, "by_severity": {}, "critical_cves": []},
+            }
 
     async def _run_gitleaks(self) -> None:
         """Run Gitleaks secret scanning"""
@@ -170,7 +181,7 @@ class SourceCodeAnalyzer:
 
         except Exception as e:
             self.logger.error(f"Gitleaks analysis failed: {e}")
-            self.findings["sast_results"]["gitleaks"] = {"error": str(e)}
+            self.findings["sast_results"]["gitleaks"] = {"error": str(e), "count": 0, "secrets": []}
 
     async def _run_trufflehog(self) -> None:
         """Run TruffleHog secret scanning"""
@@ -186,7 +197,7 @@ class SourceCodeAnalyzer:
 
         except Exception as e:
             self.logger.error(f"TruffleHog analysis failed: {e}")
-            self.findings["sast_results"]["trufflehog"] = {"error": str(e)}
+            self.findings["sast_results"]["trufflehog"] = {"error": str(e), "count": 0, "secrets": []}
 
     async def _extract_attack_surface(self) -> None:
         """Extract attack surface from SAST findings"""

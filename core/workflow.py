@@ -262,6 +262,11 @@ class WorkflowEngine:
             self.logger.info("="*60)
             self.logger.info("")
 
+            # Seed the shared URL pool with source-discovered endpoints so that
+            # httpx, ZAP, gobuster and all downstream scanners can consume them.
+            self._persist_whitebox_endpoints()
+            self._refresh_master_seed_file()
+
         except Exception as e:
             self.logger.error(f"Whitebox analysis failed: {e}")
             self.logger.warning("Continuing with blackbox testing only")
@@ -298,11 +303,12 @@ class WorkflowEngine:
             if not steps:
                 raise ValueError(f"No workflow found for '{workflow_name}'")
 
-            # Load full workflow config for whitebox settings
+            # Load full workflow config for whitebox settings and per-workflow overrides
             workflow_config = self._load_workflow_config(workflow_name)
+            self._apply_workflow_settings(workflow_config)
 
             # Run whitebox analysis phase if source code provided
-            if self.source_path and workflow_config:
+            if self.source_path and workflow_config is not None:
                 await self._run_whitebox_analysis(workflow_config)
 
             # Execute workflow steps
@@ -402,7 +408,7 @@ class WorkflowEngine:
             # Run whitebox analysis if source code provided
             if self.source_path:
                 workflow_config = self._load_workflow_config("autonomous")
-                if workflow_config:
+                if workflow_config is not None:
                     await self._run_whitebox_analysis(workflow_config)
 
                     # Inject whitebox findings into AI context
@@ -890,14 +896,19 @@ class WorkflowEngine:
         if tool_name == "zap":
             zap_cfg = (self.config or {}).get("tools", {}).get("zap", {}) or {}
             if zap_cfg.get("seed_urls_from_context", True) and "seed_urls_file" not in tool_kwargs:
-                urls = self._get_discovered_urls()
-                if urls:
-                    url_file = self._write_urls_file(
-                        urls,
-                        name=f"zap_seed_{self.memory.session_id}.txt",
-                    )
+                # Use the master seed file so ZAP starts from the union of all
+                # previously discovered URLs (whitebox endpoints, httpx, etc.)
+                seed = self.memory.metadata.get("master_seed_file")
+                if seed and Path(seed).exists():
                     tool_kwargs = dict(tool_kwargs or {})
-                    tool_kwargs.setdefault("seed_urls_file", str(url_file))
+                    tool_kwargs.setdefault("seed_urls_file", seed)
+                else:
+                    urls = self._get_discovered_urls()
+                    if urls:
+                        url_file = self._refresh_master_seed_file()
+                        if url_file:
+                            tool_kwargs = dict(tool_kwargs or {})
+                            tool_kwargs.setdefault("seed_urls_file", str(url_file))
 
         if tool_name == "gobuster" and "wordlist" not in (tool_kwargs or {}):
             enriched = self._build_gobuster_wordlist()
@@ -1003,14 +1014,22 @@ class WorkflowEngine:
                 tool_kwargs.pop("ports_from_context", None)
                 tool_kwargs.pop("ports_filter", None)
 
-        # If we have discovered URLs, run URL-first scanners using the URL list.
+        # If we have discovered URLs, pass the master seed file to URL-first scanners.
+        # The master seed file (urls_{session_id}.txt) is the single source of truth:
+        # whitebox endpoints + ZAP spider + gobuster paths + katana crawl all feed into it.
         # NOTE: only enable for tools that accept a `from_file` input in our wrappers.
         if tool_name in {"katana", "nuclei", "dalfox", "subjs", "xnlinkfinder", "httpx", "waybackurls"}:
-            urls = self._get_discovered_urls()
-            if urls and "from_file" not in tool_kwargs:
-                url_file = self._write_urls_file(urls, name=f"{tool_name}_{self.memory.session_id}.txt")
-                tool_kwargs = dict(tool_kwargs)
-                tool_kwargs["from_file"] = str(url_file)
+            if "from_file" not in tool_kwargs:
+                seed = self.memory.metadata.get("master_seed_file")
+                if seed and Path(seed).exists():
+                    tool_kwargs = dict(tool_kwargs)
+                    tool_kwargs["from_file"] = seed
+                else:
+                    # Master seed not written yet (very early in the run); build it now.
+                    url_file = self._refresh_master_seed_file()
+                    if url_file:
+                        tool_kwargs = dict(tool_kwargs)
+                        tool_kwargs["from_file"] = str(url_file)
 
         if not self._scope_allows(self.target):
             self.logger.error(f"Target validation failed before tool execution: {self.target}")
@@ -1103,15 +1122,24 @@ class WorkflowEngine:
             # All tools that return a "urls" list feed into the shared URL context
             # so subsequent tools (nuclei, dalfox, ffuf, etc.) can use them.
             _URL_DISCOVERY_TOOLS = {
-                "httpx", "katana", "zap",
+                "httpx", "katana", "zap", "gobuster",
                 "linkfinder", "xnlinkfinder",
                 "waybackurls", "subjs", "paramspider",
             }
             if tool_name in _URL_DISCOVERY_TOOLS:
                 urls = parsed.get("urls") or []
+                if tool_name == "gobuster" and isinstance(urls, list) and urls:
+                    # gobuster returns path segments (/admin, /api/v1) — convert to full URLs
+                    base = self._get_target_base_url()
+                    if base:
+                        from urllib.parse import urljoin
+                        urls = [urljoin(base, p) for p in urls if isinstance(p, str) and p]
                 if isinstance(urls, list) and urls:
                     self.memory.update_context("urls", urls)
                     self.memory.update_context("discovered_assets", urls)
+                    # Rewrite the single master seed file so downstream tools always
+                    # consume the union of whitebox + ZAP + gobuster + crawl URLs.
+                    self._refresh_master_seed_file()
 
             if tool_name == "nmap":
                 open_ports = parsed.get("open_ports") or []
@@ -1476,6 +1504,60 @@ class WorkflowEngine:
         with open(path, "w", encoding="utf-8") as f:
             f.write("\n".join(urls) + "\n")
         return path
+
+    def _refresh_master_seed_file(self) -> Optional[Path]:
+        """Rewrite the single master URL seed file from the current URL pool.
+
+        Called after every major URL discovery event (whitebox, ZAP, gobuster,
+        katana …). All downstream scanners consume from this one file so they
+        always see the union of every source discovered so far.
+
+        File name: urls_{session_id}.txt
+        Metadata key: master_seed_file
+        """
+        urls = self._get_discovered_urls()
+        if not urls:
+            return None
+        urls = self._filter_urls_to_target(urls)
+        if not urls:
+            return None
+        path = self._write_urls_file(urls, name=f"urls_{self.memory.session_id}.txt")
+        self.memory.metadata["master_seed_file"] = str(path)
+        self.logger.info(f"Master seed updated: {len(urls)} URLs → {path.name}")
+        return path
+
+    def _filter_urls_to_target(self, urls: List[str]) -> List[str]:
+        """Keep only URLs on the same host:port as the primary pentest target.
+
+        Drops:
+        - ZAP internal API calls (127.x.x.x)
+        - External documentation / advisory URLs (github.com, owasp.org …)
+        - Source-code line references embedded in paths (/foo.js:280:10)
+        """
+        import re as _re
+        try:
+            target_netloc = urlparse(self.target).netloc.lower()
+        except Exception:
+            target_netloc = ""
+
+        if not target_netloc:
+            return urls
+
+        _line_ref = _re.compile(r"\.\w+:\d+:\d+$")
+        out: list[str] = []
+        for url in urls:
+            if not isinstance(url, str):
+                continue
+            try:
+                parsed = urlparse(url)
+                if parsed.netloc.lower() != target_netloc:
+                    continue
+                if _line_ref.search(parsed.path):
+                    continue
+                out.append(url)
+            except Exception:
+                continue
+        return out
 
     def _get_target_base_url(self) -> str:
         target = (self.target or "").strip()
@@ -1932,12 +2014,42 @@ class WorkflowEngine:
         }
         return reverse_aliases.get(name, name)
     
+    def _apply_workflow_settings(self, workflow_config: Dict[str, Any]) -> None:
+        """Apply the settings: block from a workflow YAML into the live config.
+
+        Supported keys:
+          max_parallel_tools  — cap on concurrent tool executions
+          require_confirmation — whether to prompt before each tool
+          save_intermediate   — whether to persist partial results
+        """
+        settings = (workflow_config or {}).get("settings") or {}
+        if not settings:
+            return
+
+        pentest_cfg = self.config.setdefault("pentest", {})
+
+        if "max_parallel_tools" in settings:
+            try:
+                pentest_cfg["max_parallel_tools"] = int(settings["max_parallel_tools"])
+                self.logger.info(f"Workflow setting: max_parallel_tools={pentest_cfg['max_parallel_tools']}")
+            except (ValueError, TypeError):
+                pass
+
+        if "require_confirmation" in settings:
+            pentest_cfg["require_confirmation"] = bool(settings["require_confirmation"])
+
+        if "save_intermediate" in settings:
+            pentest_cfg["save_intermediate"] = bool(settings["save_intermediate"])
+
     def _load_workflow_config(self, workflow_name: str) -> Dict[str, Any]:
         """Load full workflow configuration from YAML file"""
         repo_root = Path(__file__).resolve().parent.parent
         workflows_dir = repo_root / "workflows"
 
-        for candidate in {workflow_name, workflow_name.replace("-", "_")}:
+        # Normalize alias (e.g. "web" -> "web_pentest") so we find the right YAML
+        normalized = self._normalize_workflow_name(workflow_name)
+        candidates = {workflow_name, workflow_name.replace("-", "_"), normalized, normalized.replace("-", "_")}
+        for candidate in candidates:
             path = workflows_dir / f"{candidate}.yaml"
             if path.exists():
                 try:

@@ -23,18 +23,10 @@ class AuditLogger:
         self.log_path = Path(log_path)
         self.log_path.parent.mkdir(parents=True, exist_ok=True)
 
-        # Build a per-run, timestamped console log if not provided
-        if console_log_path is None:
-            ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-            console_log = Path(f"./reports/console_{ts}.log")
-        else:
-            console_log = Path(console_log_path)
-        console_log.parent.mkdir(parents=True, exist_ok=True)
-        
         # Create logger
         self.logger = logging.getLogger("guardian")
         self.logger.setLevel(getattr(logging, level.upper()))
-        
+
         # File handler for audit trail
         file_handler = logging.FileHandler(self.log_path)
         file_handler.setLevel(logging.DEBUG)
@@ -42,19 +34,27 @@ class AuditLogger:
             '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
         )
         file_handler.setFormatter(file_formatter)
-        
+
         # Rich console handler for beautiful output
         console_handler = RichHandler(rich_tracebacks=True, markup=True)
         console_handler.setLevel(getattr(logging, level.upper()))
 
-        # Mirror console output to a dedicated reports file (same level as console)
-        console_file_handler = logging.FileHandler(console_log)
-        console_file_handler.setLevel(getattr(logging, level.upper()))
-        console_file_handler.setFormatter(file_formatter)
-        
         self.logger.addHandler(file_handler)
         self.logger.addHandler(console_handler)
-        self.logger.addHandler(console_file_handler)
+
+        # Mirror console output to a session-level file only when an explicit
+        # path is provided (set by apply_session_paths before WorkflowEngine
+        # calls get_logger).  Without an explicit path we write to the rich
+        # console handler only — this avoids stray ./reports/console_*.log
+        # files being created by unit tests or CLI utilities that never go
+        # through a full workflow session.
+        if console_log_path is not None:
+            console_log = Path(console_log_path)
+            console_log.parent.mkdir(parents=True, exist_ok=True)
+            console_file_handler = logging.FileHandler(console_log)
+            console_file_handler.setLevel(getattr(logging, level.upper()))
+            console_file_handler.setFormatter(file_formatter)
+            self.logger.addHandler(console_file_handler)
     
     def log_ai_decision(self, agent: str, decision: str, reasoning: str, context: Dict[str, Any]):
         """Log AI agent decisions for audit trail"""

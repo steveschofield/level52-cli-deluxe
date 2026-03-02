@@ -22,6 +22,10 @@ class MasscanTool(BaseTool):
     def _check_installation(self) -> bool:
         return shutil.which("masscan") is not None
 
+    def is_success_exit_code(self, exit_code: int) -> bool:
+        # masscan exits 0 on success and 1 when no hosts/ports found — both valid.
+        return exit_code in (0, 1)
+
     def get_command(self, target: str, **kwargs) -> List[str]:
         """Build masscan command"""
         config = self.config.get("tools", {}).get("masscan", {})

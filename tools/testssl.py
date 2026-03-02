@@ -91,6 +91,31 @@ class TestSSLTool(BaseTool):
         if not self.is_available:
             raise RuntimeError("Tool testssl is not available")
 
+        # Skip if the target is plain HTTP on a non-443 port — testssl would hang
+        # waiting for a TLS handshake that will never arrive.
+        if target.startswith("http://"):
+            parsed_t = urlparse(target)
+            if (parsed_t.port or 80) != 443:
+                self.logger.info(
+                    f"testssl: {target} is plain HTTP — skipping TLS scan (no TLS on port {parsed_t.port or 80})"
+                )
+                return {
+                    "tool": self.tool_name,
+                    "target": target,
+                    "raw_output": "Skipped: target is plain HTTP with no TLS.",
+                    "parsed": {
+                        "ssl_enabled": False,
+                        "tls_versions": [],
+                        "cipher_suites": [],
+                        "vulnerabilities": [],
+                        "certificate_info": {},
+                        "grade": None,
+                        "issues_count": 0,
+                        "findings": [],
+                    },
+                    "skipped": True,
+                }
+
         timeout = self.config.get("pentest", {}).get("tool_timeout", 300)
         started = datetime.now()
 

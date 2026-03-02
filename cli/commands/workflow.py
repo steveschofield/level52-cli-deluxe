@@ -128,7 +128,8 @@ def _run_workflow(name: str, target: str, config_file: Path, resume: str = None,
                 raise typer.Exit(1)
 
             # Check if workflow supports whitebox analysis
-            if name not in ["web", "autonomous", "web_pentest"]:
+            _whitebox_workflows = {"web", "web_pentest", "autonomous"}
+            if name not in _whitebox_workflows:
                 console.print(f"[bold yellow]⚠️  Warning:[/bold yellow] Workflow '{name}' may not fully support whitebox analysis")
                 console.print("[yellow]Whitebox analysis is optimized for 'web' and 'autonomous' workflows[/yellow]")
 
