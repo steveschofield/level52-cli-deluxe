@@ -377,8 +377,23 @@ class ToolAgent(BaseAgent):
         
         result = await self.think(prompt, TOOL_SELECTOR_SYSTEM_PROMPT)
         
-        # Parse tool selection
+        # Parse tool selection — retry once with a tighter prompt if the LLM returned nothing
         tool_selection = self._parse_selection(result["response"])
+        if not tool_selection.get("tool"):
+            allowed = ", ".join(sorted(self.available_tools.keys()))
+            retry_prompt = (
+                f"You must select a tool for this objective: {objective}\n"
+                f"Target: {normalized_target}\n"
+                f"Allowed tool names: {allowed}\n\n"
+                "Respond ONLY with:\n"
+                "REASONING: <one sentence>\n"
+                "TOOL: <tool name from the allowed list>\n"
+                "ARGUMENTS: <flags>\n"
+                "EXPECTED_OUTPUT: <one sentence>\n"
+            )
+            retry_result = await self.think(retry_prompt, TOOL_SELECTOR_SYSTEM_PROMPT)
+            tool_selection = self._parse_selection(retry_result["response"])
+
         if not tool_selection.get("tool"):
             self.logger.warning("Tool parse failed; refusing to default to an arbitrary tool")
             return {

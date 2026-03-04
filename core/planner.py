@@ -132,8 +132,12 @@ class PlannerAgent(BaseAgent):
             ],
             "scanning": [
                 "service_detection - Identify services on open ports",
-                "vulnerability_scanning - Run vulnerability scanners",
-                "web_probing - Probe web services",
+                "web_crawling - Spider/crawl the web app and collect all URLs (zap, katana, waybackurls)",
+                "web_app_scanning - Web application vulnerability scan (nikto, zap active scan, dalfox)",
+                "vulnerability_scanning - Template-based vulnerability scanning (nuclei)",
+                "component_analysis - Check JS libraries and components for CVEs (retire)",
+                "header_analysis - Analyze HTTP security headers and cookies",
+                "web_probing - Probe web services and enumerate paths",
                 "ssl_analysis - Analyze SSL/TLS configuration"
             ],
             "analysis": [
@@ -263,9 +267,24 @@ class PlannerAgent(BaseAgent):
         
         # Normalize common variants and extract known action tokens
         aliases = {
-            "automated_web_scanning": "web_probing",
+            "automated_web_scanning": "web_app_scanning",
             "exploitation": "vulnerability_scanning",
-            "web_scanning": "web_probing",
+            "web_scanning": "web_app_scanning",
+            "web_scan": "web_app_scanning",
+            "web_application_scanning": "web_app_scanning",
+            "app_scanning": "web_app_scanning",
+            "crawling": "web_crawling",
+            "spidering": "web_crawling",
+            "spider": "web_crawling",
+            "crawl": "web_crawling",
+            "url_discovery": "web_crawling",
+            "js_analysis": "component_analysis",
+            "javascript_analysis": "component_analysis",
+            "library_analysis": "component_analysis",
+            "component_scan": "component_analysis",
+            "headers": "header_analysis",
+            "cookie_analysis": "header_analysis",
+            "security_headers": "header_analysis",
             "report": "generate_report",
             "port_scan": "port_scanning",
             "port_scans": "port_scanning",
@@ -274,7 +293,7 @@ class PlannerAgent(BaseAgent):
             "subdomain_scan": "subdomain_enumeration",
             "vuln_scan": "vulnerability_scanning",
             "vuln_scanning": "vulnerability_scanning",
-            "web_scan": "web_probing",
+            "web_probing": "web_probing",
             "tech_detection": "technology_detection",
         }
 
@@ -286,6 +305,10 @@ class PlannerAgent(BaseAgent):
             "port_scanning",
             "service_detection",
             "vulnerability_scanning",
+            "web_crawling",
+            "web_app_scanning",
+            "component_analysis",
+            "header_analysis",
             "web_probing",
             "ssl_analysis",
             "correlate_findings",

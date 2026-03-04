@@ -133,6 +133,17 @@ AVAILABLE TOOLS (avoid DNS/subdomain tools on IP-only targets; schemathesis requ
 - zap: OWASP ZAP scanning
 - metasploit: Scripted module execution
 
+OBJECTIVE-TO-TOOL GUIDANCE (follow this when applicable):
+- web_crawling        → zap (spider + passive), katana, waybackurls, subjs  [DO NOT use httpx/nmap]
+- web_app_scanning    → nikto, zap (active scan), dalfox, xsstrike           [DO NOT use nuclei here]
+- component_analysis  → retire, nuclei (js/library tags only)                 [DO NOT use nmap/httpx]
+- header_analysis     → headers, cookie-analyzer (curl-based)                 [DO NOT use nuclei/nmap]
+- vulnerability_scanning → nuclei (only after URL list exists from crawling)
+- web_probing         → gobuster, ffuf, paramspider, arjun
+- ssl_analysis        → testssl, sslyze
+- service_detection   → nmap (-sV -sC)
+- technology_detection → whatweb, httpx, cmseek
+
 Consider:
 - What information are we trying to gather?
 - What has already been completed?

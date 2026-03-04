@@ -405,16 +405,30 @@ class WorkflowEngine:
             self.memory.update_phase("reconnaissance")
 
         try:
-            # Run whitebox analysis if source code provided
-            if self.source_path:
-                workflow_config = self._load_workflow_config("autonomous")
-                if workflow_config is not None:
-                    await self._run_whitebox_analysis(workflow_config)
+            # Load autonomous workflow config (used for whitebox + pre_steps)
+            workflow_config = self._load_workflow_config("autonomous")
 
-                    # Inject whitebox findings into AI context
-                    if self.whitebox_findings:
-                        self.logger.info("Feeding whitebox findings to autonomous AI agent...")
-                        self.memory.metadata["whitebox_context_injected"] = True
+            # Run whitebox analysis if source code provided
+            if self.source_path and workflow_config is not None:
+                await self._run_whitebox_analysis(workflow_config)
+
+                # Inject whitebox findings into AI context
+                if self.whitebox_findings:
+                    self.logger.info("Feeding whitebox findings to autonomous AI agent...")
+                    self.memory.metadata["whitebox_context_injected"] = True
+
+            # Run pre_steps (e.g. httpx → zap → gobuster) before the AI loop
+            pre_steps = (workflow_config or {}).get("pre_steps", [])
+            if pre_steps:
+                self.logger.info(f"Running {len(pre_steps)} autonomous pre-steps (ZAP early scan, etc.)")
+                for step in pre_steps:
+                    if not self.is_running:
+                        break
+                    if self.memory.is_action_completed(step["name"]):
+                        self.logger.info(f"Skipping pre-step: {step['name']} (already completed)")
+                        continue
+                    self.logger.info(f"Pre-step: {step['name']}")
+                    await self._execute_step(step, "autonomous")
 
             while self.is_running and self.current_step < self.max_steps:
                 # Ask planner for next action
@@ -2220,12 +2234,32 @@ class WorkflowEngine:
         """Advance to next phase based on progress"""
         phases = ["reconnaissance", "scanning", "analysis", "reporting"]
         current_idx = phases.index(self.memory.current_phase) if self.memory.current_phase in phases else 0
-        
-        # Simple heuristic: advance after certain number of steps
-        if self.current_step % 5 == 0 and current_idx < len(phases) - 1:
-            new_phase = phases[current_idx + 1]
-            self.logger.info(f"Advancing to phase: {new_phase}")
-            self.memory.update_phase(new_phase)
+
+        if current_idx >= len(phases) - 1:
+            return
+
+        if self.current_step % 5 != 0:
+            return
+
+        # Before advancing from scanning to analysis, require that URL discovery has run.
+        # Without a URL list, nuclei and other scanners have almost nothing to work with.
+        if self.memory.current_phase == "scanning":
+            completed = set(self.memory.completed_actions or [])
+            web_crawl_done = bool(
+                completed & {"web_crawling", "web_app_scanning"}
+                or any(t.tool in {"zap", "katana", "waybackurls"} for t in self.memory.tool_executions)
+            )
+            discovered_urls = self._get_discovered_urls()
+            if not web_crawl_done and len(discovered_urls) < 10:
+                self.logger.info(
+                    "Holding in scanning phase: URL discovery not yet complete "
+                    f"({len(discovered_urls)} URLs found, web_crawling not in completed actions)"
+                )
+                return
+
+        new_phase = phases[current_idx + 1]
+        self.logger.info(f"Advancing to phase: {new_phase}")
+        self.memory.update_phase(new_phase)
 
     def _target_is_ip(self) -> bool:
         """Return True if the target looks like an IP address or CIDR."""
