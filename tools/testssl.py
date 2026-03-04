@@ -102,6 +102,11 @@ class TestSSLTool(BaseTool):
                 return {
                     "tool": self.tool_name,
                     "target": target,
+                    "command": "",
+                    "timestamp": datetime.now().isoformat(),
+                    "exit_code": 0,
+                    "duration": 0.0,
+                    "error": None,
                     "raw_output": "Skipped: target is plain HTTP with no TLS.",
                     "parsed": {
                         "ssl_enabled": False,

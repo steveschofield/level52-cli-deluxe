@@ -878,8 +878,15 @@ class WorkflowEngine:
             args = tool_kwargs.get("args") if isinstance(tool_kwargs, dict) else None
             token = tool_kwargs.get("token") if isinstance(tool_kwargs, dict) else None
             if not (args or token or tool_cfg.get("args") or tool_cfg.get("token")):
-                self.logger.info(f"Skipping {step_name}: jwt_tool token/args not configured")
-                return None
+                # Try to extract a JWT from previous tool outputs (ZAP, httpx, auth-scanner, etc.)
+                token = self._extract_jwt_from_tool_outputs()
+                if token:
+                    self.logger.info("jwt_tool: extracted JWT from previous tool output — proceeding")
+                    tool_kwargs = dict(tool_kwargs or {})
+                    tool_kwargs["token"] = token
+                else:
+                    self.logger.info(f"Skipping {step_name}: jwt_tool token/args not configured and no JWT found in tool outputs")
+                    return None
         if tool_name == "hydra":
             args = tool_kwargs.get("args") if isinstance(tool_kwargs, dict) else None
             userlist = tool_kwargs.get("userlist") if isinstance(tool_kwargs, dict) else None
@@ -910,11 +917,19 @@ class WorkflowEngine:
                             tool_kwargs = dict(tool_kwargs or {})
                             tool_kwargs.setdefault("seed_urls_file", str(url_file))
 
-        if tool_name == "gobuster" and "wordlist" not in (tool_kwargs or {}):
-            enriched = self._build_gobuster_wordlist()
-            if enriched:
-                tool_kwargs = dict(tool_kwargs or {})
-                tool_kwargs["wordlist"] = str(enriched)
+        if tool_name == "gobuster":
+            tool_kwargs = dict(tool_kwargs or {})
+            if "wordlist" not in tool_kwargs:
+                enriched = self._build_gobuster_wordlist()
+                if enriched:
+                    tool_kwargs["wordlist"] = str(enriched)
+            if "exclude_length" not in tool_kwargs:
+                wildcard_len = self._detect_gobuster_wildcard_length(self.target)
+                if wildcard_len is not None:
+                    self.logger.info(
+                        f"gobuster: wildcard 200 detected (length={wildcard_len}) — setting --exclude-length"
+                    )
+                    tool_kwargs["exclude_length"] = wildcard_len
 
         if tool_name == "retire" and isinstance(tool_kwargs, dict):
             script_urls = tool_kwargs.get("script_urls")
@@ -1435,6 +1450,41 @@ class WorkflowEngine:
                 self.logger.error(f"Auto-exploit error for {finding.title}: {str(e)}")
                 finding.metadata["exploitation_attempted"] = True
                 finding.metadata["exploitation_error"] = str(e)
+
+    def _detect_gobuster_wildcard_length(self, target: str) -> int | None:
+        """
+        Probe the target with a random non-existent path. If the server returns HTTP 200,
+        it has catch-all/wildcard routing (common in SPAs). Returns the response Content-Length
+        so gobuster can filter it out via --exclude-length, or None if no wildcard is detected.
+        """
+        import uuid
+        import urllib.request
+        import urllib.error
+        probe_path = f"/{uuid.uuid4().hex}"
+        url = target.rstrip("/") + probe_path
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "Guardian-Gobuster-Probe/1.0"})
+            with urllib.request.urlopen(req, timeout=5) as resp:
+                if resp.status == 200:
+                    body = resp.read()
+                    return len(body)
+        except Exception:
+            pass
+        return None
+
+    def _extract_jwt_from_tool_outputs(self) -> str | None:
+        """
+        Scan all previous tool execution outputs for a JWT (eyJ... pattern).
+        Returns the first JWT found, or None.
+        """
+        import re
+        jwt_pattern = re.compile(r'eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+')
+        for execution in self.memory.tool_executions:
+            output = getattr(execution, "output", "") or ""
+            match = jwt_pattern.search(output)
+            if match:
+                return match.group(0)
+        return None
 
     def _build_gobuster_wordlist(self) -> Optional[Path]:
         """

@@ -496,15 +496,18 @@ tools:
   nuclei:
     enabled: true
     severity: ["critical", "high"]
-    # Nuclei can take longer than the default workflow timeout depending on template set/target size.
-    tool_timeout: 900
+    # Increased timeout — the full http/ template tree against large URL lists easily takes >15min.
+    tool_timeout: 1800
     # Nuclei logs are now per-session (in session directory)
     # log_file: "./reports/nuclei.log"
+    # Use focused subdirectories instead of the entire template corpus to avoid timeouts.
     templates_paths:
-      - ~/nuclei-templates
+      - ~/nuclei-templates/http/cves
+      - ~/nuclei-templates/http/default-logins
+      - ~/nuclei-templates/http/exposures
+      - ~/nuclei-templates/http/misconfiguration
     # Nuclei tags are template-defined (run `nuclei -tgl` to see what's available in your template set).
-    # This set aims for broad OWASP-style coverage without running the entire template corpus.
-    tags: ["cve", "rce", "sqli", "xss", "default", "default-login"]
+    tags: ["cve", "default-login", "exposure", "misconfig"]
     rate_limit: 50
   
   schemathesis:

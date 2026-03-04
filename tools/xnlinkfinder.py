@@ -39,12 +39,19 @@ class XnlinkfinderTool(BaseTool):
         return False
 
     def get_command(self, target: str, **kwargs) -> List[str]:
+        from urllib.parse import urlparse as _urlparse
         binary = self._binary or "xnLinkFinder"
         from_file = kwargs.get("from_file")
         if from_file:
             from_file = os.path.expandvars(os.path.expanduser(str(from_file)))
         input_target = from_file or target
         command = [binary, "-i", input_target]
+        # -sf (scope filter) is mandatory in newer xnLinkFinder versions
+        scope = kwargs.get("scope_filter")
+        if not scope:
+            parsed = _urlparse(target)
+            scope = parsed.hostname or parsed.netloc or target
+        command.extend(["-sf", scope])
         if kwargs.get("domain"):
             command.extend(["-d", kwargs["domain"]])
         if kwargs.get("output"):

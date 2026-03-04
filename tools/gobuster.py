@@ -75,6 +75,11 @@ class GobusterTool(BaseTool):
         if exclude_codes:
             command.extend(["-b", str(exclude_codes)])
 
+        # Exclude responses by content length — useful against SPAs that return 200 for all paths
+        exclude_length = kwargs.get("exclude_length") or cfg.get("exclude_length")
+        if exclude_length:
+            command.extend(["--exclude-length", str(exclude_length)])
+
         # Also discover backup files
         if kwargs.get("discover_backup") or cfg.get("discover_backup"):
             command.append("--discover-backup")
