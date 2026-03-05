@@ -1175,6 +1175,7 @@ class WorkflowEngine:
                 services = parsed.get("services") or []
                 hosts_up = parsed.get("hosts_up") or []
                 host_ports = parsed.get("host_ports") or {}
+                host_dns = parsed.get("host_dns") or {}
                 if isinstance(open_ports, list) and open_ports:
                     self.memory.update_context("open_ports", open_ports)
                 if isinstance(services, list) and services:
@@ -1195,6 +1196,22 @@ class WorkflowEngine:
                                 continue
                         merged_host_ports[host] = sorted(set(existing + normalized))
                     self.memory.context["host_open_ports"] = merged_host_ports
+                if isinstance(host_dns, dict) and host_dns:
+                    merged_host_dns = self.memory.context.get("host_dns") or {}
+                    if not isinstance(merged_host_dns, dict):
+                        merged_host_dns = {}
+                    merged_host_dns.update(host_dns)
+                    self.memory.context["host_dns"] = merged_host_dns
+            if tool_name == "dnsrecon":
+                # Parse dnsrecon JSON records into per-domain DNS context
+                records = parsed.get("records") or []
+                if isinstance(records, list) and records:
+                    self._merge_dns_records(records)
+            if tool_name == "dnsx":
+                # dnsx JSONL records — each line has host + A/AAAA/MX/NS/CNAME/TXT
+                records = parsed.get("records") or []
+                if isinstance(records, list) and records:
+                    self._merge_dnsx_records(records)
             # jsparser removed - use linkfinder/xnlinkfinder instead
             if tool_name in ("linkfinder", "xnlinkfinder"):
                 scripts = parsed.get("scripts") or []
@@ -1792,6 +1809,13 @@ class WorkflowEngine:
             if tls_names:
                 self.logger.info(f"TLS names for {target_ip}:{port}: {', '.join(tls_names)}")
                 self.memory.update_context("discovered_assets", tls_names)
+                # Store per-host SANs for CSV export
+                host_sans = self.memory.context.get("host_sans") or {}
+                if not isinstance(host_sans, dict):
+                    host_sans = {}
+                existing_sans = host_sans.get(target_ip) or []
+                host_sans[target_ip] = sorted(set(existing_sans + tls_names))
+                self.memory.context["host_sans"] = host_sans
                 self.memory.add_tool_execution(ToolExecution(
                     tool="tls_cert_probe",
                     command=f"TLS SAN/CN from {target_ip}:{port}",
@@ -2468,6 +2492,14 @@ class WorkflowEngine:
                 f.write("\n".join(commands))
             self.logger.info(f"Exported tool commands: {payloads_file}")
 
+        csv_path = self._export_host_csv(output_dir)
+        if csv_path:
+            self.logger.info(f"Exported host inventory CSV: {csv_path}")
+
+        dns_csv_path = self._export_dns_csv(output_dir)
+        if dns_csv_path:
+            self.logger.info(f"Exported DNS inventory CSV: {dns_csv_path}")
+
     def _save_progress_if_enabled(self):
         workflows_cfg = (self.config or {}).get("workflows", {}) or {}
         if workflows_cfg.get("save_progress", True):
@@ -2483,6 +2515,206 @@ class WorkflowEngine:
             if te.output:
                 urls.extend(url_regex.findall(te.output))
         return urls
+
+    def _export_host_csv(self, output_dir: Path) -> Optional[Path]:
+        """
+        Export a CSV of discovered hosts with columns:
+            ip, dns_name, cname, ports, sans
+
+        Sources:
+        - host_open_ports  → {ip: [ports]}  (masscan + nmap per-host + nmap single)
+        - host_dns         → {ip: dns_name} (nmap PTR / hostname)
+        - host_sans        → {ip: [san,...]} (TLS cert SANs from tls_cert_probe)
+        - dns_records      → {name: {CNAME: [...]}} (dnsrecon/dnsx)
+        - discovered_assets / services for fallback IP list when host_open_ports is sparse
+        """
+        import csv
+        import ipaddress
+
+        ctx = self.memory.context
+        host_open_ports: Dict[str, List[int]] = ctx.get("host_open_ports") or {}
+        host_dns: Dict[str, str] = ctx.get("host_dns") or {}
+        host_sans: Dict[str, List[str]] = ctx.get("host_sans") or {}
+        dns_records: Dict[str, Any] = ctx.get("dns_records") or {}
+
+        # Build a deduplicated IP set from all sources
+        all_ips: set = set(host_open_ports.keys())
+
+        # Add IPs from services (each service entry may have a "host" field)
+        for svc in (ctx.get("services") or []):
+            h = svc.get("host") if isinstance(svc, dict) else None
+            if h:
+                all_ips.add(h)
+
+        # Add IPs from discovered_assets (filter to valid IPs only)
+        for asset in (ctx.get("discovered_assets") or []):
+            if not isinstance(asset, str):
+                continue
+            try:
+                ipaddress.ip_address(asset)
+                all_ips.add(asset)
+            except ValueError:
+                pass
+
+        if not all_ips:
+            return None
+
+        # Sort IPs numerically
+        def ip_sort_key(ip: str):
+            try:
+                return ipaddress.ip_address(ip)
+            except ValueError:
+                return ipaddress.ip_address("0.0.0.0")
+
+        csv_path = output_dir / f"hosts_{self.memory.session_id}.csv"
+        with open(csv_path, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(["ip", "dns_name", "cname", "ports", "sans"])
+            for ip in sorted(all_ips, key=ip_sort_key):
+                ports = host_open_ports.get(ip, [])
+                dns_name = host_dns.get(ip, "")
+                sans = host_sans.get(ip, [])
+                # Look up CNAME for the PTR hostname (if known)
+                cname = ""
+                if dns_name:
+                    cname_list = (dns_records.get(dns_name.lower(), {}) or {}).get("CNAME", [])
+                    cname = ";".join(sorted(cname_list))
+                writer.writerow([
+                    ip,
+                    dns_name,
+                    cname,
+                    ";".join(str(p) for p in sorted(ports)),
+                    ";".join(sorted(sans)),
+                ])
+        return csv_path
+
+    def _merge_dns_records(self, records: list) -> None:
+        """
+        Merge dnsrecon JSON records into context['dns_records'].
+        Keyed by domain/name; values are sets of strings per record type.
+        dnsrecon record format: {"type": "A", "name": "example.com", "address": "1.2.3.4"}
+        """
+        dns_records: Dict[str, Any] = self.memory.context.get("dns_records") or {}
+        if not isinstance(dns_records, dict):
+            dns_records = {}
+
+        for rec in records:
+            if not isinstance(rec, dict):
+                continue
+            rtype = str(rec.get("type", "")).upper()
+            name = str(rec.get("name", rec.get("target", rec.get("domain", "")))).lower().rstrip(".")
+            if not name or not rtype:
+                continue
+
+            entry = dns_records.setdefault(name, {"A": [], "AAAA": [], "MX": [], "NS": [], "TXT": [], "CNAME": [], "subdomains": []})
+
+            if rtype == "A":
+                addr = rec.get("address", "")
+                if addr and addr not in entry["A"]:
+                    entry["A"].append(addr)
+            elif rtype == "AAAA":
+                addr = rec.get("address", "")
+                if addr and addr not in entry["AAAA"]:
+                    entry["AAAA"].append(addr)
+            elif rtype == "MX":
+                mx = rec.get("exchange", rec.get("address", ""))
+                if mx and mx not in entry["MX"]:
+                    entry["MX"].append(mx)
+            elif rtype == "NS":
+                ns = rec.get("target", rec.get("address", ""))
+                if ns and ns not in entry["NS"]:
+                    entry["NS"].append(ns)
+            elif rtype == "TXT":
+                txt = rec.get("strings", rec.get("text", ""))
+                if txt and txt not in entry["TXT"]:
+                    entry["TXT"].append(txt)
+            elif rtype == "CNAME":
+                target = rec.get("target", "")
+                if target and target not in entry["CNAME"]:
+                    entry["CNAME"].append(target)
+            elif rtype in ("A", "PTR"):
+                pass  # already handled
+
+            # Track subdomains — any record whose name differs from the base target
+            base = (self.memory.context.get("target") or "").lower().rstrip(".")
+            if base and name != base and name.endswith(f".{base}"):
+                root = dns_records.setdefault(base, {"A": [], "AAAA": [], "MX": [], "NS": [], "TXT": [], "CNAME": [], "subdomains": []})
+                if name not in root["subdomains"]:
+                    root["subdomains"].append(name)
+
+        self.memory.context["dns_records"] = dns_records
+
+    def _merge_dnsx_records(self, records: list) -> None:
+        """
+        Merge dnsx JSONL records into context['dns_records'].
+        dnsx -j format: {"host": "example.com", "a": ["1.2.3.4"], "mx": ["mail.example.com"], ...}
+        """
+        dns_records: Dict[str, Any] = self.memory.context.get("dns_records") or {}
+        if not isinstance(dns_records, dict):
+            dns_records = {}
+
+        for rec in records:
+            if not isinstance(rec, dict):
+                continue
+            name = str(rec.get("host", "")).lower().rstrip(".")
+            if not name:
+                continue
+
+            entry = dns_records.setdefault(name, {"A": [], "AAAA": [], "MX": [], "NS": [], "TXT": [], "CNAME": [], "subdomains": []})
+
+            for addr in (rec.get("a") or []):
+                if addr and addr not in entry["A"]:
+                    entry["A"].append(addr)
+            for addr in (rec.get("aaaa") or []):
+                if addr and addr not in entry["AAAA"]:
+                    entry["AAAA"].append(addr)
+            for mx in (rec.get("mx") or []):
+                if mx and mx not in entry["MX"]:
+                    entry["MX"].append(mx)
+            for ns in (rec.get("ns") or []):
+                if ns and ns not in entry["NS"]:
+                    entry["NS"].append(ns)
+            for txt in (rec.get("txt") or []):
+                if txt and txt not in entry["TXT"]:
+                    entry["TXT"].append(txt)
+            for cname in (rec.get("cname") or []):
+                if cname and cname not in entry["CNAME"]:
+                    entry["CNAME"].append(cname)
+
+        self.memory.context["dns_records"] = dns_records
+
+    def _export_dns_csv(self, output_dir: Path) -> Optional[Path]:
+        """
+        Export a DNS-axis CSV with columns:
+            domain, a_records, aaaa_records, cname, mx, ns, txt, subdomains
+
+        Populated from dnsrecon/dnsx records stored in context['dns_records'].
+        """
+        import csv
+
+        dns_records: Dict[str, Any] = self.memory.context.get("dns_records") or {}
+        if not dns_records:
+            return None
+
+        csv_path = output_dir / f"dns_{self.memory.session_id}.csv"
+        with open(csv_path, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(["domain", "a_records", "aaaa_records", "cname", "mx", "ns", "txt", "subdomains"])
+            for domain in sorted(dns_records.keys()):
+                entry = dns_records[domain]
+                if not isinstance(entry, dict):
+                    continue
+                writer.writerow([
+                    domain,
+                    ";".join(sorted(entry.get("A", []))),
+                    ";".join(sorted(entry.get("AAAA", []))),
+                    ";".join(sorted(entry.get("CNAME", []))),
+                    ";".join(sorted(entry.get("MX", []))),
+                    ";".join(sorted(entry.get("NS", []))),
+                    ";".join(sorted(entry.get("TXT", []))),
+                    ";".join(sorted(entry.get("subdomains", []))),
+                ])
+        return csv_path
 
     def _record_step_duration(self, started_at: datetime):
         """Track step duration for rough ETA logging."""

@@ -230,24 +230,54 @@ class NmapTool(BaseTool):
             "services": [],
             "os_detection": None,
             "vulnerabilities": [],
-            "hosts_up": []
+            "hosts_up": [],
+            "host_ports": {},   # {ip: [ports]} — for per-host CSV/context tracking
+            "host_dns": {},     # {ip: dns_name} — PTR/hostname from nmap
         }
-        
-        # Simple regex parsing (in production, use proper XML parser)
-        # Extract open ports
-        port_pattern = r'portid="(\d+)".*?service name="([^"]*)".*?product="([^"]*)"'
-        for match in re.finditer(port_pattern, output, re.DOTALL):
-            port = match.group(1)
-            service = match.group(2)
-            product = match.group(3) if match.group(3) else "unknown"
-            
-            results["open_ports"].append(int(port))
-            results["services"].append({
-                "port": int(port),
-                "service": service,
-                "product": product
-            })
-        
+
+        # Parse per-host blocks for accurate host→port→service mapping
+        for host_block in re.findall(r"<host[^>]*>.*?</host>", output, re.DOTALL):
+            if 'state="up"' not in host_block:
+                continue
+
+            # Extract IP
+            addr_match = re.search(r'<address addr="([^"]+)"[^/]*/>', host_block)
+            if not addr_match:
+                continue
+            ip = addr_match.group(1)
+            if ip not in results["hosts_up"]:
+                results["hosts_up"].append(ip)
+
+            # Extract hostname (PTR record / nmap hostname)
+            hostname_match = re.search(r'<hostname name="([^"]+)"', host_block)
+            if hostname_match:
+                results["host_dns"][ip] = hostname_match.group(1)
+
+            # Extract open ports and services for this host
+            host_open = []
+            port_pattern = r'<port protocol="[^"]*" portid="(\d+)">(.*?)</port>'
+            for pm in re.finditer(port_pattern, host_block, re.DOTALL):
+                if 'state="open"' not in pm.group(2):
+                    continue
+                port = int(pm.group(1))
+                svc_match = re.search(r'<service name="([^"]*)"(?:[^>]*product="([^"]*)")?', pm.group(2))
+                service = svc_match.group(1) if svc_match else "unknown"
+                product = (svc_match.group(2) or "unknown") if svc_match else "unknown"
+
+                host_open.append(port)
+                if port not in results["open_ports"]:
+                    results["open_ports"].append(port)
+                results["services"].append({
+                    "host": ip,
+                    "port": port,
+                    "service": service,
+                    "product": product,
+                })
+
+            if host_open:
+                existing = results["host_ports"].get(ip, [])
+                results["host_ports"][ip] = sorted(set(existing + host_open))
+
         # Extract OS if available
         os_match = re.search(r'osclass type="([^"]*)".*?osfamily="([^"]*)"', output)
         if os_match:
@@ -256,14 +286,14 @@ class NmapTool(BaseTool):
                 "family": os_match.group(2)
             }
 
-        # Extract hosts up (ping scan or host discovery)
-        for host_block in re.findall(r"<host[^>]*>.*?</host>", output, re.DOTALL):
-            if 'state="up"' not in host_block:
-                continue
-            addr_match = re.search(r'address addr="([^"]+)"', host_block)
-            if addr_match:
-                addr = addr_match.group(1)
-                if addr and addr not in results["hosts_up"]:
-                    results["hosts_up"].append(addr)
-        
+        # Fallback: if host blocks yielded nothing (condensed/pre-processed output), use flat regex
+        if not results["open_ports"]:
+            port_pattern = r'portid="(\d+)".*?service name="([^"]*)".*?product="([^"]*)"'
+            for match in re.finditer(port_pattern, output, re.DOTALL):
+                port = int(match.group(1))
+                service = match.group(2)
+                product = match.group(3) if match.group(3) else "unknown"
+                results["open_ports"].append(port)
+                results["services"].append({"port": port, "service": service, "product": product})
+
         return results
