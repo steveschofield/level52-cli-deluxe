@@ -1,0 +1,13 @@
+/home/ss/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -l reports/20260304_064302/urls_20260304_064302.txt
+python3 /home/ss/code/level52-cli-deluxe/scripts/zap_docker_daemon_scan.py --image ghcr.io/zaproxy/zaproxy:stable --api-url http://127.0.0.1:8080 --target http://192.168.1.49:3000 --max-minutes 45 --startup-timeout 180 --spider --ajax-spider --active --ignore-robots --seed-file reports/20260304_064302/urls_20260304_064302.txt --username-field username --password-field password --json-out reports/20260304_064302/zap/zap_full_20260304_064611.json --html-out reports/20260304_064302/zap/zap_full_20260304_064611.html --md-out reports/20260304_064302/zap/zap_full_20260304_064611.md
+/usr/bin/gobuster dir -u http://192.168.1.49:3000 -w reports/20260304_064302/gobuster_wordlist_20260304_064302.txt -t 10 --timeout 10s -q --no-progress --no-error --no-color --delay 100ms -b 404 --exclude-length 75055
+/home/ss/code/level52-cli-deluxe/venv/bin/whatweb --log-json=reports/20260304_064302/whatweb_20260304_065426_224134.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.49:3000
+/home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260304_064302/nmap_20260304_065834_155993.xml -p 1-65535 192.168.1.49
+PTR 192.168.1.49
+/home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260304_064302/nmap_20260304_070914_655924.xml -p 3000 192.168.1.49
+/home/ss/code/level52-cli-deluxe/tools/.bin/katana -silent -jsonl -u http://192.168.1.49:3000
+/home/ss/code/level52-cli-deluxe/venv/bin/nikto -h http://192.168.1.49:3000 -Tuning x -timeout 10 -nointeractive
+/home/ss/code/level52-cli-deluxe/venv/bin/retire --outputformat json --path /tmp/guardian-retire-pjfe86s7
+curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Header-Check/1.0 -L -k http://192.168.1.49:3000
+/home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -u http://192.168.1.49:3000 -jsonl -o reports/20260304_064302/nuclei_20260304_073124.jsonl -severity critical,high -tags cve,default-login,exposure,misconfig -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 50
+/home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -u http://192.168.1.49:3000 -jsonl -o reports/20260304_064302/nuclei_20260304_073831.jsonl -severity critical,high -tags cve,default-login,exposure,misconfig -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 50

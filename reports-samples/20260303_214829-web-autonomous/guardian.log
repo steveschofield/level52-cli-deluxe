@@ -1,0 +1,1161 @@
+2026-03-03 21:48:29,293 - guardian - INFO - Initialized Ollama model: qwen3.5:27b @ http://192.168.1.124:11434
+2026-03-03 21:48:29,294 - guardian - INFO - Prompt templates: set=default paths=/home/ss/code/level52-cli-deluxe/ai/prompt_templates/__init__.py, /home/ss/code/level52-cli-deluxe/ai/prompt_templates/analyst.py, /home/ss/code/level52-cli-deluxe/ai/prompt_templates/planner.py, /home/ss/code/level52-cli-deluxe/ai/prompt_templates/reporter.py, /home/ss/code/level52-cli-deluxe/ai/prompt_templates/tool_selector.py
+2026-03-03 21:48:29,301 - guardian - INFO - Loaded skill configuration from config/skills.yaml
+2026-03-03 21:48:29,302 - guardian - INFO - ✓ Loaded 'planner' skill (default prompts)
+2026-03-03 21:48:29,439 - guardian - WARNING - BloodHound MCP image not found. Run: /home/ss/code/level52-cli-deluxe/venv/bin/docker pull ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+2026-03-03 21:48:29,511 - guardian - INFO - Loaded skill configuration from config/skills.yaml
+2026-03-03 21:48:29,512 - guardian - INFO - ✓ Loaded 'analyst' skill (default prompts)
+2026-03-03 21:48:29,514 - guardian - INFO - [CISAKEVClient] Loaded CISA KEV from cache (1531 entries)
+2026-03-03 21:48:29,515 - guardian - INFO - OSINT enrichment enabled: CISA KEV, GitHub, EPSS, OSV
+2026-03-03 21:48:29,515 - guardian - INFO - Tool available: nmap
+2026-03-03 21:48:29,516 - guardian - INFO - Tool available: subfinder
+2026-03-03 21:48:29,516 - guardian - INFO - Tool available: nuclei
+2026-03-03 21:48:29,516 - guardian - INFO - Tool available: whatweb
+2026-03-03 21:48:29,517 - guardian - INFO - Tool available: wafw00f
+2026-03-03 21:48:29,517 - guardian - INFO - Tool available: nikto
+2026-03-03 21:48:29,517 - guardian - INFO - Tool available: testssl
+2026-03-03 21:48:29,518 - guardian - INFO - Tool available: sqlmap
+2026-03-03 21:48:29,518 - guardian - INFO - Tool available: ffuf
+2026-03-03 21:48:29,519 - guardian - INFO - Tool available: wpscan
+2026-03-03 21:48:29,519 - guardian - INFO - Tool available: sslyze
+2026-03-03 21:48:29,519 - guardian - INFO - Tool available: headers
+2026-03-03 21:48:29,520 - guardian - INFO - Tool available: masscan
+2026-03-03 21:48:29,520 - guardian - INFO - Tool available: amass
+2026-03-03 21:48:29,520 - guardian - INFO - Tool available: whois
+2026-03-03 21:48:29,521 - guardian - INFO - Tool available: hydra
+2026-03-03 21:48:29,521 - guardian - INFO - Tool available: jwt_tool
+2026-03-03 21:48:29,521 - guardian - INFO - Tool available: graphql-cop
+2026-03-03 21:48:29,522 - guardian - INFO - Tool available: upload-scanner
+2026-03-03 21:48:29,522 - guardian - INFO - Tool available: csrf-tester
+2026-03-03 21:48:29,522 - guardian - INFO - Tool available: enum4linux-ng
+2026-03-03 21:48:29,523 - guardian - INFO - Tool available: enum4linux
+2026-03-03 21:48:29,523 - guardian - INFO - Tool available: smbclient
+2026-03-03 21:48:29,523 - guardian - INFO - Tool available: showmount
+2026-03-03 21:48:29,524 - guardian - INFO - Tool available: snmpwalk
+2026-03-03 21:48:29,524 - guardian - INFO - Tool available: onesixtyone
+2026-03-03 21:48:29,524 - guardian - INFO - Tool available: arjun
+2026-03-03 21:48:29,525 - guardian - INFO - Tool available: xsstrike
+2026-03-03 21:48:29,525 - guardian - INFO - Tool available: gitleaks
+2026-03-03 21:48:29,525 - guardian - INFO - Tool available: cmseek
+2026-03-03 21:48:29,526 - guardian - INFO - Tool available: dnsrecon
+2026-03-03 21:48:29,526 - guardian - INFO - Tool available: dnsx
+2026-03-03 21:48:29,527 - guardian - INFO - Tool available: shuffledns
+2026-03-03 21:48:29,527 - guardian - INFO - Tool available: puredns
+2026-03-03 21:48:29,527 - guardian - INFO - Tool available: retire
+2026-03-03 21:48:29,528 - guardian - INFO - Tool available: naabu
+2026-03-03 21:48:29,528 - guardian - INFO - Tool available: asnmap
+2026-03-03 21:48:29,528 - guardian - INFO - Tool available: waybackurls
+2026-03-03 21:48:29,529 - guardian - INFO - Tool available: subjs
+2026-03-03 21:48:29,529 - guardian - INFO - Tool available: linkfinder
+2026-03-03 21:48:29,529 - guardian - INFO - Tool available: xnlinkfinder
+2026-03-03 21:48:29,530 - guardian - INFO - Tool available: paramspider
+2026-03-03 21:48:29,530 - guardian - INFO - Tool available: schemathesis
+2026-03-03 21:48:29,530 - guardian - INFO - Tool available: trufflehog
+2026-03-03 21:48:29,531 - guardian - INFO - Tool available: metasploit
+2026-03-03 21:48:29,531 - guardian - INFO - Tool available: zap
+2026-03-03 21:48:29,531 - guardian - INFO - Tool available: dalfox
+2026-03-03 21:48:29,532 - guardian - INFO - Tool available: commix
+2026-03-03 21:48:29,532 - guardian - INFO - Tool available: gobuster
+2026-03-03 21:48:29,532 - guardian - INFO - Tool available: godeye
+2026-03-03 21:48:29,533 - guardian - INFO - Tool available: cors-scanner
+2026-03-03 21:48:29,533 - guardian - INFO - Tool available: cookie-analyzer
+2026-03-03 21:48:29,533 - guardian - INFO - Tool available: error-detector
+2026-03-03 21:48:29,534 - guardian - INFO - Tool available: ssrf-scanner
+2026-03-03 21:48:29,534 - guardian - INFO - Tool available: xxe-scanner
+2026-03-03 21:48:29,534 - guardian - INFO - Tool available: deserialization-scanner
+2026-03-03 21:48:29,535 - guardian - INFO - Tool available: auth-scanner
+2026-03-03 21:48:29,535 - guardian - INFO - Tool available: idor-scanner
+2026-03-03 21:48:29,535 - guardian - INFO - Tool available: semgrep
+2026-03-03 21:48:29,536 - guardian - INFO - Tool available: trivy
+2026-03-03 21:48:29,536 - guardian - INFO - Tool available: bloodhound
+2026-03-03 21:48:29,536 - guardian - INFO - Tool available: httpx
+2026-03-03 21:48:29,537 - guardian - INFO - Tool available: katana
+2026-03-03 21:48:29,537 - guardian - INFO - Starting autonomous pentest for target: http://192.168.1.49:3000
+2026-03-03 21:48:29,539 - guardian - INFO - ============================================================
+2026-03-03 21:48:29,540 - guardian - INFO - WHITEBOX ANALYSIS PHASE
+2026-03-03 21:48:29,540 - guardian - INFO - ============================================================
+2026-03-03 21:48:29,541 - guardian - INFO - Starting whitebox analysis of /home/ss/code/juice-shop
+2026-03-03 21:48:29,541 - guardian - INFO - Running Semgrep analysis...
+2026-03-03 21:48:29,542 - guardian - INFO - Running Trivy analysis...
+2026-03-03 21:48:29,543 - guardian - INFO - Running Gitleaks secret scan...
+2026-03-03 21:48:29,543 - guardian - INFO - Running TruffleHog secret scan...
+2026-03-03 21:48:31,853 - guardian - INFO - Trivy found 0 vulnerabilities
+2026-03-03 21:48:37,446 - guardian - INFO - TruffleHog found 3 secrets
+2026-03-03 21:48:43,588 - guardian - WARNING - Tool exited with code 1: 
+    ○
+    │╲
+    │ ○
+    ○ ░
+    ░    gitleaks
+
+[90m9:48PM[0m [32mINF[0m [1m19846 commits scanned.[0m
+[90m9:48PM[0m [32mINF[0m [1mscanned ~65306179 bytes (65.31 MB) in 14s[0m
+[90m9:48PM[0m [33mWRN[0m [1mleaks found: 145[0m
+
+2026-03-03 21:48:43,591 - guardian - INFO - Gitleaks found 145 secrets
+2026-03-03 21:49:06,308 - guardian - INFO - Semgrep found 39 issues
+2026-03-03 21:49:06,326 - guardian - INFO - Extracted 85 API endpoints from source code
+2026-03-03 21:49:06,326 - guardian - INFO - Whitebox analysis complete. Found 187 issues
+2026-03-03 21:49:06,327 - guardian - INFO - 
+Whitebox Analysis Summary:
+2026-03-03 21:49:06,327 - guardian - INFO -   Source Path: /home/ss/code/juice-shop
+2026-03-03 21:49:06,328 - guardian - INFO -   Frameworks Detected: Express.js
+2026-03-03 21:49:06,328 - guardian - INFO -   API Endpoints Found: 85
+2026-03-03 21:49:06,329 - guardian - INFO -   Secrets Found: 148
+2026-03-03 21:49:06,329 - guardian - INFO -   Semgrep Issues: 39
+2026-03-03 21:49:06,329 - guardian - INFO -     ERROR: 13
+2026-03-03 21:49:06,330 - guardian - INFO -     WARNING: 26
+2026-03-03 21:49:06,330 - guardian - INFO - ============================================================
+2026-03-03 21:49:06,330 - guardian - INFO - 
+2026-03-03 21:49:06,332 - guardian - INFO - Saved whitebox endpoints to: reports/20260303_214829/whitebox_endpoints_20260303_214829.txt
+2026-03-03 21:49:06,332 - guardian - INFO - Saved whitebox endpoint wordlist to: reports/20260303_214829/whitebox_endpoints_paths_20260303_214829.txt
+2026-03-03 21:49:06,333 - guardian - INFO - Master seed updated: 85 URLs → urls_20260303_214829.txt
+2026-03-03 21:49:06,333 - guardian - INFO - Feeding whitebox findings to autonomous AI agent...
+2026-03-03 21:49:06,334 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1041 chars
+2026-03-03 21:51:05,960 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 21:51:05,961 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 21:51:05,961 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=226 chars
+2026-03-03 21:52:58,523 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 21:52:58,524 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 21:52:58,525 - guardian - INFO - [Planner] Decision: ip_enrichment
+2026-03-03 21:52:58,525 - guardian - INFO - AI Decision: ip_enrichment
+2026-03-03 21:52:58,526 - guardian - INFO - Autonomous Progress [--------------------] 1/20 (0%) ETA n/a
+2026-03-03 21:52:58,526 - guardian - INFO - Executing AI decision: ip_enrichment
+2026-03-03 21:52:58,528 - guardian - INFO - Reverse DNS for 192.168.1.49: ubuntu1.localdomain
+2026-03-03 21:52:58,532 - guardian - INFO - TLS names for 192.168.1.49:443: none or TLS unavailable
+2026-03-03 21:52:58,536 - guardian - INFO - TLS names for 192.168.1.49:3000: none or TLS unavailable
+2026-03-03 21:52:58,537 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 21:52:58,537 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 21:52:58,538 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1052 chars
+2026-03-03 21:54:51,436 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 21:54:51,437 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 21:54:51,438 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=226 chars
+2026-03-03 21:56:44,087 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 21:56:44,088 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 21:56:44,089 - guardian - INFO - [Planner] Decision: technology_detection
+2026-03-03 21:56:44,089 - guardian - INFO - AI Decision: technology_detection
+2026-03-03 21:56:44,090 - guardian - INFO - Autonomous Progress [#-------------------] 2/20 (5%) ETA ~0s
+2026-03-03 21:56:44,090 - guardian - INFO - Executing AI decision: technology_detection
+2026-03-03 21:56:44,091 - guardian - INFO - [ToolSelector] LLM request: system_prompt=3045 chars, prompt=6632 chars
+2026-03-03 21:58:12,418 - guardian - INFO - [ToolSelector] LLM response: 907 chars
+2026-03-03 21:58:12,419 - guardian - INFO - AI Decision [ToolSelector]: ```
+REASONING: whatweb is specifically designed for web technology fingerprinting and provides comprehensive detection of web servers, frameworks, CMS platforms, programming languages, and JavaScript libraries. This is ideal for the technology_detection objective in the reconnaissance phase, as it will identify the technology stack before moving to vulnerability scanning.
+
+TOOL: whatweb
+
+ARGUMENTS: whatweb http://192.168.1.49:3000
+
+EXPECTED_OUTPUT: Detailed technology fingerprinting results including:
+- Web server software (e.g., Nginx, Apache, Node.js)
+- CMS platforms (e.g., WordPress, Drupal)
+- Frameworks (e.g., React, Angular, Django)
+- Programming languages (e.g., PHP, Python, JavaScript)
+- JavaScript libraries and versions
+- Other web technologies and components
+
+Output format: Tabular display showing detected technologies with confidence levels and version information where available.
+```
+2026-03-03 21:58:12,421 - guardian - INFO - [ToolSelector] ToolSelected: whatweb for technology_detection
+2026-03-03 21:58:12,421 - guardian - INFO - Executing: /home/ss/code/level52-cli-deluxe/venv/bin/whatweb --log-json=reports/20260303_214829/whatweb_20260303_215812_421609.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.49:3000
+2026-03-03 21:58:15,762 - guardian - INFO - Tool whatweb finished in 3.34s (status=completed, exit=0, stdout=444B, stderr=0B)
+2026-03-03 21:58:15,763 - guardian - INFO - Tool Executed: whatweb
+2026-03-03 21:58:15,763 - guardian - INFO - [Analyst] LLM request: system_prompt=1007 chars, prompt=1551 chars
+2026-03-03 21:59:52,257 - guardian - INFO - [Analyst] LLM response: 3990 chars
+2026-03-03 21:59:52,258 - guardian - INFO - AI Decision [Analyst]: ### REASONING
+
+Analyzing the WhatWeb output systematically:
+
+1. **Technology Detection**: The output shows jQuery 2.2.4, which is a concrete version number. This is significant because jQuery 2.2.4 (released 2015) has known vulnerabilities including CVE-2015-9251 (XSS vulnerability affecting jQuery < 3.5.0).
+
+2. **Security Headers**: X-Frame-Options[SAMEORIGIN] is properly configured (prevents clickjacking). The presence of x-content-type-options and feature-policy indicates security awareness. Per my rules, I should NOT report header presence as findings unless explicitly flagged as insecure.
+
+3. **OWASP Juice Shop**: The title indicates this is OWASP Juice Shop - an intentionally vulnerable training application. This is context, not a vulnerability itself.
+
+4. **Private IP**: 192.168.1.49 is a private/reserved IP range - not a security issue.
+
+5. **Uncommon Headers**: The x-recruiting header is custom but not inherently insecure. CORS header presence alone isn't a vulnerability without evidence of misconfiguration.
+
+6. **No Tool Errors**: The output shows successful execution (200 OK), no runtime failures.
+
+**Key Finding**: jQuery 2.2.4 is the only concrete evidence of a potentially vulnerable component. This is a legitimate finding based on version detection of a known vulnerable library.
+
+---
+
+### RESPONSE
+
+### FINDING: Outdated jQuery Library with Known Vulnerabilities
+SEVERITY: Medium
+EVIDENCE: `JQuery[2.2.4]`
+DESCRIPTION: The target is running jQuery version 2.2.4, which is an outdated version released in 2015. This version is affected by multiple known vulnerabilities including CVE-2015-9251 (XSS vulnerability in jQuery < 3.5.0).
+IMPACT: Attackers could potentially exploit XSS vulnerabilities in the jQuery library to execute arbitrary JavaScript in victim browsers, leading to session hijacking, credential theft, or defacement.
+RECOMMENDATION: Upgrade jQuery to the latest stable version (3.7.0+). Review all jQuery-dependent functionality for compatibility before upgrading. Implement Content Security Policy (CSP) headers as defense-in-depth.
+CVSS: 5.4 (AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N)
+CWE: CWE-79 (Improper Neutralization of Input During Web Page Generation)
+OWASP: A03:2021 - Injection
+
+### FINDING: OWASP Juice Shop Training Application Detected
+SEVERITY: Info
+EVIDENCE: `Title[OWASP Juice Shop]`
+DESCRIPTION: The target is identified as OWASP Juice Shop, which is an intentionally vulnerable web application designed for security training and penetration testing practice.
+IMPACT: This is a training environment. If this is deployed in production, it would expose numerous intentional vulnerabilities. If this is a training/test environment, ensure it's properly isolated from production networks.
+RECOMMENDATION: Verify this is an intentional training environment. If deployed in production, immediately remove or replace with a secure application. Ensure proper network segmentation if used for training purposes.
+CVSS: N/A (Training Application)
+CWE: N/A
+OWASP: N/A
+
+---
+
+### SUMMARY
+
+**Security Posture Assessment:**
+
+| Category | Status |
+|----------|--------|
+| Vulnerable Components | 1 Medium (jQuery 2.2.4) |
+| Security Headers | Properly configured (X-Frame-Options, x-content-type-options, feature-policy) |
+| Application Type | Training/Intentionally Vulnerable (OWASP Juice Shop) |
+
+**Key Observations:**
+- One confirmed vulnerable component (jQuery 2.2.4) requiring immediate attention
+- Security headers are properly implemented (positive finding)
+- Target is identified as a training application - verify deployment context
+- No evidence of critical misconfigurations in this output
+
+**Priority Actions:**
+1. Upgrade jQuery to latest version
+2. Confirm this is an isolated training environment
+3. If production, replace with secure application immediately
+
+**Note:** This output represents a single reconnaissance scan. Additional testing (vulnerability scanning, manual testing) is recommended for comprehensive assessment.
+2026-03-03 21:59:52,264 - guardian - INFO - [Analyst] AnalysisComplete: No evidence-backed findings; output deemed informational.
+2026-03-03 21:59:52,264 - guardian - INFO - Found 0 new findings
+2026-03-03 21:59:52,265 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 21:59:52,266 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 21:59:52,266 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 21:59:52,267 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1075 chars
+2026-03-03 22:01:45,124 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 22:01:45,125 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 22:01:45,125 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=226 chars
+2026-03-03 22:03:37,678 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 22:03:37,678 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 22:03:37,679 - guardian - INFO - [Planner] Decision: port_scanning
+2026-03-03 22:03:37,679 - guardian - INFO - AI Decision: port_scanning
+2026-03-03 22:03:37,680 - guardian - INFO - Autonomous Progress [##------------------] 3/20 (10%) ETA ~1693s
+2026-03-03 22:03:37,680 - guardian - INFO - Executing AI decision: port_scanning
+2026-03-03 22:03:37,681 - guardian - INFO - [ToolSelector] LLM request: system_prompt=3045 chars, prompt=6648 chars
+2026-03-03 22:04:32,029 - guardian - INFO - [ToolSelector] LLM response: 785 chars
+2026-03-03 22:04:32,030 - guardian - INFO - AI Decision [ToolSelector]: ```
+REASONING: nmap is the optimal tool for port scanning as it provides comprehensive service detection, version identification, and OS fingerprinting. Unlike naabu or masscan which focus on speed, nmap gives detailed information about running services which is crucial for reconnaissance. Given that port 3000 is already known but no other ports have been discovered, a full port scan with service detection will reveal additional attack surfaces.
+
+TOOL: nmap
+
+ARGUMENTS: -sV -sC -O -p- 192.168.1.49
+
+EXPECTED_OUTPUT: List of all open ports on 192.168.1.49 with service names, version information, and OS fingerprinting data. Output will include port numbers, service states (open/closed/filtered), service versions, and potentially vulnerability indicators from default scripts.
+```
+2026-03-03 22:04:32,031 - guardian - INFO - [ToolSelector] ToolSelected: nmap for port_scanning
+2026-03-03 22:04:32,032 - guardian - INFO - Executing: /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260303_214829/nmap_20260303_220432_032329.xml -p 1-65535 192.168.1.49
+2026-03-03 22:04:44,309 - guardian - INFO - Tool nmap finished in 12.28s (status=completed, exit=0, stdout=4676B, stderr=0B)
+2026-03-03 22:04:44,309 - guardian - INFO - Tool Executed: nmap
+2026-03-03 22:04:44,310 - guardian - INFO - [Analyst] LLM request: system_prompt=1007 chars, prompt=6194 chars
+2026-03-03 22:06:40,369 - guardian - INFO - [Analyst] LLM response: 4805 chars
+2026-03-03 22:06:40,370 - guardian - INFO - AI Decision [Analyst]: ### REASONING
+
+I'm analyzing this Nmap scan output systematically:
+
+1. **Evidence Verification**: The output shows 3 open ports (22, 80, 3000) with clear service identification. Port 3000 contains explicit evidence of OWASP Juice Shop running.
+
+2. **Key Finding - OWASP Juice Shop**: The HTML content explicitly states "Probably the most modern and sophisticated insecure web application" - this is concrete evidence of a deliberately vulnerable application.
+
+3. **CORS Configuration**: `Access-Control-Allow-Origin: *` is present, but per the rules, generic headers should be rated Low/Info unless explicitly flagged.
+
+4. **Default nginx Page**: "Welcome to nginx!" indicates default configuration but isn't a vulnerability per se.
+
+5. **SSH Service**: OpenSSH 9.6p1 is a recent version with no explicit vulnerability indicators in the output.
+
+6. **False Positive Check**: The OWASP Juice Shop identification is definitive - the application self-identifies as insecure in its HTML meta description.
+
+7. **Tool/Runtime Issues**: None detected - the scan completed successfully.
+
+### RESPONSE
+
+### FINDING: OWASP Juice Shop Insecure Application Running
+SEVERITY: Critical
+EVIDENCE: `<meta name="description" content="Probably the most modern and sophisticated insecure web application">` and `<title>OWASP Juice Shop</title>`
+DESCRIPTION: The target is running OWASP Juice Shop, a deliberately vulnerable web application designed for security training. The application explicitly identifies itself as insecure in its HTML meta description.
+IMPACT: OWASP Juice Shop contains numerous known vulnerabilities including SQL injection, XSS, CSRF, broken authentication, and more. Running this in production exposes the system to exploitation.
+RECOMMENDATION: Immediately remove or isolate this application from production environments. If used for training, ensure it runs in an isolated network segment with no external access.
+CVSS: 9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)
+CWE: CWE-1021 (Application with Known Vulnerabilities)
+OWASP: A01:2021 - Broken Access Control, A03:2021 - Injection, A05:2021 - Security Misconfiguration
+
+### FINDING: CORS Wildcard Configuration
+SEVERITY: Low
+EVIDENCE: `Access-Control-Allow-Origin: *`
+DESCRIPTION: The application allows cross-origin requests from any origin, which can enable cross-origin attacks.
+IMPACT: Malicious websites can make authenticated requests to this application, potentially leading to data exfiltration or unauthorized actions.
+RECOMMENDATION: Restrict CORS to specific trusted origins instead of using wildcard. Implement proper origin validation.
+CVSS: 3.7 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N)
+CWE: CWE-693 (Protection Mechanism Failure)
+OWASP: A05:2021 - Security Misconfiguration
+
+### FINDING: Default nginx Configuration Exposed
+SEVERITY: Info
+EVIDENCE: `<script id="http-title" output="Welcome to nginx!">`
+DESCRIPTION: Port 80 is serving the default nginx welcome page, indicating the server may not be properly configured for production use.
+IMPACT: Information disclosure about the web server software and version. May indicate incomplete deployment.
+RECOMMENDATION: Remove default pages and configure proper application routing. Ensure production-ready configuration.
+CVSS: N/A
+CWE: CWE-200 (Information Exposure)
+OWASP: A05:2021 - Security Misconfiguration
+
+### FINDING: SSH Service Exposed to Network
+SEVERITY: Info
+EVIDENCE: `<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="64"/></port>` with `<service name="ssh" product="OpenSSH" version="9.6p1 Ubuntu 3ubuntu13.14"`
+DESCRIPTION: SSH service is accessible on port 22 with version information exposed.
+IMPACT: Attackers can attempt brute force or exploit known vulnerabilities in the SSH version.
+RECOMMENDATION: Consider changing default SSH port, implement fail2ban, use key-based authentication, and restrict access via firewall rules.
+CVSS: N/A
+CWE: CWE-306 (Missing Authentication for Critical Function)
+OWASP: A07:2021 - Identification and Authentication Failures
+
+---
+
+## SUMMARY
+
+**Critical security posture issue identified**: The target is running OWASP Juice Shop, a deliberately vulnerable application designed for security training. This represents a severe security risk if deployed in any production or accessible environment. The application contains numerous known vulnerabilities by design including injection flaws, broken authentication, and security misconfigurations.
+
+**Additional concerns**: CORS wildcard configuration and default nginx page indicate incomplete security hardening. SSH service exposure requires proper access controls.
+
+**Immediate action required**: Remove or isolate the OWASP Juice Shop application from any network accessible by unauthorized users. This should be treated as a critical
+2026-03-03 22:06:40,375 - guardian - INFO - [Analyst] AnalysisComplete: Found 3 issues from nmap
+2026-03-03 22:06:40,375 - guardian - INFO - Found 3 new findings
+2026-03-03 22:06:40,376 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 22:06:40,376 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 22:06:40,377 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 22:06:40,377 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1195 chars
+2026-03-03 22:08:33,417 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 22:08:33,418 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 22:08:33,419 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=226 chars
+2026-03-03 22:10:26,013 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 22:10:26,013 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 22:10:26,014 - guardian - INFO - [Planner] Decision: ip_enrichment
+2026-03-03 22:10:26,014 - guardian - INFO - AI Decision: ip_enrichment
+2026-03-03 22:10:26,015 - guardian - INFO - Autonomous Progress [###-----------------] 4/20 (15%) ETA ~2101s
+2026-03-03 22:10:26,015 - guardian - INFO - Executing AI decision: ip_enrichment
+2026-03-03 22:10:26,016 - guardian - INFO - Skipping AI decision: ip_enrichment (already completed)
+2026-03-03 22:10:26,017 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 22:10:26,018 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 22:10:26,018 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 22:10:26,019 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1195 chars
+2026-03-03 22:12:18,915 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 22:12:18,916 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 22:12:18,916 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=226 chars
+2026-03-03 22:14:11,502 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 22:14:11,503 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 22:14:11,503 - guardian - INFO - [Planner] Decision: ip_enrichment
+2026-03-03 22:14:11,504 - guardian - INFO - AI Decision: ip_enrichment
+2026-03-03 22:14:11,504 - guardian - INFO - Autonomous Progress [####----------------] 5/20 (20%) ETA ~1483s
+2026-03-03 22:14:11,505 - guardian - INFO - Executing AI decision: ip_enrichment
+2026-03-03 22:14:11,505 - guardian - INFO - Skipping AI decision: ip_enrichment (already completed)
+2026-03-03 22:14:11,506 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 22:14:11,507 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 22:14:11,508 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 22:14:11,508 - guardian - INFO - Advancing to phase: scanning
+2026-03-03 22:14:11,508 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1230 chars
+2026-03-03 22:16:04,386 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 22:16:04,387 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 22:16:04,387 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=244 chars
+2026-03-03 22:17:56,969 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 22:17:56,970 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 22:17:56,971 - guardian - INFO - [Planner] Decision: service_detection
+2026-03-03 22:17:56,971 - guardian - INFO - AI Decision: service_detection
+2026-03-03 22:17:56,971 - guardian - INFO - Autonomous Progress [#####---------------] 6/20 (25%) ETA ~1112s
+2026-03-03 22:17:56,972 - guardian - INFO - Executing AI decision: service_detection
+2026-03-03 22:17:56,973 - guardian - INFO - [ToolSelector] LLM request: system_prompt=3045 chars, prompt=6656 chars
+2026-03-03 22:18:55,489 - guardian - INFO - [ToolSelector] LLM response: 764 chars
+2026-03-03 22:18:55,490 - guardian - INFO - AI Decision [ToolSelector]: ```
+REASONING: Service detection requires identifying running services, their versions, and potential vulnerabilities. Nmap with -sV flag provides service version detection, and --script vuln runs vulnerability scripts. Since port 3000 is already known to be open with HTTP service, this targeted approach avoids redundant scanning while gathering critical service intelligence.
+
+TOOL: nmap
+
+ARGUMENTS: -sV --script vuln -p 3000 192.168.1.49
+
+EXPECTED_OUTPUT: Service version information for port 3000 (e.g., HTTP server type and version), potential vulnerability findings from NSE scripts, banner grabbing data, and any detected CVEs associated with the running services. Output will include service state, version numbers, and vulnerability severity ratings.
+```
+2026-03-03 22:18:55,491 - guardian - INFO - [ToolSelector] ToolSelected: nmap for service_detection
+2026-03-03 22:18:55,492 - guardian - INFO - Executing: /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260303_214829/nmap_20260303_221855_492386.xml -p 3000 192.168.1.49
+2026-03-03 22:19:06,848 - guardian - INFO - Tool nmap finished in 11.36s (status=completed, exit=0, stdout=4226B, stderr=0B)
+2026-03-03 22:19:06,849 - guardian - INFO - Tool Executed: nmap
+2026-03-03 22:19:06,849 - guardian - INFO - [Analyst] LLM request: system_prompt=1007 chars, prompt=5402 chars
+2026-03-03 22:20:55,934 - guardian - INFO - [Analyst] LLM response: 4181 chars
+2026-03-03 22:20:55,935 - guardian - INFO - AI Decision [Analyst]: ### REASONING
+
+I'm analyzing this Nmap scan output with the following considerations:
+
+1. **Evidence Verification**: The output shows port 3000 is open with HTTP responses. The fingerprint clearly identifies this as OWASP Juice Shop through the HTML title and meta description.
+
+2. **Vulnerability Assessment**: Nmap service detection doesn't actually test for vulnerabilities - it identifies services. I must not infer vulnerabilities that aren't explicitly demonstrated in the output.
+
+3. **Header Analysis**: Per the rules, generic headers (CORS, CSP) should be rated Low/Info unless explicitly flagged. The CORS wildcard (`Access-Control-Allow-Origin: *`) is present but not flagged as insecure by the tool.
+
+4. **Tooling Issues**: The service is misidentified as "ppp" when it's clearly HTTP - this is a tooling limitation, not a vulnerability.
+
+5. **Application Identification**: OWASP Juice Shop is a known intentionally vulnerable application used for security training. This is significant contextual information.
+
+6. **False Positive Check**: No actual exploits or vulnerability tests were performed - only service fingerprinting.
+
+### RESPONSE
+
+### FINDING: OWASP Juice Shop Application Identified
+SEVERITY: Info
+EVIDENCE: `<title>OWASP Juice Shop</title>` and `content="Probably the most modern and sophisticated insecure web application"`
+DESCRIPTION: The target is running OWASP Juice Shop, a deliberately vulnerable web application designed for security training and penetration testing education.
+IMPACT: This application contains numerous known vulnerabilities by design. In a production environment, this would indicate a test environment was accidentally exposed or the application was deployed without proper security hardening.
+RECOMMENDATION: Verify this is an intentional test environment. If this is production, immediately replace with a properly secured application. Ensure test environments are isolated from production networks.
+CVSS: N/A (Informational)
+CWE: N/A
+OWASP: N/A
+
+### FINDING: CORS Wildcard Configuration
+SEVERITY: Low
+EVIDENCE: `Access-Control-Allow-Origin: *`
+DESCRIPTION: The server responds with a wildcard CORS header allowing any origin to make cross-origin requests to this application.
+IMPACT: While not inherently exploitable, this configuration can facilitate CSRF attacks and allow malicious sites to interact with the application's API. Combined with other vulnerabilities, this could enable more sophisticated attacks.
+RECOMMENDATION: Restrict CORS to specific trusted origins. Use `Access-Control-Allow-Origin` with explicit domain values instead of wildcard. Implement proper origin validation on the server side.
+CVSS: 3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)
+CWE: CWE-693 (Protection Mechanism Failure)
+OWASP: A05:2021 - Security Misconfiguration
+
+### FINDING: Service Misidentification
+SEVERITY: Info
+EVIDENCE: `<service name="ppp" ... method="table" conf="3"/>` with HTTP fingerprint data
+DESCRIPTION: Nmap incorrectly identified the service as "ppp" despite clear HTTP response fingerprints. This is a tooling limitation, not a security issue.
+IMPACT: No security impact - this is purely a reconnaissance tool accuracy issue.
+RECOMMENDATION: No action required. This is a tool limitation that doesn't affect security posture.
+CVSS: N/A
+CWE: N/A
+OWASP: N/A
+
+---
+
+## SUMMARY
+
+**Overall Security Posture: Informational - Known Vulnerable Application Detected**
+
+This Nmap scan identifies OWASP Juice Shop running on port 3000. This is a deliberately vulnerable application used for security training. The scan does not demonstrate actual vulnerabilities but identifies the application type. The CORS wildcard configuration is a minor security misconfiguration.
+
+**Key Observations:**
+- Application is OWASP Juice Shop (intentionally vulnerable training app)
+- Port 3000 is open and serving HTTP
+- CORS wildcard allows cross-origin requests from any domain
+- Security headers present (X-Content-Type-Options, X-Frame-Options, Feature-Policy)
+- No actual vulnerability exploitation was performed in this scan
+
+**Note:** This appears to be a test/training environment. If this is production, immediate remediation is required.
+2026-03-03 22:20:55,939 - guardian - INFO - [Analyst] AnalysisComplete: Found 1 issues from nmap
+2026-03-03 22:20:55,940 - guardian - INFO - Found 1 new findings
+2026-03-03 22:20:55,941 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 22:20:55,941 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 22:20:55,942 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 22:20:55,942 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1282 chars
+2026-03-03 22:21:37,037 - guardian - INFO - [Planner] LLM response: 242 chars
+2026-03-03 22:21:37,038 - guardian - INFO - AI Decision [Planner]: {
+  "next_action": "web_probing",
+  "parameters": "http://192.168.1.49:3000 --depth=3 --crawl --check-auth",
+  "expected_outcome": "Discover application endpoints, input parameters, authentication mechanisms, and potential injection points"
+}
+2026-03-03 22:21:37,038 - guardian - INFO - [Planner] Decision: web_probing
+2026-03-03 22:21:37,039 - guardian - INFO - AI Decision: web_probing
+2026-03-03 22:21:37,039 - guardian - INFO - Autonomous Progress [######--------------] 7/20 (30%) ETA ~1282s
+2026-03-03 22:21:37,040 - guardian - INFO - Executing AI decision: web_probing
+2026-03-03 22:21:37,040 - guardian - INFO - [ToolSelector] LLM request: system_prompt=3045 chars, prompt=6670 chars
+2026-03-03 22:22:59,381 - guardian - INFO - [ToolSelector] LLM response: 917 chars
+2026-03-03 22:22:59,382 - guardian - INFO - AI Decision [ToolSelector]: ```
+REASONING: httpx is the optimal choice for web_probing at this stage. The target is an IP with HTTP service, and we have 80+ discovered endpoints from previous scanning. httpx efficiently probes HTTP endpoints for response analysis, status codes, content types, server information, and redirects. It's faster than nikto/nuclei for baseline probing and provides the necessary HTTP metadata before moving to vulnerability scanning. DNS/subdomain tools are excluded as the target is IP-only.
+
+TOOL: httpx
+
+ARGUMENTS: -list endpoints.txt -status-code -content-type -title -server -follow-redirects -timeout 10 -threads 50 -silent
+
+EXPECTED_OUTPUT: HTTP response data for each endpoint including:
+- Status codes (200, 301, 404, 500, etc.)
+- Content types (text/html, application/json, etc.)
+- Page titles
+- Server headers and versions
+- Redirect chains
+- Response sizes
+- Potential error pages or misconfigurations
+```
+2026-03-03 22:22:59,383 - guardian - INFO - [ToolSelector] ToolSelected: httpx for web_probing
+2026-03-03 22:22:59,384 - guardian - INFO - Executing: /home/ss/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u http://192.168.1.49:3000
+2026-03-03 22:22:59,859 - guardian - INFO - Tool httpx finished in 0.48s (status=completed, exit=0, stdout=515B, stderr=0B)
+2026-03-03 22:22:59,860 - guardian - INFO - Tool Executed: httpx
+2026-03-03 22:22:59,861 - guardian - INFO - [Analyst] LLM request: system_prompt=1007 chars, prompt=1620 chars
+2026-03-03 22:24:53,111 - guardian - INFO - [Analyst] LLM response: 2462 chars
+2026-03-03 22:24:53,111 - guardian - INFO - AI Decision [Analyst]: ## REASONING
+
+I'm analyzing this httpx reconnaissance output with strict adherence to the evidence-based analysis rules:
+
+**What the output shows:**
+1. **Scheme: "http"** - Concrete evidence of unencrypted HTTP communication (not HTTPS)
+2. **Title: "OWASP Juice Shop"** - Application identification (known intentionally vulnerable training app)
+3. **Tech stack detected**: Cloudflare, Onsen UI, Osano:3.1.0, cdnjs, jQuery:2.2.4
+4. **Status: 200** - Service responding normally
+5. **No explicit vulnerability flags** - httpx is a recon tool, not a vulnerability scanner
+
+**Critical considerations:**
+- httpx identifies technologies but does NOT confirm vulnerabilities
+- jQuery:2.2.4 is an old version, but the output doesn't flag it as vulnerable - I cannot infer this without proof
+- OWASP Juice Shop is a known vulnerable app, but the output doesn't confirm specific vulnerabilities
+- HTTP scheme is concrete evidence of unencrypted communication - this IS a reportable finding
+- No security headers are shown in output - cannot report their absence
+
+**Decision:** Only report the HTTP scheme as a confirmed security misconfiguration. Do not report technology versions as vulnerabilities without explicit tool confirmation.
+
+---
+
+## RESPONSE
+
+### FINDING: Unencrypted HTTP Communication
+SEVERITY: Medium
+EVIDENCE: `"scheme":"http"`
+DESCRIPTION: The target is serving content over unencrypted HTTP protocol instead of HTTPS, exposing all traffic to potential interception
+IMPACT: Attackers can perform man-in-the-middle attacks, intercept sensitive data (credentials, session tokens, personal information), and modify responses in transit
+RECOMMENDATION: Configure the web server to enforce HTTPS with valid TLS certificates. Implement HTTP-to-HTTPS redirects and consider HSTS headers
+CVSS: 5.3 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N)
+CWE: CWE-319 (Cleartext Transmission of Sensitive Information)
+OWASP: A02:2021 - Cryptographic Failures
+
+---
+
+### FINDING: Outdated jQuery Version Detected
+SEVERITY: Info
+EVIDENCE: `"tech":["Cloudflare","Onsen UI","Osano:3.1.0","cdnjs","jQuery:2.2.4"]`
+DESCRIPTION: jQuery version 2.2.4 is detected, which is an outdated version (released 2014) with known security vulnerabilities
+IMPACT: Older jQuery versions may contain XSS vulnerabilities and other security issues that could be exploited if the application is vulnerable
+RECOMMENDATION: Upgrade jQuery to the latest stable version (3.x or 4.x). Run a vulnerability scanner
+2026-03-03 22:24:53,115 - guardian - INFO - [Analyst] AnalysisComplete: Found 2 issues from httpx
+2026-03-03 22:24:53,115 - guardian - INFO - Found 2 new findings
+2026-03-03 22:24:53,116 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 22:24:53,117 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 22:24:53,117 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 22:24:53,118 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1368 chars
+2026-03-03 22:26:46,065 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 22:26:46,068 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 22:26:46,069 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=244 chars
+2026-03-03 22:28:38,616 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 22:28:38,617 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 22:28:38,617 - guardian - INFO - [Planner] Decision: vulnerability_scanning
+2026-03-03 22:28:38,618 - guardian - INFO - AI Decision: vulnerability_scanning
+2026-03-03 22:28:38,618 - guardian - INFO - Autonomous Progress [#######-------------] 8/20 (35%) ETA ~1385s
+2026-03-03 22:28:38,619 - guardian - INFO - Executing AI decision: vulnerability_scanning
+2026-03-03 22:28:38,619 - guardian - INFO - [ToolSelector] LLM request: system_prompt=3045 chars, prompt=6695 chars
+2026-03-03 22:29:56,563 - guardian - INFO - [ToolSelector] LLM response: 1049 chars
+2026-03-03 22:29:56,564 - guardian - INFO - AI Decision [ToolSelector]: ```
+REASONING: Nuclei is the optimal choice for this vulnerability scanning phase because it provides comprehensive, template-based vulnerability detection across the 80+ discovered endpoints. It's faster than traditional scanners like nikto or zap, covers a wide range of vulnerability types (authentication, injection, misconfigurations), and can be safely configured with rate limiting. Given that port scanning and web probing are already complete, nuclei can efficiently identify known vulnerabilities without redundant reconnaissance.
+
+TOOL: nuclei
+
+ARGUMENTS: -u http://192.168.1.49:3000 -t /path/to/templates -severity low,medium,high,critical -rate-limit 15 -timeout 10 -o /tmp/nuclei_scan_20260303_214829.json -json -progress -color true
+
+EXPECTED_OUTPUT: JSON-formatted vulnerability report containing:
+- Identified vulnerabilities with CVE/CWE references
+- Severity ratings (low/medium/high/critical)
+- Affected endpoints and parameters
+- Proof of concept (PoC) evidence
+- Remediation recommendations
+- Summary statistics of findings
+```
+2026-03-03 22:29:56,566 - guardian - INFO - [ToolSelector] ToolSelected: nuclei for vulnerability_scanning
+2026-03-03 22:29:56,576 - guardian - INFO - Executing: /home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -u http://192.168.1.49:3000 -jsonl -o reports/20260303_214829/nuclei_20260303_222956.jsonl -severity critical,high -tags cve,default-login,exposure,misconfig -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 50
+2026-03-03 22:31:44,077 - guardian - INFO - Tool nuclei finished in 107.50s (status=completed, exit=0, stdout=0B, stderr=0B)
+2026-03-03 22:31:44,078 - guardian - INFO - Tool Executed: nuclei
+2026-03-03 22:31:44,079 - guardian - INFO - [Analyst] AnalysisComplete: No actionable output from tool; skipping findings.
+2026-03-03 22:31:44,079 - guardian - INFO - Found 0 new findings
+2026-03-03 22:31:44,080 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 22:31:44,081 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 22:31:44,081 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 22:31:44,082 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1393 chars
+2026-03-03 22:32:33,908 - guardian - INFO - [Planner] LLM response: 254 chars
+2026-03-03 22:32:33,910 - guardian - INFO - AI Decision [Planner]: {"next_action": "ssl_analysis", "parameters": "target=192.168.1.49,ports=443,8443,3000,check_tls_versions=true,check_certificates=true", "expected_outcome": "Confirm HTTPS availability, identify TLS configuration weaknesses, document encryption posture"}
+2026-03-03 22:32:33,910 - guardian - INFO - [Planner] Decision: ssl_analysis
+2026-03-03 22:32:33,911 - guardian - INFO - AI Decision: ssl_analysis
+2026-03-03 22:32:33,911 - guardian - INFO - Autonomous Progress [########------------] 9/20 (40%) ETA ~1397s
+2026-03-03 22:32:33,912 - guardian - INFO - Executing AI decision: ssl_analysis
+2026-03-03 22:32:33,920 - guardian - INFO - Skipping ssl_analysis: 192.168.1.49 does not appear to support TLS on [3000, 443]
+2026-03-03 22:32:33,921 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 22:32:33,922 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 22:32:33,923 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 22:32:33,923 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1408 chars
+2026-03-03 22:33:22,808 - guardian - INFO - [Planner] LLM response: 300 chars
+2026-03-03 22:33:22,809 - guardian - INFO - AI Decision [Planner]: {
+  "next_action": "web_probing",
+  "parameters": "--target http://192.168.1.49:3000 --deep-scan --check-xss --check-cors --check-jquery",
+  "expected_outcome": "Identify exploitable XSS vectors from outdated jQuery, verify CORS misconfiguration impact, and discover additional web vulnerabilities"
+}
+2026-03-03 22:33:22,810 - guardian - INFO - [Planner] Decision: web_probing
+2026-03-03 22:33:22,811 - guardian - INFO - AI Decision: web_probing
+2026-03-03 22:33:22,811 - guardian - INFO - Autonomous Progress [#########-----------] 10/20 (45%) ETA ~1138s
+2026-03-03 22:33:22,812 - guardian - INFO - Executing AI decision: web_probing
+2026-03-03 22:33:22,812 - guardian - INFO - Skipping AI decision: web_probing (already completed)
+2026-03-03 22:33:22,813 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 22:33:22,814 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 22:33:22,814 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 22:33:22,815 - guardian - INFO - Advancing to phase: analysis
+2026-03-03 22:33:22,815 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1422 chars
+2026-03-03 22:34:14,900 - guardian - INFO - [Planner] LLM response: 275 chars
+2026-03-03 22:34:14,901 - guardian - INFO - AI Decision [Planner]: {
+  "next_action": "false_positive_filter",
+  "parameters": "target=192.168.1.49:3000,findings=CORS_Wildcard,Unencrypted_HTTP,nginx_config,SSH_exposed,jQuery_outdated",
+  "expected_outcome": "Validated findings list with duplicates removed and false positives filtered out"
+}
+2026-03-03 22:34:14,902 - guardian - INFO - [Planner] Decision: false_positive_filter
+2026-03-03 22:34:14,903 - guardian - INFO - AI Decision: false_positive_filter
+2026-03-03 22:34:14,903 - guardian - INFO - Autonomous Progress [##########----------] 11/20 (50%) ETA ~931s
+2026-03-03 22:34:14,904 - guardian - INFO - Executing AI decision: false_positive_filter
+2026-03-03 22:34:14,904 - guardian - INFO - [ToolSelector] LLM request: system_prompt=3045 chars, prompt=6734 chars
+2026-03-03 22:36:12,557 - guardian - INFO - [ToolSelector] LLM response: 782 chars
+2026-03-03 22:36:12,558 - guardian - INFO - AI Decision [ToolSelector]: 1. REASONING:
+The objective is "false_positive_filter" which means we need to verify and validate the 3 Low severity findings from previous vulnerability scanning. Since vulnerability scanning (nikto/nuclei) has already been completed, running another full vulnerability scan would be redundant. Instead, we need to verify endpoint accessibility and response characteristics to confirm which findings are legitimate versus false positives.
+
+httpx is the ideal tool for this verification phase because:
+- It can probe HTTP endpoints and verify they're still accessible
+- It checks response codes to confirm endpoints return expected status
+- It detects technologies to cross-reference with previous findings
+- It follows redirects to verify endpoint behavior
+- It's fast and non-intr
+2026-03-03 22:36:12,560 - guardian - INFO - [ToolSelector] ToolSelected: nuclei for false_positive_filter
+2026-03-03 22:36:12,566 - guardian - INFO - Executing: /home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -u http://192.168.1.49:3000 -jsonl -o reports/20260303_214829/nuclei_20260303_223612.jsonl -severity critical,high -tags cve,default-login,exposure,misconfig -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 50
+2026-03-03 22:38:00,069 - guardian - INFO - Tool nuclei finished in 107.50s (status=completed, exit=0, stdout=0B, stderr=0B)
+2026-03-03 22:38:00,070 - guardian - INFO - Tool Executed: nuclei
+2026-03-03 22:38:00,070 - guardian - INFO - [Analyst] AnalysisComplete: No actionable output from tool; skipping findings.
+2026-03-03 22:38:00,071 - guardian - INFO - Found 0 new findings
+2026-03-03 22:38:00,072 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 22:38:00,072 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 22:38:00,073 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 22:38:00,073 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1446 chars
+2026-03-03 22:38:43,779 - guardian - INFO - [Planner] LLM response: 283 chars
+2026-03-03 22:38:43,780 - guardian - INFO - AI Decision [Planner]: {
+  "next_action": "correlate_findings",
+  "parameters": "target=192.168.1.49:3000,findings=all,include=cors,http,nginx,jquery,ssh",
+  "expected_outcome": "Identify relationships between CORS, HTTP, and configuration findings to determine if they indicate systemic security issues"
+}
+2026-03-03 22:38:43,781 - guardian - INFO - [Planner] Decision: correlate_findings
+2026-03-03 22:38:43,781 - guardian - INFO - AI Decision: correlate_findings
+2026-03-03 22:38:43,782 - guardian - INFO - Autonomous Progress [###########---------] 12/20 (55%) ETA ~1040s
+2026-03-03 22:38:43,782 - guardian - INFO - Executing AI decision: correlate_findings
+2026-03-03 22:38:43,783 - guardian - INFO - [Analyst] LLM request: system_prompt=1007 chars, prompt=2267 chars
+2026-03-03 22:40:33,737 - guardian - INFO - [Analyst] LLM response: 5666 chars
+2026-03-03 22:40:33,738 - guardian - INFO - AI Decision [Analyst]: ## 1. REASONING
+
+### Evidence Verification
+I'm analyzing the combined tool outputs for target `http://192.168.1.49:3000`:
+
+| Finding | Tool | Severity | Evidence Type |
+|---------|------|----------|---------------|
+| CORS Wildcard Configuration | NMAP | LOW | Security header misconfiguration |
+| Default nginx Configuration Exposed | NMAP | INFO | Informational |
+| SSH Service Exposed to Network | NMAP | INFO | Service detection |
+| Unencrypted HTTP Communication | HTTPX | LOW | Protocol issue |
+| Outdated jQuery Version Detected | HTTPX | INFO | Library version |
+
+### Critical Observations
+
+1. **No Critical/High Severity Findings**: All findings are rated LOW or INFO by the scanning tools themselves.
+
+2. **Limited Evidence**: The output doesn't provide specific version numbers, CVE references, or exploit details that would elevate these to confirmed vulnerabilities.
+
+3. **Correlation Analysis**:
+   - **HTTP + CORS**: Unencrypted HTTP combined with CORS wildcard creates a potential attack surface where attackers could intercept and manipulate cross-origin requests
+   - **jQuery + HTTP**: Outdated jQuery over unencrypted HTTP could allow man-in-the-middle attacks to inject malicious scripts
+   - **SSH + HTTP**: SSH exposure doesn't correlate with web vulnerabilities unless weak credentials exist (no evidence provided)
+
+4. **Attack Chain Assessment**:
+   ```
+   Unencrypted HTTP → Traffic Interception → CORS Bypass → Session Hijacking
+   ```
+   This is a potential chain but requires additional confirmation.
+
+5. **False Positive Check**:
+   - CORS wildcard is flagged as LOW by tool - legitimate but low risk
+   - Default nginx config is INFO - not inherently vulnerable
+   - SSH exposure is INFO - not a vulnerability without weak auth evidence
+   - Outdated jQuery is INFO - needs specific CVE correlation
+
+### Scoring Calculation
+
+Based on the TARGET PRIORITY RANKING criteria:
+
+- **Outdated jQuery Version**: +2 (Outdated JS libraries detected)
+- **Unencrypted HTTP Communication**: +2 (SSL/TLS issues found)
+- **CORS Wildcard Configuration**: +1 (Missing security headers)
+
+**Total Score: 5**
+
+This falls below the HIGH priority threshold (≥10), indicating MEDIUM priority for manual testing.
+
+---
+
+## 2. RESPONSE
+
+### CORRELATED SECURITY ANALYSIS
+
+#### 1. Patterns and Correlations
+
+| Finding Cluster | Correlation | Risk Level |
+|-----------------|-------------|------------|
+| HTTP + CORS | Unencrypted traffic + permissive CORS = potential request interception | MEDIUM |
+| jQuery + HTTP | Outdated library over unencrypted channel = MITM injection risk | MEDIUM |
+| SSH + Web | Separate attack surface, no direct correlation | LOW |
+
+#### 2. Attack Chain Visualization
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    ATTACK PATH ANALYSIS                         │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  [1] Unencrypted HTTP Communication                             │
+│       ↓ (Traffic can be intercepted)                            │
+│  [2] CORS Wildcard Configuration                                │
+│       ↓ (Cross-origin requests allowed from any origin)         │
+│  [3] Outdated jQuery Version                                    │
+│       ↓ (Potential known vulnerabilities)                       │
+│  [4] Potential: Session Hijacking / XSS / MITM                  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+#### 3. Vulnerability Prioritization
+
+| Priority | Finding | Exploitability | Impact |
+|----------|---------|----------------|--------|
+| 1 | Unencrypted HTTP Communication | HIGH | Data interception |
+| 2 | CORS Wildcard Configuration | MEDIUM | Cross-origin attacks |
+| 3 | Outdated jQuery Version | LOW-MEDIUM | Depends on specific CVE |
+| 4 | SSH Service Exposed | LOW | Requires credential compromise |
+
+#### 4. Overall Security Posture
+
+**Assessment: MEDIUM RISK**
+
+- **Strengths**: No critical vulnerabilities detected, limited attack surface
+- **Weaknesses**: Unencrypted communication, permissive CORS, outdated dependencies
+- **Risk Level**: Suitable for internal testing, requires remediation before production
+
+#### 5. Recommended Next Testing Steps
+
+1. **Immediate**: Enable HTTPS/TLS encryption
+2. **Manual Testing**: 
+   - Test CORS policy with different origins
+   - Check jQuery version for known CVEs
+   - Attempt session token interception
+3. **Configuration Review**:
+   - Review nginx configuration for sensitive paths
+   - Verify SSH authentication requirements
+
+---
+
+### TARGET PRIORITY RANKING
+
+```
+HOST: 192.168.1.49:3000
+SCORE: 5
+REASONS:
+  • Outdated jQuery Version Detected (+2)
+  • Unencrypted HTTP Communication - SSL/TLS issue (+2)
+  • CORS Wildcard Configuration - Missing security headers (+1)
+PRIORITY: MEDIUM
+RECOMMENDED FIRST TESTS:
+  • Verify jQuery version against CVE database
+  • Test HTTPS implementation and certificate validity
+  • Manually test CORS policy with malicious origins
+  • Attempt session token interception over HTTP
+```
+
+---
+
+### KEY RECOMMENDATIONS
+
+| Action | Priority | Effort |
+|--------|----------|--------|
+| Enable HTTPS/TLS encryption | HIGH | LOW |
+| Restrict CORS to specific origins | HIGH | LOW |
+| Update jQuery to latest version | MEDIUM | LOW |
+| Review nginx configuration | LOW | LOW |
+| Harden SSH access controls | LOW | MEDIUM |
+
+**Note**: All findings are based on tool-reported evidence. No critical vulnerabilities were confirmed. Manual verification recommended before production deployment.
+2026-03-03 22:40:33,745 - guardian - INFO - Correlation analysis complete
+2026-03-03 22:40:33,746 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 22:40:33,746 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 22:40:33,747 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 22:40:33,747 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1467 chars
+2026-03-03 22:42:26,772 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 22:42:26,773 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 22:42:26,774 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=252 chars
+2026-03-03 22:44:19,426 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 22:44:19,427 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 22:44:19,427 - guardian - INFO - [Planner] Decision: risk_assessment
+2026-03-03 22:44:19,427 - guardian - INFO - AI Decision: risk_assessment
+2026-03-03 22:44:19,428 - guardian - INFO - Autonomous Progress [############--------] 13/20 (60%) ETA ~862s
+2026-03-03 22:44:19,428 - guardian - INFO - Executing AI decision: risk_assessment
+2026-03-03 22:44:19,429 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=929 chars
+2026-03-03 22:45:30,358 - guardian - INFO - [Planner] LLM response: 2837 chars
+2026-03-03 22:45:30,359 - guardian - INFO - AI Decision [Planner]: ## Strategic Penetration Test Analysis
+
+### 1. Overall Attack Surface Assessment
+| Category | Status | Notes |
+|----------|--------|-------|
+| Web Application | ✅ Scanned | Port 3000, HTTP only |
+| Network Services | ✅ Scanned | SSH exposed, nginx default config |
+| SSL/TLS | ⚠️ Weak | Unencrypted HTTP communication |
+| Information Disclosure | ⚠️ Present | Default configs, outdated libraries |
+
+### 2. Critical Vulnerabilities & Severity
+**Current Risk Level: LOW-MEDIUM**
+
+| Vulnerability | Severity | Exploitability | Impact |
+|--------------|----------|----------------|--------|
+| CORS Wildcard | LOW | Medium | Cross-origin data theft |
+| Unencrypted HTTP | LOW | High | MITM, session hijacking |
+| Outdated jQuery | INFO | Medium | Known CVEs possible |
+| SSH Exposed | INFO | Medium | Brute force target |
+
+### 3. Attack Vectors Identified
+```
+┌─────────────────────────────────────────────────┐
+│ PRIMARY VECTORS                                 │
+├─────────────────────────────────────────────────┤
+│ 1. CORS Misconfiguration → XSS/CSRF attacks     │
+│ 2. HTTP → MITM → Session hijacking              │
+│ 3. jQuery → Known CVE exploitation              │
+│ 4. SSH → Credential brute forcing               │
+└─────────────────────────────────────────────────┘
+```
+
+### 4. Recommended Next Steps (Prioritized)
+
+| Priority | Action | Tool | Rationale |
+|----------|--------|------|-----------|
+| **P1** | Test CORS exploitation | curl, browser dev tools | Validate cross-origin access |
+| **P2** | Attempt HTTP MITM | Burp Suite, mitmproxy | Capture session tokens |
+| **P3** | jQuery CVE testing | nuclei, manual | Check for known exploits |
+| **P4** | SSH credential testing | hydra, medusa | If within scope |
+| **P5** | Directory enumeration | dirb, gobuster | Find hidden endpoints |
+
+### 5. Risk Rating
+
+```
+┌─────────────────────────────────────────────────┐
+│ TARGET RISK RATING: MEDIUM (4/10)              │
+├─────────────────────────────────────────────────┤
+│ • No critical vulnerabilities found             │
+│ • Multiple LOW/INFO issues can be chained       │
+│ • Internal network reduces external exposure    │
+│ • Immediate remediation recommended             │
+└─────────────────────────────────────────────────┘
+```
+
+### Immediate Remediation Actions
+1. **Enable HTTPS** with valid certificates
+2. **Configure CORS** with specific allowed origins
+3. **Update jQuery** to latest stable version
+4. **Remove default nginx configs** or restrict access
+5. **Restrict SSH** to authorized IPs only
+
+### Next Assessment Phase
+**RECOMMENDATION:** Proceed to **Exploitation Phase** focusing on:
+- CORS policy abuse testing
+- Session token interception via HTTP
+- jQuery vulnerability validation
+
+**SCOPE REMINDER:** Ensure all exploitation attempts remain within authorized boundaries and do not cause service disruption.
+2026-03-03 22:45:30,362 - guardian - INFO - Risk assessment saved to: reports/20260303_214829/risk_assessment_20260303_214829.md
+2026-03-03 22:45:30,364 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 22:45:30,364 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 22:45:30,365 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 22:45:30,365 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1485 chars
+2026-03-03 22:47:23,367 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 22:47:23,368 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 22:47:23,369 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=252 chars
+2026-03-03 22:49:15,972 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 22:49:15,973 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 22:49:15,973 - guardian - INFO - [Planner] Decision: prioritize_vulns
+2026-03-03 22:49:15,974 - guardian - INFO - AI Decision: prioritize_vulns
+2026-03-03 22:49:15,974 - guardian - INFO - Autonomous Progress [#############-------] 14/20 (65%) ETA ~676s
+2026-03-03 22:49:15,975 - guardian - INFO - Executing AI decision: prioritize_vulns
+2026-03-03 22:49:15,975 - guardian - INFO - [ToolSelector] LLM request: system_prompt=3045 chars, prompt=6792 chars
+2026-03-03 22:51:13,566 - guardian - INFO - [ToolSelector] LLM response: 0 chars
+2026-03-03 22:51:13,567 - guardian - INFO - AI Decision [ToolSelector]: 
+2026-03-03 22:51:13,568 - guardian - WARNING - Tool parse failed; refusing to default to an arbitrary tool
+2026-03-03 22:51:13,568 - guardian - WARNING - Tool selection returned no tool; skipping execution
+2026-03-03 22:51:13,569 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 22:51:13,570 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 22:51:13,570 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 22:51:13,571 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1504 chars
+2026-03-03 22:52:20,572 - guardian - INFO - [Planner] LLM response: 243 chars
+2026-03-03 22:52:20,573 - guardian - INFO - AI Decision [Planner]: {
+  "next_action": "prioritize_vulns",
+  "parameters": "severity=LOW,INFO;target=http://192.168.1.49:3000;context=exploitation_planning",
+  "expected_outcome": "Ranked vulnerability list with exploitation priority scores for attack planning"
+}
+2026-03-03 22:52:20,574 - guardian - INFO - [Planner] Decision: prioritize_vulns
+2026-03-03 22:52:20,575 - guardian - INFO - AI Decision: prioritize_vulns
+2026-03-03 22:52:20,575 - guardian - INFO - Autonomous Progress [##############------] 15/20 (70%) ETA ~650s
+2026-03-03 22:52:20,576 - guardian - INFO - Executing AI decision: prioritize_vulns
+2026-03-03 22:52:20,576 - guardian - INFO - Skipping AI decision: prioritize_vulns (already completed)
+2026-03-03 22:52:20,577 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 22:52:20,578 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 22:52:20,578 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 22:52:20,579 - guardian - INFO - Advancing to phase: reporting
+2026-03-03 22:52:20,579 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1435 chars
+2026-03-03 22:54:13,590 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 22:54:13,591 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 22:54:13,592 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=228 chars
+2026-03-03 22:56:06,141 - guardian - INFO - [Planner] LLM response: 0 chars
+2026-03-03 22:56:06,142 - guardian - INFO - AI Decision [Planner]: 
+2026-03-03 22:56:06,143 - guardian - INFO - [Planner] Decision: generate_report
+2026-03-03 22:56:06,143 - guardian - INFO - AI Decision: generate_report
+2026-03-03 22:56:06,144 - guardian - INFO - Autonomous Progress [###############-----] 16/20 (75%) ETA ~542s
+2026-03-03 22:56:06,144 - guardian - INFO - Executing AI decision: generate_report
+2026-03-03 22:56:06,145 - guardian - INFO - Generating markdown report...
+2026-03-03 22:56:06,145 - guardian - INFO - [Reporter] GeneratingReport: Format: markdown
+2026-03-03 22:56:06,146 - guardian - INFO - Report consistency normalization applied to 2 finding fields
+2026-03-03 22:56:06,147 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=826 chars
+2026-03-03 22:57:59,141 - guardian - INFO - [Reporter] LLM response: 0 chars
+2026-03-03 22:57:59,142 - guardian - INFO - AI Decision [Reporter]: 
+2026-03-03 22:57:59,210 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=6463 chars
+2026-03-03 22:59:55,291 - guardian - INFO - [Reporter] LLM response: 0 chars
+2026-03-03 22:59:55,292 - guardian - INFO - AI Decision [Reporter]: 
+2026-03-03 22:59:55,292 - guardian - WARNING - Technical findings quality validation failed: empty technical findings output
+2026-03-03 22:59:55,293 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=4985 chars
+2026-03-03 23:01:50,962 - guardian - INFO - [Reporter] LLM response: 0 chars
+2026-03-03 23:01:50,963 - guardian - INFO - AI Decision [Reporter]: 
+2026-03-03 23:01:50,963 - guardian - WARNING - Technical findings retry still failed quality checks; using structured fallback: empty technical findings output
+2026-03-03 23:01:50,964 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=4952 chars
+2026-03-03 23:03:46,476 - guardian - INFO - [Reporter] LLM response: 0 chars
+2026-03-03 23:03:46,477 - guardian - INFO - AI Decision [Reporter]: 
+2026-03-03 23:03:46,478 - guardian - INFO - AI trace truncated to 5000 chars to reduce LLM token usage
+2026-03-03 23:03:46,478 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=5612 chars
+2026-03-03 23:05:41,136 - guardian - INFO - [Reporter] LLM response: 0 chars
+2026-03-03 23:05:41,137 - guardian - INFO - AI Decision [Reporter]: 
+2026-03-03 23:05:41,138 - guardian - INFO - Report saved to: reports/20260303_214829/report_20260303_214829.md
+2026-03-03 23:05:41,138 - guardian - INFO - Generating html report...
+2026-03-03 23:05:41,139 - guardian - INFO - [Reporter] GeneratingReport: Format: html
+2026-03-03 23:05:41,139 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=827 chars
+2026-03-03 23:07:34,134 - guardian - INFO - [Reporter] LLM response: 0 chars
+2026-03-03 23:07:34,135 - guardian - INFO - AI Decision [Reporter]: 
+2026-03-03 23:07:34,136 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=6463 chars
+2026-03-03 23:09:30,214 - guardian - INFO - [Reporter] LLM response: 0 chars
+2026-03-03 23:09:30,215 - guardian - INFO - AI Decision [Reporter]: 
+2026-03-03 23:09:30,215 - guardian - WARNING - Technical findings quality validation failed: empty technical findings output
+2026-03-03 23:09:30,216 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=4985 chars
+2026-03-03 23:11:25,725 - guardian - INFO - [Reporter] LLM response: 0 chars
+2026-03-03 23:11:25,726 - guardian - INFO - AI Decision [Reporter]: 
+2026-03-03 23:11:25,726 - guardian - WARNING - Technical findings retry still failed quality checks; using structured fallback: empty technical findings output
+2026-03-03 23:11:25,727 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=4952 chars
+2026-03-03 23:13:21,280 - guardian - INFO - [Reporter] LLM response: 0 chars
+2026-03-03 23:13:21,281 - guardian - INFO - AI Decision [Reporter]: 
+2026-03-03 23:13:21,282 - guardian - INFO - AI trace truncated to 5000 chars to reduce LLM token usage
+2026-03-03 23:13:21,283 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=5612 chars
+2026-03-03 23:15:15,935 - guardian - INFO - [Reporter] LLM response: 0 chars
+2026-03-03 23:15:15,936 - guardian - INFO - AI Decision [Reporter]: 
+2026-03-03 23:15:15,936 - guardian - INFO - Report saved to: reports/20260303_214829/report_20260303_214829.html
+2026-03-03 23:15:15,937 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 23:15:15,938 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 23:15:15,939 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 23:15:15,939 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1462 chars
+2026-03-03 23:15:57,004 - guardian - INFO - [Planner] LLM response: 306 chars
+2026-03-03 23:15:57,005 - guardian - INFO - AI Decision [Planner]: {
+  "next_action": "remediation_plan",
+  "parameters": "target=192.168.1.49:3000,findings=unencrypted_http,cors_wildcard,outdated_jquery,nginx_config,ssh_exposed,priority=medium_first",
+  "expected_outcome": "Detailed remediation recommendations with prioritized fixes for all identified vulnerabilities"
+}
+2026-03-03 23:15:57,006 - guardian - INFO - [Planner] Decision: remediation_plan
+2026-03-03 23:15:57,007 - guardian - INFO - AI Decision: remediation_plan
+2026-03-03 23:15:57,007 - guardian - INFO - Autonomous Progress [################----] 17/20 (80%) ETA ~821s
+2026-03-03 23:15:57,007 - guardian - INFO - Executing AI decision: remediation_plan
+2026-03-03 23:15:57,008 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=4952 chars
+2026-03-03 23:17:52,553 - guardian - INFO - [Reporter] LLM response: 0 chars
+2026-03-03 23:17:52,555 - guardian - INFO - AI Decision [Reporter]: 
+2026-03-03 23:17:52,556 - guardian - INFO - Remediation plan saved to: reports/20260303_214829/remediation_plan_20260303_214829.md
+2026-03-03 23:17:52,557 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 23:17:52,558 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 23:17:52,559 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 23:17:52,559 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1481 chars
+2026-03-03 23:18:25,646 - guardian - INFO - [Planner] LLM response: 245 chars
+2026-03-03 23:18:25,647 - guardian - INFO - AI Decision [Planner]: {
+  "next_action": "executive_summary",
+  "parameters": "target:192.168.1.49:3000,findings:MEDIUM+LOW+INFO,audience:non-technical",
+  "expected_outcome": "High-level summary document for stakeholders highlighting key risks and business impact"
+}
+2026-03-03 23:18:25,648 - guardian - INFO - [Planner] Decision: executive_summary
+2026-03-03 23:18:25,648 - guardian - INFO - AI Decision: executive_summary
+2026-03-03 23:18:25,649 - guardian - INFO - Autonomous Progress [#################---] 18/20 (85%) ETA ~592s
+2026-03-03 23:18:25,649 - guardian - INFO - Executing AI decision: executive_summary
+2026-03-03 23:18:25,649 - guardian - INFO - [Reporter] LLM request: system_prompt=826 chars, prompt=827 chars
+2026-03-03 23:20:18,632 - guardian - INFO - [Reporter] LLM response: 0 chars
+2026-03-03 23:20:18,633 - guardian - INFO - AI Decision [Reporter]: 
+2026-03-03 23:20:18,634 - guardian - INFO - Executive summary saved to: reports/20260303_214829/executive_summary_20260303_214829.md
+2026-03-03 23:20:18,635 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 23:20:18,635 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 23:20:18,636 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 23:20:18,636 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1501 chars
+2026-03-03 23:21:32,035 - guardian - INFO - [Planner] LLM response: 201 chars
+2026-03-03 23:21:32,036 - guardian - INFO - AI Decision [Planner]: {
+  "next_action": "generate_report",
+  "parameters": "target:192.168.1.49:3000,findings:all,format:pdf",
+  "expected_outcome": "Final comprehensive penetration test report ready for client delivery"
+}
+2026-03-03 23:21:32,036 - guardian - INFO - [Planner] Decision: generate_report
+2026-03-03 23:21:32,037 - guardian - INFO - AI Decision: generate_report
+2026-03-03 23:21:32,037 - guardian - INFO - Autonomous Progress [##################--] 19/20 (90%) ETA ~380s
+2026-03-03 23:21:32,038 - guardian - INFO - Executing AI decision: generate_report
+2026-03-03 23:21:32,038 - guardian - INFO - Skipping AI decision: generate_report (already completed)
+2026-03-03 23:21:32,039 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 23:21:32,040 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 23:21:32,040 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 23:21:32,041 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=1501 chars
+2026-03-03 23:22:15,206 - guardian - INFO - [Planner] LLM response: 192 chars
+2026-03-03 23:22:15,207 - guardian - INFO - AI Decision [Planner]: {
+  "next_action": "generate_report",
+  "parameters": "final_review_with_all_findings_included",
+  "expected_outcome": "Complete final penetration test report ready for stakeholder delivery"
+}
+2026-03-03 23:22:15,207 - guardian - INFO - [Planner] Decision: generate_report
+2026-03-03 23:22:15,208 - guardian - INFO - AI Decision: generate_report
+2026-03-03 23:22:15,208 - guardian - INFO - Autonomous Progress [###################-] 20/20 (95%) ETA ~190s
+2026-03-03 23:22:15,209 - guardian - INFO - Executing AI decision: generate_report
+2026-03-03 23:22:15,209 - guardian - INFO - Skipping AI decision: generate_report (already completed)
+2026-03-03 23:22:15,210 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 23:22:15,211 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 23:22:15,211 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 23:22:15,212 - guardian - INFO - [Planner] LLM request: system_prompt=412 chars, prompt=939 chars
+2026-03-03 23:23:47,496 - guardian - INFO - [Planner] LLM response: 4541 chars
+2026-03-03 23:23:47,496 - guardian - INFO - AI Decision [Planner]: ---
+
+## PENETRATION TEST STRATEGIC ANALYSIS
+
+### 1. Overall Attack Surface Assessment
+
+| Category | Status | Notes |
+|----------|--------|-------|
+| **Web Application** | ⚠️ Moderate Risk | Port 3000 exposed, HTTP only |
+| **Infrastructure** | ⚠️ Moderate Risk | Default configs, SSH exposed |
+| **Dependencies** | ⚠️ Low Risk | Outdated jQuery detected |
+| **Network Security** | ⚠️ Moderate Risk | No encryption, CORS issues |
+
+**Attack Surface Score: 6/10** (Moderate - requires remediation)
+
+---
+
+### 2. Critical Vulnerabilities & Severity
+
+| Finding | Severity | CVSS Estimate | Exploitability |
+|---------|----------|---------------|----------------|
+| Unencrypted HTTP Communication | **MEDIUM** | 5.3 | High |
+| CORS Wildcard Configuration | **LOW** | 3.7 | Medium |
+| Outdated jQuery Version | **LOW** | 3.1 | Low |
+| Default nginx Configuration | **INFO** | 1.0 | Low |
+| SSH Service Exposed | **INFO** | 1.0 | Low |
+
+**Key Concern:** Unencrypted HTTP should be elevated to HIGH in production environments per OWASP Top 10 (A02:2021 - Cryptographic Failures).
+
+---
+
+### 3. Attack Vectors Identified
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    ATTACK CHAIN                        │
+├─────────────────────────────────────────────────────────┤
+│ 1. Network Reconnaissance → Port 3000 identified       │
+│ 2. Traffic Interception → HTTP allows MITM attacks     │
+│ 3. Session Hijacking → Unencrypted cookies/tokens      │
+│ 4. Cross-Origin Attacks → CORS wildcard enables        │
+│ 5. Dependency Exploitation → jQuery vulnerabilities    │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Primary Attack Path:** Network interception → Session theft → Unauthorized access
+
+---
+
+### 4. Recommended Next Steps (Prioritized)
+
+| Priority | Action | Timeline | Owner |
+|----------|--------|----------|-------|
+| **P1 - CRITICAL** | Implement HTTPS/TLS encryption | 1-2 weeks | DevOps |
+| **P2 - HIGH** | Configure proper CORS policies | 1 week | Security |
+| **P3 - MEDIUM** | Update jQuery to latest version | 2 weeks | Development |
+| **P4 - LOW** | Remove default nginx configurations | 1 week | DevOps |
+| **P5 - LOW** | Restrict SSH access (firewall/keys) | 1 week | Security |
+
+**Immediate Actions:**
+1. **Enable HTTPS** - Install SSL certificate, redirect HTTP→HTTPS
+2. **Review CORS** - Replace `*` with specific allowed origins
+3. **Dependency Audit** - Run `npm audit` or equivalent
+
+---
+
+### 5. Risk Rating for Target
+
+```
+┌─────────────────────────────────────────────────────────┐
+│              OVERALL RISK ASSESSMENT                    │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│                    ████████████░░░░░░░░░░              │
+│                    ████████████░░░░░░░░░░              │
+│                    ████████████░░░░░░░░░░              │
+│                    ████████████░░░░░░░░░░              │
+│                    ████████████░░░░░░░░░░              │
+│                    ████████████░░░░░░░░░░              │
+│                    ████████████░░░░░░░░░░              │
+│                    ████████████░░░░░░░░░░              │
+│                    ████████████░░░░░░░░░░              │
+│                    ████████████░░░░░░░░░░              │
+│                                                         │
+│                    RISK LEVEL: MODERATE                 │
+│                    SCORE: 6.2/10                       │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Risk Classification:** MODERATE
+- **Justification:** No critical vulnerabilities found, but encryption gap creates significant exposure
+- **Business Impact:** Data interception possible, compliance violations likely (PCI-DSS, GDPR)
+- **Remediation Effort:** Low-Medium (configuration changes primarily)
+
+---
+
+### 6. Compliance & Regulatory Notes
+
+⚠️ **Compliance Violations Detected:**
+- **PCI-DSS:** Requirement 4.1 (Encrypt transmission of cardholder data)
+- **GDPR:** Article 32 (Security of processing)
+- **OWASP Top 10:** A02:2021 Cryptographic Failures
+
+### 7. Final Recommendation
+
+**PROCEED TO REMEDIATION PHASE**
+
+The target requires immediate attention on encryption implementation before production deployment. Schedule follow-up penetration test after remediation to verify fixes.
+
+---
+
+**Report Status:** ✅ COMPLETE
+**Next Phase:** Remediation & Re-testing
+**Estimated Remediation Time:** 2-3 weeks
+2026-03-03 23:23:47,503 - guardian - INFO - Session saved to: reports/20260303_214829/session_20260303_214829.json
+2026-03-03 23:23:47,503 - guardian - INFO - Exported URLs for manual testing: reports/20260303_214829/urls_20260303_214829.txt
+2026-03-03 23:23:47,504 - guardian - INFO - Exported tool commands: reports/20260303_214829/payloads_20260303_214829.txt
+2026-03-03 23:23:47,504 - guardian - INFO - Tool execution summary:
+2026-03-03 23:23:47,505 - guardian - INFO - - reverse_dns: success (runs=1, success=1, failed=0, skipped=0)
+2026-03-03 23:23:47,505 - guardian - INFO - - whatweb: success (runs=1, success=1, failed=0, skipped=0)
+2026-03-03 23:23:47,505 - guardian - INFO - - nmap: success (runs=2, success=2, failed=0, skipped=0)
+2026-03-03 23:23:47,506 - guardian - INFO - - httpx: success (runs=1, success=1, failed=0, skipped=0)
+2026-03-03 23:23:47,506 - guardian - INFO - - nuclei: success (runs=2, success=2, failed=0, skipped=0)
+2026-03-03 23:23:47,507 - guardian - INFO - - tls_probe: success (runs=1, success=1, failed=0, skipped=0)

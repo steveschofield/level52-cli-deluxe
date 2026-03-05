@@ -50,6 +50,13 @@ class PromptLoader:
         if any(pattern in model_name for pattern in ["deephat", "deep-hat", "deephat-v1"]):
             return "deephat_v1_7b"
 
+        if any(pattern in model_name for pattern in [
+            "qwen3.5:27b", "qwen3.5-27b", "qwen-3.5-27b",
+            "qwen3-235b", "qwen3-32b", "qwen3-30b",
+            "qwen/qwen3", "qwen3.5",
+        ]):
+            return "qwen3_5_27b"
+
         # Default prompts
         return "default"
 
@@ -97,6 +104,15 @@ class PromptLoader:
         elif prompt_set == "deephat_v1_7b":
             # Import deephat_v1_7b red team optimized prompts
             from ai.prompt_templates import deephat_v1_7b as prompt_module
+
+            # Collect all prompts
+            prompts = {}
+            for attr in dir(prompt_module):
+                if attr.isupper() and "PROMPT" in attr:
+                    prompts[attr] = getattr(prompt_module, attr)
+        elif prompt_set == "qwen3_5_27b":
+            # Import qwen3_5_27b large-model optimized prompts
+            from ai.prompt_templates import qwen3_5_27b as prompt_module
 
             # Collect all prompts
             prompts = {}

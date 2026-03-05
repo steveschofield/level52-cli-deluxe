@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Penetration Test Report - http://192.168.1.49:3000</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #3498db; color: white; }
+        .critical { color: #e74c3c; font-weight: bold; }
+        .high { color: #e67e22; font-weight: bold; }
+        .medium { color: #f39c12; }
+        .low { color: #3498db; }
+        .info { color: #95a5a6; }
+        .summary { background-color: #ecf0f1; padding: 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔐 Penetration Test Report</h1>
+    
+    <div class="summary">
+        <h3>Target Information</h3>
+        <p><strong>Target:</strong> http://192.168.1.49:3000</p>
+        <p><strong>Session ID:</strong> 20260303_214829</p>
+        <p><strong>Date:</strong> 2026-03-03 23:15:15</p>
+        <p><strong>Duration:</strong> 1h 26m</p>
+        <p><strong>Subject Alternative Names (SAN):</strong> No additional SAN attributes listed</p>
+    </div>
+    
+    <h2>Executive Summary</h2>
+    <div><p></p></div>
+    
+    <h2>Findings Summary</h2>
+    <table>
+        <tr><th>Severity</th><th>Count</th></tr>
+        <tr><td class="critical">Critical</td><td>0</td></tr>
+        <tr><td class="high">High</td><td>0</td></tr>
+        <tr><td class="medium">Medium</td><td>1</td></tr>
+        <tr><td class="low">Low</td><td>2</td></tr>
+        <tr><td class="info">Info</td><td>2</td></tr>
+        <tr><th>Total</th><th>5</th></tr>
+    </table>
+    <h2>Report Quality Notes</h2><div class="summary"><p>Soft quality markers for reviewer awareness.</p><ul><li>Technical findings required quality repair: empty technical findings output</li><li>Technical findings fallback used after retry still failed quality checks: empty technical findings output</li></ul></div>
+
+    
+    
+    <h2>Technical Findings</h2>
+    <div><p><strong>Technical Findings Section<strong></p><p>Structured fallback generated from normalized finding data after quality validation failed.</p><p>
+[LOW] CORS Wildcard Configuration
+Tool: nmap
+Target: http://192.168.1.49:3000
+CVSS: 3.7 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N)
+CWE: CWE-693
+OWASP: A05:2021 - Security Misconfiguration
+Confidence: medium
+Description: The application allows cross-origin requests from any origin, which can enable cross-origin attacks.
+Evidence: `Access-Control-Allow-Origin: <em>`
+Evidence Source: artifact=reports/20260303_214829/nmap_20260303_220432_032329.xml, reports/20260303_214829/nmap_20260303_221855_492386.xml, reports/20260303_214829/session_20260303_214829.json | location=reports/20260303_214829/session_20260303_214829.json#tool=nmap,timestamp=2026-03-03T22:04:32.032932,cmd_sha1=f8adc2b286; reports/20260303_214829/session_20260303_214829.json#tool=nmap,timestamp=2026-03-03T22:18:55.492915,cmd_sha1=c2366c15c4
+Provenance ID: prov-c63130f14b35
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[INFO] Default nginx Configuration Exposed
+Tool: nmap
+Target: http://192.168.1.49:3000
+CVSS: 0.0 (est.)
+CWE: CWE-200
+OWASP: A05:2021 - Security Misconfiguration
+Confidence: medium
+Description: Port 80 is serving the default nginx welcome page, indicating the server may not be properly configured for production use.
+Evidence: `<script id="http-title" output="Welcome to nginx!">`
+Evidence Source: artifact=reports/20260303_214829/nmap_20260303_220432_032329.xml, reports/20260303_214829/nmap_20260303_221855_492386.xml, reports/20260303_214829/session_20260303_214829.json | location=reports/20260303_214829/session_20260303_214829.json#tool=nmap,timestamp=2026-03-03T22:04:32.032932,cmd_sha1=f8adc2b286; reports/20260303_214829/session_20260303_214829.json#tool=nmap,timestamp=2026-03-03T22:18:55.492915,cmd_sha1=c2366c15c4
+Provenance ID: prov-dc8cfe2385c9
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[INFO] SSH Service Exposed to Network
+Tool: nmap
+Target: http://192.168.1.49:3000
+CVSS: 0.0 (est.)
+CWE: CWE-306
+OWASP: A07:2021 - Identification and Authentication Failures
+Confidence: medium
+Description: SSH service is accessible on port 22 with version information exposed.
+Evidence: `<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="64"/></port>` with `<service name="ssh" product="OpenSSH" version="9.6p1 Ubuntu 3ubuntu13.14"`
+Evidence Source: artifact=reports/20260303_214829/nmap_20260303_220432_032329.xml, reports/20260303_214829/nmap_20260303_221855_492386.xml, reports/20260303_214829/session_20260303_214829.json | location=reports/20260303_214829/session_20260303_214829.json#tool=nmap,timestamp=2026-03-03T22:04:32.032932,cmd_sha1=f8adc2b286; reports/20260303_214829/session_20260303_214829.json#tool=nmap,timestamp=2026-03-03T22:18:55.492915,cmd_sha1=c2366c15c4
+Provenance ID: prov-8ac521dbaab2
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[MEDIUM] Unencrypted HTTP Communication
+Tool: httpx
+Target: http://192.168.1.49:3000
+CVSS: 5.3 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N)
+CWE: CWE-319
+OWASP: A02:2021 - Cryptographic Failures
+Confidence: medium
+Description: The target is serving content over unencrypted HTTP protocol instead of HTTPS, exposing all traffic to potential interception
+Evidence: `"scheme":"http"`
+Evidence Source: artifact=reports/20260303_214829/session_20260303_214829.json | location=reports/20260303_214829/session_20260303_214829.json#tool=httpx,timestamp=2026-03-03T22:22:59.384757,cmd_sha1=03788b0fea
+Provenance ID: prov-47151476c63e
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[LOW] Outdated jQuery Version Detected
+Tool: httpx
+Target: http://192.168.1.49:3000
+CVSS: 3.1
+CWE: Unmapped
+OWASP: Unmapped
+Confidence: medium
+Description: jQuery version 2.2.4 is detected, which is an outdated version (released 2014) with known security vulnerabilities
+Evidence: `"tech":["Cloudflare","Onsen UI","Osano:3.1.0","cdnjs","jQuery:2.2.4"]`
+Evidence Source: artifact=reports/20260303_214829/session_20260303_214829.json | location=reports/20260303_214829/session_20260303_214829.json#tool=httpx,timestamp=2026-03-03T22:22:59.384757,cmd_sha1=03788b0fea
+Provenance ID: prov-7062922cebe4
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A
+</p></div>
+
+    <h2>Evidence</h2>
+    <ul>
+        <li><strong>[LOW] CORS Wildcard Configuration</strong> (Tool: nmap, Target: http://192.168.1.49:3000) Evidence: `Access-Control-Allow-Origin: *` Evidence file: reports/20260303_214829/nmap_20260303_220432_032329.xml, reports/20260303_214829/nmap_20260303_221855_492386.xml, reports/20260303_214829/session_20260303_214829.json Evidence location: reports/20260303_214829/session_20260303_214829.json#tool=nmap,timestamp=2026-03-03T22:04:32.032932,cmd_sha1=f8adc2b286; reports/20260303_214829/session_20260303_214829.json#tool=nmap,timestamp=2026-03-03T22:18:55.492915,cmd_sha1=c2366c15c4 Provenance ID: prov-c63130f14b35</li>
+        <li><strong>[INFO] Default nginx Configuration Exposed</strong> (Tool: nmap, Target: http://192.168.1.49:3000) Evidence: `&lt;script id=&quot;http-title&quot; output=&quot;Welcome to nginx!&quot;&gt;` Evidence file: reports/20260303_214829/nmap_20260303_220432_032329.xml, reports/20260303_214829/nmap_20260303_221855_492386.xml, reports/20260303_214829/session_20260303_214829.json Evidence location: reports/20260303_214829/session_20260303_214829.json#tool=nmap,timestamp=2026-03-03T22:04:32.032932,cmd_sha1=f8adc2b286; reports/20260303_214829/session_20260303_214829.json#tool=nmap,timestamp=2026-03-03T22:18:55.492915,cmd_sha1=c2366c15c4 Provenance ID: prov-dc8cfe2385c9</li>
+        <li><strong>[INFO] SSH Service Exposed to Network</strong> (Tool: nmap, Target: http://192.168.1.49:3000) Evidence: `&lt;port protocol=&quot;tcp&quot; portid=&quot;22&quot;&gt;&lt;state state=&quot;open&quot; reason=&quot;syn-ack&quot; reason_ttl=&quot;64&quot;/&gt;&lt;/port&gt;` with `&lt;service name=&quot;ssh&quot; product=&quot;OpenSSH&quot; version=&quot;9.6p1 Ubuntu 3ubuntu13.14&quot;` Evidence file: reports/20260303_214829/nmap_20260303_220432_032329.xml, reports/20260303_214829/nmap_20260303_221855_492386.xml, reports/20260303_214829/session_20260303_214829.json Evidence location: reports/20260303_214829/session_20260303_214829.json#tool=nmap,timestamp=2026-03-03T22:04:32.032932,cmd_sha1=f8adc2b286; reports/20260303_214829/session_20260303_214829.json#tool=nmap,timestamp=2026-03-03T22:18:55.492915,cmd_sha1=c2366c15c4 Provenance ID: prov-8ac521dbaab2</li>
+        <li><strong>[MEDIUM] Unencrypted HTTP Communication</strong> (Tool: httpx, Target: http://192.168.1.49:3000) Evidence: `&quot;scheme&quot;:&quot;http&quot;` Evidence file: reports/20260303_214829/session_20260303_214829.json Evidence location: reports/20260303_214829/session_20260303_214829.json#tool=httpx,timestamp=2026-03-03T22:22:59.384757,cmd_sha1=03788b0fea Provenance ID: prov-47151476c63e</li>
+        <li><strong>[LOW] Outdated jQuery Version Detected</strong> (Tool: httpx, Target: http://192.168.1.49:3000) Evidence: `&quot;tech&quot;:[&quot;Cloudflare&quot;,&quot;Onsen UI&quot;,&quot;Osano:3.1.0&quot;,&quot;cdnjs&quot;,&quot;jQuery:2.2.4&quot;]` Evidence file: reports/20260303_214829/session_20260303_214829.json Evidence location: reports/20260303_214829/session_20260303_214829.json#tool=httpx,timestamp=2026-03-03T22:22:59.384757,cmd_sha1=03788b0fea Provenance ID: prov-7062922cebe4</li>
+    </ul>
+
+
+    <h2>Standards Mapping</h2>
+    <table><tr><th>Severity</th><th>Finding</th><th>CVSS</th><th>OWASP</th><th>CWE</th><th>Exploit Status</th></tr><tr><td>LOW</td><td>CORS Wildcard Configuration</td><td>3.7 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-693</td><td>N/A</td></tr><tr><td>INFO</td><td>Default nginx Configuration Exposed</td><td>0.0 (est.)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>INFO</td><td>SSH Service Exposed to Network</td><td>0.0 (est.)</td><td>A07:2021 - Identification and Authentication Failures</td><td>CWE-306</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Unencrypted HTTP Communication</td><td>5.3 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N)</td><td>A02:2021 - Cryptographic Failures</td><td>CWE-319</td><td>N/A</td></tr><tr><td>LOW</td><td>Outdated jQuery Version Detected</td><td>3.1</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr></table>
+
+    <h2>Exploitation References</h2>
+    <p><em>Exploit lookup status: exploitdb: built (46960) from /usr/share/exploitdb; metasploit: built (2611) from /usr/share/metasploit-framework</em></p>
+    
+    <h2>Remediation Plan</h2>
+    <div><p></p></div>
+    
+    <h2>AI Decision Trace</h2>
+    <div><p></p></div>
+
+    <h2>Tool Summary</h2>
+    <table><tr><th>Tool</th><th>Runs</th><th>Success</th><th>Failed</th><th>Skipped</th><th>Last Exit</th></tr><tr><td>reverse_dns</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>whatweb</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nmap</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td></tr><tr><td>httpx</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nuclei</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td></tr><tr><td>tls_probe</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr></table>
+
+    <h2>Tools Executed</h2>
+    <div><p>- <strong>reverse_dns<strong>: PTR 192.168.1.49 (Duration: 0.00s)
+- <strong>whatweb<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/whatweb --log-json=reports/20260303_214829/whatweb_20260303_215812_421609.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.49:3000 (Duration: 3.34s)
+- <strong>nmap<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260303_214829/nmap_20260303_220432_032329.xml -p 1-65535 192.168.1.49 (Duration: 12.28s)
+- <strong>nmap<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260303_214829/nmap_20260303_221855_492386.xml -p 3000 192.168.1.49 (Duration: 11.36s)
+- <strong>httpx<strong>: /home/ss/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u http://192.168.1.49:3000 (Duration: 0.48s)
+- <strong>nuclei<strong>: /home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -u http://192.168.1.49:3000 -jsonl -o reports/20260303_214829/nuclei_20260303_222956.jsonl -severity critical,high -tags cve,default-login,exposure,misconfig -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 50 (Duration: 107.50s)
+- <strong>tls_probe<strong>: TLS handshake probe 192.168.1.49:[3000, 443] (Duration: 0.00s)
+- <strong>nuclei<strong>: /home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -u http://192.168.1.49:3000 -jsonl -o reports/20260303_214829/nuclei_20260303_223612.jsonl -severity critical,high -tags cve,default-login,exposure,misconfig -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 50 (Duration: 107.50s)</p></div>
+    
+    <footer>
+        <hr>
+        <p><em>Report generated by Guardian AI Pentest Tool</em></p>
+    </footer>
+</body>
+</html>

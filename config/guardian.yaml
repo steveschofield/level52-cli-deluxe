@@ -46,19 +46,20 @@ ai:
   temperature: 0.2
 
   # Prompt set to use - optimizes prompts for different LLM capabilities
-  # Options: "default", "llama3_2_3b", "llama3_1_8b", "deepseek_r1_8b", "deephat_v1_7b"
+  # Options: "default", "llama3_2_3b", "llama3_1_8b", "deepseek_r1_8b", "deephat_v1_7b", "qwen3_5_27b"
   # Auto-detects from model name if not specified
   # prompt_set: "llama3_2_3b"   # Explicitly set for llama3.2:3b
   # prompt_set: "llama3_1_8b"   # Explicitly set for llama3.1:8b
   # prompt_set: "deepseek_r1_8b"  # Explicitly set for deepseek-r1:8b
   # prompt_set: "deephat_v1_7b"   # Explicitly set for DeepHat
+  # prompt_set: "qwen3_5_27b"     # Explicitly set for Qwen 3.5 27B (also auto-detected)
   # Leave commented for auto-detection based on model name
 
   # Log full LLM request/response payloads to JSONL
   log_llm_io_file: true
   log_llm_full_io: true
 
-  max_tokens: 2048
+  max_tokens: 4096          # Increased for Qwen 3.5 27B — supports longer structured outputs
   # Request timeout for provider HTTP calls (seconds). Some providers may still impose their own limits.
   timeout: 600
   # Overall time budget for an LLM call at the agent level (seconds).
@@ -69,6 +70,7 @@ ai:
     deephat_v1_7b: 1200     # 20 minutes for DeepHat (slower, verbose model)
     llama3_2_3b: 300        # 5 minutes for Llama 3.2 3B (faster)
     llama3_1_8b: 600        # 10 minutes for Llama 3.1 8B
+    qwen3_5_27b: 900        # 15 minutes for Qwen 3.5 27B (remote, large model)
   # Retries for LLM timeouts (set to 0 to disable).
   llm_retry_count: 2
   llm_retry_backoff_seconds: 2
@@ -78,8 +80,16 @@ ai:
   # Max characters of tool output to include in LLM prompts (larger = more context, more tokens/cost)
   max_tool_output_chars: 25000
   # Optional: desired context window size (only enforced for Ollama via num_ctx; other providers may ignore).
-  # 24576 is the auto-safe cap for 20b models; setting explicitly avoids the clamping warning.
-  context_window: 16384
+  # Qwen 3.5 27B supports up to 32768 tokens context; 32768 is recommended for remote hosting.
+  context_window: 32768
+  # Override the conservative OOM-safe context cap (default for 20-30B models is 24576).
+  # Set only if your remote host has sufficient VRAM/RAM for the requested context.
+  max_safe_context_window: 32768
+  # Disable Qwen3 thinking mode for structured output tasks (planner JSON, analyst findings).
+  # Thinking mode generates long <think> blocks that LangChain strips from content,
+  # causing silent empty responses on complex prompts.
+  # Set to true only for open-ended exploratory tasks where thinking adds value.
+  think: false
 
 # Penetration Testing Settings
 pentest:

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.98 scan initiated Tue Mar  3 22:04:32 2026 as: /usr/lib/nmap/nmap -&#45;privileged -sV -sC -T4 -Pn -oX reports/20260303_214829/nmap_20260303_220432_032329.xml -p 1-65535 192.168.1.49 -->
+<nmaprun scanner="nmap" args="/usr/lib/nmap/nmap -&#45;privileged -sV -sC -T4 -Pn -oX reports/20260303_214829/nmap_20260303_220432_032329.xml -p 1-65535 192.168.1.49" start="1772593472" startstr="Tue Mar  3 22:04:32 2026" version="7.98" xmloutputversion="1.05">
+<scaninfo type="syn" protocol="tcp" numservices="65535" services="1-65535"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<hosthint><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.49" addrtype="ipv4"/>
+<address addr="BC:24:11:E0:2E:8C" addrtype="mac" vendor="Proxmox Server Solutions GmbH"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<host starttime="1772593472" endtime="1772593484"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.49" addrtype="ipv4"/>
+<address addr="BC:24:11:E0:2E:8C" addrtype="mac" vendor="Proxmox Server Solutions GmbH"/>
+<hostnames>
+<hostname name="ubuntu1.localdomain" type="PTR"/>
+</hostnames>
+<ports><extraports state="closed" count="65532">
+<extrareasons reason="reset" count="65532" proto="tcp" ports="1-21,23-79,81-2999,3001-65535"/>
+</extraports>
+<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="ssh" product="OpenSSH" version="9.6p1 Ubuntu 3ubuntu13.14" extrainfo="Ubuntu Linux; protocol 2.0" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:openbsd:openssh:9.6p1</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service><script id="ssh-hostkey" output="&#xa;  256 f1:cf:1c:be:ed:0f:ab:34:65:6b:20:3f:08:02:27:57 (ECDSA)&#xa;  256 f3:38:70:1e:9b:7c:49:4b:01:d4:0b:87:c1:e3:30:ce (ED25519)"><table>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBABiDzqoaZ+r53pLE071bWxrJdzh5RTsqo/Ci4Rl++NCv1NvGxuoMuf/WXAw1K52W54HmOouFZGYDNhhRkXIKqo=</elem>
+<elem key="fingerprint">f1cf1cbeed0fab34656b203f08022757</elem>
+<elem key="bits">256</elem>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+</table>
+<table>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAIEiQYunxZGs6OY3qdru9Z3lH2fdbXdhGzryUntPEFy0O</elem>
+<elem key="fingerprint">f338701e9b7c494b01d40b87c1e330ce</elem>
+<elem key="bits">256</elem>
+<elem key="type">ssh-ed25519</elem>
+</table>
+</script></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="http" product="nginx" version="1.24.0" extrainfo="Ubuntu" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.24.0</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service><script id="http-server-header" output="nginx/1.24.0 (Ubuntu)"><elem>nginx/1.24.0 (Ubuntu)</elem>
+</script><script id="http-title" output="Welcome to nginx!"><elem key="title">Welcome to nginx!</elem>
+</script></port>
+<port protocol="tcp" portid="3000"><state state="open" reason="syn-ack" reason_ttl="63"/><service name="ppp" servicefp="SF-Port3000-TCP:V=7.98%I=7%D=3/3%Time=69A7A14C%P=x86_64-pc-linux-gnu%r(GetRequest,3890,&quot;HTTP/1\.1\x20200\x20OK\r\nAccess-Control-Allow-Origin:\x20\*\r\nX-Content-Type-Options:\x20nosniff\r\nX-Frame-Options:\x20SAMEORIGIN\r\nFeature-Policy:\x20payment\x20&apos;self&apos;\r\nX-Recruiting:\x20/#/jobs\r\nAccept-Ranges:\x20bytes\r\nCache-Control:\x20public,\x20max-age=0\r\nLast-Modified:\x20Wed,\x2004\x20Mar\x202026\x2001:39:51\x20GMT\r\nETag:\x20W/\&quot;1252f-19cb6805ba0\&quot;\r\nContent-Type:\x20text/html;\x20charset=UTF-8\r\nContent-Length:\x2075055\r\nVary:\x20Accept-Encoding\r\nDate:\x20Wed,\x2004\x20Mar\x202026\x2003:04:44\x20GMT\r\nConnection:\x20close\r\n\r\n&lt;!-&#45;\n\x20\x20~\x20Copyright\x20\(c\)\x202014-2026\x20Bjoern\x20Kimminich\x20&amp;\x20the\x20OWASP\x20Juice\x20Shop\x20contributors\.\n\x20\x20~\x20SPDX-License-Identifier:\x20MIT\n\x20\x20-&#45;&gt;\n\n&lt;!doctype\x20html&gt;\n&lt;html\x20lang=\&quot;en\&quot;\x20data-beasties-container&gt;\n&lt;head&gt;\n\x20\x20&lt;meta\x20charset=\&quot;utf-8\&quot;&gt;\n\x20\x20&lt;title&gt;OWASP\x20Juice\x20Shop&lt;/title&gt;\n\x20\x20&lt;meta\x20name=\&quot;description\&quot;\x20content=\&quot;Probably\x20the\x20most\x20modern\x20and\x20sophisticated\x20insecure\x20web\x20application\&quot;&gt;\n\x20\x20&lt;meta\x20name=\&quot;viewport\&quot;\x20content=\&quot;width=device-width,\x20initial-scale=1\&quot;&gt;\n\x20\x20&lt;link\x20id=\&quot;favicon\&quot;\x20rel=\&quot;icon\&quot;\x20&quot;)%r(Help,2F,&quot;HTTP/1\.1\x20400\x20Bad\x20Request\r\nConnection:\x20close\r\n\r\n&quot;)%r(NCP,2F,&quot;HTTP/1\.1\x20400\x20Bad\x20Request\r\nConnection:\x20close\r\n\r\n&quot;)%r(HTTPOptions,EA,&quot;HTTP/1\.1\x20204\x20No\x20Content\r\nAccess-Control-Allow-Origin:\x20\*\r\nAccess-Control-Allow-Methods:\x20GET,HEAD,PUT,PATCH,POST,DELETE\r\nVary:\x20Access-Control-Request-Headers\r\nContent-Length:\x200\r\nDate:\x20Wed,\x2004\x20Mar\x202026\x2003:04:44\x20GMT\r\nConnection:\x20close\r\n\r\n&quot;)%r(RTSPRequest,EA,&quot;HTTP/1\.1\x20204\x20No\x20Content\r\nAccess-Control-Allow-Origin:\x20\*\r\nAccess-Control-Allow-Methods:\x20GET,HEAD,PUT,PATCH,POST,DELETE\r\nVary:\x20Access-Control-Request-Headers\r\nContent-Length:\x200\r\nDate:\x20Wed,\x2004\x20Mar\x202026\x2003:04:44\x20GMT\r\nConnection:\x20close\r\n\r\n&quot;);" method="table" conf="3"/><script id="fingerprint-strings" output="&#xa;  GetRequest: &#xa;    HTTP/1.1 200 OK&#xa;    Access-Control-Allow-Origin: *&#xa;    X-Content-Type-Options: nosniff&#xa;    X-Frame-Options: SAMEORIGIN&#xa;    Feature-Policy: payment &apos;self&apos;&#xa;    X-Recruiting: /#/jobs&#xa;    Accept-Ranges: bytes&#xa;    Cache-Control: public, max-age=0&#xa;    Last-Modified: Wed, 04 Mar 2026 01:39:51 GMT&#xa;    ETag: W/&quot;1252f-19cb6805ba0&quot;&#xa;    Content-Type: text/html; charset=UTF-8&#xa;    Content-Length: 75055&#xa;    Vary: Accept-Encoding&#xa;    Date: Wed, 04 Mar 2026 03:04:44 GMT&#xa;    Connection: close&#xa;    &lt;!-&#45;&#xa;    Copyright (c) 2014-2026 Bjoern Kimminich &amp; the OWASP Juice Shop contributors.&#xa;    SPDX-License-Identifier: MIT&#xa;    &lt;!doctype html&gt;&#xa;    &lt;html lang=&quot;en&quot; data-beasties-container&gt;&#xa;    &lt;head&gt;&#xa;    &lt;meta charset=&quot;utf-8&quot;&gt;&#xa;    &lt;title&gt;OWASP Juice Shop&lt;/title&gt;&#xa;    &lt;meta name=&quot;description&quot; content=&quot;Probably the most modern and sophisticated insecure web application&quot;&gt;&#xa;    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&#xa;    &lt;link id=&quot;favicon&quot; rel=&quot;icon&quot;&#xa;  HTTPOptions, RTSPRequest: &#xa;    HTTP/1.1 204 No Content&#xa;    Access-Control-Allow-Origin: *&#xa;    Access-Control-Allow-Methods: GET,HEAD,PUT,PATCH,POST,DELETE&#xa;    Vary: Access-Control-Request-Headers&#xa;    Content-Length: 0&#xa;    Date: Wed, 04 Mar 2026 03:04:44 GMT&#xa;    Connection: close&#xa;  Help, NCP: &#xa;    HTTP/1.1 400 Bad Request&#xa;    Connection: close"><elem key="GetRequest">&#xa;    HTTP/1.1 200 OK&#xa;    Access-Control-Allow-Origin: *&#xa;    X-Content-Type-Options: nosniff&#xa;    X-Frame-Options: SAMEORIGIN&#xa;    Feature-Policy: payment &apos;self&apos;&#xa;    X-Recruiting: /#/jobs&#xa;    Accept-Ranges: bytes&#xa;    Cache-Control: public, max-age=0&#xa;    Last-Modified: Wed, 04 Mar 2026 01:39:51 GMT&#xa;    ETag: W/&quot;1252f-19cb6805ba0&quot;&#xa;    Content-Type: text/html; charset=UTF-8&#xa;    Content-Length: 75055&#xa;    Vary: Accept-Encoding&#xa;    Date: Wed, 04 Mar 2026 03:04:44 GMT&#xa;    Connection: close&#xa;    &lt;!-&#45;&#xa;    Copyright (c) 2014-2026 Bjoern Kimminich &amp; the OWASP Juice Shop contributors.&#xa;    SPDX-License-Identifier: MIT&#xa;    &lt;!doctype html&gt;&#xa;    &lt;html lang=&quot;en&quot; data-beasties-container&gt;&#xa;    &lt;head&gt;&#xa;    &lt;meta charset=&quot;utf-8&quot;&gt;&#xa;    &lt;title&gt;OWASP Juice Shop&lt;/title&gt;&#xa;    &lt;meta name=&quot;description&quot; content=&quot;Probably the most modern and sophisticated insecure web application&quot;&gt;&#xa;    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&#xa;    &lt;link id=&quot;favicon&quot; rel=&quot;icon&quot;</elem>
+<elem key="HTTPOptions, RTSPRequest">&#xa;    HTTP/1.1 204 No Content&#xa;    Access-Control-Allow-Origin: *&#xa;    Access-Control-Allow-Methods: GET,HEAD,PUT,PATCH,POST,DELETE&#xa;    Vary: Access-Control-Request-Headers&#xa;    Content-Length: 0&#xa;    Date: Wed, 04 Mar 2026 03:04:44 GMT&#xa;    Connection: close</elem>
+<elem key="Help, NCP">&#xa;    HTTP/1.1 400 Bad Request&#xa;    Connection: close</elem>
+</script></port>
+</ports>
+<times srtt="124" rttvar="34" to="100000"/>
+</host>
+<runstats><finished time="1772593484" timestr="Tue Mar  3 22:04:44 2026" summary="Nmap done at Tue Mar  3 22:04:44 2026; 1 IP address (1 host up) scanned in 12.24 seconds" elapsed="12.24" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

@@ -7,6 +7,7 @@ Supports different prompt sets optimized for different LLMs:
 - llama3_1_8b: Balanced prompts for Llama 3.1 8B mid-size model
 - deepseek_r1_8b: Reasoning-focused prompts for DeepSeek-R1 8B
 - deephat_v1_7b: Red team focused prompts for DeepHat cybersecurity model
+- qwen3_5_27b: Large-model optimized prompts for Qwen 3.5 27B (local Ollama or remote hosted)
 """
 
 import os

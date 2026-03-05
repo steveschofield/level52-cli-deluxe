@@ -18,7 +18,7 @@ parts/
 sdist/
 var/
 wheels/
-#reports*
+reports
 *.egg-info/
 .installed.cfg
 *.egg
@@ -32,7 +32,6 @@ env/
 ENV/
 .venv
 gap-analysis*
-reports*
 setup-tools.log
 
 # IDE
@@ -48,11 +47,6 @@ setup-tools.log
 .env
 .env.local
 
-# Reports and logs
-#reports/*.json
-#reports/*.html
-#reports/*.md
-#reports/session_*.json
 logs/
 #*.log
 wordlists/SecLists/

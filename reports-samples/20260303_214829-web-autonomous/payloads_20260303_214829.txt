@@ -1,0 +1,8 @@
+PTR 192.168.1.49
+/home/ss/code/level52-cli-deluxe/venv/bin/whatweb --log-json=reports/20260303_214829/whatweb_20260303_215812_421609.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.49:3000
+/home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260303_214829/nmap_20260303_220432_032329.xml -p 1-65535 192.168.1.49
+/home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260303_214829/nmap_20260303_221855_492386.xml -p 3000 192.168.1.49
+/home/ss/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u http://192.168.1.49:3000
+/home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -u http://192.168.1.49:3000 -jsonl -o reports/20260303_214829/nuclei_20260303_222956.jsonl -severity critical,high -tags cve,default-login,exposure,misconfig -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 50
+TLS handshake probe 192.168.1.49:[3000, 443]
+/home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -u http://192.168.1.49:3000 -jsonl -o reports/20260303_214829/nuclei_20260303_223612.jsonl -severity critical,high -tags cve,default-login,exposure,misconfig -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 50

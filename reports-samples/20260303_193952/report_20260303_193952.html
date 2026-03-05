@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Penetration Test Report - http://192.168.1.49:3000</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #3498db; color: white; }
+        .critical { color: #e74c3c; font-weight: bold; }
+        .high { color: #e67e22; font-weight: bold; }
+        .medium { color: #f39c12; }
+        .low { color: #3498db; }
+        .info { color: #95a5a6; }
+        .summary { background-color: #ecf0f1; padding: 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔐 Penetration Test Report</h1>
+    
+    <div class="summary">
+        <h3>Target Information</h3>
+        <p><strong>Target:</strong> http://192.168.1.49:3000</p>
+        <p><strong>Session ID:</strong> 20260303_193952</p>
+        <p><strong>Date:</strong> 2026-03-03 21:21:25</p>
+        <p><strong>Duration:</strong> 1h 41m</p>
+        <p><strong>Subject Alternative Names (SAN):</strong> No additional SAN attributes listed</p>
+    </div>
+    
+    <h2>Executive Summary</h2>
+    <div><p></p></div>
+    
+    <h2>Findings Summary</h2>
+    <table>
+        <tr><th>Severity</th><th>Count</th></tr>
+        <tr><td class="critical">Critical</td><td>0</td></tr>
+        <tr><td class="high">High</td><td>1</td></tr>
+        <tr><td class="medium">Medium</td><td>7</td></tr>
+        <tr><td class="low">Low</td><td>10</td></tr>
+        <tr><td class="info">Info</td><td>1</td></tr>
+        <tr><th>Total</th><th>19</th></tr>
+    </table>
+    <h2>Report Quality Notes</h2><div class="summary"><p>Soft quality markers for reviewer awareness.</p><ul><li>Technical findings required quality repair: empty technical findings output</li><li>Technical findings fallback used after retry still failed quality checks: empty technical findings output</li></ul></div>
+
+    
+    
+    <h2>Technical Findings</h2>
+    <div><p><strong>Technical Findings Section<strong></p><p>Structured fallback generated from normalized finding data after quality validation failed.</p><p>
+[MEDIUM] Vulnerable jQuery Version Detected
+Tool: httpx
+Target: http://192.168.1.49:3000
+CVSS: 6.1 (AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N)
+CWE: CWE-79
+OWASP: A03:2021 - Injection
+Confidence: medium
+Description: jQuery version 2.2.4 is detected on the application. This version is known to contain multiple security vulnerabilities including XSS and prototype pollution issues.
+Evidence: `"tech":["Cloudflare","Onsen UI","Osano:3.1.0","cdnjs","jQuery:2.2.4"]` and `"cpe":[{"product":"jquery-bbq","vendor":"jquery-bbq_project","cpe":"cpe:2.3:a:jquery-bbq_project:jquery-bbq:<em>:<em>:<em>:<em>:<em>:<em>:<em>:<em>
+Evidence Source: artifact=reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=httpx,timestamp=2026-03-03T19:40:31.030437,cmd_sha1=0138e24e6b
+Provenance ID: prov-23021c9c76a6
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[LOW] Information Disclosure Through Error Messages
+Tool: httpx
+Target: http://192.168.1.49:3000
+CVSS: 1.0
+CWE: CWE-200
+OWASP: A05:2021 - Security Misconfiguration
+Confidence: medium
+Description: Multiple endpoints return detailed error messages that expose internal application structure, error types, and security control mechanisms. This includes
+Evidence: `"title":"UnauthorizedError: No Authorization header was found"` and `"title":"TypeError: Cannot read properties of undefined (reading 'includes')"` and `"title":"Error: Blocked illegal activity by ::
+Evidence Source: artifact=reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=httpx,timestamp=2026-03-03T19:40:31.030437,cmd_sha1=0138e24e6b
+Provenance ID: prov-a0421a41d34c
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[MEDIUM] Overly Permissive CORS Configuration
+Tool: zap
+Target: http://192.168.1.49:3000
+CVSS: 5.3 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)
+CWE: CWE-264, CWE-693
+OWASP: A01:2021 - Broken Access Control, A05:2021 - Security Misconfiguration
+Confidence: medium
+Description: The web server is configured with `Access-Control-Allow-Origin: <em>` header, allowing any domain to make cross-origin requests to these API endpoints. This violates the Same Origin Policy (SOP) and perm
+Evidence: Evidence from zap:
+`"evidence": "Access-Control-Allow-Origin: <em>"` on endpoints including `/api/Cards`, `/api/Addresss`, `/api/BasketItems`, `/api/PrivacyRequests`, and root `/`</p><p>---</p><p>Evidence from coo
+Evidence Source: artifact=reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=zap,timestamp=2026-03-03T19:43:03.707612,cmd_sha1=89ab4f9d0f
+Provenance ID: prov-b8d202280d52
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[MEDIUM] CORS Wildcard Configuration
+Tool: nmap
+Target: http://192.168.1.49:3000
+CVSS: 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)
+CWE: CWE-693
+OWASP: A01:2021 - Broken Access Control, A05:2021 - Security Misconfiguration
+Confidence: medium
+Description: The server responds with a wildcard CORS header allowing any origin to make cross-origin requests to this application. This is visible in both GET and OPTIONS responses.
+Evidence: Evidence from nmap:
+`Access-Control-Allow-Origin: <em>`</p><p>---</p><p>Evidence from headers:
+`Access-Control-Allow-Origin: <em>`</p><p>---</p><p>Evidence from nikto:
+"+ /: Retrieved access-control-allow-origin header: <em>."
+Evidence Source: artifact=reports/20260303_193952/nmap_20260303_195030_660468.xml, reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=nmap,timestamp=2026-03-03T19:50:30.662718,cmd_sha1=5463155cd9
+Provenance ID: prov-a958d70750d6
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[LOW] Service Version Disclosure
+Tool: nmap
+Target: http://192.168.1.49:3000
+CVSS: 3.1 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)
+CWE: CWE-200
+OWASP: A05:2021 - Security Misconfiguration
+Confidence: medium
+Description: The nginx web server version is exposed in HTTP headers, providing attackers with specific version information for targeted exploits.
+Evidence: `nginx/1.24.0 (Ubuntu)` and `service name="http" product="nginx" version="1.24.0"`
+Evidence Source: artifact=reports/20260303_193952/nmap_20260303_195030_660468.xml, reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=nmap,timestamp=2026-03-03T19:50:30.662718,cmd_sha1=5463155cd9
+Provenance ID: prov-c359cd62113b
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[LOW] Accept-Ranges Header Enabled
+Tool: nmap
+Target: http://192.168.1.49:3000
+CVSS: 2.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)
+CWE: CWE-200
+OWASP: A05:2021 - Security Misconfiguration
+Confidence: medium
+Description: The server accepts byte range requests, which can be used for information disclosure and partial content retrieval attacks.
+Evidence: `Accept-Ranges: bytes`
+Evidence Source: artifact=reports/20260303_193952/nmap_20260303_195030_660468.xml, reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=nmap,timestamp=2026-03-03T19:50:30.662718,cmd_sha1=5463155cd9
+Provenance ID: prov-afb4912e3953
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[LOW] CORS Wildcard Configuration
+Tool: headers
+Target: http://192.168.1.49:3000
+CVSS: 3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)
+CWE: CWE-693
+OWASP: A05:2021 - Security Misconfiguration
+Confidence: medium
+Description: The server is configured to allow cross-origin requests from any origin using a wildcard (<em>) value. This permits any website to make authenticated requests to this server via the browser.
+Evidence: Evidence from headers:
+`Access-Control-Allow-Origin: <em>`</p><p>---</p><p>Evidence from nikto:
+"+ /: Retrieved access-control-allow-origin header: <em>."
+Evidence Source: artifact=reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=headers,timestamp=2026-03-03T19:54:10.331059,cmd_sha1=2d475b34c0
+Provenance ID: prov-2026c25c4323
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[LOW] Information Disclosure via Custom Header
+Tool: headers
+Target: http://192.168.1.49:3000
+CVSS: 2.0 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)
+CWE: CWE-200
+OWASP: A05:2021 - Security Misconfiguration
+Confidence: medium
+Description: A custom header exposes an internal application path (/#/jobs) that may reveal application structure or functionality not intended for public disclosure.
+Evidence: Evidence from headers:
+`X-Recruiting: /#/jobs`</p><p>---</p><p>Evidence from cookie-analyzer:
+`X-Recruiting: /#/jobs`
+Evidence Source: artifact=reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=headers,timestamp=2026-03-03T19:54:10.331059,cmd_sha1=2d475b34c0
+Provenance ID: prov-c11d8e5fb94d
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[MEDIUM] Credentials Embedded in URLs
+Tool: waybackurls
+Target: http://192.168.1.49:3000
+CVSS: 6.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N)
+CWE: CWE-257
+OWASP: A07:2021 - Identification and Authentication Failures
+Confidence: medium
+Description: URL contains embedded credentials (username:password@host) which may be logged or exposed
+Evidence: `http://fedoraAdmin:xxxxx@127.0.0.1:8080/fedora'`
+Evidence Source: artifact=reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=waybackurls,timestamp=2026-03-03T19:58:24.803331,cmd_sha1=4b1a2aea08
+Provenance ID: prov-bdee034a0af9
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[INFO] N/A - Tool Execution Failed
+Tool: xnlinkfinder
+Target: http://192.168.1.49:3000
+CVSS: 0.0 (est.)
+CWE: Unmapped
+OWASP: Unmapped
+Confidence: medium
+Description: The xnlinkfinder tool did not execute successfully due to missing mandatory command-line arguments
+Evidence: `You need to provide a Scope Filter with the -sf / --scope-filter argument`
+Evidence Source: artifact=reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=xnlinkfinder,timestamp=2026-03-03T20:02:33.263081,cmd_sha1=c419445add
+Provenance ID: prov-db2308d89b8c
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[LOW] jQuery End-of-Life (No Security Updates)
+Tool: retire
+Target: http://192.168.1.49:3000
+CVSS: 3.5 (est.)
+CWE: CWE-1104
+OWASP: A05:2021 - Security Misconfiguration
+Confidence: medium
+Description: jQuery version 2.2.4 is detected, which belongs to the 1.x and 2.x series that are End-of-Life and no longer receiving security updates
+Evidence: `"version":"2.2.4","component":"jquery","npmname":"jquery","detection":"filecontent","vulnerabilities":[{"info":["https://github.com/jquery/jquery.com/issues/162"],"below":"2.999.999","severity":"low"
+Evidence Source: artifact=reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=retire,timestamp=2026-03-03T20:04:50.532656,cmd_sha1=e5901483b4
+Provenance ID: prov-758627bf8b1e
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[MEDIUM] CVE-2015-9251 - CORS Request Execution
+Tool: retire
+Target: http://192.168.1.49:3000
+CVSS: 6.1 (CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:N)
+CWE: CWE-79
+OWASP: A03:2021 - Injection
+Confidence: medium
+Description: jQuery 2.2.4 is vulnerable to CVE-2015-9251 where third-party CORS requests may execute malicious code
+Evidence: `"below":"3.0.0-beta1","atOrAbove":"1.12.3","severity":"medium","identifiers":{"summary":"3rd party CORS request may execute","issue":"2432","CVE":["CVE-2015-9251"],"githubID":"GHSA-rmxg-73gg-4p98"},"
+Evidence Source: artifact=reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=retire,timestamp=2026-03-03T20:04:50.532656,cmd_sha1=e5901483b4
+Provenance ID: prov-105c70bb7fa3
+Exploitation Information:
+CVE IDs: CVE-2015-9251
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[MEDIUM] CVE-2019-11358 - Object.prototype Pollution
+Tool: retire
+Target: http://192.168.1.49:3000
+CVSS: 5.4 (CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N)
+CWE: CWE-1321, CWE-79
+OWASP: A03:2021 - Injection
+Confidence: medium
+Description: jQuery 2.2.4 is vulnerable to Object.prototype pollution via jQuery.extend(true, {}, ...) which can lead to denial of service or code execution
+Evidence: `"below":"3.4.0","atOrAbove":"1.1.4","severity":"medium","identifiers":{"summary":"jQuery before 3.4.0, as used in Drupal, Backdrop CMS, and other products, mishandles jQuery.extend(true, {}, ...) bec
+Evidence Source: artifact=reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=retire,timestamp=2026-03-03T20:04:50.532656,cmd_sha1=e5901483b4
+Provenance ID: prov-1fa1d3b95474
+Exploitation Information:
+CVE IDs: CVE-2019-11358
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[MEDIUM] CVE-2020-11023 - XSS via Option Elements
+Tool: retire
+Target: http://192.168.1.49:3000
+CVSS: 6.1 (CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:N)
+CWE: CWE-79
+OWASP: A03:2021 - Injection
+Confidence: medium
+Description: jQuery 2.2.4 is vulnerable to XSS when passing HTML containing <option> elements from untrusted sources to DOM manipulation methods
+Evidence: `"below":"3.5.0","atOrAbove":"1.0.3","severity":"medium","identifiers":{"summary":"passing HTML containing <option> elements from untrusted sources - even after sanitizing it - to one of jQuery's DOM 
+Evidence Source: artifact=reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=retire,timestamp=2026-03-03T20:04:50.532656,cmd_sha1=e5901483b4
+Provenance ID: prov-44cec6c786f5
+Exploitation Information:
+CVE IDs: CVE-2020-11023
+🔥 CISA KEV: CVE-2020-11023 - ACTIVELY EXPLOITED IN THE WILD
+   Required Action: Apply mitigations per vendor instructions or discontinue use of the product if mitigations are unavailable.
+   Government Deadline: 2025-02-13
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[LOW] CVE-2020-11022 - XSS via htmlPrefilter Regex
+Tool: retire
+Target: http://192.168.1.49:3000
+CVSS: 3.5
+CWE: CWE-79
+OWASP: A03:2021 - Injection
+Confidence: medium
+Description: 
+Evidence: `"below":"3.5.0","atOrAbove":"
+Evidence Source: artifact=reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=retire,timestamp=2026-03-03T20:04:50.532656,cmd_sha1=e5901483b4
+Provenance ID: prov-a77eed776c37
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[HIGH] Exposed Backup and Sensitive Files
+Tool: nikto
+Target: http://192.168.1.49:3000
+CVSS: 7.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:L)
+CWE: CWE-530
+OWASP: A01:2021 - Broken Access Control
+Confidence: high
+Description: Nikto discovered numerous backup files, database dumps, archives, and certificate files accessible in the web root. These include SQL dumps (.sql), compressed archives (.tar, .gz, .zip, .tgz, .tar.bz2
+Evidence: "+ /dump.tar.lzma: Potentially interesting backup/cert file found. . See: https://cwe.mitre.org/data/definitions/530.html" (and 100+ similar entries including /database.sql, /backup.sql, /192.168.1.49
+Evidence Source: artifact=reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=nikto,timestamp=2026-03-03T20:10:01.557039,cmd_sha1=e4ee1e92f7
+Provenance ID: prov-1315cc416ff4
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[LOW] robots.txt Information Disclosure
+Tool: nikto
+Target: http://192.168.1.49:3000
+CVSS: 3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)
+CWE: CWE-200
+OWASP: A01:2021 - Broken Access Control
+Confidence: medium
+Description: The robots.txt file reveals a `/ftp/` directory that returns HTTP 200, indicating it's accessible. This directory may contain sensitive files or services.
+Evidence: "+ /robots.txt: Entry '/ftp/' is returned a non-forbidden or redirect HTTP code (200)."
+Evidence Source: artifact=reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=nikto,timestamp=2026-03-03T20:10:01.557039,cmd_sha1=e4ee1e92f7
+Provenance ID: prov-195be61cc5c0
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[LOW] Overly Permissive CORS Configuration
+Tool: cookie-analyzer
+Target: http://192.168.1.49:3000
+CVSS: 3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)
+CWE: CWE-693
+OWASP: A05:2021 - Security Misconfiguration
+Confidence: medium
+Description: The server allows any origin to make cross-origin requests to this resource, which could enable cross-origin attacks if sensitive data is exposed via APIs.
+Evidence: `Access-Control-Allow-Origin: <em>`
+Evidence Source: artifact=reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=cookie-analyzer,timestamp=2026-03-03T20:46:52.603488,cmd_sha1=455a091396
+Provenance ID: prov-a242d1b78960
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[LOW] Public Cache Configuration
+Tool: cookie-analyzer
+Target: http://192.168.1.49:3000
+CVSS: 1.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)
+CWE: CWE-532
+OWASP: A05:2021 - Security Misconfiguration
+Confidence: medium
+Description: Response is marked as public cacheable, which could expose sensitive data in shared caches (CDN, proxy, browser).
+Evidence: `Cache-Control: public, max-age=0`
+Evidence Source: artifact=reports/20260303_193952/session_20260303_193952.json | location=reports/20260303_193952/session_20260303_193952.json#tool=cookie-analyzer,timestamp=2026-03-03T20:46:52.603488,cmd_sha1=455a091396
+Provenance ID: prov-a71d50fdfd7a
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A
+</p></div>
+
+    <h2>Evidence</h2>
+    <ul>
+        <li><strong>[MEDIUM] Vulnerable jQuery Version Detected</strong> (Tool: httpx, Target: http://192.168.1.49:3000) Evidence: `&quot;tech&quot;:[&quot;Cloudflare&quot;,&quot;Onsen UI&quot;,&quot;Osano:3.1.0&quot;,&quot;cdnjs&quot;,&quot;jQuery:2.2.4&quot;]` and `&quot;cpe&quot;:[{&quot;product&quot;:&quot;jquery-bbq&quot;,&quot;vendor&quot;:&quot;jquery-bbq_project&quot;,&quot;cpe&quot;:&quot;cpe:2.3:a:jquery-bbq_project:jquery-bbq:*:*:*:*:*:*:*:*&quot;}]` Evidence file: reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=httpx,timestamp=2026-03-03T19:40:31.030437,cmd_sha1=0138e24e6b Provenance ID: prov-23021c9c76a6</li>
+        <li><strong>[LOW] Information Disclosure Through Error Messages</strong> (Tool: httpx, Target: http://192.168.1.49:3000) Evidence: `&quot;title&quot;:&quot;UnauthorizedError: No Authorization header was found&quot;` and `&quot;title&quot;:&quot;TypeError: Cannot read properties of undefined (reading &#x27;includes&#x27;)&quot;` and `&quot;title&quot;:&quot;Error: Blocked illegal activity by ::ffff:192.168.1.144&quot;` Evidence file: reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=httpx,timestamp=2026-03-03T19:40:31.030437,cmd_sha1=0138e24e6b Provenance ID: prov-a0421a41d34c</li>
+        <li><strong>[MEDIUM] Overly Permissive CORS Configuration</strong> (Tool: zap, Target: http://192.168.1.49:3000) Evidence: Evidence from zap: `&quot;evidence&quot;: &quot;Access-Control-Allow-Origin: *&quot;` on endpoints including `/api/Cards`, `/api/Addresss`, `/api/BasketItems`, `/api/PrivacyRequests`, and root `/` --- Evidence from cookie-analyzer: `Access-Control-Allow-Origin: *` Evidence file: reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=zap,timestamp=2026-03-03T19:43:03.707612,cmd_sha1=89ab4f9d0f Provenance ID: prov-b8d202280d52</li>
+        <li><strong>[MEDIUM] CORS Wildcard Configuration</strong> (Tool: nmap, Target: http://192.168.1.49:3000) Evidence: Evidence from nmap: `Access-Control-Allow-Origin: *` --- Evidence from headers: `Access-Control-Allow-Origin: *` --- Evidence from nikto: &quot;+ /: Retrieved access-control-allow-origin header: *.&quot; Evidence file: reports/20260303_193952/nmap_20260303_195030_660468.xml, reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=nmap,timestamp=2026-03-03T19:50:30.662718,cmd_sha1=5463155cd9 Provenance ID: prov-a958d70750d6</li>
+        <li><strong>[LOW] Service Version Disclosure</strong> (Tool: nmap, Target: http://192.168.1.49:3000) Evidence: `nginx/1.24.0 (Ubuntu)` and `service name=&quot;http&quot; product=&quot;nginx&quot; version=&quot;1.24.0&quot;` Evidence file: reports/20260303_193952/nmap_20260303_195030_660468.xml, reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=nmap,timestamp=2026-03-03T19:50:30.662718,cmd_sha1=5463155cd9 Provenance ID: prov-c359cd62113b</li>
+        <li><strong>[LOW] Accept-Ranges Header Enabled</strong> (Tool: nmap, Target: http://192.168.1.49:3000) Evidence: `Accept-Ranges: bytes` Evidence file: reports/20260303_193952/nmap_20260303_195030_660468.xml, reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=nmap,timestamp=2026-03-03T19:50:30.662718,cmd_sha1=5463155cd9 Provenance ID: prov-afb4912e3953</li>
+        <li><strong>[LOW] CORS Wildcard Configuration</strong> (Tool: headers, Target: http://192.168.1.49:3000) Evidence: Evidence from headers: `Access-Control-Allow-Origin: *` --- Evidence from nikto: &quot;+ /: Retrieved access-control-allow-origin header: *.&quot; Evidence file: reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=headers,timestamp=2026-03-03T19:54:10.331059,cmd_sha1=2d475b34c0 Provenance ID: prov-2026c25c4323</li>
+        <li><strong>[LOW] Information Disclosure via Custom Header</strong> (Tool: headers, Target: http://192.168.1.49:3000) Evidence: Evidence from headers: `X-Recruiting: /#/jobs` --- Evidence from cookie-analyzer: `X-Recruiting: /#/jobs` Evidence file: reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=headers,timestamp=2026-03-03T19:54:10.331059,cmd_sha1=2d475b34c0 Provenance ID: prov-c11d8e5fb94d</li>
+        <li><strong>[MEDIUM] Credentials Embedded in URLs</strong> (Tool: waybackurls, Target: http://192.168.1.49:3000) Evidence: `http://fedoraAdmin:xxxxx@127.0.0.1:8080/fedora&#x27;` Evidence file: reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=waybackurls,timestamp=2026-03-03T19:58:24.803331,cmd_sha1=4b1a2aea08 Provenance ID: prov-bdee034a0af9</li>
+        <li><strong>[INFO] N/A - Tool Execution Failed</strong> (Tool: xnlinkfinder, Target: http://192.168.1.49:3000) Evidence: `You need to provide a Scope Filter with the -sf / --scope-filter argument` Evidence file: reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=xnlinkfinder,timestamp=2026-03-03T20:02:33.263081,cmd_sha1=c419445add Provenance ID: prov-db2308d89b8c</li>
+        <li><strong>[LOW] jQuery End-of-Life (No Security Updates)</strong> (Tool: retire, Target: http://192.168.1.49:3000) Evidence: `&quot;version&quot;:&quot;2.2.4&quot;,&quot;component&quot;:&quot;jquery&quot;,&quot;npmname&quot;:&quot;jquery&quot;,&quot;detection&quot;:&quot;filecontent&quot;,&quot;vulnerabilities&quot;:[{&quot;info&quot;:[&quot;https://github.com/jquery/jquery.com/issues/162&quot;],&quot;below&quot;:&quot;2.999.999&quot;,&quot;severity&quot;:&quot;low&quot;,&quot;identifiers&quot;:{&quot;summary&quot;:&quot;jQuery 1.x and 2.x are End-of-Life and no longer receiving security updates&quot;,&quot;retid&quot;:&quot;73&quot;,&quot;issue&quot;:&quot;162&quot;},&quot;cwe&quot;:[&quot;CWE-1104&quot;]}` Evidence file: reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=retire,timestamp=2026-03-03T20:04:50.532656,cmd_sha1=e5901483b4 Provenance ID: prov-758627bf8b1e</li>
+        <li><strong>[MEDIUM] CVE-2015-9251 - CORS Request Execution</strong> (Tool: retire, Target: http://192.168.1.49:3000) Evidence: `&quot;below&quot;:&quot;3.0.0-beta1&quot;,&quot;atOrAbove&quot;:&quot;1.12.3&quot;,&quot;severity&quot;:&quot;medium&quot;,&quot;identifiers&quot;:{&quot;summary&quot;:&quot;3rd party CORS request may execute&quot;,&quot;issue&quot;:&quot;2432&quot;,&quot;CVE&quot;:[&quot;CVE-2015-9251&quot;],&quot;githubID&quot;:&quot;GHSA-rmxg-73gg-4p98&quot;},&quot;cwe&quot;:[&quot;CWE-79&quot;]` Evidence file: reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=retire,timestamp=2026-03-03T20:04:50.532656,cmd_sha1=e5901483b4 Provenance ID: prov-105c70bb7fa3</li>
+        <li><strong>[MEDIUM] CVE-2019-11358 - Object.prototype Pollution</strong> (Tool: retire, Target: http://192.168.1.49:3000) Evidence: `&quot;below&quot;:&quot;3.4.0&quot;,&quot;atOrAbove&quot;:&quot;1.1.4&quot;,&quot;severity&quot;:&quot;medium&quot;,&quot;identifiers&quot;:{&quot;summary&quot;:&quot;jQuery before 3.4.0, as used in Drupal, Backdrop CMS, and other products, mishandles jQuery.extend(true, {}, ...) because of Object.prototype pollution&quot;,&quot;CVE&quot;:[&quot;CVE-2019-11358&quot;],&quot;PR&quot;:&quot;4333&quot;,&quot;githubID&quot;:&quot;GHSA-6c3j-c64m-qhgq&quot;},&quot;cwe&quot;:[&quot;CWE-1321&quot;,&quot;CWE-79&quot;]` Evidence file: reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=retire,timestamp=2026-03-03T20:04:50.532656,cmd_sha1=e5901483b4 Provenance ID: prov-1fa1d3b95474</li>
+        <li><strong>[MEDIUM] CVE-2020-11023 - XSS via Option Elements</strong> (Tool: retire, Target: http://192.168.1.49:3000) Evidence: `&quot;below&quot;:&quot;3.5.0&quot;,&quot;atOrAbove&quot;:&quot;1.0.3&quot;,&quot;severity&quot;:&quot;medium&quot;,&quot;identifiers&quot;:{&quot;summary&quot;:&quot;passing HTML containing &lt;option&gt; elements from untrusted sources - even after sanitizing it - to one of jQuery&#x27;s DOM manipulation methods (i.e. .html(), .append(), and others) may execute untrusted code.&quot;,&quot;CVE&quot;:[&quot;CVE-2020-11023&quot;],&quot;issue&quot;:&quot;4647&quot;,&quot;githubID&quot;:&quot;GHSA-jpcq-cgw6-v4j6&quot;},&quot;cwe&quot;:[&quot;CWE-79&quot;]` Evidence file: reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=retire,timestamp=2026-03-03T20:04:50.532656,cmd_sha1=e5901483b4 Provenance ID: prov-44cec6c786f5</li>
+        <li><strong>[LOW] CVE-2020-11022 - XSS via htmlPrefilter Regex</strong> (Tool: retire, Target: http://192.168.1.49:3000) Evidence: `&quot;below&quot;:&quot;3.5.0&quot;,&quot;atOrAbove&quot;:&quot; Evidence file: reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=retire,timestamp=2026-03-03T20:04:50.532656,cmd_sha1=e5901483b4 Provenance ID: prov-a77eed776c37</li>
+        <li><strong>[HIGH] Exposed Backup and Sensitive Files</strong> (Tool: nikto, Target: http://192.168.1.49:3000) Evidence: &quot;+ /dump.tar.lzma: Potentially interesting backup/cert file found. . See: https://cwe.mitre.org/data/definitions/530.html&quot; (and 100+ similar entries including /database.sql, /backup.sql, /192.168.1.49.tar.bz2, /database.pem, /192.168.sql, etc.) Evidence file: reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=nikto,timestamp=2026-03-03T20:10:01.557039,cmd_sha1=e4ee1e92f7 Provenance ID: prov-1315cc416ff4</li>
+        <li><strong>[LOW] robots.txt Information Disclosure</strong> (Tool: nikto, Target: http://192.168.1.49:3000) Evidence: &quot;+ /robots.txt: Entry &#x27;/ftp/&#x27; is returned a non-forbidden or redirect HTTP code (200).&quot; Evidence file: reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=nikto,timestamp=2026-03-03T20:10:01.557039,cmd_sha1=e4ee1e92f7 Provenance ID: prov-195be61cc5c0</li>
+        <li><strong>[LOW] Overly Permissive CORS Configuration</strong> (Tool: cookie-analyzer, Target: http://192.168.1.49:3000) Evidence: `Access-Control-Allow-Origin: *` Evidence file: reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=cookie-analyzer,timestamp=2026-03-03T20:46:52.603488,cmd_sha1=455a091396 Provenance ID: prov-a242d1b78960</li>
+        <li><strong>[LOW] Public Cache Configuration</strong> (Tool: cookie-analyzer, Target: http://192.168.1.49:3000) Evidence: `Cache-Control: public, max-age=0` Evidence file: reports/20260303_193952/session_20260303_193952.json Evidence location: reports/20260303_193952/session_20260303_193952.json#tool=cookie-analyzer,timestamp=2026-03-03T20:46:52.603488,cmd_sha1=455a091396 Provenance ID: prov-a71d50fdfd7a</li>
+    </ul>
+
+
+    <h2>Standards Mapping</h2>
+    <table><tr><th>Severity</th><th>Finding</th><th>CVSS</th><th>OWASP</th><th>CWE</th><th>Exploit Status</th></tr><tr><td>MEDIUM</td><td>Vulnerable jQuery Version Detected</td><td>6.1 (AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N)</td><td>A03:2021 - Injection</td><td>CWE-79</td><td>N/A</td></tr><tr><td>LOW</td><td>Information Disclosure Through Error Messages</td><td>1.0</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Overly Permissive CORS Configuration</td><td>5.3 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A01:2021 - Broken Access Control, A05:2021 - Security Misconfiguration</td><td>CWE-264, CWE-693</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>CORS Wildcard Configuration</td><td>5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A01:2021 - Broken Access Control, A05:2021 - Security Misconfiguration</td><td>CWE-693</td><td>N/A</td></tr><tr><td>LOW</td><td>Service Version Disclosure</td><td>3.1 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>LOW</td><td>Accept-Ranges Header Enabled</td><td>2.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>LOW</td><td>CORS Wildcard Configuration</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-693</td><td>N/A</td></tr><tr><td>LOW</td><td>Information Disclosure via Custom Header</td><td>2.0 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Credentials Embedded in URLs</td><td>6.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N)</td><td>A07:2021 - Identification and Authentication Failures</td><td>CWE-257</td><td>N/A</td></tr><tr><td>INFO</td><td>N/A - Tool Execution Failed</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>jQuery End-of-Life (No Security Updates)</td><td>3.5 (est.)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-1104</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>CVE-2015-9251 - CORS Request Execution</td><td>6.1 (CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:N)</td><td>A03:2021 - Injection</td><td>CWE-79</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>CVE-2019-11358 - Object.prototype Pollution</td><td>5.4 (CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N)</td><td>A03:2021 - Injection</td><td>CWE-1321, CWE-79</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>CVE-2020-11023 - XSS via Option Elements</td><td>6.1 (CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:N)</td><td>A03:2021 - Injection</td><td>CWE-79</td><td>🔥🔥 CISA KEV - IN THE WILD</td></tr><tr><td>LOW</td><td>CVE-2020-11022 - XSS via htmlPrefilter Regex</td><td>3.5</td><td>A03:2021 - Injection</td><td>CWE-79</td><td>N/A</td></tr><tr><td>HIGH</td><td>Exposed Backup and Sensitive Files</td><td>7.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:L)</td><td>A01:2021 - Broken Access Control</td><td>CWE-530</td><td>N/A</td></tr><tr><td>LOW</td><td>robots.txt Information Disclosure</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A01:2021 - Broken Access Control</td><td>CWE-200</td><td>N/A</td></tr><tr><td>LOW</td><td>Overly Permissive CORS Configuration</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-693</td><td>N/A</td></tr><tr><td>LOW</td><td>Public Cache Configuration</td><td>1.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-532</td><td>N/A</td></tr></table>
+
+    <h2>Exploitation References</h2>
+    <p><em>Exploit lookup status: exploitdb: built (46960) from /usr/share/exploitdb; metasploit: built (2611) from /usr/share/metasploit-framework</em></p>
+    
+    <h2>Remediation Plan</h2>
+    <div><p></p></div>
+    
+    <h2>AI Decision Trace</h2>
+    <div><p></p></div>
+
+    <h2>Tool Summary</h2>
+    <table><tr><th>Tool</th><th>Runs</th><th>Success</th><th>Failed</th><th>Skipped</th><th>Last Exit</th></tr><tr><td>httpx</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>zap</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nmap</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>wafw00f</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>sslyze</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>testssl</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>headers</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>whatweb</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cmseek</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>waybackurls</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>subjs</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>xnlinkfinder</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>linkfinder</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>retire</td><td>1</td><td>1</td><td>0</td><td>0</td><td>13</td></tr><tr><td>gobuster</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>paramspider</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>arjun</td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td></tr><tr><td>commix</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nikto</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>nuclei</td><td>1</td><td>1</td><td>0</td><td>0</td><td>124</td></tr><tr><td>schemathesis</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>graphql-cop</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>dalfox</td><td>1</td><td>1</td><td>0</td><td>0</td><td>124</td></tr><tr><td>xsstrike</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>csrf-tester</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>upload-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cookie-analyzer</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cors-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>ssrf-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>xxe-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>deserialization-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>auth-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>idor-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>error-detector</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>jwt_tool</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr></table>
+
+    <h2>Tools Executed</h2>
+    <div><p>- <strong>httpx<strong>: /home/ss/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -l reports/20260303_193952/urls_20260303_193952.txt (Duration: 15.62s)
+- <strong>zap<strong>: python3 /home/ss/code/level52-cli-deluxe/scripts/zap_docker_daemon_scan.py --image ghcr.io/zaproxy/zaproxy:stable --api-url http://127.0.0.1:8080 --target http://192.168.1.49:3000 --max-minutes 45 --startup-timeout 180 --spider --ajax-spider --active --ignore-robots --seed-file reports/20260303_193952/urls_20260303_193952.txt --username-field username --password-field password --json-out reports/20260303_193952/zap/zap_full_20260303_194303.json --html-out reports/20260303_193952/zap/zap_full_20260303_194303.html --md-out reports/20260303_193952/zap/zap_full_20260303_194303.md (Duration: 316.29s)
+- <strong>nmap<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260303_193952/nmap_20260303_195030_660468.xml -p 80,443,8080,8443,3000,5000,8000 -sV -sC 192.168.1.49 (Duration: 11.41s)
+- <strong>wafw00f<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/wafw00f -v -a http://192.168.1.49:3000 (Duration: 0.23s)
+- <strong>sslyze<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/sslyze 192.168.1.49:3000 --json_out=- --certinfo --sslv2 --sslv3 --tlsv1 --tlsv1_1 --tlsv1_2 --tlsv1_3 --reneg --resum --heartbleed --robot --openssl_ccs --compression --http_headers (Duration: 0.27s)
+- <strong>testssl<strong>:  (Duration: 0.00s)
+- <strong>headers<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Header-Check/1.0 -L -k http://192.168.1.49:3000 (Duration: 0.03s)
+- <strong>whatweb<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/whatweb --log-json=reports/20260303_193952/whatweb_20260303_195604_294968.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.49:3000 (Duration: 3.62s)
+- <strong>cmseek<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/cmseek -u http://192.168.1.49:3000 --batch --random-agent (Duration: 0.11s)
+- <strong>waybackurls<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/waybackurls http://127.0.0.1:8080 http://127.0.0.1:8080/JSON/spider/action/setOptionHandleRobotsTxt/?apikey=&Boolean=false: http://127.0.0.1:8080/JSON/spiderAjax/action/scan/?apikey=&url=http%3A%2F%2F192.168.1.49%3A3000: http://192.168.1.49:3000 http://192.168.1.49:3000[0m http://192.168.1.49:3000/ http://192.168.1.49:3000/api/Addresss http://192.168.1.49:3000/api/Addresss/:id http://192.168.1.49:3000/api/BasketItems http://192.168.1.49:3000/api/BasketItems/:id http://192.168.1.49:3000/api/Cards http://192.168.1.49:3000/api/Cards/:id http://192.168.1.49:3000/api/Complaints http://192.168.1.49:3000/api/Feedbacks/:id http://192.168.1.49:3000/api/PrivacyRequests http://192.168.1.49:3000/api/Quantitys/:id http://192.168.1.49:3000/api/Recycles http://192.168.1.49:3000/api/Recycles/:id http://192.168.1.49:3000/api/SecurityAnswers http://192.168.1.49:3000/api/Users http://192.168.1.49:3000/b2b/v2/orders http://192.168.1.49:3000/file-upload http://192.168.1.49:3000/metrics http://192.168.1.49:3000/profile http://192.168.1.49:3000/profile/image/file http://192.168.1.49:3000/profile/image/url http://192.168.1.49:3000/promotion http://192.168.1.49:3000/redirect http://192.168.1.49:3000/rest/2fa/disable http://192.168.1.49:3000/rest/2fa/setup http://192.168.1.49:3000/rest/2fa/status http://192.168.1.49:3000/rest/2fa/verify http://192.168.1.49:3000/rest/admin/application-configuration http://192.168.1.49:3000/rest/admin/application-version http://192.168.1.49:3000/rest/basket/:id http://192.168.1.49:3000/rest/basket/:id/checkout http://192.168.1.49:3000/rest/basket/:id/coupon/:coupon http://192.168.1.49:3000/rest/chatbot/respond http://192.168.1.49:3000/rest/chatbot/status http://192.168.1.49:3000/rest/continue-code http://192.168.1.49:3000/rest/continue-code-findIt/apply/:continueCode http://192.168.1.49:3000/rest/continue-code-fixIt/apply/:continueCode http://192.168.1.49:3000/rest/continue-code/apply/:continueCode http://192.168.1.49:3000/rest/country-mapping http://192.168.1.49:3000/rest/deluxe-membership http://192.168.1.49:3000/rest/image-captcha http://192.168.1.49:3000/rest/order-history http://192.168.1.49:3000/rest/order-history/:id/delivery-status http://192.168.1.49:3000/rest/order-history/orders http://192.168.1.49:3000/rest/products/:id/reviews http://192.168.1.49:3000/rest/products/reviews http://192.168.1.49:3000/rest/repeat-notification http://192.168.1.49:3000/rest/saveLoginIp https://cwe.mitre.org/data/definitions/264.html https://cwe.mitre.org/data/definitions/693.html https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP\nhttps://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html\nhttps://www.w3.org/TR/CSP/\nhttps://w3c.github.io/webappsec-csp/\nhttps://web.dev/articles/csp\nhttps://caniuse.com/#feat=contentsecuritypolicy\nhttps://content-security-policy.com/ https://github.com/Tuhinshubhra/CMSeeK/issues/new https://github.com/nabla-c0d3/sslyze https://owasp.org/Top10/A01_2021-Broken_Access_Control/ https://owasp.org/Top10/A05_2021-Security_Misconfiguration/ https://owasp.org/www-project-top-ten/2017/A5_2017-Broken_Access_Control.html https://owasp.org/www-project-top-ten/2017/A6_2017-Security_Misconfiguration.html https://vulncat.fortify.com/en/detail?category=HTML5&subcategory=Overly%20Permissive%20CORS%20Policy https://www.zaproxy.org/docs/desktop/addons/common-library/alerttags/#systemic (Duration: 14.96s)
+- <strong>subjs<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/subjs -i reports/20260303_193952/urls_20260303_193952.txt (Duration: 0.76s)
+- <strong>xnlinkfinder<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/xnLinkFinder -i reports/20260303_193952/urls_20260303_193952.txt (Duration: 0.28s)
+- <strong>linkfinder<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/linkfinder -i http://192.168.1.49:3000 -o cli (Duration: 0.07s)
+- <strong>retire<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/retire --outputformat json --path /tmp/guardian-retire-qz_lwx4o (Duration: 0.39s)
+- <strong>gobuster<strong>: /usr/bin/gobuster dir -u http://192.168.1.49:3000 -w reports/20260303_193952/gobuster_wordlist_20260303_193952.txt -t 10 --timeout 10s -q --no-progress --no-error --no-color --delay 100ms -b 404 (Duration: 0.01s)
+- <strong>paramspider<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/paramspider -d 192.168.1.49:3000 (Duration: 8.38s)
+- <strong>arjun<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/arjun -u http://192.168.1.49:3000 --json -oJ /tmp/guardian-arjun-fb846983268c48729ec501ae0e9a9f4f.json (Duration: 0.11s)
+- <strong>commix<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/commix --url http://192.168.1.49:3000 --batch --level 2 (Duration: 0.12s)
+- <strong>nikto<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/nikto -h http://192.168.1.49:3000 -Tuning x -timeout 10 -nointeractive (Duration: 14.48s)
+- <strong>nuclei<strong>:  (Duration: 0.00s)
+- <strong>schemathesis<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/schemathesis run http://192.168.1.49:3000/openapi.json --url http://192.168.1.49:3000 --tls-verify=false (Duration: 0.29s)
+- <strong>graphql-cop<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/graphql-cop/graphql-cop.py -t http://192.168.1.49:3000/graphql (Duration: 0.10s)
+- <strong>dalfox<strong>:  (Duration: 0.00s)
+- <strong>xsstrike<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/xsstrike -u http://192.168.1.49:3000 --crawl --json (Duration: 0.10s)
+- <strong>csrf-tester<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/guardian_tools/csrf_tester.py --url http://192.168.1.49:3000 --insecure (Duration: 0.06s)
+- <strong>upload-scanner<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/guardian_tools/upload_scanner.py --url http://192.168.1.49:3000 --insecure (Duration: 0.06s)
+- <strong>cookie-analyzer<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Cookie-Analyzer/1.0 -L -k http://192.168.1.49:3000 (Duration: 0.01s)
+- <strong>cors-scanner<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:3000 -t 10 -T 10 -j (Duration: 0.23s)
+- <strong>ssrf-scanner<strong>: curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:3000 (Duration: 0.01s)
+- <strong>xxe-scanner<strong>: curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, <em>/<em> -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:3000 (Duration: 0.02s)
+- <strong>deserialization-scanner<strong>: curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:3000 (Duration: 0.01s)
+- <strong>auth-scanner<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:3000 (Duration: 0.01s)
+- <strong>idor-scanner<strong>: curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:3000 (Duration: 0.01s)
+- <strong>error-detector<strong>: curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:3000 (Duration: 0.01s)
+- <strong>jwt_tool<strong>:  (Duration: 0.00s)</p></div>
+    
+    <footer>
+        <hr>
+        <p><em>Report generated by Guardian AI Pentest Tool</em></p>
+    </footer>
+</body>
+</html>

@@ -41,18 +41,40 @@ class OllamaClient:
             self.context_window = None
         self.context_window = self._sanitize_context_window(self.context_window)
 
+        # Thinking mode: Qwen3 models enable <think> tokens by default in Ollama.
+        # LangChain's ChatOllama (v1.0+) uses the "reasoning" parameter to control this.
+        # When enabled, thinking tokens are separated from content — but on complex prompts
+        # the thinking phase can be extremely long, causing silent timeouts.
+        # Default: disable thinking for structured output reliability.
+        # Set ai.think: true in config to enable (e.g. for open-ended exploratory tasks).
+        raw_think = ai_config.get("think")
+        if raw_think is None:
+            # Auto-disable thinking for models with native thinking mode.
+            # Qwen3 and DeepSeek-R1 both generate long <think> blocks that LangChain
+            # strips from content, causing silent empty responses on complex prompts.
+            # DeepHat (Qwen2-based) and Llama models do NOT have thinking mode.
+            _thinking_models = ("qwen3", "deepseek-r1", "deepseek_r1")
+            self.think: Optional[bool] = False if any(p in self.model_name.lower() for p in _thinking_models) else None
+        else:
+            self.think = bool(raw_think)
+
         try:
             options: Dict[str, Any] = {}  # avoid unsupported defaults
             if self.context_window:
                 options["num_ctx"] = int(self.context_window)
 
-            self.llm = ChatOllama(
+            llm_kwargs: Dict[str, Any] = dict(
                 model=self.model_name,
                 temperature=self.temperature,
                 base_url=self.base_url,
                 num_predict=self.max_tokens,
                 options=options,
             )
+            # ChatOllama uses "reasoning" (not "think") to control thinking mode
+            if self.think is not None:
+                llm_kwargs["reasoning"] = self.think
+
+            self.llm = ChatOllama(**llm_kwargs)
             self.logger.info(f"Initialized Ollama model: {self.model_name} @ {self.base_url}")
         except Exception as e:
             self.logger.error(f"Failed to initialize Ollama client: {e}")
@@ -76,6 +98,7 @@ class OllamaClient:
         Pick a conservative num_ctx cap for local Ollama models.
         Large context windows can crash the runner during KV cache allocation
         even when the actual prompt is small.
+        Override with ai.max_safe_context_window in config if your hardware supports more.
         """
         model_size_b = self._parse_model_billions()
         if model_size_b is None:
