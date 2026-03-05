@@ -97,6 +97,11 @@ class BloodhoundTool(BaseTool):
         self.tool_name = "bloodhound"
         super().__init__(config)
 
+    def is_success_exit_code(self, exit_code: int) -> bool:
+        # The bloodhound-mcp Docker container exits with 1 even when the
+        # MCP response was delivered successfully on stdout.
+        return exit_code in (0, 1)
+
     def _container_runtime(self) -> str | None:
         env_runtime = os.environ.get("GUARDIAN_CONTAINER_RUNTIME", "").strip()
         if env_runtime:

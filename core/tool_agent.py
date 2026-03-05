@@ -556,17 +556,17 @@ class ToolAgent(BaseAgent):
             raw_output = self._truncate_output(result.get("raw_output", "") or "")
 
             # Check if tool execution was successful using tool-specific exit code rules
-            exit_code = result["exit_code"]
+            exit_code = result.get("exit_code", 0)
             is_success = tool.is_success_exit_code(exit_code)
 
             execution = ToolExecution(
                 tool=tool_name,
-                command=result["command"],
+                command=result.get("command", ""),
                 target=target,
                 timestamp=result.get("timestamp", ""),
                 exit_code=exit_code,
                 output=raw_output,
-                duration=result["duration"],
+                duration=result.get("duration", 0.0),
                 success=is_success
             )
             self.memory.add_tool_execution(execution)
@@ -577,9 +577,9 @@ class ToolAgent(BaseAgent):
                 return {
                     "success": False,
                     "tool": tool_name,
-                    "parsed": result["parsed"],
+                    "parsed": result.get("parsed", {}),
                     "raw_output": raw_output,
-                    "duration": result["duration"],
+                    "duration": result.get("duration", 0.0),
                     "exit_code": exit_code,
                     "error": error_msg,
                 }
@@ -587,9 +587,9 @@ class ToolAgent(BaseAgent):
             return {
                 "success": True,
                 "tool": tool_name,
-                "parsed": result["parsed"],
+                "parsed": result.get("parsed", {}),
                 "raw_output": raw_output,
-                "duration": result["duration"],
+                "duration": result.get("duration", 0.0),
                 "exit_code": exit_code,
             }
             

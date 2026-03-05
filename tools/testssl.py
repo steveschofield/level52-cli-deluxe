@@ -70,7 +70,17 @@ class TestSSLTool(BaseTool):
 
         ip_mode = kwargs.get("ip") if "ip" in kwargs else cfg.get("ip")
         if ip_mode:
-            command.extend(["--ip", str(ip_mode)])
+            # --ip only makes sense for hostnames with multiple A records;
+            # applying it when the target is already an IP causes exit 254
+            import ipaddress
+            _host = self._normalize_target(target).split(":")[0]
+            try:
+                ipaddress.ip_address(_host)
+                _is_ip = True
+            except ValueError:
+                _is_ip = False
+            if not _is_ip:
+                command.extend(["--ip", str(ip_mode)])
 
         nodns = kwargs.get("nodns") if "nodns" in kwargs else cfg.get("nodns")
         if nodns:

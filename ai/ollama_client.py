@@ -153,9 +153,35 @@ class OllamaClient:
         try:
             response = await self.llm.ainvoke(messages)
             return response.content
+        except RuntimeError as e:
+            # ChatOllama's internal httpx client is bound to the event loop at creation.
+            # If the loop is replaced (e.g. report generation after scan), reinit and retry.
+            if "event loop is closed" in str(e).lower() or "no current event loop" in str(e).lower():
+                self.logger.warning("Ollama event loop stale — reinitializing LLM client")
+                self._reinit_llm()
+                response = await self.llm.ainvoke(messages)
+                return response.content
+            self.logger.error(f"Ollama API error: {e}")
+            raise
         except Exception as e:
             self.logger.error(f"Ollama API error: {e}")
             raise
+
+    def _reinit_llm(self) -> None:
+        """Reinitialize ChatOllama to bind to the current event loop."""
+        options: Dict[str, Any] = {}
+        if self.context_window:
+            options["num_ctx"] = int(self.context_window)
+        llm_kwargs: Dict[str, Any] = dict(
+            model=self.model_name,
+            temperature=self.temperature,
+            base_url=self.base_url,
+            num_predict=self.max_tokens,
+            options=options,
+        )
+        if self.think is not None:
+            llm_kwargs["reasoning"] = self.think
+        self.llm = ChatOllama(**llm_kwargs)
 
     def generate_sync(
         self,

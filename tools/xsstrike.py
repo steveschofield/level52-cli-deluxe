@@ -19,13 +19,7 @@ class XSStrikeTool(BaseTool):
             
         if kwargs.get("headers"):
             cmd.extend(["--headers", kwargs["headers"]])
-            
-        # JSON output support in XSStrike is limited/experimental in some versions
-        # We'll rely on parsing stdout or --json if available in the specific installed version
-        # For this wrapper, we'll try to use --json if supported, otherwise parse stdout
-        if kwargs.get("json_output", True):
-             cmd.append("--json")
-             
+
         # Add timeout
         if kwargs.get("timeout"):
             cmd.extend(["--timeout", str(kwargs["timeout"])])

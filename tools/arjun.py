@@ -17,7 +17,7 @@ class ArjunTool(BaseTool):
         return exit_code in (0, 2)
 
     def get_command(self, target: str, **kwargs) -> List[str]:
-        cmd = ["arjun", "-u", target, "--json"]
+        cmd = ["arjun", "-u", target]
 
         if kwargs.get("method"):
             cmd.extend(["-m", kwargs["method"]])

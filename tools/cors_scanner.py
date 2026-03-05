@@ -50,7 +50,6 @@ class CORSScannerTool(BaseTool):
         command.extend(["-u", target])
         command.extend(["-t", str(threads)])
         command.extend(["-T", str(timeout)])
-        command.append("-j")  # JSON output
 
         return command
 

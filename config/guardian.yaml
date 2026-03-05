@@ -395,7 +395,7 @@ tools:
   enum4linux-ng:
     name: "enum4linux-ng"
     description: "Next generation SMB/NetBIOS enumeration tool"
-    command: "enum4linux-ng.py"
+    command: "enum4linux-ng"
     
     # NULL SESSION CONFIGURATION for enum4linux-ng
     # Same principle: no -u or -p flags for null session
