@@ -88,7 +88,11 @@ write_compose() {
   cat > "$COMPOSE_FILE" <<'EOF'
 services:
   juiceshop:
-    image: bkimminich/juice-shop:latest
+    # v14.x is the last version without web3/Alchemy WebSocket challenges.
+    # "latest" (v15+) connects to Alchemy on startup and crashes with 429
+    # if no API key is provided. Use v15+ only if you have an Alchemy key
+    # and set it via: environment: [NODE_CONFIG='{"web3":{"alchemyApiKey":"YOUR_KEY"}}']
+    image: bkimminich/juice-shop:v14.5.1
     container_name: juiceshop
     restart: unless-stopped
     expose:

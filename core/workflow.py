@@ -331,6 +331,10 @@ class WorkflowEngine:
                 self._record_step_duration(step_started)
                 self.current_step += 1
                 self._save_progress_if_enabled()
+                step_delay = self.config.get("pentest", {}).get("step_delay", 0)
+                if step_delay > 0:
+                    self.logger.debug(f"Step delay: sleeping {step_delay}s before next step")
+                    await asyncio.sleep(step_delay)
 
             if not self.is_running and self.stop_reason:
                 self._save_session()
@@ -2128,6 +2132,13 @@ class WorkflowEngine:
 
         if "save_intermediate" in settings:
             pentest_cfg["save_intermediate"] = bool(settings["save_intermediate"])
+
+        if "step_delay" in settings:
+            try:
+                pentest_cfg["step_delay"] = float(settings["step_delay"])
+                self.logger.info(f"Workflow setting: step_delay={pentest_cfg['step_delay']}s")
+            except (ValueError, TypeError):
+                pass
 
     def _load_workflow_config(self, workflow_name: str) -> Dict[str, Any]:
         """Load full workflow configuration from YAML file"""
