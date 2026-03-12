@@ -976,6 +976,66 @@ class WorkflowEngine:
                 schema = schema.replace("{target}", self.target)
                 if "://" not in schema:
                     schema = f"https://{schema}"
+            # Probe the schema URL; if it doesn't return valid JSON try common
+            # alternative paths so we don't run schemathesis against an HTML page.
+            _OPENAPI_PROBES = [
+                schema,
+                f"{self.target}/api-docs/swagger-ui-init.js",
+                f"{self.target}/swagger.json",
+                f"{self.target}/api/swagger.json",
+                f"{self.target}/api-docs",
+                f"{self.target}/docs/openapi.json",
+            ]
+            import urllib.request as _ur
+            import tempfile as _tf
+            import re as _re
+            resolved_schema = None
+            for _url in _OPENAPI_PROBES:
+                if not _url:
+                    continue
+                try:
+                    with _ur.urlopen(_url, timeout=8) as _r:
+                        _body = _r.read(1 << 20)  # up to 1 MB
+                    _stripped = _body.strip()
+                    if _stripped[:1] in (b"{", b"["):
+                        resolved_schema = _url
+                        break
+                    # swagger-ui-init.js embeds spec as `"swaggerDoc": { ... }` — extract JSON
+                    if _url.endswith(".js") and b'"openapi"' in _body:
+                        _js_text = _body.decode("utf-8", errors="replace")
+                        _m = _re.search(r'"swaggerDoc"\s*:\s*(\{.*)', _js_text, _re.DOTALL)
+                        if _m:
+                            # Find the balanced closing brace
+                            _depth, _end = 0, None
+                            for _i, _ch in enumerate(_m.group(1)):
+                                if _ch == "{":
+                                    _depth += 1
+                                elif _ch == "}":
+                                    _depth -= 1
+                                    if _depth == 0:
+                                        _end = _i + 1
+                                        break
+                            if _end:
+                                _spec_json = _m.group(1)[:_end]
+                                _tmp = _tf.NamedTemporaryFile(
+                                    suffix=".json", delete=False, mode="w", encoding="utf-8"
+                                )
+                                _tmp.write(_spec_json)
+                                _tmp.close()
+                                resolved_schema = _tmp.name
+                                self.logger.info(
+                                    f"Extracted embedded OpenAPI spec from {_url} → {_tmp.name}"
+                                )
+                                break
+                except Exception:
+                    continue
+            if not resolved_schema:
+                self.logger.warning(
+                    f"Skipping schemathesis: no valid OpenAPI/Swagger JSON found at "
+                    f"{schema} or common alternative paths"
+                )
+                return None
+            schema = resolved_schema
             tool_kwargs.setdefault("schema", schema)
             base_url = tool_kwargs.get("base_url") or api_cfg.get("base_url") or api_cfg.get("url")
             if isinstance(base_url, str) and "{target}" in base_url:
@@ -2488,13 +2548,13 @@ class WorkflowEngine:
         self.memory.save_state(state_file)
         self.logger.info(f"Session saved to: {state_file}")
 
-        # Export helper files for manual testing (URLs, payloads/commands)
-        urls = self._extract_urls()
-        if urls:
-            urls_file = output_dir / f"urls_{self.memory.session_id}.txt"
-            with open(urls_file, "w", encoding="utf-8") as f:
-                f.write("\n".join(sorted(set(urls))))
-            self.logger.info(f"Exported URLs for manual testing: {urls_file}")
+        # Refresh the master seed file (always filtered to in-scope target URLs).
+        # This is the canonical source for downstream tools (nuclei, dalfox, …).
+        # We do NOT write _extract_urls() here because that regex-scrapes raw tool
+        # outputs (e.g. ZAP warnings containing 127.0.0.1:8080 proxy API calls) and
+        # would overwrite the clean seed with out-of-scope noise, causing tools like
+        # nuclei to time out scanning hundreds of unreachable ZAP proxy URLs.
+        self._refresh_master_seed_file()
 
         commands = [te.command for te in self.memory.tool_executions if te.command]
         if commands:
