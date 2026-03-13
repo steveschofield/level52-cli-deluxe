@@ -244,6 +244,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--spider", action="store_true", help="Run spider scan")
     ap.add_argument("--ajax-spider", action="store_true", help="Run AJAX spider")
     ap.add_argument("--active", action="store_true", help="Run active scan")
+    ap.add_argument("--active-threads", type=int, default=3, help="Threads per host for active scan (default: 3)")
     ap.add_argument("--ignore-robots", action="store_true", help="Ignore robots.txt")
     ap.add_argument("--seed-urls", default="", help="Comma-separated seed URLs")
     ap.add_argument("--seed-file", default="", help="File with seed URLs")
@@ -383,6 +384,7 @@ def main(argv: list[str] | None = None) -> int:
         scan_cmd.append("--ajax-spider")
     if args.active:
         scan_cmd.append("--active")
+        scan_cmd += ["--active-threads", str(args.active_threads)]
     if args.ignore_robots:
         scan_cmd.append("--ignore-robots")
     if args.seed_urls:

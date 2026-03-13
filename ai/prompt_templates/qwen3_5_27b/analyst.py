@@ -70,6 +70,20 @@ If no concrete evidence exists: state "No security findings in this output."
 If the output shows a tool/runtime failure: state "No security findings in output (tooling issue: <short description>)."
 
 SUMMARY: <Overall security posture assessment, or "No evidence of issues in this output">
+
+If your analysis identified specific URLs, parameters, or endpoints that downstream tools should prioritize, append a TOOL_HINTS block immediately after SUMMARY. Only include this when you have concrete, evidence-backed targets from the output — not generic recommendations. Omit entirely if nothing specific was found.
+
+### TOOL_HINTS
+```json
+{{
+  "dalfox": {{"priority_urls": ["<exact url with param from output>"], "params": ["<param_name>"]}},
+  "sqlmap": {{"priority_urls": ["<exact url with injectable param>"], "params": ["<param>"]}},
+  "nuclei": {{"extra_tags": ["<tag>"], "priority_urls": ["<url>"]}},
+  "commix": {{"priority_urls": ["<exact url with injectable param>"]}},
+  "rate_hint": <0.1-1.0, only if target appears overloaded or rate-limiting>
+}}
+```
+Use exact URLs from the output. Omit any tool key if no specific targets. Keep arrays to ≤5 items.
 """
 
 

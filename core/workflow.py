@@ -631,8 +631,9 @@ class WorkflowEngine:
         if "://" not in (self.target or "") and base_url.startswith("https://"):
             urls.append(base_url.replace("https://", "http://", 1))
 
-        attempts = 3
+        attempts = 12
         timeout_s = 10.0
+        sleep_s = 10.0
         last_error: Optional[Exception] = None
 
         for attempt in range(1, attempts + 1):
@@ -646,7 +647,10 @@ class WorkflowEngine:
                 except Exception as exc:
                     last_error = exc
             if attempt < attempts:
-                await asyncio.sleep(1.5)
+                self.logger.warning(
+                    f"Target not responding (attempt {attempt}/{attempts}), retrying in {sleep_s:.0f}s..."
+                )
+                await asyncio.sleep(sleep_s)
 
         self._stop_for_unresponsive_target(step_name, workflow_name, attempts, last_error)
         return False
@@ -1123,6 +1127,21 @@ class WorkflowEngine:
                     if url_file:
                         tool_kwargs = dict(tool_kwargs)
                         tool_kwargs["from_file"] = str(url_file)
+
+        # dalfox only benefits from URLs that can reflect input: those with query
+        # parameters or path segments that look like dynamic values.  Feeding it
+        # the full 1000+ URL master seed floods the target with payloads against
+        # static assets, 401-only endpoints, and redirects — wasted effort that
+        # can overwhelm a lightweight target.  Write a focused XSS seed instead.
+        if tool_name == "dalfox" and "from_file" in tool_kwargs:
+            xss_seed = self._write_xss_seed_file(tool_kwargs["from_file"])
+            if xss_seed:
+                tool_kwargs = dict(tool_kwargs)
+                tool_kwargs["from_file"] = str(xss_seed)
+
+        # Apply accumulated analyst hints — LLM-identified priority targets and
+        # parameter suggestions flow into tool configuration here.
+        tool_kwargs = self._apply_tool_hints(tool_name, tool_kwargs)
 
         if not self._scope_allows(self.target):
             self.logger.error(f"Target validation failed before tool execution: {self.target}")
@@ -1670,6 +1689,256 @@ class WorkflowEngine:
         self.memory.metadata["master_seed_file"] = str(path)
         self.logger.info(f"Master seed updated: {len(urls)} URLs → {path.name}")
         return path
+
+    def _write_xss_seed_file(self, seed_path: str) -> Optional[Path]:
+        """Score and rank URLs for XSS testing using all accumulated session intelligence.
+
+        Rather than naive pattern-matching on URL strings, this cross-references
+        every signal the workflow has already gathered to score each candidate URL
+        by its actual likelihood of reflecting user-controlled input:
+
+        POSITIVE signals (things we already know):
+          +6  confirmed params (arjun/paramspider found real parameters here)
+          +5  ZAP already raised an alert on this URL (high-signal endpoint)
+          +5  existing finding references this URL (another tool flagged it)
+          +4  whitebox source analysis lists this as an input-handling endpoint
+          +3  httpx content-type is text/html (rendered → XSS lands in browser)
+          +3  URL has a query string with key=value pairs
+          +2  httpx status 200 (endpoint is actually live and reachable)
+          +1  path contains a token that suggests user-driven navigation
+
+        NEGATIVE signals (things that make XSS implausible or wasteful):
+          -10 static asset extension (.js, .css, .png, .ico, .woff, .map …)
+          -5  httpx status 401/403 (dalfox has no auth token to bypass this)
+          -3  httpx status 404/410 (dead endpoint)
+          -2  path is a bare API collection with no params (/api/Foo with no ?)
+
+        URLs are sorted descending by score; only those with score > 0 are kept,
+        capped at MAX_XSS_TARGETS to prevent overwhelming lightweight targets.
+        """
+        import re as _re
+        import json as _json
+
+        MAX_XSS_TARGETS = 80
+
+        _static_ext = _re.compile(
+            r"\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|map|"
+            r"pdf|zip|tar|gz|mp4|mp3|webp|avif|otf)(\?.*)?$",
+            _re.IGNORECASE,
+        )
+        _dynamic_token = _re.compile(
+            r"/(?:search|q|query|find|filter|login|register|signup|reset|forgot|"
+            r"profile|user|account|comment|review|feedback|message|checkout|"
+            r"order|product|item|page|redirect|url|next|return|callback|token|"
+            r"id|slug|name|email|error|confirm|verify|invite|share|embed)\b",
+            _re.IGNORECASE,
+        )
+
+        try:
+            raw_urls = [u.strip() for u in Path(seed_path).read_text(encoding="utf-8").splitlines() if u.strip()]
+        except Exception:
+            return None
+
+        if not raw_urls:
+            return None
+
+        # ------------------------------------------------------------------ #
+        # Build intelligence sets from accumulated session data               #
+        # ------------------------------------------------------------------ #
+
+        # 1. URLs with confirmed parameters from arjun / paramspider
+        param_confirmed: set[str] = set()
+        for te in self.memory.tool_executions:
+            if te.tool not in {"arjun", "paramspider"}:
+                continue
+            for line in (te.output or "").splitlines():
+                line = line.strip()
+                if line.startswith("http") and ("?" in line or "=" in line):
+                    param_confirmed.add(line.split("?")[0])
+                    param_confirmed.add(line)
+
+        # 2. URLs already flagged by ZAP (alerts target field + evidence text)
+        zap_flagged: set[str] = set()
+        for f in self.memory.findings:
+            if f.tool == "zap":
+                t = (f.target or "").strip()
+                if t:
+                    zap_flagged.add(t)
+                    zap_flagged.add(t.split("?")[0])
+
+        # 3. URLs referenced in any existing finding (cross-tool signal)
+        finding_urls: set[str] = set()
+        for f in self.memory.findings:
+            t = (f.target or "").strip()
+            if t:
+                finding_urls.add(t)
+                finding_urls.add(t.split("?")[0])
+
+        # 4. Whitebox source endpoints (paths the source code actually handles)
+        whitebox_paths: set[str] = set()
+        wb = self.memory.metadata.get("whitebox", {})
+        for ep in wb.get("endpoints", []):
+            path = ep if isinstance(ep, str) else (ep.get("path") or ep.get("url") or "")
+            if path:
+                whitebox_paths.add(path.split("?")[0])
+
+        # 5. Analyst-confirmed priority URLs (highest confidence — LLM identified
+        #    these as input-reflecting from actual tool output evidence)
+        analyst_priority: set[str] = set()
+        for url in (self.memory.metadata.get("tool_hints") or {}).get("dalfox", {}).get("priority_urls", []):
+            analyst_priority.add(url.strip())
+            analyst_priority.add(url.strip().split("?")[0])
+
+        # 6. Per-URL httpx intelligence: status code and content-type
+        httpx_status: dict[str, int] = {}
+        httpx_html: set[str] = set()
+        for te in self.memory.tool_executions:
+            if te.tool != "httpx":
+                continue
+            for line in (te.output or "").splitlines():
+                line = line.strip()
+                if not line.startswith("{"):
+                    continue
+                try:
+                    obj = _json.loads(line)
+                    u = obj.get("url") or obj.get("input") or ""
+                    sc = obj.get("status_code") or obj.get("status") or 0
+                    ct = obj.get("content_type") or obj.get("content-type") or ""
+                    if u:
+                        httpx_status[u] = int(sc) if sc else 0
+                        if "text/html" in ct:
+                            httpx_html.add(u)
+                            httpx_html.add(u.split("?")[0])
+                except Exception:
+                    continue
+
+        # ------------------------------------------------------------------ #
+        # Score every candidate URL                                           #
+        # ------------------------------------------------------------------ #
+
+        scores: list[tuple[int, str]] = []
+        for url in raw_urls:
+            parsed = urlparse(url)
+            base = url.split("?")[0]
+            score = 0
+
+            # Hard disqualifiers first
+            if _static_ext.search(parsed.path):
+                score -= 10
+
+            # Positive signals
+            if url in analyst_priority or base in analyst_priority:
+                score += 8  # LLM confirmed this URL reflects input — highest confidence
+            if url in param_confirmed or base in param_confirmed:
+                score += 6
+            if url in zap_flagged or base in zap_flagged:
+                score += 5
+            if url in finding_urls or base in finding_urls:
+                score += 5
+            if base in whitebox_paths or parsed.path in whitebox_paths:
+                score += 4
+            if url in httpx_html or base in httpx_html:
+                score += 3
+            if parsed.query and "=" in parsed.query:
+                score += 3
+            status = httpx_status.get(url) or httpx_status.get(base) or 0
+            if status == 200:
+                score += 2
+            if _dynamic_token.search(parsed.path):
+                score += 1
+
+            # Negative signals
+            if status in {401, 403}:
+                score -= 5
+            elif status in {404, 410}:
+                score -= 3
+
+            scores.append((score, url))
+
+        scores.sort(key=lambda x: x[0], reverse=True)
+        selected = [url for score, url in scores if score > 0][:MAX_XSS_TARGETS]
+
+        if not selected:
+            # Fallback: at minimum keep URLs with query params
+            selected = [u for u in raw_urls if "?" in u and "=" in urlparse(u).query][:MAX_XSS_TARGETS]
+
+        if not selected:
+            return None
+
+        # Log score distribution for visibility
+        if scores:
+            top = scores[:5]
+            self.logger.info(
+                f"XSS seed: {len(selected)}/{len(raw_urls)} URLs selected "
+                f"(scores {scores[0][0]}→{scores[len(selected)-1][0] if len(selected) > 1 else scores[0][0]}) "
+                f"| signals: zap={len(zap_flagged)} params={len(param_confirmed)} "
+                f"whitebox={len(whitebox_paths)} html={len(httpx_html)}"
+            )
+            for sc, u in top:
+                self.logger.debug(f"  XSS score {sc:+d}: {u}")
+
+        path = self._write_urls_file(selected, name=f"xss_seed_{self.memory.session_id}.txt")
+        return path
+
+    def _apply_tool_hints(self, tool_name: str, tool_kwargs: dict) -> dict:
+        """Merge accumulated analyst tool hints into tool kwargs before execution.
+
+        The analyst emits TOOL_HINTS after interpreting each tool's output.
+        Those hints accumulate in memory.metadata["tool_hints"] and are applied
+        here so every tool benefits from the full intelligence gathered so far:
+
+        - nuclei: analyst-suggested extra tags get appended to the tag list
+        - sqlmap/commix/xsstrike: analyst-confirmed injectable URLs get passed
+          as hint_urls (wrappers can pick the best candidate)
+        - rate_hint: if the analyst detected target stress, reduce concurrency
+          for tools that support it
+
+        dalfox priority_urls are handled separately inside _write_xss_seed_file
+        where they receive the highest scoring weight (+8) in the URL scorer.
+        """
+        all_hints: dict = self.memory.metadata.get("tool_hints") or {}
+        tool_hints: dict = all_hints.get(tool_name, {})
+
+        if not tool_hints and "rate_hint" not in all_hints:
+            return tool_kwargs
+
+        tool_kwargs = dict(tool_kwargs)
+
+        # nuclei: append analyst-suggested tags
+        if tool_name == "nuclei":
+            extra_tags = tool_hints.get("extra_tags", [])
+            if extra_tags:
+                existing = tool_kwargs.get("tags") or tool_kwargs.get("tags_filter") or ""
+                if isinstance(existing, list):
+                    existing = ",".join(existing)
+                merged = ",".join(
+                    dict.fromkeys(
+                        t.strip() for t in (existing + "," + ",".join(extra_tags)).split(",") if t.strip()
+                    )
+                )
+                tool_kwargs["tags"] = merged
+                self.logger.info(f"[Hints] nuclei tags enriched → {merged}")
+
+        # injection tools: pass analyst-confirmed URLs as hint_urls
+        if tool_name in {"sqlmap", "commix", "xsstrike"}:
+            priority = tool_hints.get("priority_urls", [])
+            if priority:
+                tool_kwargs["hint_urls"] = priority
+                self.logger.info(f"[Hints] {tool_name} priority URLs: {priority[:3]}")
+
+        # rate_hint: reduce concurrency when analyst detected target stress
+        rate_hint = float(all_hints.get("rate_hint", 1.0))
+        if rate_hint < 1.0:
+            if tool_name == "dalfox":
+                w = max(1, int(tool_kwargs.get("workers", 5) * rate_hint))
+                tool_kwargs["workers"] = w
+                self.logger.info(f"[Hints] dalfox workers reduced to {w} (rate_hint={rate_hint})")
+            elif tool_name == "nuclei":
+                r = max(5, int(tool_kwargs.get("rate_limit", 50) * rate_hint))
+                tool_kwargs["rate_limit"] = r
+                self.logger.info(f"[Hints] nuclei rate_limit reduced to {r} (rate_hint={rate_hint})")
+
+        return tool_kwargs
 
     def _filter_urls_to_target(self, urls: List[str]) -> List[str]:
         """Keep only URLs on the same host:port as the primary pentest target.

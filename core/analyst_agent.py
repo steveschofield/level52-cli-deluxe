@@ -210,9 +210,14 @@ class AnalystAgent(BaseAgent):
         # Add findings to memory
         for finding in findings:
             self.memory.add_finding(finding)
-        
+
+        # Extract and accumulate tool hints so downstream tools can act on them.
+        hints = self._extract_tool_hints(result["response"])
+        if hints:
+            self._accumulate_tool_hints(hints)
+
         self.log_action("AnalysisComplete", f"Found {len(findings)} issues from {tool}")
-        
+
         return {
             "findings": findings,
             "summary": result["response"],
@@ -1164,5 +1169,68 @@ class AnalystAgent(BaseAgent):
             start = response.find("RECOMMENDATION:") + len("RECOMMENDATION:")
             recommendation = response[start:].strip()
             return recommendation.split('\n')[0]
-        
+
         return "VERIFY_MANUALLY"
+
+    def _extract_tool_hints(self, response: str) -> dict:
+        """Parse the optional TOOL_HINTS JSON block from an analyst response.
+
+        The LLM emits this block only when it finds concrete, evidence-backed
+        targets for downstream tools — not as generic advice.  We try two
+        formats: fenced code block (```json ... ```) and bare JSON object.
+        """
+        # Try fenced code block first (preferred format)
+        match = re.search(
+            r"###\s*TOOL_HINTS\s*\n```json\s*\n([\s\S]*?)\n```",
+            response,
+            re.IGNORECASE,
+        )
+        if not match:
+            # Fallback: bare JSON after the header
+            match = re.search(
+                r"###\s*TOOL_HINTS\s*\n(\{[\s\S]*?\})\s*(?:\n###|\Z)",
+                response,
+                re.IGNORECASE,
+            )
+        if not match:
+            return {}
+        try:
+            hints = json.loads(match.group(1))
+            return hints if isinstance(hints, dict) else {}
+        except Exception:
+            return {}
+
+    def _accumulate_tool_hints(self, new_hints: dict) -> None:
+        """Merge new tool hints into the session-wide accumulated hints.
+
+        Priority URLs are deduplicated and capped at 10.
+        The rate_hint takes the most conservative (lowest) value seen.
+        Each tool's hints accumulate across every tool run so later tools
+        benefit from the full picture built by all previous analysts.
+        """
+        existing: dict = self.memory.metadata.get("tool_hints") or {}
+
+        for key, value in new_hints.items():
+            if key == "rate_hint":
+                # Keep the lowest (most conservative) rate hint seen
+                existing["rate_hint"] = min(float(existing.get("rate_hint", 1.0)), float(value))
+            elif isinstance(value, dict):
+                if key not in existing:
+                    existing[key] = {}
+                for hint_key, hint_val in value.items():
+                    if isinstance(hint_val, list):
+                        prev = existing[key].get(hint_key, [])
+                        # Deduplicate preserving order, cap at 10
+                        combined = list(dict.fromkeys(prev + [str(v) for v in hint_val]))
+                        existing[key][hint_key] = combined[:10]
+                    else:
+                        existing[key][hint_key] = hint_val
+
+        self.memory.metadata["tool_hints"] = existing
+
+        # Log a compact summary for visibility
+        summary = {
+            k: (len(v.get("priority_urls", [])) if isinstance(v, dict) else v)
+            for k, v in new_hints.items()
+        }
+        self.logger.info(f"[Analyst] Tool hints accumulated: {summary}")

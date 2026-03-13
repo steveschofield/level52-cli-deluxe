@@ -20,13 +20,21 @@ class DalfoxTool(BaseTool):
             command.extend(["url", target])
 
         command.extend(["--format", "json"])
-        
+
+        # Cap concurrency to avoid overwhelming the target (default dalfox is 100 workers).
+        workers = kwargs.get("workers", 5)
+        command.extend(["--worker", str(workers)])
+
+        # Add a small delay between requests per worker.
+        delay = kwargs.get("delay", 100)  # milliseconds
+        command.extend(["--delay", str(delay)])
+
         if kwargs.get("deep"):
             command.append("--deep-domxss")
-        
+
         if kwargs.get("blind"):
             command.extend(["--blind", kwargs["blind"]])
-            
+
         return command
     
     def parse_output(self, output: str) -> Dict[str, Any]:

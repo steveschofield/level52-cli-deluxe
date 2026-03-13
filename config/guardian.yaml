@@ -596,6 +596,8 @@ tools:
     # logged_out_regex: "Login"
     # Export HAR when using daemon mode (useful for importing into proxy tools)
     export_har: false
+    # Threads per host for active scan — keep low to avoid overwhelming the target
+    active_threads: 3
     # Run additional ZAP scan when available
     run_additional_scan: true
 

@@ -93,6 +93,7 @@ class ZapTool(BaseTool):
 
         safe_mode = (self.config or {}).get("pentest", {}).get("safe_mode", True)
         active = (scan == "full") and (not safe_mode)
+        active_threads = int(cfg.get("active_threads", 3))
 
         out_dir = self._reports_dir() / "zap"
         out_dir.mkdir(parents=True, exist_ok=True)
@@ -123,6 +124,7 @@ class ZapTool(BaseTool):
             args.append("--ajax-spider")
         if active:
             args.append("--active")
+            args.extend(["--active-threads", str(active_threads)])
         if ignore_robots:
             args.append("--ignore-robots")
         seed_urls = seed_urls or cfg.get("seed_urls")
@@ -191,6 +193,7 @@ class ZapTool(BaseTool):
         spider = bool(cfg.get("spider", True))
         safe_mode = (self.config or {}).get("pentest", {}).get("safe_mode", True)
         active = (scan == "full") and (not safe_mode)
+        active_threads = int(cfg.get("active_threads", 3))
 
         out_dir = self._reports_dir() / "zap"
         out_dir.mkdir(parents=True, exist_ok=True)
@@ -223,6 +226,7 @@ class ZapTool(BaseTool):
             args.append("--ajax-spider")
         if active:
             args.append("--active")
+            args.extend(["--active-threads", str(active_threads)])
         if ignore_robots:
             args.append("--ignore-robots")
         seed_urls = seed_urls or cfg.get("seed_urls")

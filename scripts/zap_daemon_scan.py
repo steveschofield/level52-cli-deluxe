@@ -379,6 +379,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     ap.add_argument("--spider", action="store_true", help="Run spider scan before passive/active scan")
     ap.add_argument("--ajax-spider", action="store_true", help="Run AJAX spider (useful for SPA apps)")
     ap.add_argument("--active", action="store_true", help="Run active scan (more intrusive)")
+    ap.add_argument("--active-threads", type=int, default=3, help="Threads per host for active scan (default: 3)")
     ap.add_argument("--max-minutes", type=int, default=10, help="Max time budget for scan (minutes)")
     ap.add_argument("--max-alerts", type=int, default=5000, help="Max number of alerts to fetch")
     ap.add_argument("--har-out", default="", help="Write HAR output to this path (optional)")
@@ -739,6 +740,14 @@ def main(argv: Optional[list[str]] = None) -> int:
 
             logger.info("Starting active scan...")
             logger.warning("Active scan is intrusive - use with caution!")
+
+            # Throttle active scan concurrency to avoid overwhelming the target.
+            try:
+                _get_json(_api_url(api_base, "ascan", "action", "setOptionThreadPerHost",
+                                   {"apikey": api_key, "Integer": args.active_threads}))
+                logger.info(f"Active scan thread limit set to {args.active_threads} per host")
+            except Exception as e:
+                logger.warning(f"Could not set active scan thread limit: {e}")
             if context_id and user_id:
                 logger.info(f"  (as authenticated user: {args.username})")
                 scan_id = _get_json(
