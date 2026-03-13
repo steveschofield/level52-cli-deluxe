@@ -112,9 +112,14 @@ class FindingDeduplicator:
         return merged
 
     def _create_key(self, finding) -> FindingKey:
-        title = self._normalize_text(getattr(finding, "title", ""))
+        raw_title = getattr(finding, "title", "") or ""
         target = self._normalize_text(getattr(finding, "target", ""))
         severity = getattr(finding, "severity", "unknown").lower()
+        # Check semantic synonyms before falling back to title normalization.
+        semantic = self._semantic_key(raw_title, severity, target)
+        if semantic:
+            return FindingKey(title_normalized=semantic, target=target, severity=severity)
+        title = self._normalize_text(raw_title)
         return FindingKey(title_normalized=title, target=target, severity=severity)
 
     def _normalize_text(self, text: str) -> str:
@@ -133,6 +138,27 @@ class FindingDeduplicator:
 
         text = "".join(c if c.isalnum() or c.isspace() else " " for c in text)
         return " ".join(text.split())
+
+    def _semantic_key(self, title: str, severity: str, target: str) -> str | None:
+        """
+        Return a canonical deduplication key for findings that use variant titles
+        for the same underlying vulnerability class. Returns None if no match.
+        """
+        t = title.lower()
+        # CORS misconfiguration — collapse all of:
+        #   "Insecure CORS Configuration (Wildcard Origin)"
+        #   "Overly Permissive CORS Configuration"
+        #   "Overly Permissive Cross-Origin Resource Sharing (CORS)"
+        #   "Permissive Cross-Origin Resource Sharing (CORS) Policy"
+        if (
+            ("cors" in t or "cross-origin resource sharing" in t or "cross origin resource sharing" in t)
+            and any(w in t for w in ("permissive", "insecure", "wildcard", "misconfiguration", "configuration", "policy"))
+        ):
+            return f"cors misconfiguration|{severity}|{self._normalize_text(target)}"
+        # Information disclosure about application identity (many tools emit this)
+        if "information disclosure" in t and any(w in t for w in ("application", "identity", "identification")):
+            return f"info disclosure application identity|{severity}|{self._normalize_text(target)}"
+        return None
 
     def _merge_findings(self, findings: List) -> object:
         if not findings:

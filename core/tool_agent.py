@@ -518,7 +518,11 @@ class ToolAgent(BaseAgent):
         
         try:
             # Execute tool with circuit breaker protection
-            timeout = kwargs.pop('tool_timeout', self.config.get("pentest", {}).get("tool_timeout", 300))
+            # Respect per-tool timeout overrides (tools.<name>.tool_timeout) before
+            # falling back to the global pentest.tool_timeout.
+            _tool_cfg_timeout = (self.config.get("tools", {}).get(tool_name, {}) or {}).get("tool_timeout")
+            _default_timeout = _tool_cfg_timeout if _tool_cfg_timeout is not None else self.config.get("pentest", {}).get("tool_timeout", 300)
+            timeout = kwargs.pop('tool_timeout', _default_timeout)
 
             kwargs, health = await self._maybe_apply_health_check(tool_name, target, kwargs or {})
             if kwargs is None:

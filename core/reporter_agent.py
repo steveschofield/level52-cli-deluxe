@@ -44,7 +44,11 @@ class ReporterAgent(BaseAgent):
             return text
 
         # Remove numbered prompt headers like "3. EXPLANATION:", "1. REASONING:", etc.
-        text = re.sub(r'^\s*\d+\.\s+(EXPLANATION|REASONING|SUPPORTING FACTS|JUSTIFICATION|'
+        # Also handles markdown-headed variants: "### 1. REASONING" or "### 2. RESPONSE"
+        text = re.sub(r'^\s*#{1,4}\s*\d+\.\s+(EXPLANATION|REASONING|RESPONSE|SUPPORTING FACTS|JUSTIFICATION|'
+                     r'ATTACK CHAIN|REFERENCES|REFLECTION|SUPPORTING DETAILS):?\s*$',
+                     '', text, flags=re.MULTILINE | re.IGNORECASE)
+        text = re.sub(r'^\s*\d+\.\s+(EXPLANATION|REASONING|RESPONSE|SUPPORTING FACTS|JUSTIFICATION|'
                      r'ATTACK CHAIN|REFERENCES|REFLECTION|SUPPORTING DETAILS):\s*',
                      '', text, flags=re.MULTILINE | re.IGNORECASE)
 
@@ -357,6 +361,39 @@ class ReporterAgent(BaseAgent):
             self.logger.warning(f"Failed to load ZAP summary: {e}")
             return ""
 
+    def _format_coverage_gaps_markdown(self) -> str:
+        """Emit a coverage-gap notice when key tools timed out or produced no output."""
+        timed_out = self.memory.metadata.get("timed_out_tools", [])
+        if not timed_out:
+            return ""
+
+        lines = [
+            "## Assessment Coverage Gaps",
+            "",
+            "> **Note**: The following tools did not complete within their allotted time and produced "
+            "no output. Findings from these tools are absent from this report. Coverage in these "
+            "areas should be considered incomplete.",
+            "",
+            "| Tool | Timeout | Impact |",
+            "|------|---------|--------|",
+        ]
+        _impact = {
+            "zap":          "Active web scan (spidering, AJAX crawl, active probing) not completed",
+            "nuclei":       "Template-based vulnerability detection not completed",
+            "dalfox":       "XSS payload injection testing not completed",
+            "sqlmap":       "SQL injection exploitation testing not completed",
+            "nikto":        "Web server misconfiguration scan not completed",
+            "schemathesis":  "API schema fuzzing not completed",
+        }
+        for entry in timed_out:
+            tool = entry.get("tool", "unknown")
+            t = entry.get("timeout_s", "?")
+            impact = _impact.get(tool, "Scan not completed")
+            lines.append(f"| {tool} | {t}s | {impact} |")
+
+        lines += ["", "Re-run with increased `tool_timeout` values or a narrower target scope.", ""]
+        return "\n".join(lines)
+
     def _format_whitebox_analysis_markdown(self) -> str:
         """Format whitebox analysis section for markdown report"""
         whitebox_metadata = self.memory.metadata.get("whitebox_analysis")
@@ -427,6 +464,9 @@ The following static analysis tools were executed on the source code:
         # Build ZAP section if present
         zap_section = f"\n\n{zap_summary}\n" if zap_summary else ""
 
+        # Build coverage gap notice if any tools timed out
+        coverage_gaps_section = self._format_coverage_gaps_markdown()
+
         # Build whitebox analysis section if present
         whitebox_section = self._format_whitebox_analysis_markdown()
 
@@ -462,6 +502,7 @@ The following static analysis tools were executed on the source code:
 | Info     | {summary['info']} |
 | **Total** | **{len(findings)}** |
 {quality_notes_section}
+{coverage_gaps_section}
 {zap_section}
 {whitebox_section if whitebox_section else ""}
 

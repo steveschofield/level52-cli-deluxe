@@ -35,6 +35,16 @@ class DalfoxTool(BaseTool):
         if kwargs.get("blind"):
             command.extend(["--blind", kwargs["blind"]])
 
+        # Speed/safety flags
+        if kwargs.get("skip_headless", False):
+            command.append("--skip-headless")
+
+        if kwargs.get("skip_bav", False):
+            command.append("--skip-bav")
+
+        if kwargs.get("skip_mining", False):
+            command.append("--skip-mining-all")
+
         return command
     
     def parse_output(self, output: str) -> Dict[str, Any]:

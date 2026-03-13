@@ -117,7 +117,7 @@ class AnalystAgent(BaseAgent):
             tool=tool,
             target=target,
             command=command,
-            output=output
+            output=output.replace("{", "{{").replace("}", "}}")
         )
 
         try:
@@ -160,10 +160,11 @@ class AnalystAgent(BaseAgent):
                 if ev.lower() in output_lower:
                     return True
                 # LLMs sometimes reformat JSON — try matching the longest distinct
-                # tokens. Use ≥15 chars to catch path strings like /api/v1/admin
-                # while ignoring noise like "id" or "true".
+                # tokens. Use ≥8 chars to catch path strings like /metrics, Status:
+                # while ignoring noise like "id" or "200".
+                # Strip backticks too — LLMs commonly wrap evidence in `code spans`.
                 words = re.split(r'[\s{}\[\]]+', ev)
-                chunks = [w.strip('",') for w in words if len(w.strip('",')) >= 15]
+                chunks = [w.strip('`",') for w in words if len(w.strip('`",')) >= 8]
                 return any(c.lower() in output_lower for c in chunks)
 
             if not any(_grounded(c) for c in candidates):
@@ -790,7 +791,7 @@ class AnalystAgent(BaseAgent):
         
         prompt = self.prompts["ANALYST_CORRELATION_PROMPT"].format(
             target=self.memory.target,
-            tool_results=tool_results
+            tool_results=tool_results.replace("{", "{{").replace("}", "}}")
         )
 
         result = await self.think(prompt, self.prompts["ANALYST_SYSTEM_PROMPT"])
@@ -815,8 +816,8 @@ class AnalystAgent(BaseAgent):
             tool=finding.tool,
             severity=finding.severity,
             description=finding.description,
-            evidence=finding.evidence[:500],  # Truncate
-            context=context
+            evidence=finding.evidence[:500].replace("{", "{{").replace("}", "}}"),
+            context=str(context).replace("{", "{{").replace("}", "}}")
         )
 
         result = await self.think(prompt, self.prompts["ANALYST_SYSTEM_PROMPT"])

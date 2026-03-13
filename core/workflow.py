@@ -229,6 +229,8 @@ class WorkflowEngine:
                 "endpoints_found": len(self.whitebox_findings.get("attack_surface", {}).get("endpoints", [])),
                 "secrets_found": len(self.whitebox_findings.get("attack_surface", {}).get("secrets", []))
             }
+            # Store full SAST results so the reporter can surface per-tool detail
+            self.memory.metadata["sast_results"] = self.whitebox_findings.get("sast_results", {})
 
             # Initialize correlation engine
             self.correlation_engine = CorrelationEngine(
@@ -1138,6 +1140,19 @@ class WorkflowEngine:
             if xss_seed:
                 tool_kwargs = dict(tool_kwargs)
                 tool_kwargs["from_file"] = str(xss_seed)
+                # If none of the selected URLs have query params, skip parameter
+                # mining — dalfox will stall indefinitely trying to discover params
+                # on REST API endpoints that don't accept URL-encoded input.
+                param_count = self.memory.metadata.get("xss_seed_param_count", 0)
+                if param_count == 0:
+                    tool_kwargs.setdefault("skip_mining", True)
+                # Always skip headless browser and BAV to reduce scan time
+                tool_kwargs.setdefault("skip_headless", True)
+                tool_kwargs.setdefault("skip_bav", True)
+            else:
+                # No seed file could be produced — skip dalfox entirely
+                self.logger.info("XSS seed is empty — skipping dalfox")
+                return None
 
         # Apply accumulated analyst hints — LLM-identified priority targets and
         # parameter suggestions flow into tool configuration here.
@@ -1226,6 +1241,17 @@ class WorkflowEngine:
             result = {"success": False, "tool": tool_name, "error": str(e), "exit_code": 1}
 
         self._log_tool_execution(tool=tool_name, args=tool_kwargs, result=result)
+
+        # Track tools that timed out with zero output — surfaced in report coverage section
+        if result.get("exit_code") == 124:
+            timed_out = self.memory.metadata.setdefault("timed_out_tools", [])
+            # Extract timeout value from error string e.g. "Tool zap timed out after 900s"
+            import re as _re
+            _m = _re.search(r"after (\d+)s", result.get("error", ""))
+            timeout_s = int(_m.group(1)) if _m else "?"
+            entry = {"tool": tool_name, "timeout_s": timeout_s}
+            if entry not in timed_out:
+                timed_out.append(entry)
 
         if result.get("success"):
             parsed = result.get("parsed") if isinstance(result.get("parsed"), dict) else {}
@@ -1853,6 +1879,15 @@ class WorkflowEngine:
             elif status in {404, 410}:
                 score -= 3
 
+            # Parameterless endpoints without any high-confidence signal are poor
+            # XSS candidates — dalfox will just do slow parameter mining and stall.
+            has_params = bool(parsed.query and "=" in parsed.query)
+            high_conf = (url in analyst_priority or base in analyst_priority
+                         or url in zap_flagged or base in zap_flagged
+                         or url in param_confirmed or base in param_confirmed)
+            if not has_params and not high_conf:
+                score -= 4
+
             scores.append((score, url))
 
         scores.sort(key=lambda x: x[0], reverse=True)
@@ -1865,17 +1900,23 @@ class WorkflowEngine:
         if not selected:
             return None
 
+        # Count parameterized URLs in final selection
+        param_count = sum(1 for u in selected if "?" in u and "=" in urlparse(u).query)
+
         # Log score distribution for visibility
         if scores:
             top = scores[:5]
             self.logger.info(
                 f"XSS seed: {len(selected)}/{len(raw_urls)} URLs selected "
-                f"(scores {scores[0][0]}→{scores[len(selected)-1][0] if len(selected) > 1 else scores[0][0]}) "
+                f"({param_count} with query params, scores {scores[0][0]}→{scores[len(selected)-1][0] if len(selected) > 1 else scores[0][0]}) "
                 f"| signals: zap={len(zap_flagged)} params={len(param_confirmed)} "
                 f"whitebox={len(whitebox_paths)} html={len(httpx_html)}"
             )
             for sc, u in top:
                 self.logger.debug(f"  XSS score {sc:+d}: {u}")
+
+        # Store param_count on memory so the dalfox wrapper can skip mining
+        self.memory.metadata["xss_seed_param_count"] = param_count
 
         path = self._write_urls_file(selected, name=f"xss_seed_{self.memory.session_id}.txt")
         return path

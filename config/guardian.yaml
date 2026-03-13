@@ -575,6 +575,9 @@ tools:
     scan: full
     # Time budget for the scan scripts (minutes)
     max_minutes: 45
+    # tool_timeout must exceed max_minutes*60 + startup headroom so the workflow
+    # doesn't cancel ZAP before its own scan timer fires (45min + 5min buffer = 3000s)
+    tool_timeout: 3000
     # Use AJAX spider for SPA apps (daemon mode when enabled)
     ajax_spider: true
     # Ignore robots.txt for deeper crawl
