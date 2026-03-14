@@ -269,9 +269,112 @@ class WorkflowEngine:
             self._persist_whitebox_endpoints()
             self._refresh_master_seed_file()
 
+            # Elevate high-severity SAST findings to memory.findings so they
+            # appear in the Technical Findings section of the report.
+            self._elevate_sast_findings()
+
         except Exception as e:
             self.logger.error(f"Whitebox analysis failed: {e}")
             self.logger.warning("Continuing with blackbox testing only")
+
+    def _elevate_sast_findings(self) -> None:
+        """Convert high-severity SAST results into Finding objects in memory.findings.
+
+        Semgrep ERRORs and detected secrets are actionable security issues that
+        belong in the Technical Findings section of the report alongside dynamic
+        findings. This method bridges the gap between metadata-only storage and
+        the findings list consumed by the reporter.
+        """
+        sast = self.memory.metadata.get("sast_results", {})
+        if not sast:
+            return
+
+        ts = datetime.now().isoformat()
+        source = self.source_path or "source code"
+
+        # --- Semgrep ERROR-severity findings ---
+        semgrep = sast.get("semgrep", {})
+        semgrep_findings = semgrep.get("findings", [])
+        # Group by category to avoid one Finding per line hit; keep top 5 per category.
+        from collections import defaultdict
+        by_category: dict = defaultdict(list)
+        for f in semgrep_findings:
+            if f.get("severity", "").upper() == "ERROR":
+                by_category[f.get("category", "unknown")].append(f)
+
+        for category, hits in by_category.items():
+            sample = hits[0]
+            file_loc = f"{sample.get('file', '')}:{sample.get('line', '')}"
+            snippet = (sample.get("code_snippet") or "")[:300]
+            evidence = f"{file_loc} — {snippet}" if snippet else file_loc
+            cwe_ids = []
+            if sample.get("cwe"):
+                cwes = sample["cwe"] if isinstance(sample["cwe"], list) else [sample["cwe"]]
+                cwe_ids = [str(c) for c in cwes if c]
+
+            self.memory.add_finding(Finding(
+                id=f"sast_semgrep_{category}_{ts}",
+                severity="high",
+                title=f"SAST: {category.replace('-', ' ').title()} ({len(hits)} instance{'s' if len(hits) > 1 else ''})",
+                description=(
+                    f"Semgrep static analysis detected {len(hits)} ERROR-severity "
+                    f"{category} issue{'s' if len(hits) > 1 else ''} in {source}. "
+                    f"Example: {sample.get('message', '')[:300]}"
+                ),
+                evidence=evidence,
+                tool="semgrep",
+                target=source,
+                timestamp=ts,
+                cwe_ids=cwe_ids,
+                owasp_categories=sample.get("owasp", []) if isinstance(sample.get("owasp"), list) else [],
+                confidence="high",
+                metadata={"hit_count": len(hits), "category": category},
+            ))
+            self.logger.info(f"  Elevated semgrep finding: {category} ({len(hits)} hits)")
+
+        # --- Secret scanning (gitleaks + trufflehog consolidated) ---
+        gl_count = sast.get("gitleaks", {}).get("count", 0)
+        th_count = sast.get("trufflehog", {}).get("count", 0)
+        total_secrets = gl_count + th_count
+
+        if total_secrets > 0:
+            # Sample a few secret types for the evidence field.
+            # gitleaks parser stores results under "leaks" (not "secrets").
+            # trufflehog DetectorName can be None for some detectors.
+            samples = []
+            for secret in (sast.get("gitleaks", {}).get("leaks", []) or [])[:3]:
+                rule = secret.get("RuleID") or secret.get("Description") or secret.get("rule_id") or "secret"
+                if rule and str(rule) not in samples:
+                    samples.append(str(rule))
+            for secret in (sast.get("trufflehog", {}).get("findings", []) or [])[:3]:
+                det = secret.get("DetectorName") or secret.get("detector_name")
+                if det and str(det) not in samples:
+                    samples.append(str(det))
+
+            evidence = f"{total_secrets} secrets detected"
+            if samples:
+                evidence += f" (types: {', '.join(samples[:5])})"
+
+            self.memory.add_finding(Finding(
+                id=f"sast_secrets_{ts}",
+                severity="critical",
+                title=f"Hardcoded Secrets in Source Code ({total_secrets} detected)",
+                description=(
+                    f"Secret scanning tools found {total_secrets} credential{'s' if total_secrets > 1 else ''} "
+                    f"embedded in {source} "
+                    f"({gl_count} by Gitleaks, {th_count} by TruffleHog). "
+                    "Exposed secrets enable direct unauthorized access to connected services."
+                ),
+                evidence=evidence,
+                tool="gitleaks/trufflehog",
+                target=source,
+                timestamp=ts,
+                cwe_ids=["CWE-798"],
+                owasp_categories=["A07:2021"],
+                confidence="high",
+                metadata={"gitleaks_count": gl_count, "trufflehog_count": th_count},
+            ))
+            self.logger.info(f"  Elevated secrets finding: {total_secrets} total secrets")
 
     async def run_workflow(self, workflow_name: str) -> Dict[str, Any]:
         """
@@ -1130,6 +1233,20 @@ class WorkflowEngine:
                         tool_kwargs = dict(tool_kwargs)
                         tool_kwargs["from_file"] = str(url_file)
 
+        # nuclei template scanning only benefits from live, meaningful endpoints.
+        # The master seed is dominated by static assets from subjs/ZAP spider
+        # (often 90%+ JS/CSS/ICO) that can never match a vulnerability template.
+        # Write a focused nuclei seed that strips noise and surfaces the URLs
+        # nuclei templates are actually designed to test.
+        if tool_name == "nuclei" and "from_file" in tool_kwargs:
+            nuclei_seed = self._write_nuclei_seed_file(tool_kwargs["from_file"])
+            if nuclei_seed:
+                tool_kwargs = dict(tool_kwargs)
+                tool_kwargs["from_file"] = str(nuclei_seed)
+            # If seed is None the master seed is already set; nuclei will run
+            # against it (degenerate case: very early in the workflow with no
+            # URL intelligence yet, just use what we have)
+
         # dalfox only benefits from URLs that can reflect input: those with query
         # parameters or path segments that look like dynamic values.  Feeding it
         # the full 1000+ URL master seed floods the target with payloads against
@@ -1140,11 +1257,13 @@ class WorkflowEngine:
             if xss_seed:
                 tool_kwargs = dict(tool_kwargs)
                 tool_kwargs["from_file"] = str(xss_seed)
-                # If none of the selected URLs have query params, skip parameter
-                # mining — dalfox will stall indefinitely trying to discover params
-                # on REST API endpoints that don't accept URL-encoded input.
+                # When none of the selected URLs have query params the app likely
+                # uses REST-style paths.  Enable parameter mining so dalfox can
+                # discover injectable params; it may be slower but at least has
+                # a chance of finding XSS surfaces.  Only skip mining when we
+                # already have parameterized URLs (mining would be redundant).
                 param_count = self.memory.metadata.get("xss_seed_param_count", 0)
-                if param_count == 0:
+                if param_count > 0:
                     tool_kwargs.setdefault("skip_mining", True)
                 # Always skip headless browser and BAV to reduce scan time
                 tool_kwargs.setdefault("skip_headless", True)
@@ -1153,6 +1272,39 @@ class WorkflowEngine:
                 # No seed file could be produced — skip dalfox entirely
                 self.logger.info("XSS seed is empty — skipping dalfox")
                 return None
+
+        # Custom HTTP scanners that only accept a single URL in get_command() benefit from
+        # being run across the full discovered endpoint list.  If we have a master seed
+        # file, pass the top non-static endpoints so each scanner probes real app
+        # surfaces rather than just the root URL.
+        _MULTI_URL_SCANNERS = {
+            "ssrf-scanner", "xxe-scanner", "deserialization-scanner",
+            "auth-scanner", "idor-scanner", "error-detector", "cors-scanner",
+        }
+        if tool_name in _MULTI_URL_SCANNERS and "endpoints" not in (tool_kwargs or {}):
+            seed = self.memory.metadata.get("master_seed_file")
+            if seed and Path(seed).exists():
+                import re as _re2
+                _STATIC_EXT_RE = _re2.compile(
+                    r"\.(js|css|ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|map|txt|xml|json)(\?.*)?$",
+                    _re2.IGNORECASE,
+                )
+                with open(seed) as _sf:
+                    _all_urls = [l.strip() for l in _sf if l.strip() and l.startswith("http")]
+                _endpoints = [u for u in _all_urls if not _STATIC_EXT_RE.search(u)]
+                # Deduplicate while preserving order
+                _seen: set = set()
+                _deduped = []
+                for _u in _endpoints:
+                    if _u not in _seen:
+                        _seen.add(_u)
+                        _deduped.append(_u)
+                if _deduped:
+                    tool_kwargs = dict(tool_kwargs or {})
+                    tool_kwargs["endpoints"] = _deduped[:40]
+                    self.logger.info(
+                        f"{tool_name}: passing {len(tool_kwargs['endpoints'])} endpoints from master seed"
+                    )
 
         # Apply accumulated analyst hints — LLM-identified priority targets and
         # parameter suggestions flow into tool configuration here.
@@ -1894,8 +2046,17 @@ class WorkflowEngine:
         selected = [url for score, url in scores if score > 0][:MAX_XSS_TARGETS]
 
         if not selected:
-            # Fallback: at minimum keep URLs with query params
+            # Fallback 1: at minimum keep URLs with query params regardless of score
             selected = [u for u in raw_urls if "?" in u and "=" in urlparse(u).query][:MAX_XSS_TARGETS]
+
+        if not selected:
+            # Fallback 2: the app likely uses REST-style paths with no query params
+            # (e.g., OWASP Juice Shop).  Pick the best-scoring non-static URLs down to
+            # score >= -2 so dalfox can probe them with parameter mining enabled.
+            selected = [
+                url for score, url in scores
+                if score >= -2 and not _static_ext.search(urlparse(url).path)
+            ][:20]
 
         if not selected:
             return None
@@ -1919,6 +2080,341 @@ class WorkflowEngine:
         self.memory.metadata["xss_seed_param_count"] = param_count
 
         path = self._write_urls_file(selected, name=f"xss_seed_{self.memory.session_id}.txt")
+        return path
+
+    def _write_nuclei_seed_file(self, seed_path: str) -> Optional[Path]:
+        """Score and rank URLs for nuclei template scanning using accumulated session intelligence.
+
+        Nuclei templates test for concrete vulnerability classes (CVEs, default
+        credentials, exposed configs, open redirects …).  Feeding it the full
+        master seed — which is dominated by static assets from subjs/ZAP spider —
+        wastes the entire time budget on JS/CSS/ICO files that can never match a
+        template.  This method strips the noise and surfaces the URLs that nuclei
+        templates are actually designed to hit.
+
+        HARD EXCLUSIONS (zero nuclei value — dropped before scoring):
+          • Static assets  (.js .css .ico .png .woff .map .txt .xml .yml …)
+          • Path-template placeholders  /:param or /{param}  — nuclei sends
+            these literally and receives 404s; they need real IDs to be useful
+          • Joke / Easter-egg paths  — excessively deep paths with no meaningful
+            segments (>7 segments and score stays ≤ 0 after full evaluation)
+          • Duplicate base paths  — deduplicated before scoring
+
+        POSITIVE signals (things we already know from session data):
+          +10  analyst nuclei priority_urls  — LLM explicitly flagged for scanning
+          +7   ZAP raised an alert on this URL  — already known interesting
+          +7   existing finding targets this URL  — another tool confirmed it
+          +6   whitebox source code handles this path  — confirmed endpoint
+          +5   httpx confirmed status 200  — live and reachable
+          +5   admin / management surface  (/admin /metrics /actuator /swagger
+               /api-docs /graphql /debug /config /env /health /status /management)
+          +5   authentication surface  (/login /logout /auth /oauth /token
+               /password /reset /2fa /verify /register /signup /session)
+          +4   sensitive data / file ops  (/upload /export /import /download
+               /backup /dump /data /attachment /file /report)
+          +4   injection-prone surface  (/search /query /find /filter /redirect
+               /url /callback /next /return /goto /link /open /proxy)
+          +3   API / REST collection endpoint  (path starts with /api/ or /rest/)
+          +3   tech-stack match  (detected technology maps to a nuclei tag —
+               e.g. node/express/jquery/angular/react/wordpress/drupal/laravel)
+          +2   chatbot / AI / web3 endpoints  (newer template coverage)
+          +1   short path depth (≤ 3 segments — broad-coverage templates prefer root-ish paths)
+
+        NEGATIVE signals:
+          -8   static asset extension  (hard disqualifier, brings score negative)
+          -6   path-template placeholder  (/api/Foo/:id)
+          -4   httpx status 401/403  (auth-bypass templates exist but low yield
+               without credentials; keep only if also admin/auth/finding signal)
+          -3   httpx status 404/410  — dead endpoint
+          -2   path depth > 6 segments  — deep paths rarely match templates
+          -1   path looks like a numeric ID segment  (/foo/12345/bar)
+
+        URLs are sorted descending by score.  Only those with score > 0 are kept,
+        capped at MAX_NUCLEI_TARGETS.  A fallback keeps the root URL if nothing
+        else qualifies.
+        """
+        import re as _re
+        import json as _json
+
+        cfg_nuclei = (self.config or {}).get("tools", {}).get("nuclei", {}) or {}
+        MAX_NUCLEI_TARGETS: int = int(cfg_nuclei.get("seed_max_urls", 60))
+
+        # ------------------------------------------------------------------ #
+        # Compiled patterns                                                    #
+        # ------------------------------------------------------------------ #
+
+        _static_ext = _re.compile(
+            r"\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|map|"
+            r"pdf|zip|tar|gz|mp4|mp3|webp|avif|otf|txt|xml|json|yaml|yml|"
+            r"md|csv|log|bak|swp|DS_Store)(\?.*)?$",
+            _re.IGNORECASE,
+        )
+        # Path segments that are unresolved route parameters
+        _path_template = _re.compile(r"/:[A-Za-z_][A-Za-z0-9_]*|/\{[A-Za-z_][A-Za-z0-9_]*\}")
+
+        # High-value path tokens for nuclei — maps to template categories
+        _admin_surface = _re.compile(
+            r"/(?:admin|management|manager|actuator|metrics|prometheus|swagger|"
+            r"api-?docs?|openapi|graphql|graph|debug|config|configuration|"
+            r"env|environment|health|healthz|status|info|server-status|"
+            r"console|dashboard|panel|cp|controlpanel|phpmyadmin|adminer|"
+            r"wp-admin|wp-login|\.git|\.env|\.htaccess|web\.config|"
+            r"backup|dump|database|db|sql|bak|old|tmp|temp|test)\b",
+            _re.IGNORECASE,
+        )
+        _auth_surface = _re.compile(
+            r"/(?:login|logout|signin|signout|signup|register|auth|oauth|"
+            r"token|password|passwd|reset|forgot|change-password|2fa|mfa|"
+            r"verify|verification|session|sso|saml|ldap|jwt|api-?key|"
+            r"authentication|authorize|callback|connect|disconnect)\b",
+            _re.IGNORECASE,
+        )
+        _file_surface = _re.compile(
+            r"/(?:upload|file|files|import|export|download|attachment|"
+            r"attachments|backup|restore|snapshot|archive|report|reports|"
+            r"data-export|transfer|share|storage|media|assets/private)\b",
+            _re.IGNORECASE,
+        )
+        _inject_surface = _re.compile(
+            r"/(?:search|query|q|find|filter|redirect|redir|url|link|goto|"
+            r"open|next|return|callback|forward|proxy|fetch|load|render|"
+            r"include|require|src|dest|target)\b",
+            _re.IGNORECASE,
+        )
+        # Detect natural-language sentence paths — sequences of plain English
+        # words with no technical tokens (common in Easter-egg / joke routes).
+        # Match paths where every non-empty segment is a lowercase word and
+        # there are no digits, hyphens, or recognised API tokens.
+        _sentence_path = _re.compile(
+            r"^(?:/[a-z]{2,}){4,}$"
+        )
+        _ai_web3_surface = _re.compile(
+            r"/(?:chatbot|chat|ai|llm|gpt|bot|assistant|web3|nft|wallet|"
+            r"blockchain|crypto|token|smart-?contract|defi|mint)\b",
+            _re.IGNORECASE,
+        )
+        _numeric_segment = _re.compile(r"/\d{2,}")
+
+        # ------------------------------------------------------------------ #
+        # Load URLs                                                            #
+        # ------------------------------------------------------------------ #
+
+        try:
+            raw_urls = [u.strip() for u in Path(seed_path).read_text(encoding="utf-8").splitlines() if u.strip()]
+        except Exception:
+            return None
+
+        if not raw_urls:
+            return None
+
+        # Deduplicate preserving order
+        seen: set[str] = set()
+        deduped: list[str] = []
+        for u in raw_urls:
+            if u not in seen:
+                seen.add(u)
+                deduped.append(u)
+        raw_urls = deduped
+
+        # ------------------------------------------------------------------ #
+        # Build intelligence sets from accumulated session data               #
+        # ------------------------------------------------------------------ #
+
+        # 1. Analyst-confirmed nuclei priority URLs (highest confidence)
+        analyst_priority: set[str] = set()
+        all_hints: dict = self.memory.metadata.get("tool_hints") or {}
+        for url in all_hints.get("nuclei", {}).get("priority_urls", []):
+            analyst_priority.add(url.strip())
+            analyst_priority.add(url.strip().split("?")[0])
+
+        # 2. ZAP-flagged URLs (existing alerts — high-signal endpoints)
+        zap_flagged: set[str] = set()
+        for f in self.memory.findings:
+            if f.tool == "zap":
+                t = (f.target or "").strip()
+                if t:
+                    zap_flagged.add(t)
+                    zap_flagged.add(t.split("?")[0])
+
+        # 3. Any URL referenced by an existing finding (cross-tool signal)
+        finding_urls: set[str] = set()
+        for f in self.memory.findings:
+            t = (f.target or "").strip()
+            if t:
+                finding_urls.add(t)
+                finding_urls.add(t.split("?")[0])
+
+        # 4. Whitebox source endpoints (code actually routes to these)
+        whitebox_paths: set[str] = set()
+        wb = self.memory.metadata.get("whitebox", {})
+        for ep in wb.get("endpoints", []):
+            path = ep if isinstance(ep, str) else (ep.get("path") or ep.get("url") or "")
+            if path:
+                whitebox_paths.add(path.split("?")[0])
+
+        # 5. Per-URL httpx data: status code + detected technologies
+        httpx_status: dict[str, int] = {}
+        detected_techs: set[str] = set()
+        for te in self.memory.tool_executions:
+            if te.tool not in {"httpx", "whatweb", "cmseek"}:
+                continue
+            for line in (te.output or "").splitlines():
+                line = line.strip()
+                if te.tool == "httpx" and line.startswith("{"):
+                    try:
+                        obj = _json.loads(line)
+                        u = obj.get("url") or obj.get("input") or ""
+                        sc = obj.get("status_code") or obj.get("status") or 0
+                        if u:
+                            httpx_status[u] = int(sc) if sc else 0
+                        # Collect technology names for template matching
+                        for tech in (obj.get("tech") or obj.get("technologies") or []):
+                            if isinstance(tech, str):
+                                detected_techs.add(tech.lower().split(":")[0].strip())
+                            elif isinstance(tech, dict):
+                                n = tech.get("name") or tech.get("tech") or ""
+                                if n:
+                                    detected_techs.add(n.lower().split(":")[0].strip())
+                    except Exception:
+                        continue
+                elif te.tool in {"whatweb", "cmseek"}:
+                    # Rough tech extraction from text output
+                    for token in _re.findall(r'\b(wordpress|drupal|joomla|laravel|django|rails|express|angular|react|vue|jquery|bootstrap|nginx|apache|iis|tomcat|spring|struts|flask)\b', line, _re.IGNORECASE):
+                        detected_techs.add(token.lower())
+
+        # Map detected techs to nuclei tag relevance
+        _tech_tag_map = {
+            "wordpress": True, "drupal": True, "joomla": True,
+            "laravel": True, "django": True, "rails": True,
+            "spring": True, "struts": True, "express": True,
+            "jquery": True, "angular": True, "react": True,
+        }
+        has_tech_templates = any(t in _tech_tag_map for t in detected_techs)
+
+        # ------------------------------------------------------------------ #
+        # Score every candidate URL                                            #
+        # ------------------------------------------------------------------ #
+
+        scores: list[tuple[int, str]] = []
+        for url in raw_urls:
+            parsed = urlparse(url)
+            path = parsed.path
+            base = url.split("?")[0]
+            score = 0
+
+            # --- Hard disqualifiers (applied first, end scoring early) ---
+            if _static_ext.search(path):
+                score -= 8
+                scores.append((score, url))
+                continue
+
+            if _path_template.search(path):
+                score -= 6
+                scores.append((score, url))
+                continue
+
+            # --- Positive signals ---
+            if url in analyst_priority or base in analyst_priority:
+                score += 10
+
+            if url in zap_flagged or base in zap_flagged:
+                score += 7
+
+            if url in finding_urls or base in finding_urls:
+                score += 7
+
+            if base in whitebox_paths or path in whitebox_paths:
+                score += 6
+
+            status = httpx_status.get(url) or httpx_status.get(base) or 0
+            if status == 200:
+                score += 5
+
+            if _admin_surface.search(path):
+                score += 5
+
+            if _auth_surface.search(path):
+                score += 5
+
+            if _file_surface.search(path):
+                score += 4
+
+            if _inject_surface.search(path):
+                score += 4
+
+            if path.startswith("/api/") or "/rest/" in path:
+                score += 3
+
+            # Tech-stack bonus: target runs a framework with dedicated nuclei templates
+            if has_tech_templates:
+                score += 3
+
+            if _ai_web3_surface.search(path):
+                score += 2
+
+            # Short paths are preferred — root-ish endpoints match fingerprint/
+            # default-login/exposure templates better than deep API paths
+            depth = len([s for s in path.split("/") if s])
+            if depth <= 3:
+                score += 1
+
+            # --- Negative signals ---
+            if status in {401, 403}:
+                # Keep auth-bypass candidates but penalise if no other high signal
+                has_high = (url in analyst_priority or base in analyst_priority
+                            or url in zap_flagged or base in zap_flagged
+                            or url in finding_urls or base in finding_urls
+                            or _auth_surface.search(path) or _admin_surface.search(path))
+                if not has_high:
+                    score -= 4
+
+            if status in {404, 410}:
+                score -= 3
+
+            if depth > 6:
+                score -= 2
+
+            if _numeric_segment.search(path):
+                score -= 1
+
+            # Natural-language sentence paths (Easter-egg / joke routes) have
+            # no technical tokens and score negatively on depth, but shallow
+            # ones can slip through.  Only penalise at depth >= 5 to avoid
+            # catching legitimate API paths like /dashboard/users/active/list.
+            if depth >= 5 and _sentence_path.match(path):
+                score -= 4
+
+            scores.append((score, url))
+
+        scores.sort(key=lambda x: x[0], reverse=True)
+        selected = [url for sc, url in scores if sc > 0][:MAX_NUCLEI_TARGETS]
+
+        # Fallback: always include root URL so nuclei fingerprinting templates fire
+        root = self.target if self.target and self.target.startswith("http") else None
+        if root and root not in selected:
+            selected.insert(0, root)
+
+        if not selected:
+            return None
+
+        # ------------------------------------------------------------------ #
+        # Log score distribution                                               #
+        # ------------------------------------------------------------------ #
+        excluded_static = sum(1 for sc, _ in scores if sc <= -8)
+        excluded_template = sum(1 for sc, u in scores if -7 <= sc <= -6 and _path_template.search(urlparse(u).path))
+        self.logger.info(
+            f"Nuclei seed: {len(selected)}/{len(raw_urls)} URLs selected "
+            f"(excluded: {excluded_static} static assets, {excluded_template} path templates) "
+            f"| signals: analyst={len(analyst_priority)} zap={len(zap_flagged)} "
+            f"findings={len(finding_urls)} whitebox={len(whitebox_paths)} "
+            f"techs={{{','.join(sorted(detected_techs)[:5])}}}"
+        )
+        for sc, u in scores[:10]:
+            self.logger.debug(f"  Nuclei score {sc:+d}: {u}")
+        if len(scores) > 10:
+            self.logger.debug(f"  ... ({len(scores) - 10} more URLs scored)")
+
+        path = self._write_urls_file(selected, name=f"nuclei_seed_{self.memory.session_id}.txt")
         return path
 
     def _apply_tool_hints(self, tool_name: str, tool_kwargs: dict) -> dict:

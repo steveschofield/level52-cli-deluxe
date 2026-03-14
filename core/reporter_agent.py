@@ -162,7 +162,7 @@ class ReporterAgent(BaseAgent):
             top_issues="\n".join(top_issues) if top_issues else "No critical issues found"
         )
         
-        result = await self.think(prompt, REPORTER_SYSTEM_PROMPT)
+        result = await self.think(prompt, REPORTER_SYSTEM_PROMPT, direct=True)
         return self._clean_llm_artifacts(result["response"])
 
     async def generate_technical_findings(self) -> str:
@@ -174,7 +174,7 @@ class ReporterAgent(BaseAgent):
             findings=findings_text
         )
         
-        result = await self.think(prompt, REPORTER_SYSTEM_PROMPT)
+        result = await self.think(prompt, REPORTER_SYSTEM_PROMPT, direct=True)
         technical = self._clean_llm_artifacts(result["response"])
         technical = self._dedupe_markdown_sections(technical)
         issues = self._validate_technical_findings_quality(technical)
@@ -224,7 +224,7 @@ class ReporterAgent(BaseAgent):
             affected_systems="\n".join(f"- {s}" for s in affected)
         )
         
-        result = await self.think(prompt, REPORTER_SYSTEM_PROMPT)
+        result = await self.think(prompt, REPORTER_SYSTEM_PROMPT, direct=True)
         return self._clean_llm_artifacts(result["response"])
 
     async def generate_ai_trace(self) -> str:
@@ -281,7 +281,7 @@ class ReporterAgent(BaseAgent):
             workflow=workflow
         )
         
-        result = await self.think(prompt, REPORTER_SYSTEM_PROMPT)
+        result = await self.think(prompt, REPORTER_SYSTEM_PROMPT, direct=True)
         return self._clean_llm_artifacts(result["response"])
 
     async def generate_zap_summary(self) -> str:
@@ -1173,7 +1173,7 @@ Exploitation Information:
             "FINDINGS:\n"
             f"{findings_text}\n"
         )
-        result = await self.think(prompt, REPORTER_SYSTEM_PROMPT)
+        result = await self.think(prompt, REPORTER_SYSTEM_PROMPT, direct=True)
         return result["response"]
 
     def _render_structured_technical_findings_fallback(self, findings_text: str) -> str:

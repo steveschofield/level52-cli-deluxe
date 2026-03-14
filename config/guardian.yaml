@@ -506,8 +506,8 @@ tools:
   nuclei:
     enabled: true
     severity: ["critical", "high"]
-    # Increased timeout — the full http/ template tree against large URL lists easily takes >15min.
-    tool_timeout: 1800
+    # Increased timeout — the full http/ template tree against large URL lists easily takes >30min.
+    tool_timeout: 3600
     # Nuclei logs are now per-session (in session directory)
     # log_file: "./reports/nuclei.log"
     # Use focused subdirectories instead of the entire template corpus to avoid timeouts.
@@ -518,8 +518,12 @@ tools:
       - ~/nuclei-templates/http/misconfiguration
     # Nuclei tags are template-defined (run `nuclei -tgl` to see what's available in your template set).
     tags: ["cve", "default-login", "exposure", "misconfig"]
-    rate_limit: 50
-  
+    rate_limit: 10
+    # Maximum URLs to feed nuclei after intelligent seed filtering.
+    # Keeps scan time predictable — static assets and path templates are excluded
+    # before this cap is applied, so 60 real endpoints >> 1600 noisy ones.
+    seed_max_urls: 60
+
   schemathesis:
     enabled: true
     # Required: OpenAPI schema URL or path

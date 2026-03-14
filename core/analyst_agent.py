@@ -173,8 +173,15 @@ class AnalystAgent(BaseAgent):
             # High/medium severity from low-signal tools is often speculative; downgrade unless we have a strong signature.
             if f.tool in low_signal_tools and f.severity in {"critical", "high", "medium"}:
                 has_cve = bool(re.search(r"\bCVE-\d{4}-\d+\b", output, re.IGNORECASE) or re.search(r"\bCVE-\d{4}-\d+\b", evidence, re.IGNORECASE))
-                has_strong_flag = any(token in evidence.lower() for token in ["cve", "vulnerab", "exploit", "sqli", "sql injection", "rce", "ssrf", "lfi", "rfi"])
-                if not (has_cve or has_strong_flag):
+                has_strong_flag = any(token in evidence.lower() for token in [
+                    "cve", "vulnerab", "exploit", "sqli", "sql injection", "rce", "ssrf", "lfi", "rfi",
+                    "unauthenticated", "unauthorized", "authentication bypass", "auth bypass",
+                    "admin", "disclosure", "misconfigur", "exposure", "exposed", "bypass",
+                    "injection", "hardcoded", "secret", "credential", "token",
+                ])
+                # Respect CVSS: if the LLM provided a full CVSS vector, that's an explicit severity signal
+                has_cvss_signal = bool(f.cvss_score and f.cvss_score >= 7.0 and f.cvss_vector)
+                if not (has_cve or has_strong_flag or has_cvss_signal):
                     f.severity = "low"
 
             filtered.append(f)
@@ -602,9 +609,16 @@ class AnalystAgent(BaseAgent):
                 if not f.title:
                     f.title = "Browser feature policy header present"
 
-            # "Service exposed" is generally informational unless coupled with auth bypass, CVE, etc.
+            # "Service exposed" is generally informational unless coupled with auth bypass, CVE, known-vuln-app, etc.
             if tool in {"nmap", "httpx"} and ("port" in ev or "scheme" in ev) and f.severity in {"critical", "high", "medium"}:
-                if not re.search(r"\bCVE-\d{4}-\d+\b", output, re.IGNORECASE):
+                has_cve = bool(re.search(r"\bCVE-\d{4}-\d+\b", output, re.IGNORECASE))
+                has_vuln_context = any(token in ev for token in [
+                    "vulnerab", "exploit", "inject", "bypass", "unauthenticated",
+                    "unauthorized", "admin", "rce", "sqli", "secret", "hardcoded",
+                    "insecure", "misconfigur",
+                ])
+                has_cvss_signal = bool(f.cvss_score and f.cvss_score >= 7.0 and f.cvss_vector)
+                if not (has_cve or has_vuln_context or has_cvss_signal):
                     f.severity = "info"
 
             filtered.append(f)
@@ -893,8 +907,8 @@ class AnalystAgent(BaseAgent):
         findings: List[Finding] = []
 
         field_re = re.compile(
-            r"(?im)^(SEVERITY|EVIDENCE|DESCRIPTION|IMPACT|RECOMMENDATION|FIX|REMEDIATION|CVSS|CWE|OWASP|CVE|"
-            r"EXPLOITABILITY|ATTACK VECTOR|DEFENSE BYPASS|MITRE ATT&CK|PREREQUISITES)\s*:\s*(.*)$"
+            r"(?im)^(SEVERITY|EVIDENCE|DESCRIPTION|REASONING|IMPACT|RECOMMENDATION|FIX|REMEDIATION|CVSS|CWE|OWASP|CVE|"
+            r"EXPLOITABILITY|ATTACK VECTOR|DEFENSE BYPASS|MITRE ATT&CK|PREREQUISITES|SUMMARY)\s*:\s*(.*)$"
         )
 
         def parse_fields(block: str) -> Dict[str, str]:
@@ -988,9 +1002,35 @@ class AnalystAgent(BaseAgent):
             if prerequisites:
                 finding.metadata["prerequisites"] = prerequisites
 
+            if self._is_artifact_title(title):
+                self.logger.debug(
+                    f"[{tool}] Skipping parser artifact block with title: {title!r}"
+                )
+                continue
+
             findings.append(finding)
 
         return findings
+
+    # Titles that are LLM analysis section headers, not security findings.
+    _ARTIFACT_TITLE_RE = re.compile(
+        r"(?i)^("
+        r"key\s+observation\s*\d*"
+        r"|interpretation"
+        r"|false\s+positive\s+check"
+        r"|false\s+positive"
+        r"|analysis(\s+notes?)?"
+        r"|summary(\s+notes?)?"
+        r"|conclusion"
+        r"|observation\s*\d*"
+        r"|note\s*\d*"
+        r"|no\s+(parameters?|vulnerabilit|findings?|issues?)\s*(found|detected|discovered|identified)?"
+        r")$"
+    )
+
+    def _is_artifact_title(self, title: str) -> bool:
+        """Return True if the finding title is a known LLM analysis section header."""
+        return bool(self._ARTIFACT_TITLE_RE.match(title.strip()))
 
     def _parse_findings_fallback(self, text: str, tool: str, target: str) -> List[Finding]:
         """

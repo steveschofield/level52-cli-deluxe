@@ -61,14 +61,23 @@ class BaseTool(ABC):
     
     async def execute(self, target: str, **kwargs) -> Dict[str, Any]:
         """
-        Execute the tool against a target
-        
+        Execute the tool against a target.
+
+        If the ``endpoints`` kwarg is provided (a list of URLs), the tool is run
+        once per endpoint and all results are aggregated.  This allows workflow.py
+        to hand a discovered endpoint list to custom scanners (ssrf-scanner,
+        auth-scanner, etc.) without each scanner needing bespoke iteration logic.
+
         Returns:
             Dict with parsed results, raw output, and metadata
         """
+        endpoints: Optional[List[str]] = kwargs.pop("endpoints", None)
+        if endpoints:
+            return await self._execute_for_endpoints(target, endpoints, **kwargs)
+
         if not self.is_available:
             raise RuntimeError(f"Tool {self.tool_name} is not available")
-        
+
         # Build command
         command = self.get_command(target, **kwargs)
         command = self._apply_resolved_binary(command)
@@ -180,6 +189,59 @@ class BaseTool(ABC):
                 f"Tool {self.tool_name} finished in {duration:.2f}s (status={status}, exit={exit_str}, stdout={stdout_len}B, stderr={stderr_len}B)"
             )
     
+    async def _execute_for_endpoints(
+        self, primary_target: str, endpoints: List[str], **kwargs
+    ) -> Dict[str, Any]:
+        """Run the tool against each endpoint and return aggregated results."""
+        all_raw: List[str] = []
+        all_findings: List[Any] = []
+        all_commands: List[str] = []
+        any_success = False
+        total_duration = 0.0
+        last_exit_code = 0
+        start_time = datetime.now()
+
+        for ep in endpoints:
+            try:
+                r = await self.execute(ep, **kwargs)
+                if r.get("raw_output"):
+                    all_raw.append(f"# {ep}\n{r['raw_output']}")
+                if r.get("command"):
+                    all_commands.append(r["command"])
+                parsed = r.get("parsed") or {}
+                findings = parsed.get("findings") or []
+                all_findings.extend(findings)
+                if self.is_success_exit_code(r.get("exit_code", 1)):
+                    any_success = True
+                total_duration += r.get("duration", 0.0)
+                last_exit_code = r.get("exit_code", 0)
+            except Exception as e:
+                self.logger.debug(f"{self.tool_name}: skipping {ep}: {e}")
+                continue
+
+        combined_raw = "\n\n".join(all_raw)
+        parsed = self.parse_output(combined_raw) if all_raw else {}
+        # Prefer the per-endpoint finding list (richer context) over re-parsing
+        if all_findings:
+            parsed["findings"] = all_findings
+
+        cmd_summary = "; ".join(all_commands[:5])
+        if len(all_commands) > 5:
+            cmd_summary += f" ... (+{len(all_commands) - 5} more)"
+
+        return {
+            "tool": self.tool_name,
+            "target": primary_target,
+            "command": cmd_summary,
+            "timestamp": start_time.isoformat(),
+            "exit_code": last_exit_code,
+            "duration": total_duration,
+            "raw_output": combined_raw[:100_000],
+            "error": None,
+            "parsed": parsed,
+            "success": any_success,
+        }
+
     def _check_installation(self) -> bool:
         """Check if tool is installed and in PATH"""
         resolved = self._resolve_tool_path()

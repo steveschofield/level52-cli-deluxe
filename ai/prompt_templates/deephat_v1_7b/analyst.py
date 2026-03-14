@@ -36,9 +36,7 @@ Command: {command}
 RAW OUTPUT:
 {output}
 
-CRITICAL INSTRUCTION: You MUST use the EXACT format below. Each finding MUST start with "### FINDING:" followed by field names in ALL CAPS.
-
-Report EACH distinct vulnerability using this EXACT structure:
+OUTPUT FORMAT — each finding uses this structure, nothing else before or after:
 
 ### FINDING: <short title>
 SEVERITY: <Critical|High|Medium|Low|Info>
@@ -53,37 +51,16 @@ CVE: CVE-YYYY-NNNN [if applicable]
 CWE: CWE-XXX [if known]
 CVSS: score and/or vector [if applicable]
 
-EXAMPLE (follow this format EXACTLY):
-### FINDING: Unauthenticated RCE in Admin Panel
-SEVERITY: Critical
-EVIDENCE: "/admin debug=1 → full stack trace with credentials"
-DESCRIPTION: Debug mode exposes sensitive details enabling unauthenticated exploitation
-EXPLOITABILITY: Trivial (no auth required, direct exploitation)
-ATTACK VECTOR: POST /admin?debug=1 with serialized payload
-IMPACT: Full system compromise, root shell, credential access
-DEFENSE BYPASS: WAF bypass via parameter pollution
-MITRE ATT&CK: T1190 (Exploit Public-Facing Application)
-CVE: CVE-2024-XXXXX
-CVSS: 9.8 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)
+RULES:
+- EVIDENCE must be a verbatim quote from the RAW OUTPUT above. No quote = no finding.
+- Do NOT invent payloads, version strings, CVEs, file paths, or evidence not present in the raw output.
+- Do NOT output numbered lists, preamble, reasoning sections, or recommendations.
+- Do NOT output anything before the first ### FINDING: line.
+- If NO exploitable findings exist, output exactly: No actionable exploitation opportunities identified.
+- If the tool failed or errored, output exactly: No actionable exploitation opportunities identified (tooling issue: <short note>).
 
-### FINDING: vsftpd 2.3.4 Backdoor
-SEVERITY: Critical
-EVIDENCE: "vsftpd 2.3.4"
-DESCRIPTION: Known backdoored version with command injection in smiley login
-EXPLOITABILITY: Trivial (public exploits available)
-ATTACK VECTOR: Login with username ending in :) triggers backdoor on port 6200
-IMPACT: Remote code execution as root
-CVE: CVE-2011-2523
-
-IMPORTANT RULES:
-- If NO exploitable findings exist, respond ONLY with: "No actionable exploitation opportunities identified."
-- If tool failed/errored, respond ONLY with: "No actionable exploitation opportunities identified (tooling issue: <short note>)."
-- Do NOT use markdown headers like "### Critical Vulnerabilities:" - ONLY use "### FINDING:"
-- Do NOT number findings like "1.", "2." - use "### FINDING:" for each one
-- EVIDENCE field MUST contain exact quotes from the RAW OUTPUT above
-
-After all findings, optionally add:
-Attack Chain Summary: How findings chain together for maximum impact."""
+If findings exist, add one optional line after all ### FINDING: blocks:
+Attack Chain: <one sentence>"""
 
 ANALYST_CORRELATION_PROMPT = """Correlate findings to build attack chains.
 

@@ -40,10 +40,17 @@ class BaseAgent(ABC):
         """Execute the agent's primary function"""
         pass
     
-    async def think(self, prompt: str, system_prompt: str) -> Dict[str, str]:
+    async def think(self, prompt: str, system_prompt: str, direct: bool = False) -> Dict[str, str]:
         """
-        Use AI to think through a problem with reasoning
-        
+        Use AI to think through a problem with reasoning.
+
+        Args:
+            prompt: The prompt to send to the LLM.
+            system_prompt: System-level instructions.
+            direct: If True, call generate() instead of generate_with_reasoning() so no
+                    REASONING/RESPONSE wrapper is injected.  Use this for report-generation
+                    calls where the prompt already contains its own output-format instructions.
+
         Returns:
             Dict with 'reasoning' and 'response' keys
         """
@@ -102,13 +109,20 @@ class BaseAgent(ABC):
         while True:
             attempt_started = time.time()
             try:
-                result = await asyncio.wait_for(
-                    self.llm.generate_with_reasoning(
-                        prompt=prompt,
-                        system_prompt=system_prompt
-                    ),
-                    timeout=llm_timeout
-                )
+                if direct:
+                    raw = await asyncio.wait_for(
+                        self.llm.generate(prompt=prompt, system_prompt=system_prompt),
+                        timeout=llm_timeout,
+                    )
+                    result = {"reasoning": "", "response": raw}
+                else:
+                    result = await asyncio.wait_for(
+                        self.llm.generate_with_reasoning(
+                            prompt=prompt,
+                            system_prompt=system_prompt
+                        ),
+                        timeout=llm_timeout,
+                    )
 
                 usage = getattr(self.llm, "last_usage", None)
                 request_id = getattr(self.llm, "last_request_id", None)

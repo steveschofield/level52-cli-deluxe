@@ -24,7 +24,9 @@ class OllamaClient:
         self.logger = get_logger(config)
 
         ai_config = config.get("ai", {})
-        self.model_name = ai_config.get("model", "llama3")
+        self.model_name = ai_config.get("model")
+        if not self.model_name:
+            raise ValueError("ai.model is not set in guardian.yaml — please specify a model (e.g. model: \"qwen3.5:27b\")")
         self.temperature = ai_config.get("temperature", 0.2)
         self.max_tokens = ai_config.get("max_tokens")  # mapped to num_predict if provided
         self.base_url = ai_config.get("base_url") or os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434")
