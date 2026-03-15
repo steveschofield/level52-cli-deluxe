@@ -233,6 +233,7 @@ class BaseTool(ABC):
             "tool": self.tool_name,
             "target": primary_target,
             "command": cmd_summary,
+            "commands_list": all_commands,
             "timestamp": start_time.isoformat(),
             "exit_code": last_exit_code,
             "duration": total_duration,

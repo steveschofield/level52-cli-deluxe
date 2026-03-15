@@ -34,8 +34,11 @@ class NiktoTool(BaseTool):
         if target.startswith("https"):
             command.append("-ssl")
         
-        # Tuning options
-        tuning = kwargs.get("tuning", "x")  # Default: all tests except DoS
+        # Tuning options — positive inclusion of safe passive categories only.
+        # 1=interesting files, 2=misconfigs/defaults, 3=info disclosure, b=software ID.
+        # Destructive categories (0=upload, 4=injection, 6=DoS, 8=cmd exec, 9=SQLi)
+        # are never included so this is safe against production/multi-site targets.
+        tuning = kwargs.get("tuning", "123b")
         command.extend(["-Tuning", tuning])
         
         # Timeout

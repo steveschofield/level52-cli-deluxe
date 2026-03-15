@@ -466,3 +466,31 @@ class ZapTool(BaseTool):
                 "sites": len(data.get("site") or []),
             },
         }
+
+    async def execute(self, target: str, **kwargs) -> Dict[str, Any]:
+        """
+        Execute ZAP and replace raw_output with the structured JSON report file
+        so that the analyst and smart filter receive parseable JSON instead of
+        the human-readable progress log (which can be many MB of text).
+        """
+        result = await super().execute(target, **kwargs)
+
+        # Extract --json-out path from the command string
+        command_str = result.get("command", "")
+        json_out_path: Optional[Path] = None
+        parts = command_str.split()
+        for i, part in enumerate(parts):
+            if part == "--json-out" and i + 1 < len(parts):
+                json_out_path = Path(parts[i + 1])
+                break
+
+        if json_out_path and json_out_path.exists():
+            try:
+                json_content = json_out_path.read_text(encoding="utf-8", errors="replace")
+                # Re-parse to get structured alerts/URLs into parsed field as well
+                result["raw_output"] = json_content
+                result["parsed"] = self.parse_output(json_content)
+            except Exception:
+                pass  # Keep original raw_output on any read error
+
+        return result

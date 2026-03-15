@@ -578,7 +578,8 @@ class ToolAgent(BaseAgent):
                 exit_code=exit_code,
                 output=raw_output,
                 duration=result.get("duration", 0.0),
-                success=is_success
+                success=is_success,
+                commands_list=result.get("commands_list") or [],
             )
             self.memory.add_tool_execution(execution)
 

@@ -49,6 +49,7 @@ class ToolExecution:
     findings_count: int = 0
     success: bool = True  # Whether tool execution was successful per tool-specific exit code rules
     output_size: int = 0  # Populated automatically from len(output)
+    commands_list: List[str] = field(default_factory=list)  # Full per-request commands (multi-endpoint tools)
 
     def __post_init__(self):
         if not self.output_size and self.output:

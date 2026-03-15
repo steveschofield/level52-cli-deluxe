@@ -126,7 +126,7 @@ class WorkflowEngine:
             output_lower = (execution.output or "").lower()
             if "skipped:" in output_lower:
                 entry["skipped"] += 1
-            elif execution.exit_code == 0:
+            elif execution.success:
                 entry["success"] += 1
             else:
                 entry["failed"] += 1
@@ -709,13 +709,15 @@ class WorkflowEngine:
             output_dir = Path(self.config.get("output", {}).get("save_path", "./reports"))
             output_dir.mkdir(parents=True, exist_ok=True)
 
-            # Always generate markdown and html
+            # Generate report sections once, then assemble for each format without re-calling LLM
+            self.logger.info("Generating report sections...")
+            sections = await self.reporter.generate_sections()
             for fmt, ext in (("markdown", "md"), ("html", "html")):
-                self.logger.info(f"Generating {fmt} report...")
-                report = await self.reporter.execute(format=fmt)
+                self.logger.info(f"Assembling {fmt} report...")
+                report_content = await self.reporter.assemble_report(fmt, sections)
                 report_file = output_dir / f"report_{self.memory.session_id}.{ext}"
                 with open(report_file, 'w', encoding='utf-8') as f:
-                    f.write(report["content"])
+                    f.write(report_content)
                 self.logger.info(f"Report saved to: {report_file}")
         
         self.memory.mark_action_complete(step["name"])
@@ -1441,6 +1443,8 @@ class WorkflowEngine:
                     if base:
                         from urllib.parse import urljoin
                         urls = [urljoin(base, p) for p in urls if isinstance(p, str) and p]
+                    # Auto-raise findings for dangerous paths discovered with HTTP 200
+                    self._check_gobuster_dangerous_paths(parsed, tool_name)
                 if isinstance(urls, list) and urls:
                     self.memory.update_context("urls", urls)
                     self.memory.update_context("discovered_assets", urls)
@@ -1759,6 +1763,85 @@ class WorkflowEngine:
                 self.logger.error(f"Auto-exploit error for {finding.title}: {str(e)}")
                 finding.metadata["exploitation_attempted"] = True
                 finding.metadata["exploitation_error"] = str(e)
+
+    # Paths that are dangerous when they return HTTP 200 — gobuster finding them
+    # means a tool-specific attack surface is directly exposed.
+    _GOBUSTER_DANGEROUS_PATHS: list[tuple[str, str, str, str]] = [
+        # (path_fragment, severity, title, description)
+        ("/console",        "critical", "Exposed Werkzeug/Flask Debug Console",
+         "Interactive Python debugger console is publicly accessible. "
+         "This allows arbitrary code execution on the server."),
+        ("/.git",           "high", "Exposed Git Repository",
+         "The .git directory is publicly accessible, leaking full source code, "
+         "commit history, credentials, and secrets."),
+        ("/.env",           "high", "Exposed Environment File",
+         ".env file is publicly accessible, potentially exposing secrets, "
+         "API keys, database credentials, and configuration."),
+        ("/phpmyadmin",     "high", "Exposed phpMyAdmin Panel",
+         "phpMyAdmin database management interface is publicly accessible."),
+        ("/adminer",        "high", "Exposed Adminer Database Panel",
+         "Adminer database management interface is publicly accessible."),
+        ("/actuator",       "medium", "Exposed Spring Boot Actuator Endpoints",
+         "Spring Boot Actuator management endpoints are publicly accessible, "
+         "potentially exposing health, metrics, env, and shutdown capabilities."),
+        ("/debug",          "high", "Exposed Debug Interface",
+         "Debug interface is publicly accessible, which may allow code execution "
+         "or expose sensitive application internals."),
+        ("/server-status",  "medium", "Exposed Apache Server Status",
+         "Apache mod_status page is publicly accessible, disclosing server "
+         "internals, active requests, and performance metrics."),
+    ]
+
+    def _check_gobuster_dangerous_paths(self, parsed: dict, tool_name: str) -> None:
+        """Auto-raise findings for dangerous paths gobuster found with HTTP 200.
+
+        The analyst LLM handles context, but may not escalate paths like /console
+        or /.git that appear in gobuster output alongside dozens of benign paths.
+        This deterministic check runs on every gobuster execution.
+        """
+        from core.memory import Finding
+        from datetime import datetime as _dt
+
+        endpoints = parsed.get("endpoints") or []
+        if not endpoints:
+            return
+
+        base_url = self._get_target_base_url() or self.target or ""
+
+        for endpoint in endpoints:
+            path = (endpoint.get("path") or "").lower()
+            status = endpoint.get("status") or 0
+            if status != 200:
+                continue
+            for frag, severity, title, description in self._GOBUSTER_DANGEROUS_PATHS:
+                if frag in path:
+                    full_url = f"{base_url.rstrip('/')}{endpoint['path']}"
+                    # Skip if we already have a finding for this path+title
+                    already = any(
+                        f.title == title and (f.target or "").rstrip("/") == full_url.rstrip("/")
+                        for f in self.memory.findings
+                    )
+                    if already:
+                        continue
+                    finding_id = f"{tool_name}_{datetime.now().timestamp()}_{len(self.memory.findings)}"
+                    finding = Finding(
+                        id=finding_id,
+                        severity=severity,
+                        title=title,
+                        description=description,
+                        evidence=(
+                            f"gobuster discovered path {endpoint['path']!r} returning HTTP {status} "
+                            f"(size={endpoint.get('size', '?')}) at {full_url}"
+                        ),
+                        tool=tool_name,
+                        target=full_url,
+                        timestamp=datetime.now().isoformat(),
+                    )
+                    self.memory.add_finding(finding)
+                    self.logger.warning(
+                        f"[DangerousPath] {severity.upper()}: {title} at {full_url}"
+                    )
+                    break
 
     def _detect_gobuster_wildcard_length(self, target: str) -> int | None:
         """
@@ -2243,6 +2326,16 @@ class WorkflowEngine:
         for url in all_hints.get("nuclei", {}).get("priority_urls", []):
             analyst_priority.add(url.strip())
             analyst_priority.add(url.strip().split("?")[0])
+
+        # Inject analyst priority URLs that are not yet in the master seed so
+        # they participate in scoring.  Without this, priority_urls that were
+        # discovered mid-session (e.g. from schemathesis finding /api/v1/…)
+        # only add a +10 bonus to URLs already in raw_urls — they never enter
+        # the scoring loop and are silently excluded from the seed file.
+        for _purl in sorted(analyst_priority):
+            if _purl and _purl not in seen:
+                seen.add(_purl)
+                raw_urls.append(_purl)
 
         # 2. ZAP-flagged URLs (existing alerts — high-signal endpoints)
         zap_flagged: set[str] = set()
@@ -2844,12 +2937,15 @@ class WorkflowEngine:
             return
 
         if action == "generate_report":
+            # Generate report sections once, then assemble for each format without re-calling LLM
+            self.logger.info("Generating report sections...")
+            sections = await self.reporter.generate_sections()
             for fmt, ext in (("markdown", "md"), ("html", "html")):
-                self.logger.info(f"Generating {fmt} report...")
-                report = await self.reporter.execute(format=fmt)
+                self.logger.info(f"Assembling {fmt} report...")
+                report_content = await self.reporter.assemble_report(fmt, sections)
                 report_file = output_dir / f"report_{self.memory.session_id}.{ext}"
                 with open(report_file, "w", encoding="utf-8") as f:
-                    f.write(report["content"])
+                    f.write(report_content)
                 self.logger.info(f"Report saved to: {report_file}")
             self.memory.mark_action_complete(action)
             return
@@ -3263,6 +3359,10 @@ class WorkflowEngine:
             if not (self._target_is_url() or self._target_is_path()):
                 self.logger.info(f"Skipping {name}: target is not a URL or local path")
                 return True
+        elif condition == "safe_mode_off":
+            if (self.config or {}).get("pentest", {}).get("safe_mode", True):
+                self.logger.info(f"Skipping {name}: safe_mode is enabled (set pentest.safe_mode: false to run)")
+                return True
         elif isinstance(condition, str) and condition.startswith("config_has:"):
             keys = [k.strip() for k in condition[len("config_has:"):].split(",") if k.strip()]
             for key in keys:
@@ -3379,11 +3479,21 @@ class WorkflowEngine:
         # nuclei to time out scanning hundreds of unreachable ZAP proxy URLs.
         self._refresh_master_seed_file()
 
-        commands = [te.command for te in self.memory.tool_executions if te.command]
-        if commands:
+        if self.memory.tool_executions:
             payloads_file = output_dir / f"payloads_{self.memory.session_id}.txt"
             with open(payloads_file, "w", encoding="utf-8") as f:
-                f.write("\n".join(commands))
+                for te in self.memory.tool_executions:
+                    if not te.command and not te.commands_list:
+                        continue
+                    n = len(te.commands_list)
+                    label = f"{n} requests" if n > 1 else "1 request" if n == 1 else "external"
+                    f.write(f"### {te.tool} ({label}, {te.timestamp[:19]}, {te.duration:.1f}s)\n")
+                    if te.commands_list:
+                        for cmd in te.commands_list:
+                            f.write(f"  {cmd}\n")
+                    elif te.command:
+                        f.write(f"  {te.command}\n")
+                    f.write("\n")
             self.logger.info(f"Exported tool commands: {payloads_file}")
 
         csv_path = self._export_host_csv(output_dir)

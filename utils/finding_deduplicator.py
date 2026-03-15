@@ -159,8 +159,14 @@ class FindingDeduplicator:
             and any(w in t for w in ("permissive", "insecure", "wildcard", "misconfiguration", "configuration", "policy"))
         ):
             return f"cors misconfiguration|{self._normalize_text(target)}"
-        # Information disclosure about application identity (many tools emit this)
-        if "information disclosure" in t and any(w in t for w in ("application", "identity", "identification")):
+        # Information disclosure: application explicitly self-identifies as vulnerable/insecure.
+        # Requires "application" AND a self-identification verb to avoid false merges with
+        # unrelated findings like "Technology Stack Identification".
+        if (
+            "information disclosure" in t
+            and "application" in t
+            and any(w in t for w in ("self-identif", "self identif", "identifies as", "identification as", "declares itself"))
+        ):
             return f"info disclosure application identity|{self._normalize_text(target)}"
         # Sensitive information disclosure via public documentation / credentials
         # Multiple tools iterating the same endpoint list often all find the same README
@@ -205,6 +211,12 @@ class FindingDeduplicator:
                 if idx < worst_idx:
                     worst_idx = idx
                     merged.severity = getattr(finding, "severity", merged.severity)
+                    # Adopt the escalating finding's CVSS so that report consistency
+                    # checks do not revert the severity back to what the base finding's
+                    # (lower) CVSS score implies.
+                    merged.cvss_score = getattr(finding, "cvss_score", None)
+                    merged.cvss_vector = getattr(finding, "cvss_vector", None)
+                    merged.cvss_score_source = getattr(finding, "cvss_score_source", "none")
 
         merged.evidence = self._format_merged_evidence(evidence_entries)
         if all_cves:
