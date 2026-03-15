@@ -1404,6 +1404,23 @@ class WorkflowEngine:
             entry = {"tool": tool_name, "timeout_s": timeout_s}
             if entry not in timed_out:
                 timed_out.append(entry)
+        elif result.get("skipped"):
+            # Track tools that were skipped (health check failure, not installed, pre-condition unmet)
+            skipped = self.memory.metadata.setdefault("skipped_tools", [])
+            reason = (result.get("error") or "pre-execution check failed")[:120]
+            entry = {"tool": tool_name, "reason": reason}
+            if entry not in skipped:
+                skipped.append(entry)
+        elif not result.get("success") and result.get("exit_code") not in (0, None, 124):
+            # Track tools that crashed (non-zero exit, not a graceful skip or timeout)
+            crashed = self.memory.metadata.setdefault("crashed_tools", [])
+            entry = {
+                "tool": tool_name,
+                "exit_code": result.get("exit_code"),
+                "error": (result.get("error") or "")[:120],
+            }
+            if entry not in crashed:
+                crashed.append(entry)
 
         if result.get("success"):
             parsed = result.get("parsed") if isinstance(result.get("parsed"), dict) else {}

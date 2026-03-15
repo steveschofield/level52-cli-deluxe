@@ -52,9 +52,10 @@ class PlannerAgent(BaseAgent):
             self.log_action("Decision", decision.get("next_action", "Unknown"))
             return decision
         
-        # Get AI decision
-        result = await self.think(prompt, self.prompts["PLANNER_SYSTEM_PROMPT"])
-        
+        # Get AI decision — direct=True bypasses the REASONING/RESPONSE wrapper which
+        # conflicts with the Planner's "Produce strictly valid JSON" system prompt.
+        result = await self.think(prompt, self.prompts["PLANNER_SYSTEM_PROMPT"], direct=True)
+
         # Parse the response (with a retry if the model did not follow the schema)
         decision = self._parse_decision(result["response"])
         decision["reasoning"] = result.get("reasoning", "")
@@ -67,7 +68,7 @@ class PlannerAgent(BaseAgent):
                 "Previous response (do not repeat it; just fix the format):\n"
                 f"{result.get('response', '')}\n"
             )
-            retry = await self.think(retry_prompt, self.prompts["PLANNER_SYSTEM_PROMPT"])
+            retry = await self.think(retry_prompt, self.prompts["PLANNER_SYSTEM_PROMPT"], direct=True)
             decision = self._parse_decision(retry.get("response", ""))
             decision["reasoning"] = retry.get("reasoning", "") or decision.get("reasoning", "")
 
@@ -93,8 +94,8 @@ class PlannerAgent(BaseAgent):
             tools_executed=tools_executed or "None"
         )
 
-        result = await self.think(prompt, self.prompts["PLANNER_SYSTEM_PROMPT"])
-        
+        result = await self.think(prompt, self.prompts["PLANNER_SYSTEM_PROMPT"], direct=True)
+
         return result
     
     def _format_findings(self) -> str:

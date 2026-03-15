@@ -362,36 +362,76 @@ class ReporterAgent(BaseAgent):
             return ""
 
     def _format_coverage_gaps_markdown(self) -> str:
-        """Emit a coverage-gap notice when key tools timed out or produced no output."""
+        """Emit a coverage-gap notice for tools that timed out, were skipped, or crashed."""
         timed_out = self.memory.metadata.get("timed_out_tools", [])
-        if not timed_out:
+        skipped = self.memory.metadata.get("skipped_tools", [])
+        crashed = self.memory.metadata.get("crashed_tools", [])
+
+        if not timed_out and not skipped and not crashed:
             return ""
 
-        lines = [
-            "## Assessment Coverage Gaps",
-            "",
-            "> **Note**: The following tools did not complete within their allotted time and produced "
-            "no output. Findings from these tools are absent from this report. Coverage in these "
-            "areas should be considered incomplete.",
-            "",
-            "| Tool | Timeout | Impact |",
-            "|------|---------|--------|",
-        ]
         _impact = {
             "zap":          "Active web scan (spidering, AJAX crawl, active probing) not completed",
             "nuclei":       "Template-based vulnerability detection not completed",
             "dalfox":       "XSS payload injection testing not completed",
+            "xsstrike":     "XSS scanning not completed",
             "sqlmap":       "SQL injection exploitation testing not completed",
             "nikto":        "Web server misconfiguration scan not completed",
             "schemathesis":  "API schema fuzzing not completed",
+            "graphql-cop":  "GraphQL security checks not completed",
+            "csrf-tester":  "CSRF vulnerability testing not completed",
+            "upload-scanner": "File upload vulnerability testing not completed",
         }
-        for entry in timed_out:
-            tool = entry.get("tool", "unknown")
-            t = entry.get("timeout_s", "?")
-            impact = _impact.get(tool, "Scan not completed")
-            lines.append(f"| {tool} | {t}s | {impact} |")
 
-        lines += ["", "Re-run with increased `tool_timeout` values or a narrower target scope.", ""]
+        lines = [
+            "## Assessment Coverage Gaps",
+            "",
+            "> **Note**: The following tools did not produce results. Findings from these tools are "
+            "absent from this report and coverage in these areas should be considered incomplete.",
+            "",
+        ]
+
+        if timed_out:
+            lines += [
+                "### Timed Out",
+                "",
+                "| Tool | Timeout | Impact |",
+                "|------|---------|--------|",
+            ]
+            for entry in timed_out:
+                tool = entry.get("tool", "unknown")
+                t = entry.get("timeout_s", "?")
+                impact = _impact.get(tool, "Scan not completed")
+                lines.append(f"| {tool} | {t}s | {impact} |")
+            lines += ["", "Re-run with increased `tool_timeout` values or a narrower target scope.", ""]
+
+        if skipped:
+            lines += [
+                "### Skipped (Pre-execution check failed)",
+                "",
+                "| Tool | Reason |",
+                "|------|--------|",
+            ]
+            for entry in skipped:
+                tool = entry.get("tool", "unknown")
+                reason = entry.get("reason", "unknown")
+                lines.append(f"| {tool} | {reason} |")
+            lines.append("")
+
+        if crashed:
+            lines += [
+                "### Crashed (Non-zero exit)",
+                "",
+                "| Tool | Exit Code | Error |",
+                "|------|-----------|-------|",
+            ]
+            for entry in crashed:
+                tool = entry.get("tool", "unknown")
+                ec = entry.get("exit_code", "?")
+                error = (entry.get("error") or "unknown error")[:80]
+                lines.append(f"| {tool} | {ec} | {error} |")
+            lines.append("")
+
         return "\n".join(lines)
 
     def _format_whitebox_analysis_markdown(self) -> str:
@@ -1421,12 +1461,46 @@ Exploitation Information:
         html = html.replace('*', '<em>').replace('*', '</em>')
         return html
 
+    # Patterns whose titles indicate tooling-artifact noise rather than security findings.
+    # These are pure negative-result notices or scan-status banners emitted by custom scanners.
+    _NOISE_TITLE_PATTERNS = [
+        re.compile(r"^scan\s+status$", re.I),
+        re.compile(r"^no\s+.+\bdetected\b", re.I),           # "No XXE Vulnerability Detected"
+        re.compile(r"^no\s+.+\b(found|identified)\b", re.I), # "No issues found"
+        re.compile(r"\bscan\s+negative\b", re.I),             # "IDOR Scan Negative Result"
+        re.compile(r"\bnegative\s+result\b", re.I),           # "X Scan Negative Result"
+    ]
+
+    def _filter_noise_findings(self, findings: List) -> List:
+        """Drop pure tooling-noise findings that have no actionable security value.
+
+        This covers:
+        - "Scan Status" banners emitted by custom scanners (e.g. cors-scanner)
+        - Negative-result notices like "No XXE Vulnerability Detected" or
+          "IDOR Scan Negative Result"
+
+        These are not security findings and inflate the INFO count.
+        """
+        kept = []
+        dropped = 0
+        for f in findings:
+            title = (getattr(f, "title", "") or "").strip()
+            if any(pat.search(title) for pat in self._NOISE_TITLE_PATTERNS):
+                self.logger.debug(f"Filtered noise finding: {title!r} (tool={getattr(f, 'tool', '?')})")
+                dropped += 1
+                continue
+            kept.append(f)
+        if dropped:
+            self.logger.info(f"Filtered {dropped} noise/negative-result finding(s) from report")
+        return kept
+
     def _get_report_findings(self):
         cached = getattr(self, "_report_findings_cache", None)
         if cached is not None:
             return cached
 
         findings = [f for f in self.memory.findings if not f.false_positive]
+        findings = self._filter_noise_findings(findings)
 
         deduper = FindingDeduplicator(self.config)
         findings = deduper.deduplicate(findings)

@@ -48,6 +48,11 @@ class ToolExecution:
     duration: float
     findings_count: int = 0
     success: bool = True  # Whether tool execution was successful per tool-specific exit code rules
+    output_size: int = 0  # Populated automatically from len(output)
+
+    def __post_init__(self):
+        if not self.output_size and self.output:
+            self.output_size = len(self.output)
 
 
 class PentestMemory:
@@ -89,11 +94,12 @@ class PentestMemory:
         """Record tool execution"""
         self.tool_executions.append(execution)
     
-    def add_ai_decision(self, agent: str, decision: str, reasoning: str):
+    def add_ai_decision(self, agent: str, decision: str, reasoning: str, phase: Optional[str] = None):
         """Record AI agent decision"""
         self.ai_decisions.append({
             "timestamp": datetime.now().isoformat(),
             "agent": agent,
+            "phase": phase or self.current_phase,
             "decision": decision,
             "reasoning": reasoning
         })

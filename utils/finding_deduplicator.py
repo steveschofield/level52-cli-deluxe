@@ -118,7 +118,11 @@ class FindingDeduplicator:
         # Check semantic synonyms before falling back to title normalization.
         semantic = self._semantic_key(raw_title, severity, target)
         if semantic:
-            return FindingKey(title_normalized=semantic, target=target, severity=severity)
+            # Use a sentinel severity so that findings with the same semantic meaning
+            # but different severity labels (e.g., from different tools iterating the
+            # same endpoint list) are grouped together. _merge_findings picks the worst
+            # severity from the group, so no information is lost.
+            return FindingKey(title_normalized=semantic, target=target, severity="__semantic__")
         title = self._normalize_text(raw_title)
         return FindingKey(title_normalized=title, target=target, severity=severity)
 
@@ -154,10 +158,27 @@ class FindingDeduplicator:
             ("cors" in t or "cross-origin resource sharing" in t or "cross origin resource sharing" in t)
             and any(w in t for w in ("permissive", "insecure", "wildcard", "misconfiguration", "configuration", "policy"))
         ):
-            return f"cors misconfiguration|{severity}|{self._normalize_text(target)}"
+            return f"cors misconfiguration|{self._normalize_text(target)}"
         # Information disclosure about application identity (many tools emit this)
         if "information disclosure" in t and any(w in t for w in ("application", "identity", "identification")):
-            return f"info disclosure application identity|{severity}|{self._normalize_text(target)}"
+            return f"info disclosure application identity|{self._normalize_text(target)}"
+        # Sensitive information disclosure via public documentation / credentials
+        # Multiple tools iterating the same endpoint list often all find the same README
+        # with default credentials and emit slightly different titles at different severities.
+        if any(w in t for w in ("credential", "default credentials", "default password", "default username", "readme")):
+            if any(w in t for w in ("disclosure", "sensitive", "exposed", "accessible", "public", "leakage")):
+                return f"sensitive info disclosure credentials docs|{self._normalize_text(target)}"
+        if ("information disclosure" in t or "sensitive information" in t) and \
+                any(w in t for w in ("documentation", "public doc", "publicly accessible")):
+            return f"sensitive info disclosure credentials docs|{self._normalize_text(target)}"
+        # Missing security headers — many tools report these independently
+        if "missing" in t and any(w in t for w in ("security header", "x-frame", "x-content-type", "csp", "content-security")):
+            return f"missing security headers|{self._normalize_text(target)}"
+        # Server/technology version disclosure — many tools report this
+        if any(p in t for p in ("server version", "version disclosure", "technology disclosure",
+                                "information disclosure via", "information leakage")):
+            if any(w in t for w in ("server", "version", "technology", "header", "x-powered")):
+                return f"server version disclosure|{self._normalize_text(target)}"
         return None
 
     def _merge_findings(self, findings: List) -> object:

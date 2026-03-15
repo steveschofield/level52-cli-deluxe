@@ -1024,7 +1024,16 @@ class AnalystAgent(BaseAgent):
         r"|conclusion"
         r"|observation\s*\d*"
         r"|note\s*\d*"
-        r"|no\s+(parameters?|vulnerabilit|findings?|issues?)\s*(found|detected|discovered|identified)?"
+        # Negative scan results — scanner found nothing; not a security finding
+        r"|no\s+(parameters?|vulnerabilit\w*|findings?|issues?)\s*(found|detected|discovered|identified)?.*"
+        r"|no\s+\w+\s+vulnerabilit\w*.*"         # "No Deserialization Vulnerability Detected ..."
+        r"|no\s+verified\s+.*"                   # "No Verified IDOR Vulnerabilities in Output"
+        # Tool failure / scan limitation notices
+        r"|tool\s+scan\s+failure.*"              # "Tool Scan Failure (No XXE Detected)"
+        # Positive-control notes (e.g., confirming a protected file IS protected)
+        r"|.*\bpositive\s+control\b.*"           # "Protected Sensitive Files (Positive Control)"
+        # Unconfirmed speculative findings from tools without testing capability
+        r"|.*\(unconfirmed\)\s*"                 # "Potential XXE/SSRF Vector (Unconfirmed)"
         r")$"
     )
 

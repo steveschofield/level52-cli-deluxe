@@ -181,7 +181,8 @@ class BaseAgent(ABC):
                 self.memory.add_ai_decision(
                     agent=self.name,
                     decision=result["response"],
-                    reasoning=result["reasoning"]
+                    reasoning=result["reasoning"],
+                    phase=getattr(self.memory, "current_phase", None),
                 )
                 
                 return result
@@ -270,6 +271,7 @@ class BaseAgent(ABC):
             "event": "request",
             "call_id": call_id,
             "agent": self.name,
+            "phase": getattr(self.memory, "current_phase", None),
             "provider": ((self.config or {}).get("ai", {}) or {}).get("provider"),
             "model": ((self.config or {}).get("ai", {}) or {}).get("model"),
             "system_prompt": system_prompt,

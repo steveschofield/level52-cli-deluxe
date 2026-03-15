@@ -6,6 +6,7 @@ Selects appropriate pentesting tools and configures them
 import asyncio
 import ssl
 import time
+import urllib.error
 import urllib.request
 from typing import Dict, Any, Optional
 from core.agent import BaseAgent
@@ -243,6 +244,12 @@ class ToolAgent(BaseAgent):
         try:
             with urllib.request.urlopen(req, timeout=timeout, context=ctx) as resp:
                 resp.read(1)
+            latency_ms = (time.monotonic() - start) * 1000.0
+            return True, latency_ms, None
+        except urllib.error.HTTPError:
+            # Server responded (even 4xx/5xx) — the target host is reachable.
+            # A 404 at the root does not mean the service is down; tools like
+            # nuclei must not be skipped just because the root path returns 404.
             latency_ms = (time.monotonic() - start) * 1000.0
             return True, latency_ms, None
         except Exception as exc:
