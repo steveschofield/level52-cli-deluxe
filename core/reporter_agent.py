@@ -66,6 +66,34 @@ class ReporterAgent(BaseAgent):
         # Remove trailing empty lines and whitespace
         text = text.rstrip()
 
+        # Detect and truncate repetition loops (e.g. CWE disambiguation loops)
+        text = self._truncate_repetition_loop(text)
+
+        return text
+
+    def _truncate_repetition_loop(self, text: str, min_phrase_len: int = 20, max_repeats: int = 3) -> str:
+        """Truncate LLM output at the point a phrase repeats more than max_repeats times.
+
+        Catches runaway loops like:
+          "The correct CWE is CWE-1021? No. It is CWE-1021 is not the one." × 80
+        """
+        if not text or len(text) < min_phrase_len * max_repeats:
+            return text
+        lines = text.splitlines()
+        seen: Dict[str, int] = {}
+        for i, line in enumerate(lines):
+            stripped = line.strip()
+            if len(stripped) < min_phrase_len:
+                continue
+            seen[stripped] = seen.get(stripped, 0) + 1
+            if seen[stripped] > max_repeats:
+                # Truncate here — keep up to the first repeat
+                truncated = "\n".join(lines[:i])
+                self.logger.warning(
+                    f"Truncated LLM repetition loop at line {i} "
+                    f"(phrase repeated {seen[stripped]}x): {stripped[:60]!r}"
+                )
+                return truncated.rstrip()
         return text
 
     def _strip_section_heading(self, text: str) -> str:
@@ -386,13 +414,32 @@ class ReporterAgent(BaseAgent):
             self.logger.warning(f"Failed to load ZAP summary: {e}")
             return ""
 
+    def _get_zero_output_tools(self) -> List[Dict]:
+        """Return tool executions that completed but produced no usable output."""
+        zero = []
+        # Tools whose zero output is expected/normal and should not be flagged
+        _silent_ok = {"waybackurls", "retire", "paramspider", "subjs"}
+        for te in self.memory.tool_executions:
+            if te.tool in _silent_ok:
+                continue
+            if te.exit_code == 124:  # timed out — already in timed_out_tools
+                continue
+            if not te.success:
+                continue
+            output = (te.output or "").strip()
+            # Zero or near-zero output (only banner/warning noise, no actual findings)
+            if len(output) < 10:
+                zero.append({"tool": te.tool, "reason": "No output produced (possible tooling error or dependency failure)"})
+        return zero
+
     def _format_coverage_gaps_markdown(self) -> str:
-        """Emit a coverage-gap notice for tools that timed out, were skipped, or crashed."""
+        """Emit a coverage-gap notice for tools that timed out, were skipped, crashed, or produced no output."""
         timed_out = self.memory.metadata.get("timed_out_tools", [])
         skipped = self.memory.metadata.get("skipped_tools", [])
         crashed = self.memory.metadata.get("crashed_tools", [])
+        zero_output = self._get_zero_output_tools()
 
-        if not timed_out and not skipped and not crashed:
+        if not timed_out and not skipped and not crashed and not zero_output:
             return ""
 
         _impact = {
@@ -456,6 +503,19 @@ class ReporterAgent(BaseAgent):
                 error = (entry.get("error") or "unknown error")[:80]
                 lines.append(f"| {tool} | {ec} | {error} |")
             lines.append("")
+
+        if zero_output:
+            lines += [
+                "### No Output (Tooling or Environment Issue)",
+                "",
+                "| Tool | Reason |",
+                "|------|--------|",
+            ]
+            for entry in zero_output:
+                tool = entry.get("tool", "unknown")
+                reason = entry.get("reason", "No output")
+                lines.append(f"| {tool} | {reason} |")
+            lines += ["", "Verify tool installation and dependencies before re-running.", ""]
 
         return "\n".join(lines)
 
@@ -1490,10 +1550,15 @@ Exploitation Information:
     # These are pure negative-result notices or scan-status banners emitted by custom scanners.
     _NOISE_TITLE_PATTERNS = [
         re.compile(r"^scan\s+status$", re.I),
-        re.compile(r"^no\s+.+\bdetected\b", re.I),           # "No XXE Vulnerability Detected"
-        re.compile(r"^no\s+.+\b(found|identified)\b", re.I), # "No issues found"
-        re.compile(r"\bscan\s+negative\b", re.I),             # "IDOR Scan Negative Result"
-        re.compile(r"\bnegative\s+result\b", re.I),           # "X Scan Negative Result"
+        re.compile(r"^no\s+.+\bdetected\b", re.I),                    # "No XXE Vulnerability Detected"
+        re.compile(r"^no\s+.+\b(found|identified)\b", re.I),          # "No issues found"
+        re.compile(r"\bscan\s+negative\b", re.I),                      # "IDOR Scan Negative Result"
+        re.compile(r"\bnegative\s+result\b", re.I),                    # "X Scan Negative Result"
+        re.compile(r"^no\s+(other\s+)?confirmed\s+", re.I),            # "No other confirmed vulnerabilities"
+        re.compile(r"^no\s+(other\s+)?exploitable\s+", re.I),          # "No other exploitable issues"
+        re.compile(r"\bvulnerability\s+check\b", re.I),                # "Vulnerability Check" (arjun noise)
+        re.compile(r"^tooling\s+issue\s+check$", re.I),               # "Tooling Issue Check" (arjun noise)
+        re.compile(r"^status\s+messages?$", re.I),                     # "Status Messages" (cors-scanner noise)
     ]
 
     # Platform-specific probe paths that are only valid if the CMS is confirmed.

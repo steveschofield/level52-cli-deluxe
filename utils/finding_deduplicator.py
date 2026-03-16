@@ -199,6 +199,17 @@ class FindingDeduplicator:
         if any(w in t for w in ("error message", "error page", "error handler")) and \
                 any(w in t for w in ("disclosure", "information", "verbose")):
             return f"error info disclosure|{self._normalize_text(target)}"
+        # Known-vulnerable / intentionally vulnerable application detected —
+        # multiple tools (whatweb, gobuster, httpx, nmap) all identify the same app.
+        if any(w in t for w in ("intentionally vulnerable", "known vulnerable", "vulnerable application",
+                                "deliberately insecure", "deliberately vulnerable")) and \
+                any(w in t for w in ("detected", "presence", "deployment", "identified", "running", "found")):
+            return f"known vulnerable application|{self._normalize_text(target)}"
+        # phpinfo / debug page exposure — gobuster + nikto + direct probing
+        # all report the same file with slightly different titles.
+        if any(w in t for w in ("phpinfo", "php info", "php configuration", "php debug")) and \
+                any(w in t for w in ("exposed", "exposure", "accessible", "disclosure", "detected")):
+            return f"phpinfo exposed|{self._normalize_text(target)}"
         return None
 
     def _merge_findings(self, findings: List) -> object:

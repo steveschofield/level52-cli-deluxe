@@ -846,11 +846,31 @@ class AnalystAgent(BaseAgent):
             "recommendation": self._extract_recommendation(result["response"])
         }
     
+    def _truncate_repetition_loop(self, text: str, min_phrase_len: int = 20, max_repeats: int = 3) -> str:
+        """Truncate LLM output where a phrase repeats more than max_repeats times in a row."""
+        if not text or len(text) < min_phrase_len * max_repeats:
+            return text
+        lines = text.splitlines()
+        seen: dict = {}
+        for i, line in enumerate(lines):
+            stripped = line.strip()
+            if len(stripped) < min_phrase_len:
+                continue
+            seen[stripped] = seen.get(stripped, 0) + 1
+            if seen[stripped] > max_repeats:
+                self.logger.warning(
+                    f"Truncated LLM repetition loop at line {i} "
+                    f"(phrase repeated {seen[stripped]}x): {stripped[:60]!r}"
+                )
+                return "\n".join(lines[:i]).rstrip()
+        return text
+
     def _parse_findings(self, ai_response: str, tool: str, target: str) -> List[Finding]:
         """Parse findings from AI analysis response"""
         text = (ai_response or "").strip()
         if not text:
             return []
+        text = self._truncate_repetition_loop(text)
 
         # Try structured format first (preferred)
         if re.search(r"(?mi)^###\s*FINDING:\s*", text):

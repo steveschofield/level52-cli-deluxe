@@ -75,7 +75,14 @@ class NmapTool(BaseTool):
         
         # Custom args from kwargs
         if "ports" in kwargs and kwargs["ports"]:
-            command.extend(["-p", kwargs["ports"]])
+            port_list = str(kwargs["ports"])
+            # Always include the target's own port so non-standard ports (e.g. 4280)
+            # are scanned even when the workflow provides a fixed list.
+            if target_port:
+                existing = {p.strip() for p in port_list.split(",") if p.strip()}
+                if str(target_port) not in existing:
+                    port_list = f"{port_list},{target_port}"
+            command.extend(["-p", port_list])
         elif target_port:
             command.extend(["-p", str(target_port)])
 
