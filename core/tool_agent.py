@@ -606,12 +606,22 @@ class ToolAgent(BaseAgent):
             }
             
         except asyncio.TimeoutError:
+            # Try to reconstruct the command so it appears in the payloads file.
+            timed_out_cmd = ""
+            try:
+                built = tool.get_command(target, **kwargs)
+                built = tool._apply_resolved_binary(built)
+                timed_out_cmd = " ".join(built)
+            except Exception:
+                pass
             return self._record_tool_failure(
                 tool_name=tool_name,
                 target=target,
                 error=f"Tool {tool_name} timed out after {timeout}s",
                 exit_code=124,
                 skipped=False,
+                command=timed_out_cmd,
+                duration=float(timeout),
             )
         except ValueError as e:
             self.logger.warning(f"Tool {tool_name} skipped: {e}")
@@ -638,6 +648,8 @@ class ToolAgent(BaseAgent):
         error: str,
         exit_code: int,
         skipped: bool,
+        command: str = "",
+        duration: float = 0.0,
     ) -> Dict[str, Any]:
         """Record a failed or skipped tool execution and return a failure result."""
         from core.memory import ToolExecution
@@ -645,12 +657,12 @@ class ToolAgent(BaseAgent):
         output = f"skipped: {error}" if skipped else error
         execution = ToolExecution(
             tool=tool_name,
-            command="",
+            command=command,
             target=target,
             timestamp=timestamp,
             exit_code=exit_code,
             output=self._truncate_output(output),
-            duration=0.0,
+            duration=duration,
         )
         self.memory.add_tool_execution(execution)
         return {

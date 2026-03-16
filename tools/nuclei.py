@@ -167,7 +167,7 @@ class NucleiTool(BaseTool):
             command.extend(["-c", str(concurrency)])
 
         # Severity filtering
-        severities = kwargs.get("severity", config.get("severity", ["critical", "high", "medium"]))
+        severities = kwargs.get("severity", config.get("severity", ["critical", "high"]))
         if isinstance(severities, str):
             severities = [s.strip() for s in severities.split(",") if s.strip()]
         if severities:

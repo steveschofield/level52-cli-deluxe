@@ -67,6 +67,29 @@ class ReporterAgent(BaseAgent):
         text = text.rstrip()
 
         return text
+
+    def _strip_section_heading(self, text: str) -> str:
+        """Strip a leading markdown heading line from LLM-generated section content.
+
+        The report template already inserts section headings (e.g. '## Technical Findings').
+        When the LLM also opens with '# 4. Technical Findings' or '# Remediation Plan',
+        the result is a duplicate heading.  Strip any leading #-heading on the first
+        non-blank line so the template heading stands alone.
+        """
+        if not text:
+            return text
+        lines = text.splitlines()
+        # Find the first non-blank line
+        for i, line in enumerate(lines):
+            stripped = line.strip()
+            if not stripped:
+                continue
+            if stripped.startswith("#"):
+                # Drop this heading line; preserve the rest
+                return "\n".join(lines[i + 1:]).lstrip("\n")
+            # First non-blank line is not a heading — nothing to strip
+            break
+        return text
     
     async def execute(self, format: str = "markdown") -> Dict[str, Any]:
         """
@@ -176,6 +199,7 @@ class ReporterAgent(BaseAgent):
         
         result = await self.think(prompt, REPORTER_SYSTEM_PROMPT, direct=True)
         technical = self._clean_llm_artifacts(result["response"])
+        technical = self._strip_section_heading(technical)
         technical = self._dedupe_markdown_sections(technical)
         issues = self._validate_technical_findings_quality(technical)
         if not issues:
@@ -225,7 +249,8 @@ class ReporterAgent(BaseAgent):
         )
         
         result = await self.think(prompt, REPORTER_SYSTEM_PROMPT, direct=True)
-        return self._clean_llm_artifacts(result["response"])
+        remediation = self._clean_llm_artifacts(result["response"])
+        return self._strip_section_heading(remediation)
 
     async def generate_ai_trace(self) -> str:
         """Generate AI decision trace for transparency"""
@@ -1471,6 +1496,24 @@ Exploitation Information:
         re.compile(r"\bnegative\s+result\b", re.I),           # "X Scan Negative Result"
     ]
 
+    # Platform-specific probe paths that are only valid if the CMS is confirmed.
+    # Key = lowercase CMS name; value = list of path prefixes found in evidence.
+    _CMS_PROBE_PREFIXES: Dict[str, List[str]] = {
+        "wordpress": ["/wp-content/", "/wp-admin/", "/wp-includes/"],
+        "joomla": ["/components/com_", "/administrator/components/"],
+        "drupal": ["/sites/default/", "/modules/drupal/"],
+    }
+
+    def _is_cms_confirmed(self, cms: str) -> bool:
+        """Return True if *cms* was positively identified by any recon finding."""
+        for f in self.memory.findings:
+            combined = ((f.title or "") + " " + (f.evidence or "") + " " + (f.description or "")).lower()
+            if cms in combined and f.tool in ("cmseek", "whatweb", "httpx", "wappalyzer"):
+                # Only trust positive identification, not probe-path mentions
+                if any(kw in combined for kw in ["detected", "identified", "running", "installed", "version"]):
+                    return True
+        return False
+
     def _filter_noise_findings(self, findings: List) -> List:
         """Drop pure tooling-noise findings that have no actionable security value.
 
@@ -1478,20 +1521,46 @@ Exploitation Information:
         - "Scan Status" banners emitted by custom scanners (e.g. cors-scanner)
         - Negative-result notices like "No XXE Vulnerability Detected" or
           "IDOR Scan Negative Result"
+        - CMS-specific probe-path findings (e.g. WordPress plugin paths) reported
+          against targets where the CMS was never confirmed.
 
         These are not security findings and inflate the INFO count.
         """
+        # Build confirmed-CMS set once (cache per call)
+        confirmed_cms: Dict[str, bool] = {}
+
         kept = []
         dropped = 0
         for f in findings:
             title = (getattr(f, "title", "") or "").strip()
+            evidence = (getattr(f, "evidence", "") or "")
+
+            # Pattern-based noise filter (titles only)
             if any(pat.search(title) for pat in self._NOISE_TITLE_PATTERNS):
                 self.logger.debug(f"Filtered noise finding: {title!r} (tool={getattr(f, 'tool', '?')})")
                 dropped += 1
                 continue
+
+            # CMS probe-path false positive filter
+            dropped_cms = False
+            for cms, prefixes in self._CMS_PROBE_PREFIXES.items():
+                if any(prefix in evidence for prefix in prefixes):
+                    if cms not in confirmed_cms:
+                        confirmed_cms[cms] = self._is_cms_confirmed(cms)
+                    if not confirmed_cms[cms]:
+                        self.logger.debug(
+                            f"Filtered CMS probe FP: {title!r} "
+                            f"(cms={cms} not confirmed, tool={getattr(f, 'tool', '?')})"
+                        )
+                        dropped += 1
+                        dropped_cms = True
+                        break
+            if dropped_cms:
+                continue
+
             kept.append(f)
         if dropped:
-            self.logger.info(f"Filtered {dropped} noise/negative-result finding(s) from report")
+            self.logger.info(f"Filtered {dropped} noise/negative-result/CMS-probe finding(s) from report")
         return kept
 
     def _get_report_findings(self):

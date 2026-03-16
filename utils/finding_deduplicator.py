@@ -185,6 +185,20 @@ class FindingDeduplicator:
                                 "information disclosure via", "information leakage")):
             if any(w in t for w in ("server", "version", "technology", "header", "x-powered")):
                 return f"server version disclosure|{self._normalize_text(target)}"
+        # Exposed backup / configuration files — nikto often produces two variant
+        # findings for the same issue with slightly different titles.
+        if any(w in t for w in ("backup", "archive", "configuration file", "config file")) and \
+                any(w in t for w in ("exposed", "exposure", "sensitive", "accessible")):
+            return f"exposed backup config files|{self._normalize_text(target)}"
+        # Robots.txt path disclosure — "Sensitive Directory Disclosure via Robots.txt"
+        # and "Sensitive Path Disclosure via Robots.txt" are the same issue.
+        if "robots" in t and any(w in t for w in ("disclosure", "path", "directory", "sensitive")):
+            return f"robots txt disclosure|{self._normalize_text(target)}"
+        # Information disclosure via error messages / error pages — multiple tools
+        # report the same Express/framework stack trace or error header.
+        if any(w in t for w in ("error message", "error page", "error handler")) and \
+                any(w in t for w in ("disclosure", "information", "verbose")):
+            return f"error info disclosure|{self._normalize_text(target)}"
         return None
 
     def _merge_findings(self, findings: List) -> object:
