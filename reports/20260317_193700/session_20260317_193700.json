@@ -1,0 +1,181 @@
+{
+  "target": "192.168.1.232",
+  "session_id": "20260317_193700",
+  "start_time": "2026-03-17T19:37:00.440974",
+  "current_phase": "recon_workflow",
+  "completed_actions": [
+    "masscan_discovery_single_node",
+    "nmap_vuln_scan"
+  ],
+  "findings": [],
+  "tool_executions": [
+    {
+      "tool": "masscan",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/masscan -p 1-65535 --rate 5000 -oJ reports/20260317_193700/masscan_20260317_193701_174275.json 192.168.1.232",
+      "target": "192.168.1.232",
+      "timestamp": "2026-03-17T19:37:01.174789",
+      "exit_code": 0,
+      "output": "[\n{   \"ip\": \"192.168.1.232\",   \"timestamp\": \"1773790625\", \"ports\": [ {\"port\": 445, \"proto\": \"tcp\", \"status\": \"open\", \"reason\": \"syn-ack\", \"ttl\": 128} ] }\n,\n{   \"ip\": \"192.168.1.232\",   \"timestamp\": \"1773790630\", \"ports\": [ {\"port\": 49198, \"proto\": \"tcp\", \"status\": \"open\", \"reason\": \"syn-ack\", \"ttl\": 128} ] }\n,\n{   \"ip\": \"192.168.1.232\",   \"timestamp\": \"1773790631\", \"ports\": [ {\"port\": 3389, \"proto\": \"tcp\", \"status\": \"open\", \"reason\": \"syn-ack\", \"ttl\": 128} ] }\n,\n{   \"ip\": \"192.168.1.232\",   \"timestamp\": \"1773790631\", \"ports\": [ {\"port\": 49154, \"proto\": \"tcp\", \"status\": \"open\", \"reason\": \"syn-ack\", \"ttl\": 128} ] }\n,\n{   \"ip\": \"192.168.1.232\",   \"timestamp\": \"1773790632\", \"ports\": [ {\"port\": 49179, \"proto\": \"tcp\", \"status\": \"open\", \"reason\": \"syn-ack\", \"ttl\": 128} ] }\n,\n{   \"ip\": \"192.168.1.232\",   \"timestamp\": \"1773790633\", \"ports\": [ {\"port\": 49153, \"proto\": \"tcp\", \"status\": \"open\", \"reason\": \"syn-ack\", \"ttl\": 128} ] }\n,\n{   \"ip\": \"192.168.1.232\",   \"timestamp\": \"1773790634\", \"ports\": [ {\"port\": 49152, \"proto\": \"tcp\", \"status\": \"open\", \"reason\": \"syn-ack\", \"ttl\": 128} ] }\n,\n{   \"ip\": \"192.168.1.232\",   \"timestamp\": \"1773790637\", \"ports\": [ {\"port\": 49175, \"proto\": \"tcp\", \"status\": \"open\", \"reason\": \"syn-ack\", \"ttl\": 128} ] }\n,\n{   \"ip\": \"192.168.1.232\",   \"timestamp\": \"1773790638\", \"ports\": [ {\"port\": 139, \"proto\": \"tcp\", \"status\": \"open\", \"reason\": \"syn-ack\", \"ttl\": 128} ] }\n,\n{   \"ip\": \"192.168.1.232\",   \"timestamp\": \"1773790638\", \"ports\": [ {\"port\": 53, \"proto\": \"tcp\", \"status\": \"open\", \"reason\": \"syn-ack\", \"ttl\": 128} ] }\n,\n{   \"ip\": \"192.168.1.232\",   \"timestamp\": \"1773790639\", \"ports\": [ {\"port\": 47001, \"proto\": \"tcp\", \"status\": \"open\", \"reason\": \"syn-ack\", \"ttl\": 128} ] }\n,\n{   \"ip\": \"192.168.1.232\",   \"timestamp\": \"1773790643\", \"ports\": [ {\"port\": 49180, \"proto\": \"tcp\", \"status\": \"open\", \"reason\": \"syn-ack\", \"ttl\": 128} ] }\n,\n{   \"ip\": \"192.168.1.232\",   \"timestamp\": \"1773790644\", \"ports\": [ {\"port\": 135, \"proto\": \"tcp\", \"status\": \"open\", \"reason\": \"syn-ack\", \"ttl\": 128} ] }\n]",
+      "duration": 35.415607,
+      "findings_count": 0,
+      "success": true,
+      "output_size": 2019,
+      "commands_list": []
+    },
+    {
+      "tool": "nmap",
+      "command": "/home/kali/code/level52-cli-deluxe/venv/bin/nmap -sV --script vuln,vulners -T4 -Pn -oX reports/20260317_193700/nmap_20260317_193756_363368.xml -p 53,135,139,445,3389,47001,49152,49153,49154,49175,49179,49180,49198 192.168.1.232",
+      "target": "192.168.1.232",
+      "timestamp": "2026-03-17T19:37:56.363977",
+      "exit_code": 0,
+      "output": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE nmaprun>\n<?xml-stylesheet href=\"file:///usr/share/nmap/nmap.xsl\" type=\"text/xsl\"?>\n<!-- Nmap 7.98 scan initiated Tue Mar 17 19:37:56 2026 as: /usr/lib/nmap/nmap -&#45;privileged -sV -&#45;script vuln,vulners -T4 -Pn -oX reports/20260317_193700/nmap_20260317_193756_363368.xml -p 53,135,139,445,3389,47001,49152,49153,49154,49175,49179,49180,49198 192.168.1.232 -->\n<nmaprun scanner=\"nmap\" args=\"/usr/lib/nmap/nmap -&#45;privileged -sV -&#45;script vuln,vulners -T4 -Pn -oX reports/20260317_193700/nmap_20260317_193756_363368.xml -p 53,135,139,445,3389,47001,49152,49153,49154,49175,49179,49180,49198 192.168.1.232\" start=\"1773790676\" startstr=\"Tue Mar 17 19:37:56 2026\" version=\"7.98\" xmloutputversion=\"1.05\">\n<scaninfo type=\"syn\" protocol=\"tcp\" numservices=\"13\" services=\"53,135,139,445,3389,47001,49152-49154,49175,49179-49180,49198\"/>\n<verbose level=\"0\"/>\n<debugging level=\"0\"/>\n<hosthint><status state=\"up\" reason=\"arp-response\" reason_ttl=\"0\"/>\n<address addr=\"192.168.1.232\" addrtype=\"ipv4\"/>\n<address addr=\"00:15:5D:FC:98:5D\" addrtype=\"mac\" vendor=\"Microsoft\"/>\n<hostnames>\n</hostnames>\n</hosthint>\n<host starttime=\"1773790684\" endtime=\"1773790879\"><status state=\"up\" reason=\"arp-response\" reason_ttl=\"0\"/>\n<address addr=\"192.168.1.232\" addrtype=\"ipv4\"/>\n<address addr=\"00:15:5D:FC:98:5D\" addrtype=\"mac\" vendor=\"Microsoft\"/>\n<hostnames>\n<hostname name=\"win2008-1.localdomain\" type=\"PTR\"/>\n</hostnames>\n<ports><port protocol=\"tcp\" portid=\"53\"><state state=\"open\" reason=\"syn-ack\" reason_ttl=\"128\"/><service name=\"domain\" product=\"Microsoft DNS\" version=\"6.1.7601 (1DB1446A)\" extrainfo=\"Windows Server 2008 R2 SP1\" ostype=\"Windows\" method=\"probed\" conf=\"10\"><cpe>cpe:/a:microsoft:dns</cpe><cpe>cpe:/o:microsoft:windows_server_2008:r2:sp1</cpe></service></port>\n<port protocol=\"tcp\" portid=\"135\"><state state=\"open\" reason=\"syn-ack\" reason_ttl=\"128\"/><service name=\"msrpc\" product=\"Microsoft Windows RPC\" ostype=\"Windows\" method=\"probed\" conf=\"10\"><cpe>cpe:/o:microsoft:windows</cpe></service></port>\n<port protocol=\"tcp\" portid=\"139\"><state state=\"open\" reason=\"syn-ack\" reason_ttl=\"128\"/><service name=\"netbios-ssn\" product=\"Microsoft Windows netbios-ssn\" ostype=\"Windows\" method=\"probed\" conf=\"10\"><cpe>cpe:/o:microsoft:windows</cpe></service></port>\n<port protocol=\"tcp\" portid=\"445\"><state state=\"open\" reason=\"syn-ack\" reason_ttl=\"128\"/><service name=\"microsoft-ds\" product=\"Microsoft Windows Server 2008 R2 - 2012 microsoft-ds\" ostype=\"Windows Server 2008 R2 - 2012\" method=\"probed\" conf=\"10\"><cpe>cpe:/o:microsoft:windows</cpe></service></port>\n<port protocol=\"tcp\" portid=\"3389\"><state state=\"open\" reason=\"syn-ack\" reason_ttl=\"128\"/><service name=\"ms-wbt-server\" method=\"table\" conf=\"3\"/><script id=\"ssl-ccs-injection\" output=\"No reply from server (TIMEOUT)\"/></port>\n<port protocol=\"tcp\" portid=\"47001\"><state state=\"open\" reason=\"syn-ack\" reason_ttl=\"128\"/><service name=\"http\" product=\"Microsoft HTTPAPI httpd\" version=\"2.0\" extrainfo=\"SSDP/UPnP\" ostype=\"Windows\" method=\"probed\" conf=\"10\"><cpe>cpe:/o:microsoft:windows</cpe></service><script id=\"http-stored-xss\" output=\"Couldn&apos;t find any stored XSS vulnerabilities.\"/><script id=\"http-dombased-xss\" output=\"Couldn&apos;t find any DOM based XSS.\"/><script id=\"http-csrf\" output=\"Couldn&apos;t find any CSRF vulnerabilities.\"/><script id=\"http-server-header\" output=\"Microsoft-HTTPAPI/2.0\"><elem>Microsoft-HTTPAPI/2.0</elem>\n</script></port>\n<port protocol=\"tcp\" portid=\"49152\"><state state=\"open\" reason=\"syn-ack\" reason_ttl=\"128\"/><service name=\"msrpc\" product=\"Microsoft Windows RPC\" ostype=\"Windows\" method=\"probed\" conf=\"10\"><cpe>cpe:/o:microsoft:windows</cpe></service></port>\n<port protocol=\"tcp\" portid=\"49153\"><state state=\"open\" reason=\"syn-ack\" reason_ttl=\"128\"/><service name=\"msrpc\" product=\"Microsoft Windows RPC\" ostype=\"Windows\" method=\"probed\" conf=\"10\"><cpe>cpe:/o:microsoft:windows</cpe></service></port>\n<port protocol=\"tcp\" portid=\"49154\"><state state=\"open\" reason=\"syn-ack\" reason_ttl=\"128\"/><service name=\"msrpc\" product=\"Microsoft Windows RPC\" ostype=\"Windows\" method=\"probed\" conf=\"10\"><cpe>cpe:/o:microsoft:windows</cpe></service></port>\n<port protocol=\"tcp\" portid=\"49175\"><state state=\"open\" reason=\"syn-ack\" reason_ttl=\"128\"/><service name=\"msrpc\" product=\"Microsoft Windows RPC\" ostype=\"Windows\" method=\"probed\" conf=\"10\"><cpe>cpe:/o:microsoft:windows</cpe></service></port>\n<port protocol=\"tcp\" portid=\"49179\"><state state=\"open\" reason=\"syn-ack\" reason_ttl=\"128\"/><service name=\"msrpc\" product=\"Microsoft Windows RPC\" ostype=\"Windows\" method=\"probed\" conf=\"10\"><cpe>cpe:/o:microsoft:windows</cpe></service></port>\n<port protocol=\"tcp\" portid=\"49180\"><state state=\"open\" reason=\"syn-ack\" reason_ttl=\"128\"/><service name=\"msrpc\" product=\"Microsoft Windows RPC\" ostype=\"Windows\" method=\"probed\" conf=\"10\"><cpe>cpe:/o:microsoft:windows</cpe></service></port>\n<port protocol=\"tcp\" portid=\"49198\"><state state=\"open\" reason=\"syn-ack\" reason_ttl=\"128\"/><service name=\"msrpc\" product=\"Microsoft Windows RPC\" ostype=\"Windows\" method=\"probed\" conf=\"10\"><cpe>cpe:/o:microsoft:windows</cpe></service></port>\n</ports>\n<hostscript><script id=\"smb-vuln-ms10-054\" output=\"false\">false</script><script id=\"samba-vuln-cve-2012-1182\" output=\"NT_STATUS_ACCESS_DENIED\">false</script><script id=\"smb-vuln-ms17-010\" output=\"&#xa;  VULNERABLE:&#xa;  Remote Code Execution vulnerability in Microsoft SMBv1 servers (ms17-010)&#xa;    State: VULNERABLE&#xa;    IDs:  CVE:CVE-2017-0143&#xa;    Risk factor: HIGH&#xa;      A critical remote code execution vulnerability exists in Microsoft SMBv1&#xa;       servers (ms17-010).&#xa;          &#xa;    Disclosure date: 2017-03-14&#xa;    References:&#xa;      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0143&#xa;      https://technet.microsoft.com/en-us/library/security/ms17-010.aspx&#xa;      https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/&#xa;\"><table key=\"CVE-2017-0143\">\n<elem key=\"title\">Remote Code Execution vulnerability in Microsoft SMBv1 servers (ms17-010)</elem>\n<elem key=\"state\">VULNERABLE</elem>\n<table key=\"ids\">\n<elem>CVE:CVE-2017-0143</elem>\n</table>\n<table key=\"description\">\n<elem>A critical remote code execution vulnerability exists in Microsoft SMBv1&#xa; servers (ms17-010).&#xa;    </elem>\n</table>\n<table key=\"dates\">\n<table key=\"disclosure\">\n<elem key=\"year\">2017</elem>\n<elem key=\"day\">14</elem>\n<elem key=\"month\">03</elem>\n</table>\n</table>\n<elem key=\"disclosure\">2017-03-14</elem>\n<table key=\"refs\">\n<elem>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0143</elem>\n<elem>https://technet.microsoft.com/en-us/library/security/ms17-010.aspx</elem>\n<elem>https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/</elem>\n</table>\n</table>\n</script><script id=\"smb-vuln-ms10-061\" output=\"NT_STATUS_ACCESS_DENIED\">false</script></hostscript><times srtt=\"919\" rttvar=\"282\" to=\"100000\"/>\n</host>\n<runstats><finished time=\"1773790879\" timestr=\"Tue Mar 17 19:41:19 2026\" summary=\"Nmap done at Tue Mar 17 19:41:19 2026; 1 IP address (1 host up) scanned in 203.02 seconds\" elapsed=\"203.02\" exit=\"success\"/><hosts up=\"1\" down=\"0\" total=\"1\"/>\n</runstats>\n</nmaprun>",
+      "duration": 203.059248,
+      "findings_count": 0,
+      "success": true,
+      "output_size": 7257,
+      "commands_list": []
+    }
+  ],
+  "ai_decisions": [],
+  "context": {
+    "target": "192.168.1.232",
+    "scope": [],
+    "discovered_assets": [
+      "192.168.1.232",
+      "192.168.1.232"
+    ],
+    "urls": [],
+    "client_side_scripts": [],
+    "open_ports": [
+      445,
+      49198,
+      3389,
+      49154,
+      49179,
+      49153,
+      49152,
+      49175,
+      139,
+      53,
+      47001,
+      49180,
+      135,
+      53,
+      135,
+      139,
+      445,
+      3389,
+      47001,
+      49152,
+      49153,
+      49154,
+      49175,
+      49179,
+      49180,
+      49198
+    ],
+    "host_open_ports": {
+      "192.168.1.232": [
+        53,
+        135,
+        139,
+        445,
+        3389,
+        47001,
+        49152,
+        49153,
+        49154,
+        49175,
+        49179,
+        49180,
+        49198
+      ]
+    },
+    "services": [
+      {
+        "host": "192.168.1.232",
+        "port": 53,
+        "service": "domain",
+        "product": "Microsoft DNS"
+      },
+      {
+        "host": "192.168.1.232",
+        "port": 135,
+        "service": "msrpc",
+        "product": "Microsoft Windows RPC"
+      },
+      {
+        "host": "192.168.1.232",
+        "port": 139,
+        "service": "netbios-ssn",
+        "product": "Microsoft Windows netbios-ssn"
+      },
+      {
+        "host": "192.168.1.232",
+        "port": 445,
+        "service": "microsoft-ds",
+        "product": "Microsoft Windows Server 2008 R2 - 2012 microsoft-ds"
+      },
+      {
+        "host": "192.168.1.232",
+        "port": 3389,
+        "service": "ms-wbt-server",
+        "product": "unknown"
+      },
+      {
+        "host": "192.168.1.232",
+        "port": 47001,
+        "service": "http",
+        "product": "Microsoft HTTPAPI httpd"
+      },
+      {
+        "host": "192.168.1.232",
+        "port": 49152,
+        "service": "msrpc",
+        "product": "Microsoft Windows RPC"
+      },
+      {
+        "host": "192.168.1.232",
+        "port": 49153,
+        "service": "msrpc",
+        "product": "Microsoft Windows RPC"
+      },
+      {
+        "host": "192.168.1.232",
+        "port": 49154,
+        "service": "msrpc",
+        "product": "Microsoft Windows RPC"
+      },
+      {
+        "host": "192.168.1.232",
+        "port": 49175,
+        "service": "msrpc",
+        "product": "Microsoft Windows RPC"
+      },
+      {
+        "host": "192.168.1.232",
+        "port": 49179,
+        "service": "msrpc",
+        "product": "Microsoft Windows RPC"
+      },
+      {
+        "host": "192.168.1.232",
+        "port": 49180,
+        "service": "msrpc",
+        "product": "Microsoft Windows RPC"
+      },
+      {
+        "host": "192.168.1.232",
+        "port": 49198,
+        "service": "msrpc",
+        "product": "Microsoft Windows RPC"
+      }
+    ],
+    "technologies": [],
+    "certificate_info": {},
+    "host_dns": {
+      "192.168.1.232": "win2008-1.localdomain"
+    }
+  },
+  "metadata": {}
+}

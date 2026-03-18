@@ -14,9 +14,9 @@ ai:
   # model: "llama3.1:8b"          # Auto-uses llama3_1_8b prompts
   # model: "deepseek-r1:8b"       # Auto-uses deepseek_r1_8b prompts
   # model: "llama3.2:3b"          # Auto-uses llama3_2_3b prompts
-  # model: "DeepHat/DeepHat-V1-7B"  # Auto-uses deephat_v1_7b prompts
-  # model: "gpt-oss:20b"
-  model: "qwen3.5:27b"
+  #model: "DeepHat/DeepHat-V1-7B"  # Auto-uses deephat_v1_7b prompts
+  model: "gpt-oss:20b"
+  #model: "qwen3.5:27b"
   base_url: "http://192.168.1.124:11434"
   #
   # Gemini (Vertex AI via ADC) example (recommended for higher limits):

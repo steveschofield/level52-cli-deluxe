@@ -1,0 +1,27 @@
+[
+{   "ip": "192.168.1.232",   "timestamp": "1773791685", "ports": [ {"port": 49198, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 128} ] }
+,
+{   "ip": "192.168.1.232",   "timestamp": "1773791686", "ports": [ {"port": 3389, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 128} ] }
+,
+{   "ip": "192.168.1.232",   "timestamp": "1773791688", "ports": [ {"port": 49175, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 128} ] }
+,
+{   "ip": "192.168.1.232",   "timestamp": "1773791688", "ports": [ {"port": 445, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 128} ] }
+,
+{   "ip": "192.168.1.232",   "timestamp": "1773791688", "ports": [ {"port": 47001, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 128} ] }
+,
+{   "ip": "192.168.1.232",   "timestamp": "1773791692", "ports": [ {"port": 139, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 128} ] }
+,
+{   "ip": "192.168.1.232",   "timestamp": "1773791693", "ports": [ {"port": 49154, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 128} ] }
+,
+{   "ip": "192.168.1.232",   "timestamp": "1773791697", "ports": [ {"port": 49152, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 128} ] }
+,
+{   "ip": "192.168.1.232",   "timestamp": "1773791697", "ports": [ {"port": 49153, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 128} ] }
+,
+{   "ip": "192.168.1.232",   "timestamp": "1773791699", "ports": [ {"port": 135, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 128} ] }
+,
+{   "ip": "192.168.1.232",   "timestamp": "1773791703", "ports": [ {"port": 49179, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 128} ] }
+,
+{   "ip": "192.168.1.232",   "timestamp": "1773791704", "ports": [ {"port": 53, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 128} ] }
+,
+{   "ip": "192.168.1.232",   "timestamp": "1773791704", "ports": [ {"port": 49180, "proto": "tcp", "status": "open", "reason": "syn-ack", "ttl": 128} ] }
+]

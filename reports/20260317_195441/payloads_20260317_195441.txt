@@ -1,0 +1,27 @@
+### masscan (external, 2026-03-17T19:54:41, 38.4s)
+  /home/kali/code/level52-cli-deluxe/venv/bin/masscan -p 1-65535 --rate 5000 -oJ reports/20260317_195441/masscan_20260317_195441_962747.json 192.168.1.232
+
+### nmap (external, 2026-03-17T19:56:36, 197.7s)
+  /home/kali/code/level52-cli-deluxe/venv/bin/nmap -sV --script vuln,vulners -T4 -Pn -oX reports/20260317_195441/nmap_20260317_195636_713151.xml -p 53,135,139,445,3389,47001,49152,49153,49154,49175,49179,49180,49198 192.168.1.232
+
+### nmap (external, 2026-03-17T20:00:47, 142.2s)
+  /home/kali/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T3 -Pn -oX reports/20260317_195441/nmap_20260317_200047_116558.xml -p 53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389 -sU 192.168.1.232
+
+### httpx (external, 2026-03-17T20:03:55, 0.4s)
+  /home/kali/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u 192.168.1.232
+
+### whatweb (external, 2026-03-17T20:03:56, 0.8s)
+  /home/kali/code/level52-cli-deluxe/venv/bin/whatweb --log-json=reports/20260317_195441/whatweb_20260317_200356_017677.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool 192.168.1.232
+
+### subjs (external, 2026-03-17T20:04:07, 0.0s)
+  /home/kali/code/level52-cli-deluxe/venv/bin/subjs -i 192.168.1.232
+
+### testssl (external, 2026-03-17T20:04:07, 0.6s)
+  /home/kali/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-336s4w3l/testssl.json --severity LOW --quiet 192.168.1.232
+
+### headers (external, 2026-03-17T20:04:07, 0.0s)
+  curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Header-Check/1.0 -L -k 192.168.1.232
+
+### nikto (external, 2026-03-17T20:04:07, 0.0s)
+  /home/kali/code/level52-cli-deluxe/venv/bin/nikto -h 192.168.1.232 -Tuning 123b -timeout 10 -nointeractive
+

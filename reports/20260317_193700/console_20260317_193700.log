@@ -1,0 +1,161 @@
+2026-03-17 19:37:00,610 - guardian - INFO - Initialized Ollama model: qwen3.5:27b @ http://192.168.1.124:11434
+2026-03-17 19:37:00,612 - guardian - INFO - Prompt templates: set=qwen3_5_27b paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/qwen3_5_27b/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/qwen3_5_27b/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/qwen3_5_27b/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/qwen3_5_27b/reporter.py
+2026-03-17 19:37:00,618 - guardian - INFO - Loaded skill configuration from config/skills.yaml
+2026-03-17 19:37:00,619 - guardian - INFO - ✓ Loaded 'planner' skill (optimized for qwen3_5_27b)
+2026-03-17 19:37:00,857 - guardian - WARNING - BloodHound MCP image not found. Run: /home/kali/code/level52-cli-deluxe/venv/bin/docker pull ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+2026-03-17 19:37:00,927 - guardian - WARNING - ProjectDiscovery katana not found; install it or set tools.katana.binary / GUARDIAN_KATANA_BIN.
+2026-03-17 19:37:00,928 - guardian - WARNING - Tool katana is not installed or not in PATH
+2026-03-17 19:37:00,933 - guardian - INFO - Loaded skill configuration from config/skills.yaml
+2026-03-17 19:37:00,934 - guardian - INFO - ✓ Loaded 'analyst' skill (optimized for qwen3_5_27b)
+2026-03-17 19:37:00,934 - guardian - INFO - [CISAKEVClient] Fetching CISA KEV catalog...
+2026-03-17 19:37:01,122 - guardian - INFO - [CISAKEVClient] Fetched CISA KEV catalog v2026.03.16 (1543 entries)
+2026-03-17 19:37:01,124 - guardian - INFO - OSINT enrichment enabled: CISA KEV, GitHub, EPSS, OSV
+2026-03-17 19:37:01,124 - guardian - INFO - Tool available: nmap
+2026-03-17 19:37:01,124 - guardian - INFO - Tool available: subfinder
+2026-03-17 19:37:01,125 - guardian - INFO - Tool available: nuclei
+2026-03-17 19:37:01,125 - guardian - INFO - Tool available: whatweb
+2026-03-17 19:37:01,126 - guardian - INFO - Tool available: wafw00f
+2026-03-17 19:37:01,126 - guardian - INFO - Tool available: nikto
+2026-03-17 19:37:01,126 - guardian - INFO - Tool available: testssl
+2026-03-17 19:37:01,127 - guardian - INFO - Tool available: sqlmap
+2026-03-17 19:37:01,127 - guardian - INFO - Tool available: ffuf
+2026-03-17 19:37:01,127 - guardian - INFO - Tool available: wpscan
+2026-03-17 19:37:01,128 - guardian - INFO - Tool available: sslyze
+2026-03-17 19:37:01,128 - guardian - INFO - Tool available: headers
+2026-03-17 19:37:01,128 - guardian - INFO - Tool available: masscan
+2026-03-17 19:37:01,129 - guardian - INFO - Tool available: amass
+2026-03-17 19:37:01,129 - guardian - INFO - Tool available: whois
+2026-03-17 19:37:01,129 - guardian - INFO - Tool available: hydra
+2026-03-17 19:37:01,130 - guardian - INFO - Tool available: jwt_tool
+2026-03-17 19:37:01,130 - guardian - INFO - Tool available: graphql-cop
+2026-03-17 19:37:01,130 - guardian - INFO - Tool available: upload-scanner
+2026-03-17 19:37:01,131 - guardian - INFO - Tool available: csrf-tester
+2026-03-17 19:37:01,131 - guardian - INFO - Tool available: enum4linux-ng
+2026-03-17 19:37:01,131 - guardian - INFO - Tool available: enum4linux
+2026-03-17 19:37:01,132 - guardian - INFO - Tool available: smbclient
+2026-03-17 19:37:01,132 - guardian - INFO - Tool available: showmount
+2026-03-17 19:37:01,132 - guardian - INFO - Tool available: snmpwalk
+2026-03-17 19:37:01,133 - guardian - INFO - Tool available: onesixtyone
+2026-03-17 19:37:01,133 - guardian - INFO - Tool available: arjun
+2026-03-17 19:37:01,133 - guardian - INFO - Tool available: xsstrike
+2026-03-17 19:37:01,134 - guardian - INFO - Tool available: gitleaks
+2026-03-17 19:37:01,134 - guardian - INFO - Tool available: cmseek
+2026-03-17 19:37:01,134 - guardian - INFO - Tool available: dnsrecon
+2026-03-17 19:37:01,135 - guardian - INFO - Tool available: dnsx
+2026-03-17 19:37:01,135 - guardian - INFO - Tool available: shuffledns
+2026-03-17 19:37:01,135 - guardian - INFO - Tool available: puredns
+2026-03-17 19:37:01,136 - guardian - INFO - Tool available: retire
+2026-03-17 19:37:01,136 - guardian - INFO - Tool available: naabu
+2026-03-17 19:37:01,136 - guardian - INFO - Tool available: asnmap
+2026-03-17 19:37:01,137 - guardian - INFO - Tool available: waybackurls
+2026-03-17 19:37:01,137 - guardian - INFO - Tool available: subjs
+2026-03-17 19:37:01,137 - guardian - INFO - Tool available: linkfinder
+2026-03-17 19:37:01,138 - guardian - INFO - Tool available: xnlinkfinder
+2026-03-17 19:37:01,138 - guardian - INFO - Tool available: paramspider
+2026-03-17 19:37:01,138 - guardian - INFO - Tool available: schemathesis
+2026-03-17 19:37:01,139 - guardian - INFO - Tool available: trufflehog
+2026-03-17 19:37:01,139 - guardian - INFO - Tool available: metasploit
+2026-03-17 19:37:01,139 - guardian - INFO - Tool available: zap
+2026-03-17 19:37:01,140 - guardian - INFO - Tool available: dalfox
+2026-03-17 19:37:01,140 - guardian - INFO - Tool available: commix
+2026-03-17 19:37:01,140 - guardian - INFO - Tool available: gobuster
+2026-03-17 19:37:01,141 - guardian - INFO - Tool available: godeye
+2026-03-17 19:37:01,141 - guardian - INFO - Tool available: cors-scanner
+2026-03-17 19:37:01,141 - guardian - INFO - Tool available: cookie-analyzer
+2026-03-17 19:37:01,142 - guardian - INFO - Tool available: error-detector
+2026-03-17 19:37:01,142 - guardian - INFO - Tool available: ssrf-scanner
+2026-03-17 19:37:01,142 - guardian - INFO - Tool available: xxe-scanner
+2026-03-17 19:37:01,143 - guardian - INFO - Tool available: deserialization-scanner
+2026-03-17 19:37:01,143 - guardian - INFO - Tool available: auth-scanner
+2026-03-17 19:37:01,143 - guardian - INFO - Tool available: idor-scanner
+2026-03-17 19:37:01,144 - guardian - INFO - Tool available: semgrep
+2026-03-17 19:37:01,144 - guardian - INFO - Tool available: trivy
+2026-03-17 19:37:01,144 - guardian - INFO - Tool available: bloodhound
+2026-03-17 19:37:01,145 - guardian - INFO - Tool available: httpx
+2026-03-17 19:37:01,145 - guardian - WARNING - Tool missing: katana (go install github.com/projectdiscovery/katana/cmd/katana@latest)
+2026-03-17 19:37:01,145 - guardian - WARNING - Missing tools: katana. Some functionality will be limited.
+2026-03-17 19:37:01,146 - guardian - INFO - Starting workflow: recon for target: 192.168.1.232
+2026-03-17 19:37:01,155 - guardian - INFO - Workflow setting: max_parallel_tools=2
+2026-03-17 19:37:01,155 - guardian - INFO - Workflow Progress [--------------------] 1/26 (0%) ETA n/a
+2026-03-17 19:37:01,156 - guardian - INFO - Executing step: passive_osint_amass
+2026-03-17 19:37:01,156 - guardian - INFO - Skipping passive_osint_amass: target is IP
+2026-03-17 19:37:01,157 - guardian - INFO - Session saved to: reports/20260317_193700/session_20260317_193700.json
+2026-03-17 19:37:01,157 - guardian - INFO - Workflow Progress [--------------------] 2/26 (3%) ETA ~0s
+2026-03-17 19:37:01,157 - guardian - INFO - Executing step: whois_lookup
+2026-03-17 19:37:01,158 - guardian - INFO - Skipping whois_lookup: target is IP
+2026-03-17 19:37:01,158 - guardian - INFO - Session saved to: reports/20260317_193700/session_20260317_193700.json
+2026-03-17 19:37:01,159 - guardian - INFO - Workflow Progress [#-------------------] 3/26 (7%) ETA ~0s
+2026-03-17 19:37:01,159 - guardian - INFO - Executing step: asn_lookup
+2026-03-17 19:37:01,160 - guardian - INFO - Skipping asn_lookup: target is IP
+2026-03-17 19:37:01,160 - guardian - INFO - Session saved to: reports/20260317_193700/session_20260317_193700.json
+2026-03-17 19:37:01,160 - guardian - INFO - Workflow Progress [##------------------] 4/26 (11%) ETA ~0s
+2026-03-17 19:37:01,161 - guardian - INFO - Executing step: subdomain_discovery
+2026-03-17 19:37:01,161 - guardian - INFO - Skipping subdomain_discovery: target is IP
+2026-03-17 19:37:01,162 - guardian - INFO - Session saved to: reports/20260317_193700/session_20260317_193700.json
+2026-03-17 19:37:01,162 - guardian - INFO - Workflow Progress [###-----------------] 5/26 (15%) ETA ~0s
+2026-03-17 19:37:01,163 - guardian - INFO - Executing step: shuffledns_permutations
+2026-03-17 19:37:01,163 - guardian - INFO - Skipping shuffledns_permutations: target is IP
+2026-03-17 19:37:01,164 - guardian - INFO - Session saved to: reports/20260317_193700/session_20260317_193700.json
+2026-03-17 19:37:01,164 - guardian - INFO - Workflow Progress [###-----------------] 6/26 (19%) ETA ~0s
+2026-03-17 19:37:01,164 - guardian - INFO - Executing step: puredns_resolution
+2026-03-17 19:37:01,165 - guardian - INFO - Skipping puredns_resolution: target is IP
+2026-03-17 19:37:01,165 - guardian - INFO - Session saved to: reports/20260317_193700/session_20260317_193700.json
+2026-03-17 19:37:01,166 - guardian - INFO - Workflow Progress [####----------------] 7/26 (23%) ETA ~0s
+2026-03-17 19:37:01,166 - guardian - INFO - Executing step: dns_enumeration
+2026-03-17 19:37:01,166 - guardian - INFO - Skipping dns_enumeration: target is IP
+2026-03-17 19:37:01,167 - guardian - INFO - Session saved to: reports/20260317_193700/session_20260317_193700.json
+2026-03-17 19:37:01,167 - guardian - INFO - Workflow Progress [#####---------------] 8/26 (26%) ETA ~0s
+2026-03-17 19:37:01,168 - guardian - INFO - Executing step: dnsrecon_enum
+2026-03-17 19:37:01,168 - guardian - INFO - Skipping dnsrecon_enum: target is IP
+2026-03-17 19:37:01,169 - guardian - INFO - Session saved to: reports/20260317_193700/session_20260317_193700.json
+2026-03-17 19:37:01,169 - guardian - INFO - Workflow Progress [######--------------] 9/26 (30%) ETA ~0s
+2026-03-17 19:37:01,169 - guardian - INFO - Executing step: godeye_recon
+2026-03-17 19:37:01,170 - guardian - INFO - Skipping godeye_recon: target is IP
+2026-03-17 19:37:01,170 - guardian - INFO - Session saved to: reports/20260317_193700/session_20260317_193700.json
+2026-03-17 19:37:01,171 - guardian - INFO - Workflow Progress [######--------------] 10/26 (34%) ETA ~0s
+2026-03-17 19:37:01,171 - guardian - INFO - Executing step: masscan_discovery_cidr
+2026-03-17 19:37:01,172 - guardian - INFO - Skipping masscan_discovery_cidr: target is not CIDR/range
+2026-03-17 19:37:01,172 - guardian - INFO - Session saved to: reports/20260317_193700/session_20260317_193700.json
+2026-03-17 19:37:01,172 - guardian - INFO - Workflow Progress [#######-------------] 11/26 (38%) ETA ~0s
+2026-03-17 19:37:01,173 - guardian - INFO - Executing step: masscan_discovery_single_node
+2026-03-17 19:37:01,173 - guardian - INFO - Tool Agent selecting tool: masscan
+2026-03-17 19:37:01,174 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/masscan -p 1-65535 --rate 5000 -oJ reports/20260317_193700/masscan_20260317_193701_174275.json 192.168.1.232
+2026-03-17 19:37:36,590 - guardian - INFO - Tool masscan finished in 35.42s (status=completed, exit=0, stdout=0B, stderr=4999B)
+2026-03-17 19:37:36,591 - guardian - INFO - Tool Executed: masscan
+2026-03-17 19:37:36,591 - guardian - INFO - Analyst Agent analyzing results...
+2026-03-17 19:37:36,592 - guardian - INFO - [Analyst] LLM request: system_prompt=1369 chars, prompt=4458 chars
+2026-03-17 19:37:56,351 - guardian - ERROR - Ollama API error: model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details (status code: 500)
+2026-03-17 19:37:56,355 - guardian - ERROR - Agent Analyst thinking error: model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details (status code: 500)
+2026-03-17 19:37:56,356 - guardian - WARNING - [Analyst] Analysis skipped due to LLM backend error: model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details (status code: 500)
+2026-03-17 19:37:56,356 - guardian - INFO - [Analyst] AnalysisComplete: Analysis skipped due to LLM backend error: model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details (status code: 500)
+2026-03-17 19:37:56,357 - guardian - INFO - Found 0 findings from masscan
+2026-03-17 19:37:56,357 - guardian - INFO - Session saved to: reports/20260317_193700/session_20260317_193700.json
+2026-03-17 19:37:56,358 - guardian - INFO - Exported tool commands: reports/20260317_193700/payloads_20260317_193700.txt
+2026-03-17 19:37:56,358 - guardian - INFO - Exported host inventory CSV: reports/20260317_193700/hosts_20260317_193700.csv
+2026-03-17 19:37:56,359 - guardian - INFO - Workflow Progress [########------------] 12/26 (42%) ETA ~82s
+2026-03-17 19:37:56,359 - guardian - INFO - Executing step: port_scan_main_domain
+2026-03-17 19:37:56,360 - guardian - INFO - Skipping port_scan_main_domain: target is IP
+2026-03-17 19:37:56,360 - guardian - INFO - Session saved to: reports/20260317_193700/session_20260317_193700.json
+2026-03-17 19:37:56,361 - guardian - INFO - Exported tool commands: reports/20260317_193700/payloads_20260317_193700.txt
+2026-03-17 19:37:56,361 - guardian - INFO - Exported host inventory CSV: reports/20260317_193700/hosts_20260317_193700.csv
+2026-03-17 19:37:56,362 - guardian - INFO - Workflow Progress [#########-----------] 13/26 (46%) ETA ~77s
+2026-03-17 19:37:56,362 - guardian - INFO - Executing step: nmap_vuln_scan
+2026-03-17 19:37:56,362 - guardian - INFO - Tool Agent selecting tool: nmap
+2026-03-17 19:37:56,363 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/nmap -sV --script vuln,vulners -T4 -Pn -oX reports/20260317_193700/nmap_20260317_193756_363368.xml -p 53,135,139,445,3389,47001,49152,49153,49154,49175,49179,49180,49198 192.168.1.232
+2026-03-17 19:41:19,423 - guardian - INFO - Tool nmap finished in 203.06s (status=completed, exit=0, stdout=2325B, stderr=0B)
+2026-03-17 19:41:19,424 - guardian - INFO - Tool Executed: nmap
+2026-03-17 19:41:19,425 - guardian - INFO - Analyst Agent analyzing results...
+2026-03-17 19:41:19,426 - guardian - INFO - [Analyst] LLM request: system_prompt=1369 chars, prompt=6512 chars
+2026-03-17 19:41:42,111 - guardian - ERROR - Ollama API error: model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details (status code: 500)
+2026-03-17 19:41:42,112 - guardian - ERROR - Agent Analyst thinking error: model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details (status code: 500)
+2026-03-17 19:41:42,113 - guardian - WARNING - [Analyst] Analysis skipped due to LLM backend error: model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details (status code: 500)
+2026-03-17 19:41:42,113 - guardian - INFO - [Analyst] AnalysisComplete: Analysis skipped due to LLM backend error: model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details (status code: 500)
+2026-03-17 19:41:42,114 - guardian - INFO - Found 0 findings from nmap
+2026-03-17 19:41:42,115 - guardian - INFO - Session saved to: reports/20260317_193700/session_20260317_193700.json
+2026-03-17 19:41:42,115 - guardian - INFO - Exported tool commands: reports/20260317_193700/payloads_20260317_193700.txt
+2026-03-17 19:41:42,116 - guardian - INFO - Exported host inventory CSV: reports/20260317_193700/hosts_20260317_193700.csv
+2026-03-17 19:41:42,116 - guardian - INFO - Workflow Progress [##########----------] 14/26 (50%) ETA ~365s
+2026-03-17 19:41:42,117 - guardian - INFO - Executing step: nmap_common_udp_scan
+2026-03-17 19:41:42,117 - guardian - INFO - Tool Agent selecting tool: nmap
+2026-03-17 19:41:42,117 - guardian - INFO - Executing: /home/kali/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T3 -Pn -oX reports/20260317_193700/nmap_20260317_194142_117922.xml -p 53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389 -sU 192.168.1.232
+2026-03-17 19:44:10,662 - guardian - INFO - Tool nmap finished in 148.54s (status=cancelled, exit=n/a, stdout=0B, stderr=0B)

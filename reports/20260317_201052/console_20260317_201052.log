@@ -1,0 +1,77 @@
+2026-03-17 20:10:52,354 - guardian - INFO - Initialized Ollama model: gpt-oss:20b @ http://192.168.1.124:11434
+2026-03-17 20:10:52,354 - guardian - INFO - Prompt templates: set=default paths=/home/kali/code/level52-cli-deluxe/ai/prompt_templates/__init__.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/analyst.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/planner.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/reporter.py, /home/kali/code/level52-cli-deluxe/ai/prompt_templates/tool_selector.py
+2026-03-17 20:10:52,360 - guardian - INFO - Loaded skill configuration from config/skills.yaml
+2026-03-17 20:10:52,361 - guardian - INFO - ✓ Loaded 'planner' skill (default prompts)
+2026-03-17 20:10:52,543 - guardian - WARNING - BloodHound MCP image not found. Run: /home/kali/code/level52-cli-deluxe/venv/bin/docker pull ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+2026-03-17 20:10:52,582 - guardian - WARNING - ProjectDiscovery katana not found; install it or set tools.katana.binary / GUARDIAN_KATANA_BIN.
+2026-03-17 20:10:52,583 - guardian - WARNING - Tool katana is not installed or not in PATH
+2026-03-17 20:10:52,589 - guardian - INFO - Loaded skill configuration from config/skills.yaml
+2026-03-17 20:10:52,589 - guardian - INFO - ✓ Loaded 'analyst' skill (default prompts)
+2026-03-17 20:10:52,592 - guardian - INFO - [CISAKEVClient] Loaded CISA KEV from cache (1543 entries)
+2026-03-17 20:10:52,592 - guardian - INFO - OSINT enrichment enabled: CISA KEV, GitHub, EPSS, OSV
+2026-03-17 20:10:52,593 - guardian - INFO - Tool available: nmap
+2026-03-17 20:10:52,593 - guardian - INFO - Tool available: subfinder
+2026-03-17 20:10:52,593 - guardian - INFO - Tool available: nuclei
+2026-03-17 20:10:52,594 - guardian - INFO - Tool available: whatweb
+2026-03-17 20:10:52,594 - guardian - INFO - Tool available: wafw00f
+2026-03-17 20:10:52,594 - guardian - INFO - Tool available: nikto
+2026-03-17 20:10:52,595 - guardian - INFO - Tool available: testssl
+2026-03-17 20:10:52,595 - guardian - INFO - Tool available: sqlmap
+2026-03-17 20:10:52,595 - guardian - INFO - Tool available: ffuf
+2026-03-17 20:10:52,596 - guardian - INFO - Tool available: wpscan
+2026-03-17 20:10:52,596 - guardian - INFO - Tool available: sslyze
+2026-03-17 20:10:52,596 - guardian - INFO - Tool available: headers
+2026-03-17 20:10:52,597 - guardian - INFO - Tool available: masscan
+2026-03-17 20:10:52,597 - guardian - INFO - Tool available: amass
+2026-03-17 20:10:52,597 - guardian - INFO - Tool available: whois
+2026-03-17 20:10:52,598 - guardian - INFO - Tool available: hydra
+2026-03-17 20:10:52,598 - guardian - INFO - Tool available: jwt_tool
+2026-03-17 20:10:52,598 - guardian - INFO - Tool available: graphql-cop
+2026-03-17 20:10:52,599 - guardian - INFO - Tool available: upload-scanner
+2026-03-17 20:10:52,599 - guardian - INFO - Tool available: csrf-tester
+2026-03-17 20:10:52,599 - guardian - INFO - Tool available: enum4linux-ng
+2026-03-17 20:10:52,600 - guardian - INFO - Tool available: enum4linux
+2026-03-17 20:10:52,600 - guardian - INFO - Tool available: smbclient
+2026-03-17 20:10:52,600 - guardian - INFO - Tool available: showmount
+2026-03-17 20:10:52,601 - guardian - INFO - Tool available: snmpwalk
+2026-03-17 20:10:52,601 - guardian - INFO - Tool available: onesixtyone
+2026-03-17 20:10:52,601 - guardian - INFO - Tool available: arjun
+2026-03-17 20:10:52,602 - guardian - INFO - Tool available: xsstrike
+2026-03-17 20:10:52,602 - guardian - INFO - Tool available: gitleaks
+2026-03-17 20:10:52,602 - guardian - INFO - Tool available: cmseek
+2026-03-17 20:10:52,603 - guardian - INFO - Tool available: dnsrecon
+2026-03-17 20:10:52,603 - guardian - INFO - Tool available: dnsx
+2026-03-17 20:10:52,603 - guardian - INFO - Tool available: shuffledns
+2026-03-17 20:10:52,604 - guardian - INFO - Tool available: puredns
+2026-03-17 20:10:52,604 - guardian - INFO - Tool available: retire
+2026-03-17 20:10:52,604 - guardian - INFO - Tool available: naabu
+2026-03-17 20:10:52,605 - guardian - INFO - Tool available: asnmap
+2026-03-17 20:10:52,605 - guardian - INFO - Tool available: waybackurls
+2026-03-17 20:10:52,605 - guardian - INFO - Tool available: subjs
+2026-03-17 20:10:52,606 - guardian - INFO - Tool available: linkfinder
+2026-03-17 20:10:52,606 - guardian - INFO - Tool available: xnlinkfinder
+2026-03-17 20:10:52,606 - guardian - INFO - Tool available: paramspider
+2026-03-17 20:10:52,607 - guardian - INFO - Tool available: schemathesis
+2026-03-17 20:10:52,607 - guardian - INFO - Tool available: trufflehog
+2026-03-17 20:10:52,607 - guardian - INFO - Tool available: metasploit
+2026-03-17 20:10:52,608 - guardian - INFO - Tool available: zap
+2026-03-17 20:10:52,608 - guardian - INFO - Tool available: dalfox
+2026-03-17 20:10:52,608 - guardian - INFO - Tool available: commix
+2026-03-17 20:10:52,609 - guardian - INFO - Tool available: gobuster
+2026-03-17 20:10:52,609 - guardian - INFO - Tool available: godeye
+2026-03-17 20:10:52,609 - guardian - INFO - Tool available: cors-scanner
+2026-03-17 20:10:52,610 - guardian - INFO - Tool available: cookie-analyzer
+2026-03-17 20:10:52,610 - guardian - INFO - Tool available: error-detector
+2026-03-17 20:10:52,610 - guardian - INFO - Tool available: ssrf-scanner
+2026-03-17 20:10:52,611 - guardian - INFO - Tool available: xxe-scanner
+2026-03-17 20:10:52,611 - guardian - INFO - Tool available: deserialization-scanner
+2026-03-17 20:10:52,611 - guardian - INFO - Tool available: auth-scanner
+2026-03-17 20:10:52,612 - guardian - INFO - Tool available: idor-scanner
+2026-03-17 20:10:52,612 - guardian - INFO - Tool available: semgrep
+2026-03-17 20:10:52,612 - guardian - INFO - Tool available: trivy
+2026-03-17 20:10:52,613 - guardian - INFO - Tool available: bloodhound
+2026-03-17 20:10:52,613 - guardian - INFO - Tool available: httpx
+2026-03-17 20:10:52,613 - guardian - WARNING - Tool missing: katana (go install github.com/projectdiscovery/katana/cmd/katana@latest)
+2026-03-17 20:10:52,614 - guardian - WARNING - Missing tools: katana. Some functionality will be limited.
+2026-03-17 20:10:52,614 - guardian - INFO - Starting workflow: web for target: 192.168.1.49:4280
+2026-03-17 20:10:52,615 - guardian - ERROR - Target validation failed: Could not resolve target host: 192.168.1.49:4280

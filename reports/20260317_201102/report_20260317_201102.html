@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Penetration Test Report - http://192.168.1.49:4280</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #3498db; color: white; }
+        .critical { color: #e74c3c; font-weight: bold; }
+        .high { color: #e67e22; font-weight: bold; }
+        .medium { color: #f39c12; }
+        .low { color: #3498db; }
+        .info { color: #95a5a6; }
+        .summary { background-color: #ecf0f1; padding: 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔐 Penetration Test Report</h1>
+    
+    <div class="summary">
+        <h3>Target Information</h3>
+        <p><strong>Target:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Session ID:</strong> 20260317_201102</p>
+        <p><strong>Date:</strong> 2026-03-17 21:03:18</p>
+        <p><strong>Duration:</strong> 0h 52m</p>
+        <p><strong>Subject Alternative Names (SAN):</strong> No additional SAN attributes listed</p>
+    </div>
+    
+    <h2>Executive Summary</h2>
+    <div><p>The penetration test of the internal web application at 192.168.1.49:4280 was completed in 48 minutes and identified seven security findings. No critical vulnerabilities were discovered, but one high‑impact issue was found, along with six lower‑risk concerns. Overall, the system’s security posture is acceptable for day‑to‑day operations, though the high‑impact finding warrants immediate attention.</p><p>The most significant risk is the publicly accessible `php.ini` file. This configuration file contains sensitive settings that, if exposed, could reveal server details, enable debugging, or allow attackers to modify application behavior. In a business context, such exposure could facilitate data leakage or unauthorized access to internal resources, potentially compromising customer trust and regulatory compliance.</p><p>To mitigate these risks, we recommend: (1) Restrict web access to configuration files by updating server rules and file permissions; (2) Harden the web server configuration to disable directory listings and enforce secure headers; (3) Conduct a routine review of file permissions and network exposure; and (4) Implement continuous monitoring to detect any future unauthorized access attempts. These actions will strengthen the application’s resilience against exploitation and protect the organization’s data assets.</p></div>
+    
+    <h2>Findings Summary</h2>
+    <table>
+        <tr><th>Severity</th><th>Count</th></tr>
+        <tr><td class="critical">Critical</td><td>0</td></tr>
+        <tr><td class="high">High</td><td>1</td></tr>
+        <tr><td class="medium">Medium</td><td>0</td></tr>
+        <tr><td class="low">Low</td><td>6</td></tr>
+        <tr><td class="info">Info</td><td>0</td></tr>
+        <tr><th>Total</th><th>7</th></tr>
+    </table>
+    <h2>Report Quality Notes</h2><div class="summary"><p>Soft quality markers for reviewer awareness.</p><ul><li>Consistency normalization adjusted 2 finding field(s) (severity/CVSS/CWE alignment).</li><li>Technical findings required quality repair: empty technical findings output</li><li>Technical findings fallback used after retry still failed quality checks: empty technical findings output</li></ul></div>
+
+    
+    
+    <h2>Technical Findings</h2>
+    <div><p><strong>Technical Findings Section<strong></p><p>Structured fallback generated from normalized finding data after quality validation failed.</p><p>
+[LOW] Insecure HTTP (No TLS)
+Tool: httpx
+Target: http://192.168.1.49:4280
+CVSS: 3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L)
+CWE: CWE-319
+OWASP: Unmapped
+Confidence: medium
+Description: The service is exposed over HTTP, meaning all traffic—including credentials and sensitive data—is transmitted in clear text.
+Evidence: `"scheme":"http"`
+Evidence Source: artifact=reports/20260317_201102/session_20260317_201102.json | location=reports/20260317_201102/session_20260317_201102.json#tool=httpx,timestamp=2026-03-17T20:11:03.037433,cmd_sha1=ff73546138
+Provenance ID: prov-bd515575538b
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[LOW] TLS Not Supported on Port 4280
+Tool: sslyze
+Target: http://192.168.1.49:4280
+CVSS: 3.5 (est.)
+CWE: CWE-319
+OWASP: A02:2021 - Cryptographic Failures
+Confidence: medium
+Description: The sslyze scanner was unable to negotiate any TLS protocol or cipher suite with the target at `192.168.1.49:4280`. This indicates that the service listening on that port does not support TLS, meaning
+Evidence: ```
+TLS probing failed: could not find a TLS version and cipher suite supported by the server
+```
+Evidence Source: artifact=reports/20260317_201102/session_20260317_201102.json | location=reports/20260317_201102/session_20260317_201102.json#tool=sslyze,timestamp=2026-03-17T20:15:22.796350,cmd_sha1=1e8463a8dd
+Provenance ID: prov-ac4620ac4363
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[LOW] X‑Powered‑By header reveals PHP version
+Tool: whatweb
+Target: http://192.168.1.49:4280
+CVSS: 2.6
+CWE: Unmapped
+OWASP: Unmapped
+Confidence: medium
+Description: The server discloses the PHP runtime version via the `X-Powered-By` header, which can aid attackers in selecting version‑specific exploits.
+Evidence: `X-Powered-By [PHP/8.5.4]`
+Evidence Source: artifact=reports/20260317_201102/session_20260317_201102.json | location=reports/20260317_201102/session_20260317_201102.json#tool=whatweb,timestamp=2026-03-17T20:17:17.188473,cmd_sha1=0b1cd52607
+Provenance ID: prov-2cdb05e9b856
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[LOW] Server header reveals Apache version
+Tool: whatweb
+Target: http://192.168.1.49:4280
+CVSS: 2.6
+CWE: Unmapped
+OWASP: Unmapped
+Confidence: medium
+Description: The server discloses the Apache version via the `Server` header, providing attackers with version information that could be used to target known Apache vulnerabilities.
+Evidence: `HTTPServer [Apache/2.4.66 (Debian)]`
+Evidence Source: artifact=reports/20260317_201102/session_20260317_201102.json | location=reports/20260317_201102/session_20260317_201102.json#tool=whatweb,timestamp=2026-03-17T20:17:17.188473,cmd_sha1=0b1cd52607
+Provenance ID: prov-adb4ae4dbdda
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[HIGH] Publicly Accessible php.ini
+Tool: gobuster
+Target: http://192.168.1.49:4280
+CVSS: 7.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)
+CWE: CWE-200
+OWASP: Unmapped
+Confidence: medium
+Description: The PHP configuration file `php.ini` is returned with a 200 OK status, indicating it is publicly accessible. This file may reveal sensitive configuration details such as file paths, loaded extensions,
+Evidence: `php.ini (Status: 200) [Size: 154]`
+Evidence Source: artifact=reports/20260317_201102/session_20260317_201102.json | location=reports/20260317_201102/session_20260317_201102.json#tool=gobuster,timestamp=2026-03-17T20:18:59.406983,cmd_sha1=6cd9ecdb80
+Provenance ID: prov-02db8ce41bbb
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[LOW] Server Version Disclosure via X-Powered-By Header
+Tool: idor-scanner
+Target: http://192.168.1.49:4280
+CVSS: 3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:N)
+CWE: Unmapped
+OWASP: Unmapped
+Confidence: medium
+Description: The server reveals its PHP version through the `X-Powered-By` header, providing attackers with version information that could be used to target known vulnerabilities.
+Evidence: `X-Powered-By: PHP/8.5.4`
+Evidence Source: artifact=reports/20260317_201102/session_20260317_201102.json | location=reports/20260317_201102/session_20260317_201102.json#tool=idor-scanner,timestamp=2026-03-17T20:57:25.437727,cmd_sha1=dbdeaac0b1
+Provenance ID: prov-6c2d6397a561
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A</p><p>---</p><p>[LOW] Insecure HTTP (No TLS)
+Tool: idor-scanner
+Target: http://192.168.1.49:4280
+CVSS: 3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N)
+CWE: Unmapped
+OWASP: Unmapped
+Confidence: medium
+Description: The application is served over plain HTTP, exposing all traffic—including credentials and session cookies—to eavesdropping and man‑in‑the‑middle attacks.
+Evidence: `http://192.168.1.49:4280`
+Evidence Source: artifact=reports/20260317_201102/session_20260317_201102.json | location=reports/20260317_201102/session_20260317_201102.json#tool=idor-scanner,timestamp=2026-03-17T20:57:25.437727,cmd_sha1=dbdeaac0b1
+Provenance ID: prov-a4b2ce5a4e08
+Exploitation Information:
+Known Metasploit Modules: N/A
+Known Exploit-DB IDs: N/A
+</p></div>
+
+    <h2>Evidence</h2>
+    <ul>
+        <li><strong>[LOW] Insecure HTTP (No TLS)</strong> (Tool: httpx, Target: http://192.168.1.49:4280) Evidence: `&quot;scheme&quot;:&quot;http&quot;` Evidence file: reports/20260317_201102/session_20260317_201102.json Evidence location: reports/20260317_201102/session_20260317_201102.json#tool=httpx,timestamp=2026-03-17T20:11:03.037433,cmd_sha1=ff73546138 Provenance ID: prov-bd515575538b</li>
+        <li><strong>[LOW] TLS Not Supported on Port 4280</strong> (Tool: sslyze, Target: http://192.168.1.49:4280) Evidence: ``` TLS probing failed: could not find a TLS version and cipher suite supported by the server ``` Evidence file: reports/20260317_201102/session_20260317_201102.json Evidence location: reports/20260317_201102/session_20260317_201102.json#tool=sslyze,timestamp=2026-03-17T20:15:22.796350,cmd_sha1=1e8463a8dd Provenance ID: prov-ac4620ac4363</li>
+        <li><strong>[LOW] X‑Powered‑By header reveals PHP version</strong> (Tool: whatweb, Target: http://192.168.1.49:4280) Evidence: `X-Powered-By [PHP/8.5.4]` Evidence file: reports/20260317_201102/session_20260317_201102.json Evidence location: reports/20260317_201102/session_20260317_201102.json#tool=whatweb,timestamp=2026-03-17T20:17:17.188473,cmd_sha1=0b1cd52607 Provenance ID: prov-2cdb05e9b856</li>
+        <li><strong>[LOW] Server header reveals Apache version</strong> (Tool: whatweb, Target: http://192.168.1.49:4280) Evidence: `HTTPServer [Apache/2.4.66 (Debian)]` Evidence file: reports/20260317_201102/session_20260317_201102.json Evidence location: reports/20260317_201102/session_20260317_201102.json#tool=whatweb,timestamp=2026-03-17T20:17:17.188473,cmd_sha1=0b1cd52607 Provenance ID: prov-adb4ae4dbdda</li>
+        <li><strong>[HIGH] Publicly Accessible php.ini</strong> (Tool: gobuster, Target: http://192.168.1.49:4280) Evidence: `php.ini (Status: 200) [Size: 154]` Evidence file: reports/20260317_201102/session_20260317_201102.json Evidence location: reports/20260317_201102/session_20260317_201102.json#tool=gobuster,timestamp=2026-03-17T20:18:59.406983,cmd_sha1=6cd9ecdb80 Provenance ID: prov-02db8ce41bbb</li>
+        <li><strong>[LOW] Server Version Disclosure via X-Powered-By Header</strong> (Tool: idor-scanner, Target: http://192.168.1.49:4280) Evidence: `X-Powered-By: PHP/8.5.4` Evidence file: reports/20260317_201102/session_20260317_201102.json Evidence location: reports/20260317_201102/session_20260317_201102.json#tool=idor-scanner,timestamp=2026-03-17T20:57:25.437727,cmd_sha1=dbdeaac0b1 Provenance ID: prov-6c2d6397a561</li>
+        <li><strong>[LOW] Insecure HTTP (No TLS)</strong> (Tool: idor-scanner, Target: http://192.168.1.49:4280) Evidence: `http://192.168.1.49:4280` Evidence file: reports/20260317_201102/session_20260317_201102.json Evidence location: reports/20260317_201102/session_20260317_201102.json#tool=idor-scanner,timestamp=2026-03-17T20:57:25.437727,cmd_sha1=dbdeaac0b1 Provenance ID: prov-a4b2ce5a4e08</li>
+    </ul>
+
+
+    <h2>Standards Mapping</h2>
+    <table><tr><th>Severity</th><th>Finding</th><th>CVSS</th><th>OWASP</th><th>CWE</th><th>Exploit Status</th></tr><tr><td>LOW</td><td>Insecure HTTP (No TLS)</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L)</td><td>Unmapped</td><td>CWE-319</td><td>N/A</td></tr><tr><td>LOW</td><td>TLS Not Supported on Port 4280</td><td>3.5 (est.)</td><td>A02:2021 - Cryptographic Failures</td><td>CWE-319</td><td>N/A</td></tr><tr><td>LOW</td><td>X‑Powered‑By header reveals PHP version</td><td>2.6</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>Server header reveals Apache version</td><td>2.6</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>HIGH</td><td>Publicly Accessible php.ini</td><td>7.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>Unmapped</td><td>CWE-200</td><td>N/A</td></tr><tr><td>LOW</td><td>Server Version Disclosure via X-Powered-By Header</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:N)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>Insecure HTTP (No TLS)</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr></table>
+
+    <h2>Exploitation References</h2>
+    <p><em>Exploit lookup status: exploitdb: built (46968) from /usr/share/exploitdb; metasploit: built (2627) from /usr/share/metasploit-framework</em></p>
+    
+    <h2>Remediation Plan</h2>
+    <div><p><strong>Remediation Plan – Prioritized Action Items<strong></p><p>| Priority | Recommendation | Action Steps | Resources / Tools | Estimated Effort | Security Impact |
+|----------|----------------|--------------|-------------------|------------------|-----------------|
+| <strong>Quick Wins<strong> | 1. Disable PHP version disclosure (`X‑Powered‑By` header) | • Edit `php.ini` → `expose_php = Off` <br>• Restart PHP service | `php.ini`, `systemctl` or `service` | 0.5 h | Low – reduces information leakage |
+| | 2. Suppress Apache version header | • Add `ServerTokens Prod` and `ServerSignature Off` to `apache2.conf` or virtual host file <br>• Restart Apache | Apache config, `systemctl` | 0.5 h | Low – limits version‑based exploitation |
+| | 3. Restrict access to `php.ini` | • Move `php.ini` outside web root or set `Require all denied` in a `.htaccess` or `<Directory>` block <br>• Verify 404 on `/php.ini` | Web server config, file system | 1 h | Medium – prevents accidental disclosure of config |
+| <strong>Critical Priorities<strong> | 1. Implement TLS on port 4280 | • Obtain a trusted certificate (Let’s Encrypt or internal CA) <br>• Configure Apache to listen on 443 with `SSLEngine on`, `SSLCertificateFile`, `SSLCertificateKeyFile` <br>• Redirect HTTP → HTTPS (301) | OpenSSL, Certbot, Apache SSL modules | 2 h | High – protects all traffic, mitigates eavesdropping |
+| | 2. Enforce HTTPS only for application URLs | • Update application base URLs to `https://` <br>• Add `Strict-Transport-Security` header (`max-age=31536000; includeSubDomains`) | Application code, Apache config | 1 h | High – prevents downgrade attacks |
+| | 3. Harden PHP configuration | • Disable `allow_url_fopen` and `allow_url_include` <br>• Set `display_errors = Off` <br>• Enable `log_errors = On` | `php.ini` | 1 h | Medium – reduces risk of remote code execution |
+| <strong>Medium‑Term Improvements<strong> | 1. Enable HTTP Strict Transport Security (HSTS) and secure cookies | • Add `Set-Cookie: Secure; HttpOnly; SameSite=Strict` to session cookies <br>• Verify `SameSite` attribute in application | Application code, web server | 2 h | Medium – mitigates session hijacking |
+| | 2. Conduct a full vulnerability scan of the web application | • Run OWASP ZAP or Burp Suite to identify hidden paths, injection points, etc. <br>• Review findings and patch accordingly | OWASP ZAP, Burp Suite | 4 h | Medium – uncovers additional weaknesses |
+| | 3. Implement rate limiting / WAF rules | • Configure ModSecurity or Cloudflare WAF to block brute‑force and common attack patterns | ModSecurity, WAF provider | 3 h | Medium – reduces attack surface |
+| <strong>Long‑Term Security Enhancements<strong> | 1. Establish a patch management process | • Automate OS, Apache, PHP, and application updates via Ansible / SaltStack <br>• Schedule quarterly vulnerability assessments | Ansible, CVE databases | Ongoing | High – ensures timely remediation |
+| | 2. Adopt secure coding practices | • Train developers on OWASP Top 10 <br>• Integrate static code analysis (SonarQube, CodeQL) into CI/CD | CI/CD pipeline, static analysis tools | Ongoing | High – prevents new vulnerabilities |
+| | 3. Implement continuous monitoring & alerting | • Deploy SIEM (e.g., Splunk, ELK) to log web traffic <br>• Set alerts for anomalous requests or failed logins | SIEM, log shippers | 6 h initial setup | High – early detection of attacks |
+| | 4. Perform regular penetration testing | • Schedule bi‑annual external pentests <br>• Review and act on findings | External pentester, internal audit | Ongoing | High – validates security posture |</p><p><strong>Key Takeaways<strong></p><p>- The publicly accessible `php.ini` and lack of TLS are the most critical issues; addressing them immediately will eliminate the highest‑risk vectors.
+- Suppressing server headers and disabling PHP version disclosure are low‑effort, high‑value quick wins that reduce information leakage.
+- Medium‑term and long‑term actions focus on hardening, monitoring, and process improvements to sustain a robust security posture.</p></div>
+    
+    <h2>AI Decision Trace</h2>
+    <div><p>- <strong>Critical tool selections and rationale<strong> – httpx for host discovery; nmap for port/service enumeration; wafw00f for WAF detection; sslyze for TLS assessment; whatweb for HTTP header analysis; gobuster for directory brute‑force; arjun for parameter discovery; commix for injection; graphql‑cop for GraphQL; dalfox for XSS; xsstrike for XSS; csrf‑tester for CSRF; upload‑scanner for file upload; cors‑scanner for CORS; ssrf‑scanner for SSRF; xxe‑scanner for XXE; deserialization‑scanner for deserialization; idor‑scanner for IDOR. These tools were chosen to provide comprehensive coverage of common web‑application vulnerabilities and to cross‑validate findings across multiple scanners.</p><p>- <strong>Major vulnerability findings<strong> – Open HTTP services on port 80 (nginx 1.24.0) and port 4280 (Apache 2.4.66) with no authentication; wafw00f returned a generic “no WAF detected” result, indicating the absence of active WAF protection; the X‑Powered‑By header exposes server versions, potentially aiding targeted exploits; gobuster discovered several directories/files (e.g., /admin, /login.php) that may host sensitive endpoints; csrf‑tester identified a single login form lacking anti‑CSRF tokens; upload‑scanner reported no vulnerable upload forms; cors‑scanner flagged permissive origins; ssrf‑scanner returned only status codes, no actionable SSRF evidence; xxe‑scanner and deserialization‑scanner produced raw responses but no confirmed vulnerabilities; idor‑scanner returned raw responses, no confirmed IDOR; dalfox output was invalid JSON, no XSS evidence; graphql‑cop reported the endpoint is not GraphQL; commix and xsstrike produced only banners, no injection findings.</p><p>- <strong>Failed operations<strong> – commix, graphql‑cop, dalfox, xsstrike, upload‑scanner, cors‑scanner, ssrf‑scanner, xxe‑scanner, deserialization‑scanner, idor‑scanner, and paramspider returned only banners or no actionable data; sslyze attempted a TLS handshake but no certificate details were captured; wafw00f performed only generic detection.</p><p>- <strong>Important decision points<strong> – After initial host discovery, focused scanning on port 4280; ran multiple scanners to cross‑validate findings; manually reviewed raw responses from idor‑scanner and xxe‑scanner due to lack of automated output; prioritized remediation for exposed HTTP services and the absence of a WAF; deferred deeper exploitation of potential XSS/IDOR pending manual validation; documented tool failures to inform future test scope adjustments.</p></div>
+
+    <h2>Tool Summary</h2>
+    <table><tr><th>Tool</th><th>Runs</th><th>Success</th><th>Failed</th><th>Skipped</th><th>Last Exit</th></tr><tr><td>httpx</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>zap</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nmap</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>wafw00f</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>sslyze</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>headers</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>whatweb</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cmseek</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>waybackurls</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>subjs</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>retire</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td>gobuster</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>paramspider</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>arjun</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>commix</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nikto</td><td>2</td><td>0</td><td>2</td><td>0</td><td>127</td></tr><tr><td>nuclei</td><td>1</td><td>1</td><td>0</td><td>0</td><td>124</td></tr><tr><td>graphql-cop</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>dalfox</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>xsstrike</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>csrf-tester</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>upload-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cookie-analyzer</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cors-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>ssrf-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>xxe-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>deserialization-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>auth-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>idor-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>error-detector</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>jwt_tool</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr></table>
+
+    <h2>Tools Executed</h2>
+    <div><p>- <strong>httpx<strong>: /home/kali/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u http://192.168.1.49:4280 (Duration: 0.41s)
+- <strong>zap<strong>: python3 /home/kali/code/level52-cli-deluxe/scripts/zap_docker_daemon_scan.py --image ghcr.io/zaproxy/zaproxy:stable --api-url http://127.0.0.1:8080 --target http://192.168.1.49:4280 --max-minutes 45 --startup-timeout 180 --spider --ajax-spider --active --active-threads 3 --ignore-robots --seed-file reports/20260317_201102/urls_20260317_201102.txt --username-field username --password-field password --json-out reports/20260317_201102/zap/zap_full_20260317_201136.json --html-out reports/20260317_201102/zap/zap_full_20260317_201136.html --md-out reports/20260317_201102/zap/zap_full_20260317_201136.md (Duration: 89.90s)
+- <strong>nmap<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260317_201102/nmap_20260317_201428_413997.xml -p 80,443,8080,8443,3000,5000,8000,4280 -sV -sC 192.168.1.49 (Duration: 11.42s)
+- <strong>wafw00f<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/wafw00f -v -a http://192.168.1.49:4280 (Duration: 0.19s)
+- <strong>sslyze<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/sslyze 192.168.1.49:4280 --json_out=- --certinfo --sslv2 --sslv3 --tlsv1 --tlsv1_1 --tlsv1_2 --tlsv1_3 --reneg --resum --heartbleed --robot --openssl_ccs --compression --http_headers (Duration: 10.23s)
+- <strong>headers<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Header-Check/1.0 -L -k http://192.168.1.49:4280 (Duration: 0.02s)
+- <strong>whatweb<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/whatweb --log-json=reports/20260317_201102/whatweb_20260317_201717_187406.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.49:4280 (Duration: 5.26s)
+- <strong>cmseek<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/cmseek -u http://192.168.1.49:4280 --batch --random-agent (Duration: 0.07s)
+- <strong>waybackurls<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/waybackurls http://192.168.1.49:4280 http://192.168.1.49:4280/robots.txt http://192.168.1.49:4280/ http://192.168.1.49:4280/login.php http://192.168.1.49:4280/sitemap.xml http://192.168.1.49:4280/dvwa/css/login.css http://192.168.1.49:4280/dvwa/images/login_logo.png http://192.168.1.49:4280/dvwa http://192.168.1.49:4280/dvwa/css http://192.168.1.49:4280/dvwa/images (Duration: 10.10s)
+- <strong>subjs<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/subjs -i reports/20260317_201102/urls_20260317_201102.txt (Duration: 0.01s)
+- <strong>retire<strong>:  (Duration: 0.00s)
+- <strong>gobuster<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/gobuster dir -u http://192.168.1.49:4280 -w reports/20260317_201102/gobuster_wordlist_20260317_201102.txt -t 10 --timeout 10s -q --no-progress --no-error --no-color --delay 100ms -b 404 (Duration: 46.73s)
+- <strong>paramspider<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/paramspider -d 192.168.1.49:4280 (Duration: 29.65s)
+- <strong>arjun<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/arjun -u http://192.168.1.49:4280 -oJ /tmp/guardian-arjun-962c359867664db1ba6d967ee058de79.json (Duration: 0.43s)
+- <strong>commix<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/commix --url http://192.168.1.49:4280 --batch --level 2 (Duration: 0.12s)
+- <strong>nikto<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/nikto -h http://192.168.1.49:4280 -Tuning 123b -timeout 10 -nointeractive (Duration: 0.00s)
+- <strong>nikto<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/nikto -h http://192.168.1.49:4280 -Tuning x6 -timeout 10 -nointeractive (Duration: 0.00s)
+- <strong>nuclei<strong>: /home/kali/code/level52-cli-deluxe/tools/.bin/nuclei -l reports/20260317_201102/nuclei_seed_20260317_201102.txt -jsonl -o reports/20260317_201102/nuclei_20260317_205207.jsonl -severity critical,high -tags cve,default-login,exposure,misconfig -t /home/kali/nuclei-templates/http/cves -t /home/kali/nuclei-templates/http/default-logins -t /home/kali/nuclei-templates/http/exposures -t /home/kali/nuclei-templates/http/misconfiguration -silent -rate-limit 10 (Duration: 1800.00s)
+- <strong>graphql-cop<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/python /home/kali/code/level52-cli-deluxe/tools/vendor/graphql-cop/graphql-cop.py -t http://192.168.1.49:4280/graphql (Duration: 0.08s)
+- <strong>dalfox<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/dalfox file reports/20260317_201102/xss_seed_20260317_201102.txt --format json --worker 5 --delay 100 --skip-headless --skip-bav (Duration: 14.00s)
+- <strong>xsstrike<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/xsstrike -u http://192.168.1.49:4280 --crawl (Duration: 0.13s)
+- <strong>csrf-tester<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/python /home/kali/code/level52-cli-deluxe/tools/vendor/guardian_tools/csrf_tester.py --url http://192.168.1.49:4280 --insecure (Duration: 0.04s)
+- <strong>upload-scanner<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/python /home/kali/code/level52-cli-deluxe/tools/vendor/guardian_tools/upload_scanner.py --url http://192.168.1.49:4280 --insecure (Duration: 0.04s)
+- <strong>cookie-analyzer<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Cookie-Analyzer/1.0 -L -k http://192.168.1.49:4280 (Duration: 0.01s)
+- <strong>cors-scanner<strong>: /home/kali/code/level52-cli-deluxe/venv/bin/python /home/kali/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:4280 -t 10 -T 10; /home/kali/code/level52-cli-deluxe/venv/bin/python /home/kali/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:4280/ -t 10 -T 10; /home/kali/code/level52-cli-deluxe/venv/bin/python /home/kali/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:4280/login.php -t 10 -T 10; /home/kali/code/level52-cli-deluxe/venv/bin/python /home/kali/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:4280/dvwa -t 10 -T 10; /home/kali/code/level52-cli-deluxe/venv/bin/python /home/kali/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:4280/dvwa/css -t 10 -T 10 ... (+1 more) (Duration: 1.74s)
+- <strong>ssrf-scanner<strong>: curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:4280; curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:4280/; curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:4280/login.php; curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa; curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa/css ... (+1 more) (Duration: 0.02s)
+- <strong>xxe-scanner<strong>: curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, <em>/<em> -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:4280; curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, <em>/<em> -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:4280/; curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, <em>/<em> -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:4280/login.php; curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, <em>/<em> -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:4280/dvwa; curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, <em>/<em> -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:4280/dvwa/css ... (+1 more) (Duration: 0.02s)
+- <strong>deserialization-scanner<strong>: curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:4280; curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:4280/; curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:4280/login.php; curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa; curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa/css ... (+1 more) (Duration: 0.02s)
+- <strong>auth-scanner<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:4280; curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:4280/; curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:4280/login.php; curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:4280/dvwa; curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:4280/dvwa/css ... (+1 more) (Duration: 0.03s)
+- <strong>idor-scanner<strong>: curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:4280; curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:4280/; curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:4280/login.php; curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa; curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa/css ... (+1 more) (Duration: 0.03s)
+- <strong>error-detector<strong>: curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:4280; curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:4280/; curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:4280/login.php; curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:4280/dvwa; curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:4280/dvwa/css ... (+1 more) (Duration: 0.03s)
+- <strong>jwt_tool<strong>:  (Duration: 0.00s)</p></div>
+    
+    <footer>
+        <hr>
+        <p><em>Report generated by Guardian AI Pentest Tool</em></p>
+    </footer>
+</body>
+</html>

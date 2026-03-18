@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ZAP Scan Report - http://192.168.1.49:4280</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        h2 { color: #666; margin-top: 30px; }
+        .alert { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .alert-high { border-left: 5px solid #d9534f; }
+        .alert-medium { border-left: 5px solid #f0ad4e; }
+        .alert-low { border-left: 5px solid #5bc0de; }
+        .alert-info { border-left: 5px solid #5cb85c; }
+        .meta { color: #777; font-size: 0.9em; }
+        .warning { background: #fff3cd; padding: 10px; border-left: 3px solid #ffc107; margin: 10px 0; }
+        .timing { background: #f0f0f0; padding: 10px; border-radius: 5px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>OWASP ZAP Scan Report</h1>
+    <div class="meta">
+        <p><strong>Target:</strong> http://192.168.1.49:4280</p>
+        <p><strong>ZAP Version:</strong> 2.17.0</p>
+        <p><strong>Mode:</strong> daemon</p>
+        <p><strong>Spider:</strong> True</p>
+        <p><strong>AJAX Spider:</strong> True</p>
+        <p><strong>Active Scan:</strong> True</p>
+        <p><strong>Total Alerts:</strong> 110</p>
+    </div>
+    <div class="timing">
+        <h2>Scan Timing</h2>
+        <p><strong>Total Duration:</strong> 37.3s</p>
+        <ul>
+            <li><strong>ZAP Connection & Verification:</strong> 0.0s</li>
+            <li><strong>Seed URL Access:</strong> 0.0s</li>
+            <li><strong>Spider Scan:</strong> 2.0s</li>
+            <li><strong>AJAX Spider Scan:</strong> 0.0s</li>
+            <li><strong>Active Scan:</strong> 35.2s</li>
+            <li><strong>Passive Scan Queue Drain:</strong> 0.0s</li>
+            <li><strong>Alert Collection:</strong> 0.0s</li>
+        </ul>
+    </div>
+    <h2>Warnings</h2>
+    <div class="warning">Failed to disable robots.txt handling: Failed to parse JSON from http://127.0.0.1:8080/JSON/spider/action/setOptionHandleRobotsTxt/?apikey=&Boolean=false: HTTP Error 400: Bad Request</div>
+    <div class="warning">AJAX spider failed: Failed to parse JSON from http://127.0.0.1:8080/JSON/spiderAjax/action/scan/?apikey=&url=http%3A%2F%2F192.168.1.49%3A4280: HTTP Error 400: Bad Request</div>
+    <h2>Alerts</h2>
+    <div class="alert alert-low">
+        <h3>Cookie without SameSite Attribute</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Evidence:</strong> <code>Set-Cookie: security</code></p>
+        <p><strong>Description:</strong> A cookie has been set without the SameSite attribute, which means that the cookie can be sent as a result of a 'cross-site' request. The SameSite attribute is an effective counter measure to cross-site request forgery, cross-site script inclusion, and timing attacks.</p>
+        <p><strong>Solution:</strong> Ensure that the SameSite attribute is set to either 'lax' or ideally 'strict' for all cookies.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>Server Leaks Version Information via "Server" HTTP Response Header Field</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Evidence:</strong> <code>Apache/2.4.66 (Debian)</code></p>
+        <p><strong>Description:</strong> The web/application server is leaking version information via the "Server" HTTP response header. Access to such information may facilitate attackers identifying other vulnerabilities your web/application server is subject to.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to suppress the "Server" header or provide generic details.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>Server Leaks Information via "X-Powered-By" HTTP Response Header Field(s)</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Evidence:</strong> <code>X-Powered-By: PHP/8.5.4</code></p>
+        <p><strong>Description:</strong> The web/application server is leaking information via one or more "X-Powered-By" HTTP response headers. Access to such information may facilitate attackers identifying other frameworks/components your web application is reliant upon and the vulnerabilities such components may be subject to.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to suppress "X-Powered-By" headers.</p>
+    </div>
+    <div class="alert alert">
+        <h3>Session Management Response Identified</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Evidence:</strong> <code>security</code></p>
+        <p><strong>Description:</strong> The given response has been identified as containing a session management token. The 'Other Info' field contains a set of header tokens that can be used in the Header Based Session Management Method. If the request is in a context which has a Session Management Method set to "Auto-Detect" then this rule will change the session management to use the tokens identified.</p>
+        <p><strong>Solution:</strong> This is an informational alert rather than a vulnerability and so there is nothing to fix.</p>
+    </div>
+    <div class="alert alert-medium">
+        <h3>Content Security Policy (CSP) Header Not Set</h3>
+        <p><strong>Risk:</strong> MEDIUM | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/sitemap.xml</p>
+        <p><strong>Description:</strong> Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to set the Content-Security-Policy header.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>In Page Banner Information Leak</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/sitemap.xml</p>
+        <p><strong>Evidence:</strong> <code>Apache/2.4.66</code></p>
+        <p><strong>Description:</strong> The server returned a version banner string in the response content. Such information leaks may allow attackers to further target specific issues impacting the product and version in use.</p>
+        <p><strong>Solution:</strong> Configure the server to prevent such information leaks. For example:
+Under Tomcat this is done via the "server" directive and implementation of custom error pages.
+Under Apache this is done via the "ServerSignature" and "ServerTokens" directives.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>Server Leaks Version Information via "Server" HTTP Response Header Field</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/</p>
+        <p><strong>Evidence:</strong> <code>Apache/2.4.66 (Debian)</code></p>
+        <p><strong>Description:</strong> The web/application server is leaking version information via the "Server" HTTP response header. Access to such information may facilitate attackers identifying other vulnerabilities your web/application server is subject to.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to suppress the "Server" header or provide generic details.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>Server Leaks Version Information via "Server" HTTP Response Header Field</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/robots.txt</p>
+        <p><strong>Evidence:</strong> <code>Apache/2.4.66 (Debian)</code></p>
+        <p><strong>Description:</strong> The web/application server is leaking version information via the "Server" HTTP response header. Access to such information may facilitate attackers identifying other vulnerabilities your web/application server is subject to.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to suppress the "Server" header or provide generic details.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>Server Leaks Information via "X-Powered-By" HTTP Response Header Field(s)</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/</p>
+        <p><strong>Evidence:</strong> <code>X-Powered-By: PHP/8.5.4</code></p>
+        <p><strong>Description:</strong> The web/application server is leaking information via one or more "X-Powered-By" HTTP response headers. Access to such information may facilitate attackers identifying other frameworks/components your web application is reliant upon and the vulnerabilities such components may be subject to.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to suppress "X-Powered-By" headers.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>Server Leaks Version Information via "Server" HTTP Response Header Field</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/sitemap.xml</p>
+        <p><strong>Evidence:</strong> <code>Apache/2.4.66 (Debian)</code></p>
+        <p><strong>Description:</strong> The web/application server is leaking version information via the "Server" HTTP response header. Access to such information may facilitate attackers identifying other vulnerabilities your web/application server is subject to.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to suppress the "Server" header or provide generic details.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>X-Content-Type-Options Header Missing</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/robots.txt</p>
+        <p><strong>Description:</strong> The Anti-MIME-Sniffing header X-Content-Type-Options was not set to 'nosniff'. This allows older versions of Internet Explorer and Chrome to perform MIME-sniffing on the response body, potentially causing the response body to be interpreted and displayed as a content type other than the declared content type. Current (early 2014) and legacy versions of Firefox will use the declared content type (if one is set), rather than performing MIME-sniffing.</p>
+        <p><strong>Solution:</strong> Ensure that the application/web server sets the Content-Type header appropriately, and that it sets the X-Content-Type-Options header to 'nosniff' for all web pages.
+If possible, ensure that the end user uses a standards-compliant and modern web browser that does not perform MIME-sniffing at all, or that can be directed by the web application/web server to not perform MIME-sniffing.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>Server Leaks Version Information via "Server" HTTP Response Header Field</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/images/login_logo.png</p>
+        <p><strong>Evidence:</strong> <code>Apache/2.4.66 (Debian)</code></p>
+        <p><strong>Description:</strong> The web/application server is leaking version information via the "Server" HTTP response header. Access to such information may facilitate attackers identifying other vulnerabilities your web/application server is subject to.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to suppress the "Server" header or provide generic details.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>Server Leaks Version Information via "Server" HTTP Response Header Field</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/css/login.css</p>
+        <p><strong>Evidence:</strong> <code>Apache/2.4.66 (Debian)</code></p>
+        <p><strong>Description:</strong> The web/application server is leaking version information via the "Server" HTTP response header. Access to such information may facilitate attackers identifying other vulnerabilities your web/application server is subject to.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to suppress the "Server" header or provide generic details.</p>
+    </div>
+    <div class="alert alert-medium">
+        <h3>Missing Anti-clickjacking Header</h3>
+        <p><strong>Risk:</strong> MEDIUM | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> The response does not protect against 'ClickJacking' attacks. It should include either Content-Security-Policy with 'frame-ancestors' directive or X-Frame-Options.</p>
+        <p><strong>Solution:</strong> Modern Web browsers support the Content-Security-Policy and X-Frame-Options HTTP headers. Ensure one of them is set on all web pages returned by your site/app.
+If you expect the page to be framed only by pages on your server (e.g. it's part of a FRAMESET) then you'll want to use SAMEORIGIN, otherwise if you never expect the page to be framed, you should use DENY. Alternatively consider implementing Content Security Policy's "frame-ancestors" directive.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>X-Content-Type-Options Header Missing</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/css/login.css</p>
+        <p><strong>Description:</strong> The Anti-MIME-Sniffing header X-Content-Type-Options was not set to 'nosniff'. This allows older versions of Internet Explorer and Chrome to perform MIME-sniffing on the response body, potentially causing the response body to be interpreted and displayed as a content type other than the declared content type. Current (early 2014) and legacy versions of Firefox will use the declared content type (if one is set), rather than performing MIME-sniffing.</p>
+        <p><strong>Solution:</strong> Ensure that the application/web server sets the Content-Type header appropriately, and that it sets the X-Content-Type-Options header to 'nosniff' for all web pages.
+If possible, ensure that the end user uses a standards-compliant and modern web browser that does not perform MIME-sniffing at all, or that can be directed by the web application/web server to not perform MIME-sniffing.</p>
+    </div>
+    <div class="alert alert-medium">
+        <h3>Content Security Policy (CSP) Header Not Set</h3>
+        <p><strong>Risk:</strong> MEDIUM | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to set the Content-Security-Policy header.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>Server Leaks Version Information via "Server" HTTP Response Header Field</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Evidence:</strong> <code>Apache/2.4.66 (Debian)</code></p>
+        <p><strong>Description:</strong> The web/application server is leaking version information via the "Server" HTTP response header. Access to such information may facilitate attackers identifying other vulnerabilities your web/application server is subject to.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to suppress the "Server" header or provide generic details.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>X-Content-Type-Options Header Missing</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/images/login_logo.png</p>
+        <p><strong>Description:</strong> The Anti-MIME-Sniffing header X-Content-Type-Options was not set to 'nosniff'. This allows older versions of Internet Explorer and Chrome to perform MIME-sniffing on the response body, potentially causing the response body to be interpreted and displayed as a content type other than the declared content type. Current (early 2014) and legacy versions of Firefox will use the declared content type (if one is set), rather than performing MIME-sniffing.</p>
+        <p><strong>Solution:</strong> Ensure that the application/web server sets the Content-Type header appropriately, and that it sets the X-Content-Type-Options header to 'nosniff' for all web pages.
+If possible, ensure that the end user uses a standards-compliant and modern web browser that does not perform MIME-sniffing at all, or that can be directed by the web application/web server to not perform MIME-sniffing.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>Server Leaks Information via "X-Powered-By" HTTP Response Header Field(s)</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Evidence:</strong> <code>X-Powered-By: PHP/8.5.4</code></p>
+        <p><strong>Description:</strong> The web/application server is leaking information via one or more "X-Powered-By" HTTP response headers. Access to such information may facilitate attackers identifying other frameworks/components your web application is reliant upon and the vulnerabilities such components may be subject to.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to suppress "X-Powered-By" headers.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>Server Leaks Version Information via "Server" HTTP Response Header Field</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Evidence:</strong> <code>Apache/2.4.66 (Debian)</code></p>
+        <p><strong>Description:</strong> The web/application server is leaking version information via the "Server" HTTP response header. Access to such information may facilitate attackers identifying other vulnerabilities your web/application server is subject to.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to suppress the "Server" header or provide generic details.</p>
+    </div>
+    <div class="alert alert">
+        <h3>Authentication Request Identified</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Evidence:</strong> <code>password</code></p>
+        <p><strong>Description:</strong> The given request has been identified as an authentication request. The 'Other Info' field contains a set of key=value lines which identify any relevant fields. If the request is in a context which has an Authentication Method set to "Auto-Detect" then this rule will change the authentication to match the request identified.</p>
+        <p><strong>Solution:</strong> This is an informational alert rather than a vulnerability and so there is nothing to fix.</p>
+    </div>
+    <div class="alert alert">
+        <h3>Session Management Response Identified</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Evidence:</strong> <code>PHPSESSID</code></p>
+        <p><strong>Description:</strong> The given response has been identified as containing a session management token. The 'Other Info' field contains a set of header tokens that can be used in the Header Based Session Management Method. If the request is in a context which has a Session Management Method set to "Auto-Detect" then this rule will change the session management to use the tokens identified.</p>
+        <p><strong>Solution:</strong> This is an informational alert rather than a vulnerability and so there is nothing to fix.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>X-Content-Type-Options Header Missing</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> The Anti-MIME-Sniffing header X-Content-Type-Options was not set to 'nosniff'. This allows older versions of Internet Explorer and Chrome to perform MIME-sniffing on the response body, potentially causing the response body to be interpreted and displayed as a content type other than the declared content type. Current (early 2014) and legacy versions of Firefox will use the declared content type (if one is set), rather than performing MIME-sniffing.</p>
+        <p><strong>Solution:</strong> Ensure that the application/web server sets the Content-Type header appropriately, and that it sets the X-Content-Type-Options header to 'nosniff' for all web pages.
+If possible, ensure that the end user uses a standards-compliant and modern web browser that does not perform MIME-sniffing at all, or that can be directed by the web application/web server to not perform MIME-sniffing.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>Server Leaks Information via "X-Powered-By" HTTP Response Header Field(s)</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Evidence:</strong> <code>X-Powered-By: PHP/8.5.4</code></p>
+        <p><strong>Description:</strong> The web/application server is leaking information via one or more "X-Powered-By" HTTP response headers. Access to such information may facilitate attackers identifying other frameworks/components your web application is reliant upon and the vulnerabilities such components may be subject to.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to suppress "X-Powered-By" headers.</p>
+    </div>
+    <div class="alert alert-medium">
+        <h3>Parameter Tampering</h3>
+        <p><strong>Risk:</strong> MEDIUM | <strong>Confidence:</strong> Low</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Evidence:</strong> <code> on line <b></code></p>
+        <p><strong>Description:</strong> Parameter manipulation caused an error page or Java stack trace to be displayed. This indicated lack of exception handling and potential areas for further exploit.</p>
+        <p><strong>Solution:</strong> Identify the cause of the error and fix it. Do not trust client side input and enforce a tight check in the server side. Besides, catch the exception properly. Use a generic 500 error page for internal server error.</p>
+    </div>
+    <div class="alert alert-medium">
+        <h3>Parameter Tampering</h3>
+        <p><strong>Risk:</strong> MEDIUM | <strong>Confidence:</strong> Low</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Evidence:</strong> <code> on line <b></code></p>
+        <p><strong>Description:</strong> Parameter manipulation caused an error page or Java stack trace to be displayed. This indicated lack of exception handling and potential areas for further exploit.</p>
+        <p><strong>Solution:</strong> Identify the cause of the error and fix it. Do not trust client side input and enforce a tight check in the server side. Besides, catch the exception properly. Use a generic 500 error page for internal server error.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/css</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/css</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/css</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/css</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/css</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/css</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/css</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/css</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/css</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/css</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/css</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/css</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/images</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/images</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/images</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/images</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/images</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/images</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/images</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/images</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/images</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/images</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/images</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/dvwa/images</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+    <div class="alert alert">
+        <h3>User Agent Fuzzer</h3>
+        <p><strong>Risk:</strong> INFORMATIONAL | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:4280/login.php</p>
+        <p><strong>Description:</strong> Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+    </div>
+</body>
+</html>
