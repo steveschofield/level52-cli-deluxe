@@ -1,0 +1,32 @@
+/home/ss/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u http://192.168.1.49:5000
+python3 /home/ss/code/level52-cli-deluxe/scripts/zap_docker_daemon_scan.py --image ghcr.io/zaproxy/zaproxy:stable --api-url http://127.0.0.1:8080 --target http://192.168.1.49:5000 --max-minutes 45 --startup-timeout 180 --spider --ajax-spider --active --active-threads 3 --ignore-robots --seed-file reports/20260314_221123/urls_20260314_221123.txt --username-field username --password-field password --json-out reports/20260314_221123/zap/zap_full_20260314_221224.json --html-out reports/20260314_221123/zap/zap_full_20260314_221224.html --md-out reports/20260314_221123/zap/zap_full_20260314_221224.md
+/home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260314_221123/nmap_20260314_221443_538616.xml -p 80,443,8080,8443,3000,5000,8000 -sV -sC 192.168.1.49
+/home/ss/code/level52-cli-deluxe/venv/bin/wafw00f -v -a http://192.168.1.49:5000
+/home/ss/code/level52-cli-deluxe/venv/bin/sslyze 192.168.1.49:5000 --json_out=- --certinfo --sslv2 --sslv3 --tlsv1 --tlsv1_1 --tlsv1_2 --tlsv1_3 --reneg --resum --heartbleed --robot --openssl_ccs --compression --http_headers
+curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Header-Check/1.0 -L -k http://192.168.1.49:5000
+/home/ss/code/level52-cli-deluxe/venv/bin/whatweb --log-json=reports/20260314_221123/whatweb_20260314_222052_408189.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.49:5000
+/home/ss/code/level52-cli-deluxe/venv/bin/cmseek -u http://192.168.1.49:5000 --batch --random-agent
+/home/ss/code/level52-cli-deluxe/venv/bin/waybackurls http://192.168.1.49:5000 http://192.168.1.49:5000/sitemap.xml http://192.168.1.49:5000/robots.txt
+/home/ss/code/level52-cli-deluxe/venv/bin/subjs -i reports/20260314_221123/urls_20260314_221123.txt
+/usr/bin/gobuster dir -u http://192.168.1.49:5000 -w reports/20260314_221123/gobuster_wordlist_20260314_221123.txt -t 10 --timeout 10s -q --no-progress --no-error --no-color --delay 100ms -b 404
+/home/ss/code/level52-cli-deluxe/venv/bin/paramspider -d 192.168.1.49:5000
+/home/ss/code/level52-cli-deluxe/venv/bin/arjun -u http://192.168.1.49:5000 -oJ /tmp/guardian-arjun-8368adb0107643e89e3d988853dca7d1.json
+/home/ss/code/level52-cli-deluxe/venv/bin/commix --url http://192.168.1.49:5000 --batch --level 2
+/home/ss/code/level52-cli-deluxe/venv/bin/nikto -h http://192.168.1.49:5000 -Tuning x -timeout 10 -nointeractive
+/home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -l reports/20260314_221123/nuclei_seed_20260314_221123.txt -jsonl -o reports/20260314_221123/nuclei_20260314_223109.jsonl -severity critical,high -tags misconfiguration,info-leak,exposure,waf-bypass,no-waf,info-disclosure,tech-detect -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 25
+/home/ss/code/level52-cli-deluxe/venv/bin/schemathesis run http://192.168.1.49:5000/openapi.json --url http://192.168.1.49:5000 --tls-verify=false
+/home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/graphql-cop/graphql-cop.py -t http://192.168.1.49:5000/graphql
+/home/ss/code/level52-cli-deluxe/venv/bin/dalfox file reports/20260314_221123/xss_seed_20260314_221123.txt --format json --worker 2 --delay 100 --skip-headless --skip-bav
+/home/ss/code/level52-cli-deluxe/venv/bin/xsstrike -u http://192.168.1.49:5000 --crawl
+/home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/guardian_tools/csrf_tester.py --url http://192.168.1.49:5000 --insecure
+/home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/guardian_tools/upload_scanner.py --url http://192.168.1.49:5000 --insecure
+curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Cookie-Analyzer/1.0 -L -k http://192.168.1.49:5000
+/home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:5000 -t 10 -T 10
+curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:5000
+curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, */* -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:5000
+curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:5000
+curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:5000
+curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:5000
+curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:5000

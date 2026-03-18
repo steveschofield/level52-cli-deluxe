@@ -39,7 +39,7 @@ class ToolAgent(BaseAgent):
             Enum4linuxNgTool, SmbclientTool, ShowmountTool, SnmpwalkTool, OnesixtyoneTool,
             ArjunTool, XSStrikeTool, GitleaksTool, CMSeekTool, DnsReconTool,
             DnsxTool, ShufflednsTool, PurednsTool,
-            RetireTool, NaabuTool, KatanaTool,
+            RetireTool, NaabuTool,
             AsnmapTool, WaybackurlsTool, SubjsTool,
             LinkfinderTool, XnlinkfinderTool, ParamspiderTool,
             SchemathesisTool, TrufflehogTool, MetasploitTool, ZapTool,
@@ -122,7 +122,6 @@ class ToolAgent(BaseAgent):
         # Add OS-specific tools
         if platform.system().lower() != "darwin":  # Not macOS
             self.available_tools["httpx"] = HttpxTool(config)
-            self.available_tools["katana"] = KatanaTool(config)
         else:  # macOS only
             pass
 
@@ -170,7 +169,6 @@ class ToolAgent(BaseAgent):
             "altdns": "pip install altdns",
             "retire": "npm install -g retire",
             "naabu": "go install github.com/projectdiscovery/naabu/v2/cmd/naabu@latest",
-            "katana": "go install github.com/projectdiscovery/katana/cmd/katana@latest",
             "asnmap": "go install github.com/projectdiscovery/asnmap/cmd/asnmap@latest",
             "waybackurls": "go install github.com/tomnomnom/waybackurls@latest",
             "subjs": "go install github.com/lc/subjs@latest",

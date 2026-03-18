@@ -46,7 +46,7 @@ echo "========================================="
 echo " ProjectDiscovery Tools"
 echo "========================================="
 PD_FAILED=0
-for tool in httpx nuclei subfinder dnsx katana naabu shuffledns asnmap interactsh-client; do
+for tool in httpx nuclei subfinder dnsx naabu shuffledns asnmap interactsh-client; do
     check_tool "$tool" "ProjectDiscovery" || ((PD_FAILED++))
 done
 

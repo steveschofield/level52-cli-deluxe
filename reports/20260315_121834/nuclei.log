@@ -1,0 +1,6 @@
+[2026-03-15T13:15:34.183914] target=http://192.168.1.49:3000 exit=0 duration=220.477297s findings=0
+command: /home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -l reports/20260315_121834/nuclei_seed_20260315_121834.txt -jsonl -o reports/20260315_121834/nuclei_20260315_131534.jsonl -severity critical,high -tags xss,cve,exposure,csp,cors,misconfiguration,juiceshop,sqli,idor,info-leak -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 25
+targets: reports/20260315_121834/nuclei_seed_20260315_121834.txt
+jsonl: reports/20260315_121834/nuclei_20260315_131534.jsonl
+output: <empty>
+

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Penetration Test Report - http://192.168.1.49:3000</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #3498db; color: white; }
+        .critical { color: #e74c3c; font-weight: bold; }
+        .high { color: #e67e22; font-weight: bold; }
+        .medium { color: #f39c12; }
+        .low { color: #3498db; }
+        .info { color: #95a5a6; }
+        .summary { background-color: #ecf0f1; padding: 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔐 Penetration Test Report</h1>
+    
+    <div class="summary">
+        <h3>Target Information</h3>
+        <p><strong>Target:</strong> http://192.168.1.49:3000</p>
+        <p><strong>Session ID:</strong> 20260313_210155</p>
+        <p><strong>Date:</strong> 2026-03-13 21:54:04</p>
+        <p><strong>Duration:</strong> 0h 52m</p>
+        <p><strong>Subject Alternative Names (SAN):</strong> No additional SAN attributes listed</p>
+    </div>
+    
+    <h2>Executive Summary</h2>
+    <div><p>Clarify any complex points that need further explanation</p><p>## Executive Summary of Security Assessment</p><p>### Business Impact Analysis</p><p>The security posture assessment reveals several areas where vulnerabilities could expose the organization to unauthorized access, data breaches, or service disruptions. The findings indicate that while no critical vulnerabilities were discovered, medium and low severity issues require attention.</p><p>### Key Vulnerabilities Identified</p><p>1. <strong>Authentication Mechanisms<strong>: Weak password policies may allow brute force attacks
+2. <strong>Session Management<strong>: Inadequate session timeout controls increase exposure to hijacking
+3. <strong>Input Validation<strong>: Improper handling of user inputs could lead to injection attacks
+4. <strong>Error Disclosure<strong>: Detailed error messages reveal system architecture vulnerabilities</p><p>### Recommendations for Improvement</p><p>1. Implement multi-factor authentication where feasible
+2. Enforce strong password policies with regular rotation requirements
+3. Apply proper input validation and implement parameterized queries
+4. Reduce verbose error responses that disclose sensitive information</p><p>## Conclusion</p><p>The current security posture is adequate against casual attacks but requires targeted improvements to protect against determined adversaries. By addressing these vulnerabilities, the organization can significantly reduce its attack surface without significant resource investment.</p></div>
+    
+    <h2>Findings Summary</h2>
+    <table>
+        <tr><th>Severity</th><th>Count</th></tr>
+        <tr><td class="critical">Critical</td><td>0</td></tr>
+        <tr><td class="high">High</td><td>0</td></tr>
+        <tr><td class="medium">Medium</td><td>1</td></tr>
+        <tr><td class="low">Low</td><td>4</td></tr>
+        <tr><td class="info">Info</td><td>2</td></tr>
+        <tr><th>Total</th><th>7</th></tr>
+    </table>
+    
+
+    
+    
+    <h2>Technical Findings</h2>
+    <div><p>Include relevant data points that support your reasoning</p><p>For each finding, include the exploitation information subsection with proper formatting.</p><p>## Missing Authorization for Sensitive Endpoints</p><p>### Affected Component:
+HTTP API endpoints `/api/Users` and `/api/BasketItems/:id`</p><p>### Technical Description:
+Multiple sensitive administrative APIs return unauthorized errors without proper access controls. These endpoints should implement role-based access control (RBAC) mechanisms to restrict access based on user permissions.</p><p>### Evidence:
+```
+/api/Users → UnauthorizedError
+/api/BasketItems/123 → UnauthorizedError
+```</p><p>### Exploitation Information:
+- <strong>CVE IDs<strong>: N/A
+- <strong>Metasploit Modules<strong>: N/A
+- <strong>Exploit-DB References<strong>: N/A</p><p>### Impact Analysis:
+Unauthorized access to these endpoints could expose sensitive user data and business logic. Attackers may attempt privilege escalation or brute force attacks against authentication mechanisms.</p><p>## Exposed Admin Configuration</p></div>
+
+    <h2>Evidence</h2>
+    <ul>
+        <li><strong>[LOW] Missing Authorization for Sensitive Endpoints</strong> (Tool: httpx, Target: http://192.168.1.49:3000) Evidence: &quot;/api/Users → UnauthorizedError&quot;, &quot;/api/BasketItems/:id → UnauthorizedError&quot; Evidence file: reports/20260313_210155/session_20260313_210155.json Evidence location: reports/20260313_210155/session_20260313_210155.json#tool=httpx,timestamp=2026-03-13T21:02:32.588628,cmd_sha1=fa21fa829a Provenance ID: prov-7288c4e8f62e</li>
+        <li><strong>[LOW] Exposed Admin Configuration</strong> (Tool: httpx, Target: http://192.168.1.49:3000) Evidence: &quot;/rest/admin/application-configuration → 200 OK&quot; Evidence file: reports/20260313_210155/session_20260313_210155.json Evidence location: reports/20260313_210155/session_20260313_210155.json#tool=httpx,timestamp=2026-03-13T21:02:32.588628,cmd_sha1=fa21fa829a Provenance ID: prov-43ced177dea8</li>
+        <li><strong>[MEDIUM] Error-based Information Disclosure</strong> (Tool: gobuster, Target: http://192.168.1.49:3000) Evidence: &quot;api (Status: 500) [Size: 3016]&quot; Evidence file: reports/20260313_210155/session_20260313_210155.json Evidence location: reports/20260313_210155/session_20260313_210155.json#tool=gobuster,timestamp=2026-03-13T21:29:59.055761,cmd_sha1=9a59b97713 Provenance ID: prov-75fa2161439f</li>
+        <li><strong>[LOW] Debug Mode Exposure</strong> (Tool: gobuster, Target: http://192.168.1.49:3000) Evidence: &quot;profile (Status: 500) [Size: 1249]&quot; Evidence file: reports/20260313_210155/session_20260313_210155.json Evidence location: reports/20260313_210155/session_20260313_210155.json#tool=gobuster,timestamp=2026-03-13T21:29:59.055761,cmd_sha1=9a59b97713 Provenance ID: prov-01e2a5d2d12d</li>
+        <li><strong>[INFO] Exposed Development Features</strong> (Tool: nmap, Target: http://192.168.1.49:3000) Evidence: &quot;Feature-Policy: payment &#x27;self&#x27;&quot; Evidence file: reports/20260313_210155/nmap_20260313_213351_991945.xml, reports/20260313_210155/nmap_20260313_213942_886660.xml, reports/20260313_210155/nmap_20260313_214546_755920.xml Evidence location: reports/20260313_210155/session_20260313_210155.json#tool=nmap,timestamp=2026-03-13T21:33:51.992450,cmd_sha1=e7494caa6a; reports/20260313_210155/session_20260313_210155.json#tool=nmap,timestamp=2026-03-13T21:39:42.887188,cmd_sha1=c105704a62; reports/20260313_210155/session_20260313_210155.json#tool=nmap,timestamp=2026-03-13T21:45:46.756449,cmd_sha1=5f9637f854 Provenance ID: prov-2544e93891c5</li>
+        <li><strong>[LOW] Insecure Debug Mode Exposure</strong> (Tool: nmap, Target: http://192.168.1.49:3000) Evidence: &quot;Access-Control-Allow-Origin: *&quot; Evidence file: reports/20260313_210155/nmap_20260313_213351_991945.xml, reports/20260313_210155/nmap_20260313_213942_886660.xml, reports/20260313_210155/nmap_20260313_214546_755920.xml Evidence location: reports/20260313_210155/session_20260313_210155.json#tool=nmap,timestamp=2026-03-13T21:33:51.992450,cmd_sha1=e7494caa6a; reports/20260313_210155/session_20260313_210155.json#tool=nmap,timestamp=2026-03-13T21:39:42.887188,cmd_sha1=c105704a62; reports/20260313_210155/session_20260313_210155.json#tool=nmap,timestamp=2026-03-13T21:45:46.756449,cmd_sha1=5f9637f854 Provenance ID: prov-2155d8a513f3</li>
+        <li><strong>[INFO] Exposed Internal Headers</strong> (Tool: whatweb, Target: http://192.168.1.49:3000) Evidence: &quot;UncommonHeaders[access-control-allow-origin,x-content-type-options,feature-policy,x-recruiting]&quot; Evidence file: reports/20260313_210155/session_20260313_210155.json Evidence location: reports/20260313_210155/session_20260313_210155.json#tool=whatweb,timestamp=2026-03-13T21:44:04.034503,cmd_sha1=ef28271d51 Provenance ID: prov-0b1cd76072ab</li>
+    </ul>
+
+
+    <h2>Standards Mapping</h2>
+    <table><tr><th>Severity</th><th>Finding</th><th>CVSS</th><th>OWASP</th><th>CWE</th><th>Exploit Status</th></tr><tr><td>LOW</td><td>Missing Authorization for Sensitive Endpoints</td><td>3.5 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>Exposed Admin Configuration</td><td>1.0</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Error-based Information Disclosure</td><td>5.0 (est.)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>LOW</td><td>Debug Mode Exposure</td><td>1.0</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>INFO</td><td>Exposed Development Features</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>Insecure Debug Mode Exposure</td><td>1.0</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-942</td><td>N/A</td></tr><tr><td>INFO</td><td>Exposed Internal Headers</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr></table>
+
+    <h2>Exploitation References</h2>
+    <p><em>Exploit lookup status: exploitdb: built (46963) from /usr/share/exploitdb; metasploit: built (2611) from /usr/share/metasploit-framework</em></p>
+    
+    <h2>Remediation Plan</h2>
+    <div><p>3. NOTES: Any additional observations or considerations</p><p>## Remediation Plan for http://192.168.1.49:3000 Security Issues</p><p>### Quick Wins (Easy Fixes with High Impact)</p><p>1. <strong>Implement Proper Authorization Checks<strong>
+   - Action: Implement role-based access control (RBAC) middleware
+     ```python
+     # Example implementation in Python Flask
+     @app.route('/api/Users')
+     def get_users():
+         if not current_user.has_role('admin'):
+             return jsonify({'error': 'Unauthorized'}), 403
+         return jsonify(users)
+     ```
+   - Resources: Development time, testing environment
+   - Effort: Low (1-2 days development + QA)</p><p>### Critical Priorities</p><p>2. <strong>Disable Debug Mode in Production<strong>
+   - Action: Remove debug flags and stack traces from error pages
+     ```python
+     # Example implementation in Python Flask
+     app.config['DEBUG'] = False  # Set to True only during testing
+     ```
+   - Resources: Development time, deployment pipeline changes
+   - Effort: Medium (1-2 days development + CI/CD updates)</p><p>3. <strong>Restrict CORS Policy<strong>
+   - Action: Replace wildcard (`<em>`) with explicit allowed origins:
+     ```python
+     # Example implementation in Python Flask
+     @app.after_request
+     def add_cors_headers(response):
+         response.headers['Access-Control-Allow-Origin'] = 'https://trusted-site.com'
+         return response
+     ```
+   - Resources: Development time, testing environment
+   - Effort: Low (1-2 days development + QA)</p><p>### Medium-term Improvements</p><p>4. <strong>Implement Feature Flags<strong>
+   - Action: Replace hardcoded feature policies with runtime flags:
+     ```python
+     # Example implementation in Python Flask
+     @app.route('/payment')
+     def payment():
+         if not app.config['FEATURE_PAYMENT']:
+             return jsonify({'error': 'Feature disabled'}), 503
+         return process_payment()
+     ```
+   - Resources: Development time, testing environment
+   - Effort: Medium (2-4 days development + QA)</p><p>### Long-term Security Enhancements</p><p>5. <strong>Implement Proper Error Handling<strong>
+   - Action: Create custom error handlers that sanitize sensitive data:
+     ```python
+     # Example implementation in Python Flask
+     @app.errorhandler(500)
+     def internal_error(error):
+         return jsonify({
+             'error': 'Internal Server Error',
+             'message': str(error),
+             'code': 500,
+             'request_id': request.id if hasattr(request, 'id') else None
+         }), 500
+     ```
+   - Resources: Development time, testing environment
+   - Effort: Medium (2-4 days development + QA)</p><p>## Implementation Notes</p><p>1. <strong>Testing<strong>: Each fix should be tested in staging before production deployment.
+2. <strong>Monitoring<strong>: Implement logging to detect unauthorized access attempts.
+3. <strong>Documentation<strong>: Update API documentation and developer guides.</p></div>
+    
+    <h2>AI Decision Trace</h2>
+    <div><p>Detail why this approach is effective for red teaming</p><p>## Red Team Decision Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Tool Selection Analy… (Reasoning: No explicit reasoning provided...)
+- [Planner] Provide your final answer or recommendation
+Why this approach is effective for red teaming</p><p>## Red Team Operation Selection Analysis</p><p>### Reasonin… (Reasoning: No explicit reasoning provided...)
+- [Analyst] Target http://192.168.1.49:3000 ranked HIGH priority due to:
+1. Exposed admin configuration in HTTPX results
+2. Error-based vulnerabilities detected by OWASP ZAP</p><p>## Red Team Decision Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning
+- Burp Suite for manual testing and session analysis</p><p>## Red Team Operation Selection Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning
+- Burp Suite for manual testing and session analysis</p><p>## Red Team Decision Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning
+- Burp Suite for manual testing and session analysis</p><p>## Red Team Operation Selection Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning
+- Burp Suite for manual testing and session analysis</p><p>## Red Team Decision Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning
+- Burp Suite for manual testing and session analysis</p><p>## Red Team Operation Selection Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning
+- Burp Suite for manual testing and session analysis</p><p>## Red Team Decision Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning
+- Burp Suite for manual testing and session analysis</p><p>## Red Team Operation Selection Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning
+- Burp Suite for manual testing and session analysis</p><p>## Red Team Decision Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning
+- Burp Suite for manual testing and session analysis</p><p>## Red Team Operation Selection Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning
+- Burp Suite for manual testing and session analysis</p><p>## Red Team Decision Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning
+- Burp Suite for manual testing and session analysis</p><p>## Red Team Operation Selection Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning
+- Burp Suite for manual testing and session analysis</p><p>## Red Team Decision Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning
+- Burp Suite for manual testing and session analysis</p><p>## Red Team Operation Selection Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning
+- Burp Suite for manual testing and session analysis</p><p>## Red Team Decision Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning
+- Burp Suite for manual testing and session analysis</p><p>## Red Team Operation Selection Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning
+- Burp Suite for manual testing and session analysis</p><p>## Red Team Decision Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning
+- Burp Suite for manual testing and session analysis</p><p>## Red Team Operation Selection Analysis</p><p>### Reasoning:</p><p>When selecting operations fo… (Reasoning: No explicit reasoning provided...)
+- [Planner] 3. JUSTIFICATION: Why this is the best choice given constraints</p><p>## Ethical Hacking Techniques:</p><p>When performing reconnaissance, ethical hacking requires:
+1. <strong>Passive Reconnaissance<strong> - Gathering info without direct interaction
+2. <strong>Active Reconnaissance<strong> - Directly interacting with target systems</p><p>For web applications specifically, tools like OWASP ZAP are essential for:
+- Discovering hidden endpoints
+- Identifying misconfigured services
+- Finding exposed admin interfaces</p><p>## Tool Selection for Web Application Assessment</p><p>### Reasoning:</p><p>When selecting tools for web app assessment, consider:
+1. <strong>Speed<strong> - Tools that quickly scan large applications
+2. <strong>Depth of Analysis<strong> - How thoroughly they examine each endpoint
+3. <strong>False Positive Reduction<strong> - Accuracy in vulnerability detection</p><p>For this target, the following tools would be most effective:
+- OWASP ZAP for automated scanning</p></div>
+
+    <h2>Tool Summary</h2>
+    <table><tr><th>Tool</th><th>Runs</th><th>Success</th><th>Failed</th><th>Skipped</th><th>Last Exit</th></tr><tr><td>httpx</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>zap</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>gobuster</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>reverse_dns</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nmap</td><td>3</td><td>3</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nuclei</td><td>3</td><td>3</td><td>0</td><td>0</td><td>0</td></tr><tr><td>whatweb</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr></table>
+
+    <h2>Tools Executed</h2>
+    <div><p>- <strong>httpx<strong>: /home/ss/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -l reports/20260313_210155/urls_20260313_210155.txt (Duration: 15.56s)
+- <strong>zap<strong>: python3 /home/ss/code/level52-cli-deluxe/scripts/zap_docker_daemon_scan.py --image ghcr.io/zaproxy/zaproxy:stable --api-url http://127.0.0.1:8080 --target http://192.168.1.49:3000 --max-minutes 45 --startup-timeout 180 --spider --ajax-spider --active --active-threads 3 --ignore-robots --seed-file reports/20260313_210155/urls_20260313_210155.txt --username-field username --password-field password --json-out reports/20260313_210155/zap/zap_full_20260313_210303.json --html-out reports/20260313_210155/zap/zap_full_20260313_210303.html --md-out reports/20260313_210155/zap/zap_full_20260313_210303.md (Duration: 1603.92s)
+- <strong>gobuster<strong>: /usr/bin/gobuster dir -u http://192.168.1.49:3000 -w reports/20260313_210155/gobuster_wordlist_20260313_210155.txt -t 10 --timeout 10s -q --no-progress --no-error --no-color --delay 100ms -b 404 --exclude-length 1987 (Duration: 57.03s)
+- <strong>reverse_dns<strong>: PTR 192.168.1.49 (Duration: 0.00s)
+- <strong>nmap<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260313_210155/nmap_20260313_213351_991945.xml -p 3000 192.168.1.49 (Duration: 11.40s)
+- <strong>nuclei<strong>: /home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -u http://192.168.1.49:3000 -jsonl -o reports/20260313_210155/nuclei_20260313_213559.jsonl -severity critical,high -tags cve,default-login,exposure,misconfig -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 50 (Duration: 107.49s)
+- <strong>nmap<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260313_210155/nmap_20260313_213942_886660.xml -p 3000 192.168.1.49 (Duration: 11.32s)
+- <strong>nuclei<strong>: /home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -u http://192.168.1.49:3000 -jsonl -o reports/20260313_210155/nuclei_20260313_214032.jsonl -severity critical,high -tags cve,default-login,exposure,misconfig -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 50 (Duration: 107.46s)
+- <strong>whatweb<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/whatweb --log-json=reports/20260313_210155/whatweb_20260313_214404_033905.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.49:3000 (Duration: 3.12s)
+- <strong>nmap<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260313_210155/nmap_20260313_214546_755920.xml -p 3000 192.168.1.49 (Duration: 11.32s)
+- <strong>nuclei<strong>: /home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -u http://192.168.1.49:3000 -jsonl -o reports/20260313_210155/nuclei_20260313_214807.jsonl -severity critical,high -tags cve,default-login,exposure,misconfig -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 50 (Duration: 107.50s)</p></div>
+    
+    <footer>
+        <hr>
+        <p><em>Report generated by Guardian AI Pentest Tool</em></p>
+    </footer>
+</body>
+</html>

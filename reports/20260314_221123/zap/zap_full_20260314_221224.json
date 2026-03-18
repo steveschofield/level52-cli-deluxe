@@ -1,0 +1,207 @@
+{
+  "zap": {
+    "api_url": "http://127.0.0.1:8080",
+    "version": "2.17.0",
+    "scan_policy": "API"
+  },
+  "target": "http://192.168.1.49:5000",
+  "mode": "daemon",
+  "scan_options": {
+    "spider": true,
+    "ajax_spider": true,
+    "active": true,
+    "ignore_robots": true,
+    "max_minutes": 45,
+    "context": "",
+    "authenticated": false
+  },
+  "spider": true,
+  "ajax_spider": true,
+  "active": true,
+  "context": "",
+  "warnings": [
+    "Failed to disable robots.txt handling: Failed to parse JSON from http://127.0.0.1:8080/JSON/spider/action/setOptionHandleRobotsTxt/?apikey=&Boolean=false: HTTP Error 400: Bad Request",
+    "AJAX spider failed: Failed to parse JSON from http://127.0.0.1:8080/JSON/spiderAjax/action/scan/?apikey=&url=http%3A%2F%2F192.168.1.49%3A5000: HTTP Error 400: Bad Request"
+  ],
+  "har_path": "",
+  "har_error": "",
+  "alerts": [
+    {
+      "nodeName": "http://192.168.1.49:5000",
+      "sourceid": "3",
+      "other": "",
+      "method": "GET",
+      "evidence": "Werkzeug/2.2.3 Python/3.11.10",
+      "pluginId": "10036",
+      "cweid": "497",
+      "confidence": "High",
+      "sourceMessageId": 3,
+      "wascid": "13",
+      "description": "The web/application server is leaking version information via the \"Server\" HTTP response header. Access to such information may facilitate attackers identifying other vulnerabilities your web/application server is subject to.",
+      "messageId": "3",
+      "inputVector": "",
+      "url": "http://192.168.1.49:5000",
+      "tags": {
+        "OWASP_2021_A05": "https://owasp.org/Top10/A05_2021-Security_Misconfiguration/",
+        "POLICY_QA_STD": "",
+        "POLICY_PENTEST": "",
+        "SYSTEMIC": "https://www.zaproxy.org/docs/desktop/addons/common-library/alerttags/#systemic",
+        "OWASP_2017_A06": "https://owasp.org/www-project-top-ten/2017/A6_2017-Security_Misconfiguration.html",
+        "WSTG-v42-INFO-02": "https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/01-Information_Gathering/02-Fingerprint_Web_Server",
+        "CWE-497": "https://cwe.mitre.org/data/definitions/497.html"
+      },
+      "reference": "https://httpd.apache.org/docs/current/mod/core.html#servertokens\nhttps://learn.microsoft.com/en-us/previous-versions/msp-n-p/ff648552(v=pandp.10)\nhttps://www.troyhunt.com/shhh-dont-let-your-response-headers/",
+      "solution": "Ensure that your web server, application server, load balancer, etc. is configured to suppress the \"Server\" header or provide generic details.",
+      "alert": "Server Leaks Version Information via \"Server\" HTTP Response Header Field",
+      "param": "",
+      "attack": "",
+      "name": "Server Leaks Version Information via \"Server\" HTTP Response Header Field",
+      "risk": "Low",
+      "id": "0",
+      "alertRef": "10036-2"
+    },
+    {
+      "nodeName": "http://192.168.1.49:5000/sitemap.xml",
+      "sourceid": "3",
+      "other": "",
+      "method": "GET",
+      "evidence": "Werkzeug/2.2.3 Python/3.11.10",
+      "pluginId": "10036",
+      "cweid": "497",
+      "confidence": "High",
+      "sourceMessageId": 9,
+      "wascid": "13",
+      "description": "The web/application server is leaking version information via the \"Server\" HTTP response header. Access to such information may facilitate attackers identifying other vulnerabilities your web/application server is subject to.",
+      "messageId": "9",
+      "inputVector": "",
+      "url": "http://192.168.1.49:5000/sitemap.xml",
+      "tags": {
+        "OWASP_2021_A05": "https://owasp.org/Top10/A05_2021-Security_Misconfiguration/",
+        "POLICY_QA_STD": "",
+        "POLICY_PENTEST": "",
+        "SYSTEMIC": "https://www.zaproxy.org/docs/desktop/addons/common-library/alerttags/#systemic",
+        "OWASP_2017_A06": "https://owasp.org/www-project-top-ten/2017/A6_2017-Security_Misconfiguration.html",
+        "WSTG-v42-INFO-02": "https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/01-Information_Gathering/02-Fingerprint_Web_Server",
+        "CWE-497": "https://cwe.mitre.org/data/definitions/497.html"
+      },
+      "reference": "https://httpd.apache.org/docs/current/mod/core.html#servertokens\nhttps://learn.microsoft.com/en-us/previous-versions/msp-n-p/ff648552(v=pandp.10)\nhttps://www.troyhunt.com/shhh-dont-let-your-response-headers/",
+      "solution": "Ensure that your web server, application server, load balancer, etc. is configured to suppress the \"Server\" header or provide generic details.",
+      "alert": "Server Leaks Version Information via \"Server\" HTTP Response Header Field",
+      "param": "",
+      "attack": "",
+      "name": "Server Leaks Version Information via \"Server\" HTTP Response Header Field",
+      "risk": "Low",
+      "id": "2",
+      "alertRef": "10036-2"
+    },
+    {
+      "nodeName": "http://192.168.1.49:5000/robots.txt",
+      "sourceid": "3",
+      "other": "",
+      "method": "GET",
+      "evidence": "Werkzeug/2.2.3 Python/3.11.10",
+      "pluginId": "10036",
+      "cweid": "497",
+      "confidence": "High",
+      "sourceMessageId": 8,
+      "wascid": "13",
+      "description": "The web/application server is leaking version information via the \"Server\" HTTP response header. Access to such information may facilitate attackers identifying other vulnerabilities your web/application server is subject to.",
+      "messageId": "8",
+      "inputVector": "",
+      "url": "http://192.168.1.49:5000/robots.txt",
+      "tags": {
+        "OWASP_2021_A05": "https://owasp.org/Top10/A05_2021-Security_Misconfiguration/",
+        "POLICY_QA_STD": "",
+        "POLICY_PENTEST": "",
+        "SYSTEMIC": "https://www.zaproxy.org/docs/desktop/addons/common-library/alerttags/#systemic",
+        "OWASP_2017_A06": "https://owasp.org/www-project-top-ten/2017/A6_2017-Security_Misconfiguration.html",
+        "WSTG-v42-INFO-02": "https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/01-Information_Gathering/02-Fingerprint_Web_Server",
+        "CWE-497": "https://cwe.mitre.org/data/definitions/497.html"
+      },
+      "reference": "https://httpd.apache.org/docs/current/mod/core.html#servertokens\nhttps://learn.microsoft.com/en-us/previous-versions/msp-n-p/ff648552(v=pandp.10)\nhttps://www.troyhunt.com/shhh-dont-let-your-response-headers/",
+      "solution": "Ensure that your web server, application server, load balancer, etc. is configured to suppress the \"Server\" header or provide generic details.",
+      "alert": "Server Leaks Version Information via \"Server\" HTTP Response Header Field",
+      "param": "",
+      "attack": "",
+      "name": "Server Leaks Version Information via \"Server\" HTTP Response Header Field",
+      "risk": "Low",
+      "id": "3",
+      "alertRef": "10036-2"
+    },
+    {
+      "nodeName": "http://192.168.1.49:5000",
+      "sourceid": "3",
+      "other": "This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.\nAt \"High\" threshold this scan rule will not alert on client or server error responses.",
+      "method": "GET",
+      "evidence": "",
+      "pluginId": "10021",
+      "cweid": "693",
+      "confidence": "Medium",
+      "sourceMessageId": 3,
+      "wascid": "15",
+      "description": "The Anti-MIME-Sniffing header X-Content-Type-Options was not set to 'nosniff'. This allows older versions of Internet Explorer and Chrome to perform MIME-sniffing on the response body, potentially causing the response body to be interpreted and displayed as a content type other than the declared content type. Current (early 2014) and legacy versions of Firefox will use the declared content type (if one is set), rather than performing MIME-sniffing.",
+      "messageId": "3",
+      "inputVector": "",
+      "url": "http://192.168.1.49:5000",
+      "tags": {
+        "OWASP_2021_A05": "https://owasp.org/Top10/A05_2021-Security_Misconfiguration/",
+        "POLICY_QA_STD": "",
+        "POLICY_PENTEST": "",
+        "SYSTEMIC": "https://www.zaproxy.org/docs/desktop/addons/common-library/alerttags/#systemic",
+        "CWE-693": "https://cwe.mitre.org/data/definitions/693.html",
+        "OWASP_2017_A06": "https://owasp.org/www-project-top-ten/2017/A6_2017-Security_Misconfiguration.html"
+      },
+      "reference": "https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/compatibility/gg622941(v=vs.85)\nhttps://owasp.org/www-community/Security_Headers",
+      "solution": "Ensure that the application/web server sets the Content-Type header appropriately, and that it sets the X-Content-Type-Options header to 'nosniff' for all web pages.\nIf possible, ensure that the end user uses a standards-compliant and modern web browser that does not perform MIME-sniffing at all, or that can be directed by the web application/web server to not perform MIME-sniffing.",
+      "alert": "X-Content-Type-Options Header Missing",
+      "param": "x-content-type-options",
+      "attack": "",
+      "name": "X-Content-Type-Options Header Missing",
+      "risk": "Low",
+      "id": "5",
+      "alertRef": "10021"
+    }
+  ],
+  "count": 4,
+  "spider_urls": [
+    "http://192.168.1.49:5000/sitemap.xml",
+    "http://192.168.1.49:5000",
+    "http://192.168.1.49:5000/robots.txt"
+  ],
+  "ajax_spider_urls": [],
+  "timing": {
+    "phases": {
+      "ZAP Connection & Verification": {
+        "elapsed_seconds": 0.02,
+        "elapsed_formatted": "0.0s"
+      },
+      "Seed URL Access": {
+        "elapsed_seconds": 0.04,
+        "elapsed_formatted": "0.0s"
+      },
+      "Spider Scan": {
+        "elapsed_seconds": 2.01,
+        "elapsed_formatted": "2.0s"
+      },
+      "AJAX Spider Scan": {
+        "elapsed_seconds": 0.0,
+        "elapsed_formatted": "0.0s"
+      },
+      "Active Scan": {
+        "elapsed_seconds": 15.02,
+        "elapsed_formatted": "15.0s"
+      },
+      "Passive Scan Queue Drain": {
+        "elapsed_seconds": 0.0,
+        "elapsed_formatted": "0.0s"
+      },
+      "Alert Collection": {
+        "elapsed_seconds": 0.0,
+        "elapsed_formatted": "0.0s"
+      }
+    },
+    "total_seconds": 17.09,
+    "total_formatted": "17.1s"
+  },
+  "timestamp": "2026-03-14T22:12:51.635913"
+}

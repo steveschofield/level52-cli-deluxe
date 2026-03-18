@@ -1,0 +1,4 @@
+http://192.168.1.49:3000/rest/admin/application-configuration
+http://192.168.1.49:3000/rest/chatbot/status
+http://192.168.1.49:3000/metrics
+http://192.168.1.49:3000/

@@ -45,7 +45,6 @@ Available Tools (pick only those appropriate for the target type and objective):
 - shuffledns: High-performance DNS resolution (domain-only)
 - puredns: DNS resolving/bruteforce helper (domain-only; can generate permutations with dnsgen)
 - asnmap: ASN/org → IP range mapping
-- katana: Web crawling/spidering
 - waybackurls: Historical URL collection
 - subjs: Extract JS URLs
 - linkfinder: Discover endpoints and extract data from JavaScript files
@@ -118,7 +117,6 @@ AVAILABLE TOOLS (avoid DNS/subdomain tools on IP-only targets; schemathesis requ
 - shuffledns: DNS resolution
 - puredns: DNS resolution helper (can generate permutations with dnsgen)
 - asnmap: ASN/org mapping
-- katana: Web crawling
 - waybackurls: Historical URLs
 - subjs: JS URL extraction
 - linkfinder: JS endpoint discovery and extraction
@@ -134,7 +132,7 @@ AVAILABLE TOOLS (avoid DNS/subdomain tools on IP-only targets; schemathesis requ
 - metasploit: Scripted module execution
 
 OBJECTIVE-TO-TOOL GUIDANCE (follow this when applicable):
-- web_crawling        → zap (spider + passive), katana, waybackurls, subjs  [DO NOT use httpx/nmap]
+- web_crawling        → zap (spider + passive), waybackurls, subjs  [DO NOT use httpx/nmap]
 - web_app_scanning    → nikto, zap (active scan), dalfox, xsstrike           [DO NOT use nuclei here]
 - component_analysis  → retire, nuclei (js/library tags only)                 [DO NOT use nmap/httpx]
 - header_analysis     → headers, cookie-analyzer (curl-based)                 [DO NOT use nuclei/nmap]

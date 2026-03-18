@@ -38,7 +38,6 @@ from .shuffledns import ShufflednsTool
 from .puredns import PurednsTool
 from .retire import RetireTool
 from .naabu import NaabuTool
-from .katana import KatanaTool
 from .asnmap import AsnmapTool
 from .waybackurls import WaybackurlsTool
 from .subjs import SubjsTool

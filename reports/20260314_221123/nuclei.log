@@ -1,0 +1,6 @@
+[2026-03-14T22:31:09.448286] target=http://192.168.1.49:5000 exit=0 duration=26.246466s findings=0
+command: /home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -l reports/20260314_221123/nuclei_seed_20260314_221123.txt -jsonl -o reports/20260314_221123/nuclei_20260314_223109.jsonl -severity critical,high -tags misconfiguration,info-leak,exposure,waf-bypass,no-waf,info-disclosure,tech-detect -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 25
+targets: reports/20260314_221123/nuclei_seed_20260314_221123.txt
+jsonl: reports/20260314_221123/nuclei_20260314_223109.jsonl
+output: <empty>
+

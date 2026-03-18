@@ -1,0 +1,171 @@
+{
+  "zap": {
+    "api_url": "http://127.0.0.1:8080",
+    "version": "2.17.0",
+    "scan_policy": "API"
+  },
+  "target": "http://192.168.1.49:8082",
+  "mode": "daemon",
+  "scan_options": {
+    "spider": true,
+    "ajax_spider": true,
+    "active": true,
+    "ignore_robots": true,
+    "max_minutes": 45,
+    "context": "",
+    "authenticated": false
+  },
+  "spider": true,
+  "ajax_spider": true,
+  "active": true,
+  "context": "",
+  "warnings": [
+    "Failed to disable robots.txt handling: Failed to parse JSON from http://127.0.0.1:8080/JSON/spider/action/setOptionHandleRobotsTxt/?apikey=&Boolean=false: HTTP Error 400: Bad Request",
+    "AJAX spider failed: Failed to parse JSON from http://127.0.0.1:8080/JSON/spiderAjax/action/scan/?apikey=&url=http%3A%2F%2F192.168.1.49%3A8082: HTTP Error 400: Bad Request"
+  ],
+  "har_path": "",
+  "har_error": "",
+  "alerts": [
+    {
+      "nodeName": "http://192.168.1.49:8082",
+      "sourceid": "3",
+      "other": "",
+      "method": "GET",
+      "evidence": "",
+      "pluginId": "10038",
+      "cweid": "693",
+      "confidence": "High",
+      "sourceMessageId": 8,
+      "wascid": "15",
+      "description": "Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.",
+      "messageId": "8",
+      "inputVector": "",
+      "url": "http://192.168.1.49:8082",
+      "tags": {
+        "OWASP_2021_A05": "https://owasp.org/Top10/A05_2021-Security_Misconfiguration/",
+        "POLICY_QA_STD": "",
+        "POLICY_PENTEST": "",
+        "SYSTEMIC": "https://www.zaproxy.org/docs/desktop/addons/common-library/alerttags/#systemic",
+        "CWE-693": "https://cwe.mitre.org/data/definitions/693.html",
+        "OWASP_2017_A06": "https://owasp.org/www-project-top-ten/2017/A6_2017-Security_Misconfiguration.html"
+      },
+      "reference": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP\nhttps://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html\nhttps://www.w3.org/TR/CSP/\nhttps://w3c.github.io/webappsec-csp/\nhttps://web.dev/articles/csp\nhttps://caniuse.com/#feat=contentsecuritypolicy\nhttps://content-security-policy.com/",
+      "solution": "Ensure that your web server, application server, load balancer, etc. is configured to set the Content-Security-Policy header.",
+      "alert": "Content Security Policy (CSP) Header Not Set",
+      "param": "",
+      "attack": "",
+      "name": "Content Security Policy (CSP) Header Not Set",
+      "risk": "Medium",
+      "id": "0",
+      "alertRef": "10038-1"
+    },
+    {
+      "nodeName": "http://192.168.1.49:8082/sitemap.xml",
+      "sourceid": "3",
+      "other": "",
+      "method": "GET",
+      "evidence": "",
+      "pluginId": "10038",
+      "cweid": "693",
+      "confidence": "High",
+      "sourceMessageId": 7,
+      "wascid": "15",
+      "description": "Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.",
+      "messageId": "7",
+      "inputVector": "",
+      "url": "http://192.168.1.49:8082/sitemap.xml",
+      "tags": {
+        "OWASP_2021_A05": "https://owasp.org/Top10/A05_2021-Security_Misconfiguration/",
+        "POLICY_QA_STD": "",
+        "POLICY_PENTEST": "",
+        "SYSTEMIC": "https://www.zaproxy.org/docs/desktop/addons/common-library/alerttags/#systemic",
+        "CWE-693": "https://cwe.mitre.org/data/definitions/693.html",
+        "OWASP_2017_A06": "https://owasp.org/www-project-top-ten/2017/A6_2017-Security_Misconfiguration.html"
+      },
+      "reference": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP\nhttps://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html\nhttps://www.w3.org/TR/CSP/\nhttps://w3c.github.io/webappsec-csp/\nhttps://web.dev/articles/csp\nhttps://caniuse.com/#feat=contentsecuritypolicy\nhttps://content-security-policy.com/",
+      "solution": "Ensure that your web server, application server, load balancer, etc. is configured to set the Content-Security-Policy header.",
+      "alert": "Content Security Policy (CSP) Header Not Set",
+      "param": "",
+      "attack": "",
+      "name": "Content Security Policy (CSP) Header Not Set",
+      "risk": "Medium",
+      "id": "1",
+      "alertRef": "10038-1"
+    },
+    {
+      "nodeName": "http://192.168.1.49:8082/robots.txt",
+      "sourceid": "3",
+      "other": "",
+      "method": "GET",
+      "evidence": "",
+      "pluginId": "10038",
+      "cweid": "693",
+      "confidence": "High",
+      "sourceMessageId": 9,
+      "wascid": "15",
+      "description": "Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.",
+      "messageId": "9",
+      "inputVector": "",
+      "url": "http://192.168.1.49:8082/robots.txt",
+      "tags": {
+        "OWASP_2021_A05": "https://owasp.org/Top10/A05_2021-Security_Misconfiguration/",
+        "POLICY_QA_STD": "",
+        "POLICY_PENTEST": "",
+        "SYSTEMIC": "https://www.zaproxy.org/docs/desktop/addons/common-library/alerttags/#systemic",
+        "CWE-693": "https://cwe.mitre.org/data/definitions/693.html",
+        "OWASP_2017_A06": "https://owasp.org/www-project-top-ten/2017/A6_2017-Security_Misconfiguration.html"
+      },
+      "reference": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP\nhttps://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html\nhttps://www.w3.org/TR/CSP/\nhttps://w3c.github.io/webappsec-csp/\nhttps://web.dev/articles/csp\nhttps://caniuse.com/#feat=contentsecuritypolicy\nhttps://content-security-policy.com/",
+      "solution": "Ensure that your web server, application server, load balancer, etc. is configured to set the Content-Security-Policy header.",
+      "alert": "Content Security Policy (CSP) Header Not Set",
+      "param": "",
+      "attack": "",
+      "name": "Content Security Policy (CSP) Header Not Set",
+      "risk": "Medium",
+      "id": "3",
+      "alertRef": "10038-1"
+    }
+  ],
+  "count": 3,
+  "spider_urls": [
+    "http://192.168.1.49:8082/robots.txt",
+    "http://192.168.1.49:8082/sitemap.xml",
+    "http://192.168.1.49:8082"
+  ],
+  "ajax_spider_urls": [],
+  "timing": {
+    "phases": {
+      "ZAP Connection & Verification": {
+        "elapsed_seconds": 0.02,
+        "elapsed_formatted": "0.0s"
+      },
+      "Seed URL Access": {
+        "elapsed_seconds": 0.03,
+        "elapsed_formatted": "0.0s"
+      },
+      "Spider Scan": {
+        "elapsed_seconds": 2.01,
+        "elapsed_formatted": "2.0s"
+      },
+      "AJAX Spider Scan": {
+        "elapsed_seconds": 0.0,
+        "elapsed_formatted": "0.0s"
+      },
+      "Active Scan": {
+        "elapsed_seconds": 5.02,
+        "elapsed_formatted": "5.0s"
+      },
+      "Passive Scan Queue Drain": {
+        "elapsed_seconds": 2.0,
+        "elapsed_formatted": "2.0s"
+      },
+      "Alert Collection": {
+        "elapsed_seconds": 0.0,
+        "elapsed_formatted": "0.0s"
+      }
+    },
+    "total_seconds": 9.08,
+    "total_formatted": "9.1s"
+  },
+  "timestamp": "2026-03-14T20:52:11.368215"
+}

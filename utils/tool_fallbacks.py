@@ -1,11 +1,10 @@
 """
 Fallback tool implementations for missing ProjectDiscovery tools
-Uses alternative tools when httpx/katana are not available
+Uses alternative tools when httpx is not available
 """
 
 import asyncio
 from typing import Dict, Any
-from urllib.parse import urlparse
 
 
 class HttpxFallback:
@@ -66,51 +65,3 @@ class HttpxFallback:
             if line.lower().startswith(header_name.lower() + ':'):
                 return line.split(':', 1)[1].strip()
         return ""
-
-
-class KatanaFallback:
-    """Fallback for katana using wget"""
-    
-    def __init__(self, config):
-        self.config = config
-    
-    async def crawl_url(self, url: str, depth: int = 2) -> Dict[str, Any]:
-        """Crawl URL using available alternative"""
-        return await self._crawl_with_wget(url, depth)
-    
-    async def _crawl_with_wget(self, url: str, depth: int) -> Dict[str, Any]:
-        """Basic crawling using wget as last resort"""
-        try:
-            parsed = urlparse(url)
-            domain = parsed.netloc
-            
-            cmd = [
-                "wget", "--spider", "--recursive", f"--level={depth}",
-                "--no-parent", "--domains", domain,
-                "--user-agent=Guardian-Scanner/1.0",
-                "--timeout=10", "--tries=1", "-O", "/dev/null",
-                url
-            ]
-            
-            result = await asyncio.create_subprocess_exec(
-                *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
-            )
-            stdout, stderr = await result.communicate()
-            
-            # Extract URLs from wget output
-            urls = []
-            for line in stderr.decode().split('\n'):
-                if '--' in line and 'http' in line:
-                    parts = line.split()
-                    for part in parts:
-                        if part.startswith('http'):
-                            urls.append(part.rstrip('...'))
-            
-            return {
-                "urls": list(set(urls)),
-                "crawler": "wget",
-                "success": True
-            }
-            
-        except Exception as e:
-            return {"success": False, "error": str(e)}

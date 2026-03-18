@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.98 scan initiated Mon Mar 16 04:09:10 2026 as: /usr/lib/nmap/nmap -&#45;privileged -sV -sC -T4 -Pn -oX reports/20260316_031028/nmap_20260316_040910_643182.xml -p 80 -&#45;script http-title,http-headers,http-methods,http-enum 192.168.1.244 -->
+<nmaprun scanner="nmap" args="/usr/lib/nmap/nmap -&#45;privileged -sV -sC -T4 -Pn -oX reports/20260316_031028/nmap_20260316_040910_643182.xml -p 80 -&#45;script http-title,http-headers,http-methods,http-enum 192.168.1.244" start="1773648550" startstr="Mon Mar 16 04:09:10 2026" version="7.98" xmloutputversion="1.05">
+<scaninfo type="syn" protocol="tcp" numservices="1" services="80"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<hosthint><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.244" addrtype="ipv4"/>
+<address addr="00:15:5D:FC:98:69" addrtype="mac" vendor="Microsoft"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<host starttime="1773648551" endtime="1773648568"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.244" addrtype="ipv4"/>
+<address addr="00:15:5D:FC:98:69" addrtype="mac" vendor="Microsoft"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="http" product="Apache httpd" version="2.2.8" extrainfo="(Ubuntu) DAV/2" method="probed" conf="10"><cpe>cpe:/a:apache:http_server:2.2.8</cpe></service><script id="http-methods" output="&#xa;  Supported Methods: GET HEAD POST OPTIONS"><table key="Supported Methods">
+<elem>GET</elem>
+<elem>HEAD</elem>
+<elem>POST</elem>
+<elem>OPTIONS</elem>
+</table>
+</script><script id="http-headers" output="&#xa;  Date: Mon, 16 Mar 2026 20:26:05 GMT&#xa;  Server: Apache/2.2.8 (Ubuntu) DAV/2&#xa;  X-Powered-By: PHP/5.2.4-2ubuntu5.10&#xa;  Connection: close&#xa;  Content-Type: text/html&#xa;  &#xa;  (Request type: HEAD)&#xa;"/><script id="http-title" output="Metasploitable2 - Linux"><elem key="title">Metasploitable2 - Linux</elem>
+</script><script id="http-server-header" output="Apache/2.2.8 (Ubuntu) DAV/2"><elem>Apache/2.2.8 (Ubuntu) DAV/2</elem>
+</script><script id="http-enum" output="&#xa;  /tikiwiki/: Tikiwiki&#xa;  /test/: Test page&#xa;  /phpinfo.php: Possible information file&#xa;  /phpMyAdmin/: phpMyAdmin&#xa;  /doc/: Potentially interesting directory w/ listing on &apos;apache/2.2.8 (ubuntu) dav/2&apos;&#xa;  /icons/: Potentially interesting folder w/ directory listing&#xa;  /index/: Potentially interesting folder&#xa;"/></port>
+</ports>
+<times srtt="1005" rttvar="3761" to="100000"/>
+</host>
+<runstats><finished time="1773648568" timestr="Mon Mar 16 04:09:28 2026" summary="Nmap done at Mon Mar 16 04:09:28 2026; 1 IP address (1 host up) scanned in 18.17 seconds" elapsed="18.17" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

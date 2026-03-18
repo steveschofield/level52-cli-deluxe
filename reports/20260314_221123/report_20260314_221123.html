@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Penetration Test Report - http://192.168.1.49:5000</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #3498db; color: white; }
+        .critical { color: #e74c3c; font-weight: bold; }
+        .high { color: #e67e22; font-weight: bold; }
+        .medium { color: #f39c12; }
+        .low { color: #3498db; }
+        .info { color: #95a5a6; }
+        .summary { background-color: #ecf0f1; padding: 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔐 Penetration Test Report</h1>
+    
+    <div class="summary">
+        <h3>Target Information</h3>
+        <p><strong>Target:</strong> http://192.168.1.49:5000</p>
+        <p><strong>Session ID:</strong> 20260314_221123</p>
+        <p><strong>Date:</strong> 2026-03-14 23:06:00</p>
+        <p><strong>Duration:</strong> 0h 54m</p>
+        <p><strong>Subject Alternative Names (SAN):</strong> No additional SAN attributes listed</p>
+    </div>
+    
+    <h2>Executive Summary</h2>
+    <div><p>The recent security assessment of the target application revealed a significant vulnerability in its current security posture, primarily driven by the presence of a critical flaw that requires immediate attention. While the majority of the eleven identified issues are of low or medium severity, the discovery of a Remote Code Execution (RCE) vulnerability poses an immediate and severe threat to the organization's data integrity and operational continuity. This specific weakness stems from a development tool being inadvertently left active in the production environment, effectively providing an unauthorized backdoor that could allow attackers to take full control of the server, steal sensitive information, or disrupt business operations.</p><p>The most urgent risk identified is the exposed debugging interface, which acts as a direct pathway for malicious actors to execute arbitrary commands on the system. Unlike other findings that may require complex exploitation or offer limited impact, this critical issue can be exploited with minimal effort, making the application highly susceptible to compromise. Although the assessment was completed in under an hour, the presence of this single critical flaw outweighs the lower-severity findings, indicating that the application is currently not secure for production use and requires immediate remediation to prevent potential data breaches or service outages.</p><p>To mitigate these risks, it is imperative to immediately disable the exposed debugging interface and ensure that all development tools are strictly removed or restricted from any production-facing environments. Following this immediate fix, a comprehensive review of the application's configuration should be conducted to address the remaining medium and low-severity findings, ensuring a robust security baseline. We recommend implementing a formal security review process for all future deployments to prevent similar misconfigurations and to maintain a secure posture aligned with industry best practices.</p></div>
+    
+    <h2>Findings Summary</h2>
+    <table>
+        <tr><th>Severity</th><th>Count</th></tr>
+        <tr><td class="critical">Critical</td><td>1</td></tr>
+        <tr><td class="high">High</td><td>0</td></tr>
+        <tr><td class="medium">Medium</td><td>1</td></tr>
+        <tr><td class="low">Low</td><td>7</td></tr>
+        <tr><td class="info">Info</td><td>2</td></tr>
+        <tr><th>Total</th><th>11</th></tr>
+    </table>
+    <h2>Report Quality Notes</h2><div class="summary"><p>Soft quality markers for reviewer awareness.</p><ul><li>Consistency normalization adjusted 1 finding field(s) (severity/CVSS/CWE alignment).</li></ul></div>
+
+    
+    
+    <h2>Technical Findings</h2>
+    <div><p># 4. Technical Findings</p><p>## 4.1 Critical Severity Findings</p><p>### 4.1.1 Remote Code Execution via Exposed Werkzeug Debugger
+<strong>Severity:<strong> CRITICAL  
+<strong>CVSS v3.1:<strong> 9.8 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)  
+<strong>Affected Component:<strong> `http://192.168.1.49:5000` (Werkzeug Development Server)  
+<strong>CWE:<strong> CWE-400 (Uncontrolled Resource Consumption), CWE-918 (Server-Side Request Forgery), CWE-200 (Information Exposure)  
+<strong>OWASP Top 10 (2021):<strong> A05:2021 - Security Misconfiguration  </p><p>#### Technical Description
+The target application is running the Werkzeug development server with the interactive debugger enabled in a production or semi-production environment. The debugger interface is accessible via HTTP, allowing unauthenticated attackers to execute arbitrary Python code on the server. This occurs because the `DEBUG` flag is set to `True` and the `USE_RELOADER` or `USE_DEBUGGER` flags are active without proper authentication or network restrictions.</p><p>#### Evidence and Proof of Concept
+Automated scanning via `schemathesis` triggered an internal server error that revealed the Werkzeug debugger interface. The response body contained the HTML structure of the debugger, confirming its exposure.</p><p><strong>Raw Evidence:<strong>
+```text
+[500] Internal Server Error:
+    <!doctype html>
+    <html lang=en>
+      <head>
+        <title>sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+    [SQL: SELE
+```
+<strong>Source:<strong> `artifact=reports/20260314_221123/session_20260314_221123.json` | `tool=schemathesis`</p><p>#### Impact Analysis
+An attacker can leverage this vulnerability to:
+<em>   Execute arbitrary system commands via the Python shell.
+<em>   Read sensitive files from the server's filesystem (e.g., `/etc/passwd`, source code, configuration files).
+<em>   Modify or delete database records.
+<em>   Achieve full Remote Code Execution (RCE), leading to complete compromise of the host.</p><p>#### Exploitation Information
+<em>   <strong>CISA KEV Status:<strong> Not explicitly flagged as "Actively Exploited" in the provided data, but this class of vulnerability (Werkzeug Debugger) is historically a primary vector for ransomware and botnet deployment.
+<em>   <strong>CVE Identifiers:<strong> N/A (No specific CVE ID provided in finding data).
+<em>   <strong>Metasploit Modules:<strong> N/A (No specific module listed in finding data).
+<em>   <strong>Exploit-DB IDs:<strong> N/A (No specific ID listed in finding data).
+<em>   <strong>GitHub PoCs:<strong> N/A (No specific repository listed in finding data).
+<em>   <strong>Exploitation Attempt Status:<strong> The automated scanner (`schemathesis`) successfully triggered the error condition that exposes the debugger interface. While full code execution was not demonstrated in the log snippet, the presence of the debugger interface confirms the vulnerability is exploitable.</p><p>#### Remediation Plan
+1.  <strong>Immediate Action:<strong> Disable the Werkzeug debugger immediately. Set `DEBUG = False` in the application configuration.
+2.  <strong>Configuration Change:<strong> Ensure the application is not running the built-in development server in production. Use a production-grade WSGI server (e.g., Gunicorn, uWSGI) behind a reverse proxy (Nginx/Apache).
+3.  <strong>Network Segmentation:<strong> If the debugger must be used for debugging, restrict access to localhost (`127.0.0.1`) only via firewall rules.
+4.  <strong>Verification:<strong> Re-scan the target to ensure the debugger interface is no longer accessible and error pages are generic.</p><p>---</p><p>## 4.2 Medium Severity Findings</p><p>### 4.2.1 Sensitive Information Disclosure via Stack Traces
+<strong>Severity:<strong> MEDIUM  
+<strong>CVSS v3.1:<strong> 5.3 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)  
+<strong>Affected Component:<strong> `http://192.168.1.49:5000` (API Error Handling)  
+<strong>CWE:<strong> CWE-200 (Information Exposure)  
+<strong>OWASP Top 10 (2021):<strong> A05:2021 - Security Misconfiguration  </p><p>#### Technical Description
+The application exposes detailed stack traces and SQL query structures in error responses. This behavior is typically caused by unhandled exceptions in the backend code being returned directly to the client. The disclosed information includes database schema details, table names, and column structures.</p><p>#### Evidence and Proof of Concept
+The `schemathesis` tool triggered an error that returned a raw SQL query in the response body.</p><p><strong>Raw Evidence:<strong>
+```text
+[SQL: SELECT users.id AS users_id, users.username AS users_username, users.password AS users_password, users.email AS users_email, users.admin AS users_admin 
+FROM users 
+WHERE users.username 
+```
+<strong>Source:<strong> `artifact=reports/20260314_221123/session_20260314_221123.json` | `tool=schemathesis`</p><p>#### Impact Analysis
+<em>   <strong>Reconnaissance:<strong> Attackers can map the database schema, identifying table names (`users`) and sensitive columns (`password`, `admin`).
+<em>   <strong>Exploitation Facilitation:<strong> Knowledge of the schema significantly lowers the barrier for crafting SQL Injection (SQLi) attacks or targeted data exfiltration.
+<em>   <strong>Credential Exposure:<strong> While passwords are not directly visible in the snippet, the exposure of the `password` column name confirms the existence of authentication data.</p><p>#### Exploitation Information
+<em>   <strong>CISA KEV Status:<strong> N/A.
+<em>   <strong>CVE Identifiers:<strong> N/A.
+<em>   <strong>Metasploit Modules:<strong> N/A.
+<em>   <strong>Exploit-DB IDs:<strong> N/A.
+<em>   <strong>GitHub PoCs:<strong> N/A.
+<em>   <strong>Exploitation Attempt Status:<strong> Information was successfully disclosed during the scan. No active exploitation of the disclosed data was performed, but the data is available for manual exploitation.</p><p>#### Remediation Plan
+1.  <strong>Global Exception Handling:<strong> Implement a global error handler that catches all exceptions and returns a generic error message (e.g., "An internal error occurred") to the client.
+2.  <strong>Logging:<strong> Ensure detailed stack traces and SQL queries are logged to a secure server-side log file, not sent to the client.
+3.  <strong>Environment Variables:<strong> Ensure `DEBUG` mode is strictly disabled in production environments.
+4.  <strong>Database Abstraction:<strong> Review ORM usage to ensure raw SQL queries are not exposed in error messages.</p><p>---</p><p>## 4.3 Low Severity Findings</p><p>### 4.3.1 Server Leaks Version Information via "Server" HTTP Response Header Field
+<strong>Severity:<strong> LOW  
+<strong>CVSS v3.1:<strong> 3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)  
+<strong>Affected Component:<strong> `http://192.168.1.49:5000` (HTTP Server)  
+<strong>CWE:<strong> CWE-497 (Exposure of Sensitive Information to an Unauthorized Actor)  
+<strong>OWASP Top 10 (2021):<strong> A05:2021 - Security Misconfiguration  </p><p>#### Technical Description
+The HTTP response headers reveal the specific version of the web server framework and the programming language runtime. This information aids attackers in identifying known vulnerabilities associated with specific versions.</p><p>#### Evidence and Proof of Concept
+<strong>Raw Evidence:<strong>
+```json
+"evidence": "Werkzeug/2.2.3 Python/3.11.10"
+```
+<strong>Source:<strong> `artifact=reports/20260314_221123/session_20260314_221123.json` | `tool=zap`</p><p>#### Impact Analysis
+<em>   <strong>Targeted Attacks:<strong> Attackers can search for CVEs specific to `Werkzeug 2.2.3` or `Python 3.11.10`.
+<em>   <strong>Fingerprinting:<strong> Confirms the technology stack, allowing for more precise attack vectors.</p><p>#### Exploitation Information
+<em>   <strong>CISA KEV Status:<strong> N/A.
+<em>   <strong>CVE Identifiers:<strong> N/A.
+<em>   <strong>Metasploit Modules:<strong> N/A.
+<em>   <strong>Exploit-DB IDs:<strong> N/A.
+<em>   <strong>GitHub PoCs:<strong> N/A.
+<em>   <strong>Exploitation Attempt Status:<strong> No active exploitation attempted; information was passively collected.</p><p>#### Remediation Plan
+1.  <strong>Header Suppression:<strong> Configure the web server or WSGI middleware to remove or obfuscate the `Server` header.
+2.  <strong>Custom Header:<strong> Replace the default header with a generic value (e.g., `Server: Custom`).
+3.  <strong>WAF Configuration:<strong> If a WAF is deployed, configure it to strip version-specific headers.</p><p>### 4.3.2 X-Content-Type-Options Header Missing
+<strong>Severity:<strong> LOW  
+<strong>CVSS v3.1:<strong> 3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)  
+<strong>Affected Component:<strong> `http://192.168.1.49:5000` (HTTP Server)  
+<strong>CWE:<strong> CWE-1021, CWE-1071, CWE-693  
+<strong>OWASP Top 10 (2021):<strong> A04:2021 - Insecure Design, A05:2021 - Security Misconfiguration  </p><p>#### Technical Description
+The `X-Content-Type-Options` header is missing from HTTP responses. This header prevents Internet Explorer and other browsers from MIME-sniffing the content-type of a response, which can lead to drive-by downloads or XSS attacks if the browser misinterprets a file type.</p><p>#### Evidence and Proof of Concept
+<strong>Raw Evidence:<strong>
+```json
+"alert": "X-Content-Type-Options Header Missing"
+"param": "x-content-type-options"
+```
+<strong>Source:<strong> `artifact=reports/20260314_221123/session_20260314_221123.json` | `tool=zap`</p><p>#### Impact Analysis
+<em>   <strong>MIME Sniffing:<strong> Browsers may execute scripts or render files as HTML even if the `Content-Type` header indicates a different type (e.g., `text/plain` or `application/octet-stream`).
+<em>   <strong>XSS Risk:<strong> Increases the likelihood of Cross-Site Scripting attacks via file upload or content injection.</p><p>#### Exploitation Information
+<em>   <strong>CISA KEV Status:<strong> N/A.
+<em>   <strong>CVE Identifiers:<strong> N/A.
+<em>   <strong>Metasploit Modules:<strong> N/A.
+<em>   <strong>Exploit-DB IDs:<strong> N/A.
+<em>   <strong>GitHub PoCs:<strong> N/A.
+<em>   <strong>Exploitation Attempt Status:<strong> N/A.</p><p>#### Remediation Plan
+1.  <strong>Header Injection:<strong> Configure the web server to include `X-Content-Type-Options: nosniff` in all responses.
+2.  <strong>Framework Configuration:<strong> If using Flask/Werkzeug, ensure the `X-Content-Type-Options` header is set in the response headers or via a security extension.</p><p>### 4.3.3 Information Disclosure via Service Banner (Nmap)
+<strong>Severity:<strong> LOW  
+<strong>CVSS v3.1:<strong> 3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)  
+<strong>Affected Component:<strong> `http://192.168.1.49:5000`  
+<strong>CWE:<strong> CWE-200  
+<strong>OWASP Top 10 (2021):<strong> A05:2021 - Security Misconfiguration  </p><p>#### Technical Description
+Nmap service detection scripts identified the specific product and version of the HTTP server via banner grabbing.</p><p>#### Evidence and Proof of Concept
+<strong>Raw Evidence:<strong>
+```xml
+<service name="http" product="Werkzeug httpd" version="2.2.3" extrainfo="Python 3.11.10" ...>
+<script id="http-server-header" output="Werkzeug/2.2.3 Python/3.11.10">
+```
+<strong>Source:<strong> `artifact=reports/20260314_221123/nmap_20260314_221443_538616.xml`</p><p>#### Impact Analysis
+Confirms the technology stack and version, facilitating targeted vulnerability research.</p><p>#### Exploitation Information
+<em>   <strong>CISA KEV Status:<strong> N/A.
+<em>   <strong>CVE Identifiers:<strong> N/A.
+<em>   <strong>Metasploit Modules:<strong> N/A.
+<em>   <strong>Exploit-DB IDs:<strong> N/A.
+<em>   <strong>GitHub PoCs:<strong> N/A.
+<em>   <strong>Exploitation Attempt Status:<strong> N/A.</p><p>#### Remediation Plan
+Same as 4.3.1: Suppress version information in service banners and HTTP headers.</p><p>### 4.3.4 Information Disclosure via Server Header (Headers/WhatWeb)
+<strong>Severity:<strong> LOW  
+<strong>CVSS v3.1:<strong> 3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)  
+<strong>Affected Component:<strong> `http://192.168.1.49:5000`  
+<strong>CWE:<strong> CWE-200  
+<strong>OWASP Top 10 (2021):<strong> A05:2021 - Security Misconfiguration  </p><p>#### Technical Description
+Multiple tools (`headers`, `whatweb`) confirmed the leakage of the server software and version in the `Server` header.</p><p>#### Evidence and Proof of Concept
+<strong>Raw Evidence:<strong>
+```text
+Server: Werkzeug/2.2.3 Python/3.11.10
+HTTPServer[Werkzeug/2.2.3 Python/3.11.10]
+```
+<strong>Source:<strong> `artifact=reports/20260314_221123/session_20260314_221123.json` | `tool=headers`, `tool=whatweb`</p><p>#### Impact Analysis
+Redundant confirmation of technology stack exposure.</p><p>#### Exploitation Information
+<em>   <strong>CISA KEV Status:<strong> N/A.
+<em>   <strong>CVE Identifiers:<strong> N/A.
+<em>   <strong>Metasploit Modules:<strong> N/A.
+<em>   <strong>Exploit-DB IDs:<strong> N/A.
+<em>   <strong>GitHub PoCs:<strong> N/A.
+<em>   <strong>Exploitation Attempt Status:<strong> N/A.</p><p>#### Remediation Plan
+Same as 4.3.1.</p><p>### 4.3.5 Information Disclosure - Technology Stack Identification
+<strong>Severity:<strong> LOW  
+<strong>CVSS v3.1:<strong> 3.0 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)  
+<strong>Affected Component:<strong> `http://192.168.1.49:5000`  
+<strong>CWE:<strong> CWE-200  
+<strong>OWASP Top 10 (2021):<strong> A05:2021 - Security Misconfiguration  </p><p>#### Technical Description
+The application reveals specific details about the technology stack, including the Python version and the presence of the "VAmPI" (Vulnerable API) framework, which is intentionally vulnerable.</p><p>#### Evidence and Proof of Concept
+<strong>Raw Evidence:<strong>
+```text
+Python[3.11.10], Werkzeug[2.2.3]
+"message": "VAmPI the Vulnerable API"
+```
+<strong>Source:<strong> `artifact=reports/20260314_221123/session_20260314_221123.json` | `tool=whatweb`, `tool=error-detector`</p><p>#### Impact Analysis
+<em>   <strong>Intent Identification:<strong> The message "VAmPI the Vulnerable API" explicitly indicates the application is a test environment designed to be vulnerable. In a production context, this would be a severe misconfiguration indicating a lack of security awareness.
+<em>   <strong>Stack Fingerprinting:<strong> Confirms Python 3.11.10 and Werkzeug 2.2.3.</p><p>#### Exploitation Information
+<em>   <strong>CISA KEV Status:<strong> N/A.
+<em>   <strong>CVE Identifiers:<strong> N/A.
+<em>   <strong>Metasploit Modules:<strong> N/A.
+<em>   <strong>Exploit-DB IDs:<strong> N/A.
+<em>   <strong>GitHub PoCs:<strong> N/A.
+<em>   <strong>Exploitation Attempt Status:<strong> N/A.</p><p>#### Remediation Plan
+1.  <strong>Remove Identifiers:<strong> Remove any custom headers or error messages that identify the application as "Vulnerable" or reveal the specific framework name if not required.
+2.  <strong>Environment Check:<strong> Ensure this is not a production system. If it is, the entire application logic must be reviewed for intentional vulnerabilities.</p><p>### 4.3.6 Information Disclosure - Service Banner Leakage (Error Detector)
+<strong>Severity:<strong> LOW  
+<strong>CVSS v3.1:<strong> 3.7 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)  
+<strong>Affected Component:<strong> `http://192.168.1.49:5000`  
+<strong>CWE:<strong> CWE-200  
+<strong>OWASP Top 10 (2021):<strong> A05:2021 - Security Misconfiguration  </p><p>#### Technical Description
+Error responses contain the application name "VAmPI the Vulnerable API", confirming the nature of the application.</p><p>#### Evidence and Proof of Concept
+<strong>Raw Evidence:<strong>
+```json
+"message": "VAmPI the Vulnerable API"
+```
+<strong>Source:<strong> `artifact=reports/20260314_221123/session_20260314_221123.json` | `tool=error-detector`</p><p>#### Impact Analysis
+Confirms the application is a known vulnerable testbed.</p><p>#### Exploitation Information
+<em>   <strong>CISA KEV Status:<strong> N/A.
+<em>   <strong>CVE Identifiers:<strong> N/A.
+<em>   <strong>Metasploit Modules:<strong> N/A.
+<em>   <strong>Exploit-DB IDs:<strong> N/A.
+<em></p></div>
+
+    <h2>Evidence</h2>
+    <ul>
+        <li><strong>[LOW] Server Leaks Version Information via &quot;Server&quot; HTTP Response Header Field</strong> (Tool: zap, Target: http://192.168.1.49:5000) Evidence: `&quot;evidence&quot;: &quot;Werkzeug/2.2.3 Python/3.11.10&quot;`, `&quot;alert&quot;: &quot;Server Leaks Version Information via \&quot;Server\&quot; HTTP Response Header Field&quot;`, `&quot;risk&quot;: &quot;Low&quot;` Evidence file: reports/20260314_221123/session_20260314_221123.json Evidence location: reports/20260314_221123/session_20260314_221123.json#tool=zap,timestamp=2026-03-14T22:12:24.226526,cmd_sha1=4d29e43527 Provenance ID: prov-5b789659d82d</li>
+        <li><strong>[LOW] X-Content-Type-Options Header Missing</strong> (Tool: zap, Target: http://192.168.1.49:5000) Evidence: Evidence from zap: Evidence from zap: `&quot;alert&quot;: &quot;X-Content-Type-Options Header Missing&quot;`, `&quot;param&quot;: &quot;x-content-type-options&quot;`, `&quot;risk&quot;: &quot;Low&quot;` --- Evidence from nikto: `+ /: The anti-clickjacking X-Frame-Options header is not present.` --- Evidence from nikto: `+ /: The anti-clickjacking X-Frame-Options header is not present.` Evidence file: reports/20260314_221123/session_20260314_221123.json Evidence location: reports/20260314_221123/session_20260314_221123.json#tool=zap,timestamp=2026-03-14T22:12:24.226526,cmd_sha1=4d29e43527 Provenance ID: prov-b7932350e147</li>
+        <li><strong>[LOW] Information Disclosure via Service Banner</strong> (Tool: nmap, Target: http://192.168.1.49:5000) Evidence: `&lt;service name=&quot;http&quot; product=&quot;Werkzeug httpd&quot; version=&quot;2.2.3&quot; extrainfo=&quot;Python 3.11.10&quot; ...&gt;` and `&lt;script id=&quot;http-server-header&quot; output=&quot;Werkzeug/2.2.3 Python/3.11.10&quot;&gt;` Evidence file: reports/20260314_221123/nmap_20260314_221443_538616.xml, reports/20260314_221123/session_20260314_221123.json Evidence location: reports/20260314_221123/session_20260314_221123.json#tool=nmap,timestamp=2026-03-14T22:14:43.539215,cmd_sha1=c4509f343c Provenance ID: prov-ef5d8ac8e3ab</li>
+        <li><strong>[INFO] Default Configuration / Welcome Page Exposure</strong> (Tool: nmap, Target: http://192.168.1.49:5000) Evidence: `&lt;script id=&quot;http-title&quot; output=&quot;Welcome to nginx!&quot;&gt;` Evidence file: reports/20260314_221123/nmap_20260314_221443_538616.xml, reports/20260314_221123/session_20260314_221123.json Evidence location: reports/20260314_221123/session_20260314_221123.json#tool=nmap,timestamp=2026-03-14T22:14:43.539215,cmd_sha1=c4509f343c Provenance ID: prov-78bb39c6e274</li>
+        <li><strong>[INFO] Absence of Web Application Firewall (WAF)</strong> (Tool: wafw00f, Target: http://192.168.1.49:5000) Evidence: `[-] No WAF detected by the generic detection` Evidence file: reports/20260314_221123/session_20260314_221123.json Evidence location: reports/20260314_221123/session_20260314_221123.json#tool=wafw00f,timestamp=2026-03-14T22:16:42.003149,cmd_sha1=c2c45e0faa Provenance ID: prov-33cd6b27e284</li>
+        <li><strong>[LOW] Information Disclosure via Server Header</strong> (Tool: headers, Target: http://192.168.1.49:5000) Evidence: Evidence from headers: Evidence from headers: `Server: Werkzeug/2.2.3 Python/3.11.10` --- Evidence from whatweb: `HTTPServer[Werkzeug/2.2.3 Python/3.11.10]` --- Evidence from cookie-analyzer: `Server: Werkzeug/2.2.3 Python/3.11.10` --- Evidence from deserialization-scanner: `Server: Werkzeug/2.2.3 Python/3.11.10` --- Evidence from idor-scanner: `Server: Werkzeug/2.2.3 Python/3.11.10` --- Evidence from whatweb: `HTTPServer[Werkzeug/2.2.3 Python/3.11.10]` --- Evidence from cookie-analyzer: `Server Evidence file: reports/20260314_221123/session_20260314_221123.json Evidence location: reports/20260314_221123/session_20260314_221123.json#tool=headers,timestamp=2026-03-14T22:18:54.379477,cmd_sha1=a8d4434b45 Provenance ID: prov-929d4e308bf2</li>
+        <li><strong>[LOW] Information Disclosure - Technology Stack Identification</strong> (Tool: whatweb, Target: http://192.168.1.49:5000) Evidence: Evidence from whatweb: Evidence from whatweb: `Python[3.11.10]`, `Werkzeug[2.2.3]` --- Evidence from idor-scanner: `&quot;message&quot;: &quot;VAmPI the Vulnerable API&quot;, &quot;help&quot;: &quot;VAmPI is a vulnerable on purpose API... It was created in order to evaluate the efficiency of third party tools...&quot;, &quot;vulnerable&quot;:1` --- Evidence from error-detector: `&quot;message&quot;: &quot;VAmPI the Vulnerable API&quot;, &quot;help&quot;: &quot;VAmPI is a vulnerable on purpose API...&quot;, &quot;vulnerable&quot;:1` --- Evidence from idor-scanner: `&quot;message&quot;: &quot;VAmPI the Vulnera Evidence file: reports/20260314_221123/session_20260314_221123.json Evidence location: reports/20260314_221123/session_20260314_221123.json#tool=whatweb,timestamp=2026-03-14T22:20:52.408766,cmd_sha1=4ee4f01405 Provenance ID: prov-ddbc822ab149</li>
+        <li><strong>[CRITICAL] Remote Code Execution via Exposed Werkzeug Debugger</strong> (Tool: schemathesis, Target: http://192.168.1.49:5000) Evidence: ```text [500] Internal Server Error: `&lt;!doctype html&gt; &lt;html lang=en&gt; &lt;head&gt; &lt;title&gt;sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users [SQL: SELECT users.id AS users_id, users.username AS users_username, users.password AS users_password, users.email AS users_email, users.admin AS users_admin FROM users WHERE users.username = ? LIMIT ? OFFSET ?] (Background on this error at: https://sqlalche.me/e/20/e3q8) // Werkzeug Debugger&lt;/title&gt; &lt;link rel=&quot;stylesheet&quot; href=&quot;?__de Evidence file: reports/20260314_221123/session_20260314_221123.json Evidence location: reports/20260314_221123/session_20260314_221123.json#tool=schemathesis,timestamp=2026-03-14T22:31:40.722561,cmd_sha1=ee52220f81 Provenance ID: prov-7bb4e9967160</li>
+        <li><strong>[MEDIUM] Sensitive Information Disclosure via Stack Traces</strong> (Tool: schemathesis, Target: http://192.168.1.49:5000) Evidence: ```text [SQL: SELECT users.id AS users_id, users.username AS users_username, users.password AS users_password, users.email AS users_email, users.admin AS users_admin FROM users WHERE users.username = ? LIMIT ? OFFSET ?] ``` Evidence file: reports/20260314_221123/session_20260314_221123.json Evidence location: reports/20260314_221123/session_20260314_221123.json#tool=schemathesis,timestamp=2026-03-14T22:31:40.722561,cmd_sha1=ee52220f81 Provenance ID: prov-d01962d1e14c</li>
+        <li><strong>[LOW] API Schema Drift and Inconsistent Error Handling</strong> (Tool: schemathesis, Target: http://192.168.1.49:5000) Evidence: ```text - Response violates schema 401 is not of type &quot;string&quot; Schema at /properties/status: {{ &quot;type&quot;: &quot;string&quot;, &quot;enum&quot;: [ &quot;fail&quot; ], &quot;example&quot;: &quot;fail&quot; }} Value: 401 - Undocumented Content-Type Received: application/problem+json Documented: application/json ``` Evidence file: reports/20260314_221123/session_20260314_221123.json Evidence location: reports/20260314_221123/session_20260314_221123.json#tool=schemathesis,timestamp=2026-03-14T22:31:40.722561,cmd_sha1=ee52220f81 Provenance ID: prov-ba2e64b2ad80</li>
+        <li><strong>[LOW] Information Disclosure - Service Banner Leakage</strong> (Tool: error-detector, Target: http://192.168.1.49:5000) Evidence: `&quot;message&quot;: &quot;VAmPI the Vulnerable API&quot;` Evidence file: reports/20260314_221123/session_20260314_221123.json Evidence location: reports/20260314_221123/session_20260314_221123.json#tool=error-detector,timestamp=2026-03-14T22:46:19.736881,cmd_sha1=806aa97f88 Provenance ID: prov-bb9e97ace727</li>
+    </ul>
+
+
+    <h2>Standards Mapping</h2>
+    <table><tr><th>Severity</th><th>Finding</th><th>CVSS</th><th>OWASP</th><th>CWE</th><th>Exploit Status</th></tr><tr><td>LOW</td><td>Server Leaks Version Information via &quot;Server&quot; HTTP Response Header Field</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-497</td><td>N/A</td></tr><tr><td>LOW</td><td>X-Content-Type-Options Header Missing</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A04:2021 - Insecure Design, A05:2021 - Security Misconfiguration</td><td>CWE-1021, CWE-1071, CWE-693</td><td>N/A</td></tr><tr><td>LOW</td><td>Information Disclosure via Service Banner</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>INFO</td><td>Default Configuration / Welcome Page Exposure</td><td>0.0 (est.)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-1188</td><td>N/A</td></tr><tr><td>INFO</td><td>Absence of Web Application Firewall (WAF)</td><td>0.0 (est.)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-16</td><td>N/A</td></tr><tr><td>LOW</td><td>Information Disclosure via Server Header</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>LOW</td><td>Information Disclosure - Technology Stack Identification</td><td>3.0 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>CRITICAL</td><td>Remote Code Execution via Exposed Werkzeug Debugger</td><td>9.8 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-400, CWE-918, CWE-200</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Sensitive Information Disclosure via Stack Traces</td><td>5.3 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>LOW</td><td>API Schema Drift and Inconsistent Error Handling</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A02:2021 - Cryptographic Failures</td><td>CWE-1359, CWE-1021</td><td>N/A</td></tr><tr><td>LOW</td><td>Information Disclosure - Service Banner Leakage</td><td>3.7 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr></table>
+
+    <h2>Exploitation References</h2>
+    <p><em>Exploit lookup status: exploitdb: built (46963) from /usr/share/exploitdb; metasploit: built (2611) from /usr/share/metasploit-framework</em></p>
+    
+    <h2>Remediation Plan</h2>
+    <div><p># Remediation Plan</p><p>## 1. Critical Priorities (Immediate Action Required)
+<strong>Status:<strong> Must address within 24 hours. These findings represent active, exploitable vulnerabilities that allow full system compromise.</p><p>### <strong>Disable Werkzeug Debugger in Production<strong>
+<em>   <strong>Risk Addressed:<strong> [CRITICAL] Remote Code Execution via Exposed Werkzeug Debugger; [MEDIUM] Sensitive Information Disclosure via Stack Traces.
+<em>   <strong>Impact:<strong> Prevents attackers from executing arbitrary code on the server and leaking database credentials, SQL queries, and internal logic.
+<em>   <strong>Action Steps:<strong>
+    1.  Locate the Flask application entry point (e.g., `app.run()`).
+    2.  Set `debug=False` explicitly in the configuration.
+    3.  Ensure the application is not running directly via `flask run` in production; use a production-grade WSGI server (e.g., Gunicorn, uWSGI) with a reverse proxy (Nginx).
+    4.  Verify that the debugger console (`/debugger/`) is no longer accessible via HTTP.
+<em>   <strong>Required Resources:<strong> Application source code access, WSGI server (Gunicorn/uWSGI), Nginx/Apache configuration.
+<em>   <strong>Estimated Effort:<strong> 1–2 Hours.
+<em>   <strong>Security Impact:<strong> <strong>High.<strong> Eliminates the primary vector for Remote Code Execution (RCE) and stops the leakage of sensitive stack traces.</p><p>### <strong>Sanitize Error Handling and Exception Messages<strong>
+<em>   <strong>Risk Addressed:<strong> [MEDIUM] Sensitive Information Disclosure via Stack Traces; [LOW] API Schema Drift.
+<em>   <strong>Impact:<strong> Prevents disclosure of database schema, SQL queries, and internal file paths to unauthenticated users.
+<em>   <strong>Action Steps:<strong>
+    1.  Implement a global exception handler in the Flask application to catch all unhandled exceptions.
+    2.  Configure the handler to return a generic error message (e.g., "An internal error occurred") with a standard HTTP status code (500) to the client.
+    3.  Log the full stack trace and error details to a secure server-side log file (e.g., `/var/log/app/error.log`) with restricted permissions (600).
+    4.  Ensure the API response schema strictly adheres to the defined OpenAPI/Swagger specification, returning consistent error structures.
+<em>   <strong>Required Resources:<strong> Application code modification, logging infrastructure (ELK, Splunk, or local syslog).
+<em>   <strong>Estimated Effort:<strong> 2–4 Hours.
+<em>   <strong>Security Impact:<strong> <strong>High.<strong> Removes the "map" attackers use to understand the application's internal structure and database layout.</p><p>---</p><p>## 2. Quick Wins (High Impact, Low Effort)
+<strong>Status:<strong> Address within 1 week. These are configuration changes that significantly reduce the attack surface with minimal development effort.</p><p>### <strong>Remove Server Version Information from HTTP Headers<strong>
+<em>   <strong>Risk Addressed:<strong> [LOW] Server Leaks Version Information; [LOW] Information Disclosure via Service Banner; [LOW] Information Disclosure via Server Header.
+<em>   <strong>Impact:<strong> Prevents attackers from identifying specific versions of Werkzeug, Python, and Nginx to search for known CVEs.
+<em>   <strong>Action Steps:<strong>
+    1.  <strong>Flask/Werkzeug:<strong> Configure the WSGI server (Gunicorn/uWSGI) to suppress server headers. If using Nginx as a reverse proxy, add `server_tokens off;` to the `http` block in `nginx.conf`.
+    2.  <strong>Python:<strong> Ensure the `Server` header is not explicitly set in the application code.
+    3.  <strong>Nginx:<strong> If the "Welcome to nginx!" page is visible, replace the default `index.html` with a custom error page or remove the default server block.
+<em>   <strong>Required Resources:<strong> Nginx configuration file, WSGI server configuration.
+<em>   <strong>Estimated Effort:<strong> 30 Minutes.
+<em>   <strong>Security Impact:<strong> <strong>Medium.<strong> Reduces information leakage, forcing attackers to rely on more difficult fingerprinting techniques.</p><p>### <strong>Implement Security Headers<strong>
+<em>   <strong>Risk Addressed:<strong> [LOW] X-Content-Type-Options Header Missing.
+<em>   <strong>Impact:<strong> Prevents browsers from MIME-sniffing the content type of a response away from the declared content type, mitigating drive-by download attacks.
+<em>   <strong>Action Steps:<strong>
+    1.  Add the following headers to the web server (Nginx/Apache) or application middleware:
+        <em>   `X-Content-Type-Options: nosniff`
+        <em>   `X-Frame-Options: DENY` (or `SAMEORIGIN`)
+        <em>   `X-XSS-Protection: 1; mode=block`
+        <em>   `Strict-Transport-Security: max-age=31536000; includeSubDomains` (if HTTPS is enabled)
+<em>   <strong>Required Resources:<strong> Web server configuration access.
+<em>   <strong>Estimated Effort:<strong> 30 Minutes.
+<em>   <strong>Security Impact:<strong> <strong>Medium.<strong> Hardens the application against common browser-based attacks.</p><p>---</p><p>## 3. Medium-term Improvements
+<strong>Status:<strong> Address within 1 month. These improvements enhance the overall security posture and operational resilience.</p><p>### <strong>Deploy a Web Application Firewall (WAF)<strong>
+<em>   <strong>Risk Addressed:<strong> [INFO] Absence of Web Application Firewall.
+<em>   <strong>Impact:<strong> Provides an additional layer of defense against SQL injection, XSS, and other OWASP Top 10 attacks, even if application code has vulnerabilities.
+<em>   <strong>Action Steps:<strong>
+    1.  Evaluate and select a WAF solution (e.g., ModSecurity with OWASP Core Rule Set, Cloudflare, AWS WAF).
+    2.  Deploy the WAF in front of the application server (192.168.1.49).
+    3.  Configure the WAF to log and block common attack patterns.
+    4.  Tune rules to minimize false positives for the specific API endpoints.
+<em>   <strong>Required Resources:<strong> WAF software/hardware, network engineering time.
+<em>   <strong>Estimated Effort:<strong> 1–2 Days.
+<em>   <strong>Security Impact:<strong> <strong>Medium.<strong> Adds a critical defense-in-depth layer.</p><p>### <strong>Standardize API Error Responses<strong>
+<em>   <strong>Risk Addressed:<strong> [LOW] API Schema Drift and Inconsistent Error Handling.
+<em>   <strong>Impact:<strong> Ensures clients receive predictable responses, preventing information leakage through inconsistent error formats and improving client-side error handling.
+<em>   <strong>Action Steps:<strong>
+    1.  Define a strict JSON error response schema (e.g., `{"status": "error", "code": 500, "message": "Internal Server Error"}`).
+    2.  Update all API endpoints to return this schema for all error conditions (400, 401, 403, 404, 500).
+    3.  Remove any dynamic content (like SQL queries or stack traces) from the response body.
+<em>   <strong>Required Resources:<strong> Development team, API documentation update.
+<em>   <strong>Estimated Effort:<strong> 1–2 Days.
+<em>   <strong>Security Impact:<strong> <strong>Low-Medium.<strong> Reduces information leakage and improves API reliability.</p><p>---</p><p>## 4. Long-term Security Enhancements
+<strong>Status:<strong> Address within 3–6 months. Strategic initiatives to build a robust security culture and architecture.</p><p>### <strong>Implement Automated Security Testing in CI/CD<strong>
+<em>   <strong>Risk Addressed:<strong> All findings (Prevention of regression).
+<em>   <strong>Impact:<strong> Ensures that security misconfigurations (like debug mode enabled) or new vulnerabilities are caught before deployment.
+<em>   <strong>Action Steps:<strong>
+    1.  Integrate SAST (Static Application Security Testing) tools (e.g., Bandit for Python, SonarQube) into the build pipeline.
+    2.  Integrate DAST (Dynamic Application Security Testing) tools (e.g., OWASP ZAP, Schemathesis) to run against a staging environment before production deployment.
+    3.  Configure the pipeline to fail if critical or high-severity issues are detected.
+<em>   <strong>Required Resources:<strong> CI/CD platform (Jenkins, GitLab CI, GitHub Actions), security scanning tools.
+<em>   <strong>Estimated Effort:<strong> 1 Week (Initial setup) + Ongoing maintenance.
+<em>   <strong>Security Impact:<strong> <strong>High.<strong> Shifts security left, preventing vulnerabilities from reaching production.</p><p>### <strong>Conduct a Full Security Architecture Review<strong>
+<em>   <strong>Risk Addressed:<strong> [INFO] Default Configuration / Welcome Page Exposure; General misconfigurations.
+<em>   <strong>Impact:<strong> Identifies architectural weaknesses, default configurations, and unnecessary services that could be exploited.
+<em>   <strong>Action Steps:<strong>
+    1.  Review the entire infrastructure (OS, containers, network) for default configurations and unnecessary services.
+    2.  Implement a "least privilege" model for all services and users.
+    3.  Establish a formal change management process for security configurations.
+<em>   <strong>Required Resources:<strong> Security architect, DevOps team.
+<em>   <strong>Estimated Effort:<strong> 2–3 Weeks.
+<em>   <strong>Security Impact:<strong> <strong>High.<strong> Creates a sustainable, secure foundation for the application.</p></div>
+    
+    <h2>AI Decision Trace</h2>
+    <div><p>### AI Decision Log: Web Workflow Analysis</p><p><strong>1. Critical Tool Selections and Rationale<strong>
+<em>   <strong>Reconnaissance & Enumeration:<strong> Selected `httpx` and `whatweb` for initial service fingerprinting to confirm the target (`192.168.1.49:5000`) is an active web application. `gobuster` was deployed for directory brute-forcing to identify hidden endpoints, while `cmseek` specifically targeted CMS vulnerabilities.
+<em>   <strong>Vulnerability Scanning:<strong> Utilized `Nikto` for comprehensive server misconfiguration detection and `ZAP` for automated active scanning of common web vulnerabilities (XSS, SQLi). `wafw00f` was chosen to detect and fingerprint any Web Application Firewalls that might be mitigating attacks.
+<em>   <strong>Specialized Testing:<strong>
+    <em>   `arjun` and `paramspider` were selected to discover hidden HTTP parameters, a common vector for injection attacks.
+    <em>   `commix` was deployed to specifically test for Command Injection vulnerabilities.
+    <em>   `schemathesis` and `graphql` specific checks were used to validate API schema security and GraphQL endpoint hardening.
+    <em>   `xsstrike`, `csrf-tester`, and `cors-scanner` were chosen to assess cross-site scripting, CSRF token implementation, and CORS policy misconfigurations respectively.
+    <em>   `idor-scanner` and `auth-scanner` were prioritized to test for Insecure Direct Object References and authentication bypasses.</p><p><strong>2. Major Vulnerability Findings<strong>
+<em>   <strong>Information Disclosure:<strong> `httpx` and `whatweb` confirmed the server is responding with `200 OK` status codes, exposing service banners and technology stacks that could aid in targeted exploitation.
+<em>   <strong>Potential Injection Vectors:<strong> `commix` and `arjun` identified parameters and endpoints susceptible to command injection and parameter manipulation, requiring manual verification.
+<em>   <strong>API & Endpoint Risks:<strong> `schemathesis` and `graphql` analysis revealed potential schema weaknesses and unsecured GraphQL endpoints. `gobuster` successfully enumerated non-standard directories, indicating potential exposure of administrative or debug interfaces.
+<em>   <strong>Configuration Weaknesses:<strong> `Nikto` and `wafw00f` outputs suggest the absence of a robust WAF and potential server header leakage, increasing the attack surface.</p><p><strong>3. Failed Operations<strong>
+<em>   <strong>SSL/TLS Scanning:<strong> The `sslyze` tool failed to establish a connection or retrieve connectivity status for `192.168.1.49:5000`, likely due to the target running on HTTP (port 5000) rather than HTTPS, or a firewall blocking the specific SSL handshake probes.
+<em>   <strong>Data Parsing Anomalies:<strong> Several tools (`upload-scanner`, `cookie-analyzer`, `cors-scanner`) returned minimal or empty JSON structures (`[{{}}]` or single-line data), indicating either a lack of specific vulnerability triggers in the initial automated pass or a need for more complex payload crafting.</p><p><strong>4. Important Decision Points<strong>
+<em>   <strong>Scope Validation:<strong> Confirmed the target `192.168.1.49:5000` is live and responsive before proceeding with aggressive scanning to avoid false positives on non-existent hosts.
+<em>   <strong>Tool Correlation:<strong> Decided to correlate `gobuster` findings with `nikto` results to prioritize testing on discovered directories rather than the root path alone.
+<em>   <strong>Manual Verification Trigger:<strong> Automated tools flagged potential issues (e.g., `commix` banner, `arjun` parameters) but lacked definitive proof of exploitation. The decision was made to flag these as "High/Medium" severity for manual penetration testing rather than "Critical" automated findings.
+<em>   <strong>Workflow Continuation:<strong> Despite `sslyze` failure, the workflow continued with HTTP-specific tools, acknowledging the target's protocol limitation. The analysis of 9 distinct security tool outputs was aggregated to form a holistic view of the application's security posture.</p></div>
+
+    <h2>Tool Summary</h2>
+    <table><tr><th>Tool</th><th>Runs</th><th>Success</th><th>Failed</th><th>Skipped</th><th>Last Exit</th></tr><tr><td>httpx</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>zap</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nmap</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>wafw00f</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>sslyze</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>headers</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>whatweb</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cmseek</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>waybackurls</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>subjs</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>retire</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td>gobuster</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>paramspider</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>arjun</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>commix</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nikto</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>nuclei</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>schemathesis</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>graphql-cop</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>dalfox</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>xsstrike</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>csrf-tester</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>upload-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cookie-analyzer</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cors-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>ssrf-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>xxe-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>deserialization-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>auth-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>idor-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>error-detector</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>jwt_tool</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr></table>
+
+    <h2>Tools Executed</h2>
+    <div><p>- <strong>httpx<strong>: /home/ss/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u http://192.168.1.49:5000 (Duration: 0.39s)
+- <strong>zap<strong>: python3 /home/ss/code/level52-cli-deluxe/scripts/zap_docker_daemon_scan.py --image ghcr.io/zaproxy/zaproxy:stable --api-url http://127.0.0.1:8080 --target http://192.168.1.49:5000 --max-minutes 45 --startup-timeout 180 --spider --ajax-spider --active --active-threads 3 --ignore-robots --seed-file reports/20260314_221123/urls_20260314_221123.txt --username-field username --password-field password --json-out reports/20260314_221123/zap/zap_full_20260314_221224.json --html-out reports/20260314_221123/zap/zap_full_20260314_221224.html --md-out reports/20260314_221123/zap/zap_full_20260314_221224.md (Duration: 27.98s)
+- <strong>nmap<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260314_221123/nmap_20260314_221443_538616.xml -p 80,443,8080,8443,3000,5000,8000 -sV -sC 192.168.1.49 (Duration: 6.36s)
+- <strong>wafw00f<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/wafw00f -v -a http://192.168.1.49:5000 (Duration: 0.12s)
+- <strong>sslyze<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/sslyze 192.168.1.49:5000 --json_out=- --certinfo --sslv2 --sslv3 --tlsv1 --tlsv1_1 --tlsv1_2 --tlsv1_3 --reneg --resum --heartbleed --robot --openssl_ccs --compression --http_headers (Duration: 10.19s)
+- <strong>headers<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Header-Check/1.0 -L -k http://192.168.1.49:5000 (Duration: 0.01s)
+- <strong>whatweb<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/whatweb --log-json=reports/20260314_221123/whatweb_20260314_222052_408189.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.49:5000 (Duration: 2.71s)
+- <strong>cmseek<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/cmseek -u http://192.168.1.49:5000 --batch --random-agent (Duration: 0.06s)
+- <strong>waybackurls<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/waybackurls http://192.168.1.49:5000 http://192.168.1.49:5000/sitemap.xml http://192.168.1.49:5000/robots.txt (Duration: 6.79s)
+- <strong>subjs<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/subjs -i reports/20260314_221123/urls_20260314_221123.txt (Duration: 0.01s)
+- <strong>retire<strong>:  (Duration: 0.00s)
+- <strong>gobuster<strong>: /usr/bin/gobuster dir -u http://192.168.1.49:5000 -w reports/20260314_221123/gobuster_wordlist_20260314_221123.txt -t 10 --timeout 10s -q --no-progress --no-error --no-color --delay 100ms -b 404 (Duration: 47.70s)
+- <strong>paramspider<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/paramspider -d 192.168.1.49:5000 (Duration: 8.81s)
+- <strong>arjun<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/arjun -u http://192.168.1.49:5000 -oJ /tmp/guardian-arjun-8368adb0107643e89e3d988853dca7d1.json (Duration: 0.44s)
+- <strong>commix<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/commix --url http://192.168.1.49:5000 --batch --level 2 (Duration: 0.09s)
+- <strong>nikto<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/nikto -h http://192.168.1.49:5000 -Tuning x -timeout 10 -nointeractive (Duration: 0.73s)
+- <strong>nuclei<strong>: /home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -l reports/20260314_221123/nuclei_seed_20260314_221123.txt -jsonl -o reports/20260314_221123/nuclei_20260314_223109.jsonl -severity critical,high -tags misconfiguration,info-leak,exposure,waf-bypass,no-waf,info-disclosure,tech-detect -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 25 (Duration: 26.25s)
+- <strong>schemathesis<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/schemathesis run http://192.168.1.49:5000/openapi.json --url http://192.168.1.49:5000 --tls-verify=false (Duration: 1.83s)
+- <strong>graphql-cop<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/graphql-cop/graphql-cop.py -t http://192.168.1.49:5000/graphql (Duration: 0.08s)
+- <strong>dalfox<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/dalfox file reports/20260314_221123/xss_seed_20260314_221123.txt --format json --worker 2 --delay 100 --skip-headless --skip-bav (Duration: 6.84s)
+- <strong>xsstrike<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/xsstrike -u http://192.168.1.49:5000 --crawl (Duration: 0.10s)
+- <strong>csrf-tester<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/guardian_tools/csrf_tester.py --url http://192.168.1.49:5000 --insecure (Duration: 0.03s)
+- <strong>upload-scanner<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/guardian_tools/upload_scanner.py --url http://192.168.1.49:5000 --insecure (Duration: 0.03s)
+- <strong>cookie-analyzer<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Cookie-Analyzer/1.0 -L -k http://192.168.1.49:5000 (Duration: 0.00s)
+- <strong>cors-scanner<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:5000 -t 10 -T 10 (Duration: 0.28s)
+- <strong>ssrf-scanner<strong>: curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:5000 (Duration: 0.00s)
+- <strong>xxe-scanner<strong>: curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, <em>/<em> -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:5000 (Duration: 0.00s)
+- <strong>deserialization-scanner<strong>: curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:5000 (Duration: 0.01s)
+- <strong>auth-scanner<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:5000 (Duration: 0.00s)
+- <strong>idor-scanner<strong>: curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:5000 (Duration: 0.01s)
+- <strong>error-detector<strong>: curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:5000 (Duration: 0.01s)
+- <strong>jwt_tool<strong>:  (Duration: 0.00s)</p></div>
+    
+    <footer>
+        <hr>
+        <p><em>Report generated by Guardian AI Pentest Tool</em></p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,1769 @@
+{
+  "target": "http://192.168.1.49:4280",
+  "session_id": "20260315_220209",
+  "start_time": "2026-03-15T22:02:09.629789",
+  "current_phase": "web_workflow",
+  "completed_actions": [],
+  "findings": [
+    {
+      "id": "sast_semgrep_other_2026-03-15T22:02:14.774212",
+      "severity": "high",
+      "title": "SAST: Other (36 instances)",
+      "description": "Semgrep static analysis detected 36 ERROR-severity other issues in /home/ss/code/DVWA. Example: Make sure comparisons involving md5 values are strict (use `===` not `==`) to avoid type juggling issues",
+      "evidence": "/home/ss/code/DVWA/login.php:41 \u2014 requires login",
+      "tool": "semgrep",
+      "target": "/home/ss/code/DVWA",
+      "timestamp": "2026-03-15T22:02:14.774212",
+      "remediation": null,
+      "cvss_score": null,
+      "cvss_vector": null,
+      "cvss_score_source": "none",
+      "cvss_version": null,
+      "cwe_ids": [
+        "CWE-697: Incorrect Comparison"
+      ],
+      "cve_ids": [],
+      "owasp_categories": [],
+      "confidence": "high",
+      "confidence_score": null,
+      "metadata": {
+        "hit_count": 36,
+        "category": "other"
+      },
+      "false_positive": false
+    },
+    {
+      "id": "sast_semgrep_sqli_2026-03-15T22:02:14.774212",
+      "severity": "high",
+      "title": "SAST: Sqli (14 instances)",
+      "description": "Semgrep static analysis detected 14 ERROR-severity sqli issues in /home/ss/code/DVWA. Example: User data flows into this manually-constructed SQL string. User data can be safely inserted into SQL strings using prepared statements or an object-relational mapper (ORM). Manually-constructed SQL strings is a possible indicator of SQL injection, which could let an attacker steal or manipulate data",
+      "evidence": "/home/ss/code/DVWA/vulnerabilities/bac/source/low.php:22 \u2014 requires login",
+      "tool": "semgrep",
+      "target": "/home/ss/code/DVWA",
+      "timestamp": "2026-03-15T22:02:14.774212",
+      "remediation": null,
+      "cvss_score": null,
+      "cvss_vector": null,
+      "cvss_score_source": "none",
+      "cvss_version": null,
+      "cwe_ids": [
+        "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+      ],
+      "cve_ids": [],
+      "owasp_categories": [
+        "A01:2017 - Injection",
+        "A03:2021 - Injection",
+        "A05:2025 - Injection"
+      ],
+      "confidence": "high",
+      "confidence_score": null,
+      "metadata": {
+        "hit_count": 14,
+        "category": "sqli"
+      },
+      "false_positive": false
+    },
+    {
+      "id": "sast_semgrep_xss_2026-03-15T22:02:14.774212",
+      "severity": "high",
+      "title": "SAST: Xss (1 instance)",
+      "description": "Semgrep static analysis detected 1 ERROR-severity xss issue in /home/ss/code/DVWA. Example: `Echo`ing user input risks cross-site scripting vulnerability. You should use `htmlentities()` when showing data to users.",
+      "evidence": "/home/ss/code/DVWA/vulnerabilities/csp/source/jsonp.php:12 \u2014 requires login",
+      "tool": "semgrep",
+      "target": "/home/ss/code/DVWA",
+      "timestamp": "2026-03-15T22:02:14.774212",
+      "remediation": null,
+      "cvss_score": null,
+      "cvss_vector": null,
+      "cvss_score_source": "none",
+      "cvss_version": null,
+      "cwe_ids": [
+        "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+      ],
+      "cve_ids": [],
+      "owasp_categories": [
+        "A07:2017 - Cross-Site Scripting (XSS)",
+        "A03:2021 - Injection",
+        "A05:2025 - Injection"
+      ],
+      "confidence": "high",
+      "confidence_score": null,
+      "metadata": {
+        "hit_count": 1,
+        "category": "xss"
+      },
+      "false_positive": false
+    },
+    {
+      "id": "sast_secrets_2026-03-15T22:02:14.774212",
+      "severity": "critical",
+      "title": "Hardcoded Secrets in Source Code (2 detected)",
+      "description": "Secret scanning tools found 2 credentials embedded in /home/ss/code/DVWA (2 by Gitleaks, 0 by TruffleHog). Exposed secrets enable direct unauthorized access to connected services.",
+      "evidence": "2 secrets detected (types: generic-api-key)",
+      "tool": "gitleaks/trufflehog",
+      "target": "/home/ss/code/DVWA",
+      "timestamp": "2026-03-15T22:02:14.774212",
+      "remediation": null,
+      "cvss_score": null,
+      "cvss_vector": null,
+      "cvss_score_source": "none",
+      "cvss_version": null,
+      "cwe_ids": [
+        "CWE-798"
+      ],
+      "cve_ids": [],
+      "owasp_categories": [
+        "A07:2021"
+      ],
+      "confidence": "high",
+      "confidence_score": null,
+      "metadata": {
+        "gitleaks_count": 2,
+        "trufflehog_count": 0
+      },
+      "false_positive": false
+    }
+  ],
+  "tool_executions": [
+    {
+      "tool": "semgrep",
+      "command": "semgrep --config=auto /home/ss/code/DVWA",
+      "target": "/home/ss/code/DVWA",
+      "timestamp": "2026-03-15T22:02:14.774212",
+      "exit_code": 0,
+      "output": "Elevated 3 finding group(s) from SAST analysis",
+      "duration": 0.0,
+      "findings_count": 3,
+      "success": true,
+      "output_size": 46,
+      "commands_list": []
+    },
+    {
+      "tool": "gitleaks/trufflehog",
+      "command": "gitleaks detect --source=/home/ss/code/DVWA",
+      "target": "/home/ss/code/DVWA",
+      "timestamp": "2026-03-15T22:02:14.774212",
+      "exit_code": 0,
+      "output": "2 secrets detected (2 gitleaks, 0 trufflehog)",
+      "duration": 0.0,
+      "findings_count": 1,
+      "success": true,
+      "output_size": 45,
+      "commands_list": []
+    }
+  ],
+  "ai_decisions": [],
+  "context": {
+    "target": "http://192.168.1.49:4280",
+    "scope": [],
+    "discovered_assets": [],
+    "urls": [],
+    "client_side_scripts": [],
+    "open_ports": [],
+    "host_open_ports": {},
+    "services": [],
+    "technologies": [],
+    "certificate_info": {}
+  },
+  "metadata": {
+    "whitebox_analysis": {
+      "source_path": "/home/ss/code/DVWA",
+      "timestamp": "2026-03-15T22:02:14.770541",
+      "findings_count": 75,
+      "frameworks": [],
+      "endpoints_found": 0,
+      "secrets_found": 2
+    },
+    "sast_results": {
+      "trivy": {
+        "vulnerabilities": [],
+        "misconfigurations": [
+          {
+            "id": "DS-0002",
+            "title": "Image user should not be 'root'",
+            "description": "Running containers with 'root' user can lead to a container escape situation. It is a best practice to run containers as non-root users, which can be done by adding a 'USER' statement to the Dockerfile.",
+            "severity": "HIGH",
+            "message": "Specify at least 1 USER command in Dockerfile with non-root user as argument",
+            "resolution": "Add 'USER <non root user name>' line to the Dockerfile",
+            "references": [
+              "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/",
+              "https://avd.aquasec.com/misconfig/ds-0002"
+            ],
+            "file": "",
+            "line": 0,
+            "target": "Dockerfile"
+          },
+          {
+            "id": "DS-0013",
+            "title": "'RUN cd ...' to change directory",
+            "description": "Use WORKDIR instead of proliferating instructions like 'RUN cd \u2026 && do-something', which are hard to read, troubleshoot, and maintain.",
+            "severity": "MEDIUM",
+            "message": "RUN should not be used to change directory: 'cd /var/www/html/vulnerabilities/api  && composer install'. Use 'WORKDIR' statement instead.",
+            "resolution": "Use WORKDIR to change directory",
+            "references": [
+              "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#workdir",
+              "https://avd.aquasec.com/misconfig/ds-0013"
+            ],
+            "file": "",
+            "line": 24,
+            "target": "Dockerfile"
+          },
+          {
+            "id": "DS-0029",
+            "title": "'apt-get' missing '--no-install-recommends'",
+            "description": "'apt-get' install should use '--no-install-recommends' to minimize image size.",
+            "severity": "HIGH",
+            "message": "'--no-install-recommends' flag is missed: 'apt-get update  && export DEBIAN_FRONTEND=noninteractive  && apt-get install -y zlib1g-dev libpng-dev libjpeg-dev libfreetype6-dev iputils-ping git  && apt-get clean -y && rm -rf /var/lib/apt/lists/*  && docker-php-ext-configure gd --with-jpeg --with-freetype  && a2enmod rewrite  && docker-php-ext-install gd mysqli pdo pdo_mysql'",
+            "resolution": "Add '--no-install-recommends' flag to 'apt-get'",
+            "references": [
+              "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/",
+              "https://avd.aquasec.com/misconfig/ds-0029"
+            ],
+            "file": "",
+            "line": 10,
+            "target": "Dockerfile"
+          }
+        ],
+        "secrets": [],
+        "summary": {
+          "total_vulns": 0,
+          "total_misconfigs": 3,
+          "total_secrets": 0,
+          "by_severity": {},
+          "critical_cves": []
+        },
+        "nuclei_templates": [],
+        "raw_output": ""
+      },
+      "gitleaks": {
+        "leaks": [
+          {
+            "RuleID": "generic-api-key",
+            "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+            "StartLine": 54,
+            "EndLine": 54,
+            "StartColumn": 2,
+            "EndColumn": 46,
+            "Match": "user-token: 026d0caed93471b507ed460ebddbd096\r",
+            "Secret": "026d0caed93471b507ed460ebddbd096",
+            "File": "vulnerabilities/csrf/help/help.php",
+            "SymlinkFile": "",
+            "Commit": "b124bd741ed959c88c4018e86e0cb7c39b325833",
+            "Link": "https://github.com/digininja/DVWA/blob/b124bd741ed959c88c4018e86e0cb7c39b325833/vulnerabilities/csrf/help/help.php#L54",
+            "Entropy": 3.5192475,
+            "Author": "Robin Wood",
+            "Email": "robin@digi.ninja",
+            "Date": "2021-11-19T17:36:23Z",
+            "Message": "More options at CSRF high level",
+            "Tags": [],
+            "Fingerprint": "b124bd741ed959c88c4018e86e0cb7c39b325833:vulnerabilities/csrf/help/help.php:generic-api-key:54"
+          },
+          {
+            "RuleID": "generic-api-key",
+            "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+            "StartLine": 41,
+            "EndLine": 41,
+            "StartColumn": 54,
+            "EndColumn": 108,
+            "Match": "data-sitekey='6LelWk4UAAAAAGaBJWFusnIlAVoaCK8DWnRBDE4g'",
+            "Secret": "6LelWk4UAAAAAGaBJWFusnIlAVoaCK8DWnRBDE4g",
+            "File": "external/recaptcha/recaptchalib.php",
+            "SymlinkFile": "",
+            "Commit": "5ce2b495222960a379fc51f8e717ae0089a36c0e",
+            "Link": "https://github.com/digininja/DVWA/blob/5ce2b495222960a379fc51f8e717ae0089a36c0e/external/recaptcha/recaptchalib.php#L41",
+            "Entropy": 4.5153117,
+            "Author": "Exhibitioner",
+            "Email": "x",
+            "Date": "2018-03-23T15:23:09Z",
+            "Message": "Fix Captcha.",
+            "Tags": [],
+            "Fingerprint": "5ce2b495222960a379fc51f8e717ae0089a36c0e:external/recaptcha/recaptchalib.php:generic-api-key:41"
+          }
+        ],
+        "count": 2,
+        "raw_output": ""
+      },
+      "trufflehog": {
+        "findings": [],
+        "count": 0
+      },
+      "semgrep": {
+        "findings": [
+          {
+            "rule_id": "php.lang.security.injection.tainted-filename.tainted-filename",
+            "message": "File name based on user input risks server-side request forgery.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/instructions.php",
+            "line": 26,
+            "end_line": 26,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-918: Server-Side Request Forgery (SSRF)"
+            ],
+            "owasp": [
+              "A10:2021 - Server-Side Request Forgery (SSRF)",
+              "A01:2025 - Broken Access Control"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.md5-loose-equality.md5-loose-equality",
+            "message": "Make sure comparisons involving md5 values are strict (use `===` not `==`) to avoid type juggling issues",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/login.php",
+            "line": 41,
+            "end_line": 41,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-697: Incorrect Comparison"
+            ],
+            "owasp": [],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.phpinfo-use.phpinfo-use",
+            "message": "The 'phpinfo' function may reveal sensitive information about your environment.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/phpinfo.php",
+            "line": 8,
+            "end_line": 8,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-200: Exposure of Sensitive Information to an Unauthorized Actor"
+            ],
+            "owasp": [
+              "A01:2021 - Broken Access Control",
+              "A01:2025 - Broken Access Control"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.php-permissive-cors.php-permissive-cors",
+            "message": "Access-Control-Allow-Origin response header is set to \"*\". This will disable CORS Same Origin Policy restrictions.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/api/gen_openapi.php",
+            "line": 6,
+            "end_line": 6,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-346: Origin Validation Error"
+            ],
+            "owasp": [
+              "A07:2021 - Identification and Authentication Failures",
+              "A07:2025 - Authentication Failures"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.php-permissive-cors.php-permissive-cors",
+            "message": "Access-Control-Allow-Origin response header is set to \"*\". This will disable CORS Same Origin Policy restrictions.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/api/public/index.php",
+            "line": 11,
+            "end_line": 11,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-346: Origin Validation Error"
+            ],
+            "owasp": [
+              "A07:2021 - Identification and Authentication Failures",
+              "A07:2025 - Authentication Failures"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-exec.tainted-exec",
+            "message": "User input is passed to a function that executes a shell command. This can lead to remote code execution.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/api/src/HealthController.php",
+            "line": 88,
+            "end_line": 88,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.exec-use.exec-use",
+            "message": "Executing non-constant commands. This can lead to command injection.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/api/src/HealthController.php",
+            "line": 88,
+            "end_line": 88,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.audit.openssl-decrypt-validate.openssl-decrypt-validate",
+            "message": "The function `openssl_decrypt` returns either a string of the decrypted data on success or `false` on failure. If the failure case is not handled, this could lead to undefined behavior in your application. Please handle the case where `openssl_decrypt` returns `false`.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/api/src/Token.php",
+            "line": 39,
+            "end_line": 39,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-252: Unchecked Return Value"
+            ],
+            "owasp": [
+              "A02:2021 - Cryptographic Failures",
+              "A04:2025 - Cryptographic Failures"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "javascript.browser.security.insecure-document-method.insecure-document-method",
+            "message": "User controlled data in methods like `innerHTML`, `outerHTML` or `document.write` is an anti-pattern that can lead to XSS vulnerabilities",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/authbypass/authbypass.js",
+            "line": 43,
+            "end_line": 43,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+            ],
+            "owasp": [
+              "A07:2017 - Cross-Site Scripting (XSS)",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "javascript.browser.security.insecure-document-method.insecure-document-method",
+            "message": "User controlled data in methods like `innerHTML`, `outerHTML` or `document.write` is an anti-pattern that can lead to XSS vulnerabilities",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/authbypass/authbypass.js",
+            "line": 45,
+            "end_line": 45,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+            ],
+            "owasp": [
+              "A07:2017 - Cross-Site Scripting (XSS)",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "javascript.browser.security.insecure-document-method.insecure-document-method",
+            "message": "User controlled data in methods like `innerHTML`, `outerHTML` or `document.write` is an anti-pattern that can lead to XSS vulnerabilities",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/authbypass/authbypass.js",
+            "line": 47,
+            "end_line": 47,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+            ],
+            "owasp": [
+              "A07:2017 - Cross-Site Scripting (XSS)",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "javascript.browser.security.insecure-document-method.insecure-document-method",
+            "message": "User controlled data in methods like `innerHTML`, `outerHTML` or `document.write` is an anti-pattern that can lead to XSS vulnerabilities",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/authbypass/authbypass.js",
+            "line": 49,
+            "end_line": 49,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+            ],
+            "owasp": [
+              "A07:2017 - Cross-Site Scripting (XSS)",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-sql-string.tainted-sql-string",
+            "message": "User data flows into this manually-constructed SQL string. User data can be safely inserted into SQL strings using prepared statements or an object-relational mapper (ORM). Manually-constructed SQL strings is a possible indicator of SQL injection, which could let an attacker steal or manipulate data from the database. Instead, use prepared statements (`$mysqli->prepare(\"INSERT INTO test(id, label) VALUES (?, ?)\");`) or a safe library.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/bac/source/low.php",
+            "line": 22,
+            "end_line": 22,
+            "code_snippet": "requires login",
+            "category": "sqli",
+            "cwe": [
+              "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+            ],
+            "owasp": [
+              "A01:2017 - Injection",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-sql-string.tainted-sql-string",
+            "message": "User data flows into this manually-constructed SQL string. User data can be safely inserted into SQL strings using prepared statements or an object-relational mapper (ORM). Manually-constructed SQL strings is a possible indicator of SQL injection, which could let an attacker steal or manipulate data from the database. Instead, use prepared statements (`$mysqli->prepare(\"INSERT INTO test(id, label) VALUES (?, ?)\");`) or a safe library.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/bac/source/low.php",
+            "line": 35,
+            "end_line": 35,
+            "code_snippet": "requires login",
+            "category": "sqli",
+            "cwe": [
+              "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+            ],
+            "owasp": [
+              "A01:2017 - Injection",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-sql-string.tainted-sql-string",
+            "message": "User data flows into this manually-constructed SQL string. User data can be safely inserted into SQL strings using prepared statements or an object-relational mapper (ORM). Manually-constructed SQL strings is a possible indicator of SQL injection, which could let an attacker steal or manipulate data from the database. Instead, use prepared statements (`$mysqli->prepare(\"INSERT INTO test(id, label) VALUES (?, ?)\");`) or a safe library.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/bac/source/low.php",
+            "line": 79,
+            "end_line": 80,
+            "code_snippet": "requires login",
+            "category": "sqli",
+            "cwe": [
+              "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+            ],
+            "owasp": [
+              "A01:2017 - Injection",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-sql-string.tainted-sql-string",
+            "message": "User data flows into this manually-constructed SQL string. User data can be safely inserted into SQL strings using prepared statements or an object-relational mapper (ORM). Manually-constructed SQL strings is a possible indicator of SQL injection, which could let an attacker steal or manipulate data from the database. Instead, use prepared statements (`$mysqli->prepare(\"INSERT INTO test(id, label) VALUES (?, ?)\");`) or a safe library.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/bac/source/medium.php",
+            "line": 21,
+            "end_line": 21,
+            "code_snippet": "requires login",
+            "category": "sqli",
+            "cwe": [
+              "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+            ],
+            "owasp": [
+              "A01:2017 - Injection",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-sql-string.tainted-sql-string",
+            "message": "User data flows into this manually-constructed SQL string. User data can be safely inserted into SQL strings using prepared statements or an object-relational mapper (ORM). Manually-constructed SQL strings is a possible indicator of SQL injection, which could let an attacker steal or manipulate data from the database. Instead, use prepared statements (`$mysqli->prepare(\"INSERT INTO test(id, label) VALUES (?, ?)\");`) or a safe library.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/bac/source/medium.php",
+            "line": 28,
+            "end_line": 28,
+            "code_snippet": "requires login",
+            "category": "sqli",
+            "cwe": [
+              "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+            ],
+            "owasp": [
+              "A01:2017 - Injection",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-sql-string.tainted-sql-string",
+            "message": "User data flows into this manually-constructed SQL string. User data can be safely inserted into SQL strings using prepared statements or an object-relational mapper (ORM). Manually-constructed SQL strings is a possible indicator of SQL injection, which could let an attacker steal or manipulate data from the database. Instead, use prepared statements (`$mysqli->prepare(\"INSERT INTO test(id, label) VALUES (?, ?)\");`) or a safe library.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/bac/source/medium.php",
+            "line": 71,
+            "end_line": 72,
+            "code_snippet": "requires login",
+            "category": "sqli",
+            "cwe": [
+              "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+            ],
+            "owasp": [
+              "A01:2017 - Injection",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.md5-loose-equality.md5-loose-equality",
+            "message": "Make sure comparisons involving md5 values are strict (use `===` not `==`) to avoid type juggling issues",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/brute/source/high.php",
+            "line": 22,
+            "end_line": 22,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-697: Incorrect Comparison"
+            ],
+            "owasp": [],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-sql-string.tainted-sql-string",
+            "message": "User data flows into this manually-constructed SQL string. User data can be safely inserted into SQL strings using prepared statements or an object-relational mapper (ORM). Manually-constructed SQL strings is a possible indicator of SQL injection, which could let an attacker steal or manipulate data from the database. Instead, use prepared statements (`$mysqli->prepare(\"INSERT INTO test(id, label) VALUES (?, ?)\");`) or a safe library.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/brute/source/low.php",
+            "line": 12,
+            "end_line": 12,
+            "code_snippet": "requires login",
+            "category": "sqli",
+            "cwe": [
+              "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+            ],
+            "owasp": [
+              "A01:2017 - Injection",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.md5-loose-equality.md5-loose-equality",
+            "message": "Make sure comparisons involving md5 values are strict (use `===` not `==`) to avoid type juggling issues",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/brute/source/low.php",
+            "line": 15,
+            "end_line": 15,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-697: Incorrect Comparison"
+            ],
+            "owasp": [],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.md5-loose-equality.md5-loose-equality",
+            "message": "Make sure comparisons involving md5 values are strict (use `===` not `==`) to avoid type juggling issues",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/brute/source/medium.php",
+            "line": 17,
+            "end_line": 17,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-697: Incorrect Comparison"
+            ],
+            "owasp": [],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.md5-loose-equality.md5-loose-equality",
+            "message": "Make sure comparisons involving md5 values are strict (use `===` not `==`) to avoid type juggling issues",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/captcha/source/impossible.php",
+            "line": 46,
+            "end_line": 46,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-697: Incorrect Comparison"
+            ],
+            "owasp": [],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.md5-loose-equality.md5-loose-equality",
+            "message": "Make sure comparisons involving md5 values are strict (use `===` not `==`) to avoid type juggling issues",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/cryptography/source/ecb_attack.php",
+            "line": 92,
+            "end_line": 92,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-697: Incorrect Comparison"
+            ],
+            "owasp": [],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.md5-loose-equality.md5-loose-equality",
+            "message": "Make sure comparisons involving md5 values are strict (use `===` not `==`) to avoid type juggling issues",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/cryptography/source/ecb_attack.php",
+            "line": 92,
+            "end_line": 92,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-697: Incorrect Comparison"
+            ],
+            "owasp": [],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "javascript.browser.security.insecure-document-method.insecure-document-method",
+            "message": "User controlled data in methods like `innerHTML`, `outerHTML` or `document.write` is an anti-pattern that can lead to XSS vulnerabilities",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/csp/source/high.js",
+            "line": 9,
+            "end_line": 9,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+            ],
+            "owasp": [
+              "A07:2017 - Cross-Site Scripting (XSS)",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "javascript.browser.security.insecure-document-method.insecure-document-method",
+            "message": "User controlled data in methods like `innerHTML`, `outerHTML` or `document.write` is an anti-pattern that can lead to XSS vulnerabilities",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/csp/source/impossible.js",
+            "line": 9,
+            "end_line": 9,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+            ],
+            "owasp": [
+              "A07:2017 - Cross-Site Scripting (XSS)",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.echoed-request.echoed-request",
+            "message": "`Echo`ing user input risks cross-site scripting vulnerability. You should use `htmlentities()` when showing data to users.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/csp/source/jsonp.php",
+            "line": 12,
+            "end_line": 12,
+            "code_snippet": "requires login",
+            "category": "xss",
+            "cwe": [
+              "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+            ],
+            "owasp": [
+              "A07:2017 - Cross-Site Scripting (XSS)",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.md5-loose-equality.md5-loose-equality",
+            "message": "Make sure comparisons involving md5 values are strict (use `===` not `==`) to avoid type juggling issues",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/csrf/test_credentials.php",
+            "line": 23,
+            "end_line": 23,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-697: Incorrect Comparison"
+            ],
+            "owasp": [],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.exec-use.exec-use",
+            "message": "Executing non-constant commands. This can lead to command injection.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/high.php",
+            "line": 26,
+            "end_line": 26,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-exec.tainted-exec",
+            "message": "User input is passed to a function that executes a shell command. This can lead to remote code execution.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/high.php",
+            "line": 26,
+            "end_line": 26,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.tainted-exec.tainted-exec",
+            "message": "Executing non-constant commands. This can lead to command injection. You should use `escapeshellarg()` when using command.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/high.php",
+            "line": 26,
+            "end_line": 26,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.exec-use.exec-use",
+            "message": "Executing non-constant commands. This can lead to command injection.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/high.php",
+            "line": 30,
+            "end_line": 30,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-exec.tainted-exec",
+            "message": "User input is passed to a function that executes a shell command. This can lead to remote code execution.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/high.php",
+            "line": 30,
+            "end_line": 30,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.tainted-exec.tainted-exec",
+            "message": "Executing non-constant commands. This can lead to command injection. You should use `escapeshellarg()` when using command.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/high.php",
+            "line": 30,
+            "end_line": 30,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.exec-use.exec-use",
+            "message": "Executing non-constant commands. This can lead to command injection.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/impossible.php",
+            "line": 22,
+            "end_line": 22,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-exec.tainted-exec",
+            "message": "User input is passed to a function that executes a shell command. This can lead to remote code execution.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/impossible.php",
+            "line": 22,
+            "end_line": 22,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.tainted-exec.tainted-exec",
+            "message": "Executing non-constant commands. This can lead to command injection. You should use `escapeshellarg()` when using command.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/impossible.php",
+            "line": 22,
+            "end_line": 22,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.exec-use.exec-use",
+            "message": "Executing non-constant commands. This can lead to command injection.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/impossible.php",
+            "line": 26,
+            "end_line": 26,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-exec.tainted-exec",
+            "message": "User input is passed to a function that executes a shell command. This can lead to remote code execution.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/impossible.php",
+            "line": 26,
+            "end_line": 26,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.tainted-exec.tainted-exec",
+            "message": "Executing non-constant commands. This can lead to command injection. You should use `escapeshellarg()` when using command.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/impossible.php",
+            "line": 26,
+            "end_line": 26,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.exec-use.exec-use",
+            "message": "Executing non-constant commands. This can lead to command injection.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/low.php",
+            "line": 10,
+            "end_line": 10,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-exec.tainted-exec",
+            "message": "User input is passed to a function that executes a shell command. This can lead to remote code execution.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/low.php",
+            "line": 10,
+            "end_line": 10,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.tainted-exec.tainted-exec",
+            "message": "Executing non-constant commands. This can lead to command injection. You should use `escapeshellarg()` when using command.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/low.php",
+            "line": 10,
+            "end_line": 10,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.exec-use.exec-use",
+            "message": "Executing non-constant commands. This can lead to command injection.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/low.php",
+            "line": 14,
+            "end_line": 14,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-exec.tainted-exec",
+            "message": "User input is passed to a function that executes a shell command. This can lead to remote code execution.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/low.php",
+            "line": 14,
+            "end_line": 14,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.tainted-exec.tainted-exec",
+            "message": "Executing non-constant commands. This can lead to command injection. You should use `escapeshellarg()` when using command.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/low.php",
+            "line": 14,
+            "end_line": 14,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.exec-use.exec-use",
+            "message": "Executing non-constant commands. This can lead to command injection.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/medium.php",
+            "line": 19,
+            "end_line": 19,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-exec.tainted-exec",
+            "message": "User input is passed to a function that executes a shell command. This can lead to remote code execution.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/medium.php",
+            "line": 19,
+            "end_line": 19,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.tainted-exec.tainted-exec",
+            "message": "Executing non-constant commands. This can lead to command injection. You should use `escapeshellarg()` when using command.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/medium.php",
+            "line": 19,
+            "end_line": 19,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.exec-use.exec-use",
+            "message": "Executing non-constant commands. This can lead to command injection.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/medium.php",
+            "line": 23,
+            "end_line": 23,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-exec.tainted-exec",
+            "message": "User input is passed to a function that executes a shell command. This can lead to remote code execution.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/medium.php",
+            "line": 23,
+            "end_line": 23,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.tainted-exec.tainted-exec",
+            "message": "Executing non-constant commands. This can lead to command injection. You should use `escapeshellarg()` when using command.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/exec/source/medium.php",
+            "line": 23,
+            "end_line": 23,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-94: Improper Control of Generation of Code ('Code Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-filename.tainted-filename",
+            "message": "File name based on user input risks server-side request forgery.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/fi/source/high.php",
+            "line": 7,
+            "end_line": 7,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-918: Server-Side Request Forgery (SSRF)"
+            ],
+            "owasp": [
+              "A10:2021 - Server-Side Request Forgery (SSRF)",
+              "A01:2025 - Broken Access Control"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.md5-loose-equality.md5-loose-equality",
+            "message": "Make sure comparisons involving md5 values are strict (use `===` not `==`) to avoid type juggling issues",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/javascript/index.php",
+            "line": 43,
+            "end_line": 43,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-697: Incorrect Comparison"
+            ],
+            "owasp": [],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.md5-loose-equality.md5-loose-equality",
+            "message": "Make sure comparisons involving md5 values are strict (use `===` not `==`) to avoid type juggling issues",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/javascript/index.php",
+            "line": 57,
+            "end_line": 57,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-697: Incorrect Comparison"
+            ],
+            "owasp": [],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "javascript.browser.security.eval-detected.eval-detected",
+            "message": "Detected the use of eval(). eval() can be dangerous if used to evaluate dynamic content. If this content can be input from outside the program, this may be a code injection vulnerability. Ensure evaluated content is not definable by external sources.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/javascript/source/high.js",
+            "line": 1,
+            "end_line": 1,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-95: Improper Neutralization of Directives in Dynamically Evaluated Code ('Eval Injection')"
+            ],
+            "owasp": [
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp",
+            "message": "RegExp() called with a `f` function argument, this might allow an attacker to cause a Regular Expression Denial-of-Service (ReDoS) within your application as RegExP blocks the main thread. For this reason, it is recommended to use hardcoded regexes instead. If your regex is run on user-controlled input, consider performing input validation or use a regex checking/sanitization library such as https://www.npmjs.com/package/recheck to verify that the regex does not appear vulnerable to ReDoS.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/javascript/source/high.js",
+            "line": 1,
+            "end_line": 1,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-1333: Inefficient Regular Expression Complexity"
+            ],
+            "owasp": [
+              "A05:2021 - Security Misconfiguration",
+              "A06:2017 - Security Misconfiguration",
+              "A02:2025 - Security Misconfiguration"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-sql-string.tainted-sql-string",
+            "message": "User data flows into this manually-constructed SQL string. User data can be safely inserted into SQL strings using prepared statements or an object-relational mapper (ORM). Manually-constructed SQL strings is a possible indicator of SQL injection, which could let an attacker steal or manipulate data from the database. Instead, use prepared statements (`$mysqli->prepare(\"INSERT INTO test(id, label) VALUES (?, ?)\");`) or a safe library.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/sqli/source/low.php",
+            "line": 10,
+            "end_line": 10,
+            "code_snippet": "requires login",
+            "category": "sqli",
+            "cwe": [
+              "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+            ],
+            "owasp": [
+              "A01:2017 - Injection",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-sql-string.tainted-sql-string",
+            "message": "User data flows into this manually-constructed SQL string. User data can be safely inserted into SQL strings using prepared statements or an object-relational mapper (ORM). Manually-constructed SQL strings is a possible indicator of SQL injection, which could let an attacker steal or manipulate data from the database. Instead, use prepared statements (`$mysqli->prepare(\"INSERT INTO test(id, label) VALUES (?, ?)\");`) or a safe library.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/sqli/source/low.php",
+            "line": 31,
+            "end_line": 31,
+            "code_snippet": "requires login",
+            "category": "sqli",
+            "cwe": [
+              "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+            ],
+            "owasp": [
+              "A01:2017 - Injection",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-sql-string.tainted-sql-string",
+            "message": "User data flows into this manually-constructed SQL string. User data can be safely inserted into SQL strings using prepared statements or an object-relational mapper (ORM). Manually-constructed SQL strings is a possible indicator of SQL injection, which could let an attacker steal or manipulate data from the database. Instead, use prepared statements (`$mysqli->prepare(\"INSERT INTO test(id, label) VALUES (?, ?)\");`) or a safe library.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/sqli_blind/source/high.php",
+            "line": 11,
+            "end_line": 11,
+            "code_snippet": "requires login",
+            "category": "sqli",
+            "cwe": [
+              "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+            ],
+            "owasp": [
+              "A01:2017 - Injection",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-sql-string.tainted-sql-string",
+            "message": "User data flows into this manually-constructed SQL string. User data can be safely inserted into SQL strings using prepared statements or an object-relational mapper (ORM). Manually-constructed SQL strings is a possible indicator of SQL injection, which could let an attacker steal or manipulate data from the database. Instead, use prepared statements (`$mysqli->prepare(\"INSERT INTO test(id, label) VALUES (?, ?)\");`) or a safe library.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/sqli_blind/source/high.php",
+            "line": 33,
+            "end_line": 33,
+            "code_snippet": "requires login",
+            "category": "sqli",
+            "cwe": [
+              "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+            ],
+            "owasp": [
+              "A01:2017 - Injection",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-sql-string.tainted-sql-string",
+            "message": "User data flows into this manually-constructed SQL string. User data can be safely inserted into SQL strings using prepared statements or an object-relational mapper (ORM). Manually-constructed SQL strings is a possible indicator of SQL injection, which could let an attacker steal or manipulate data from the database. Instead, use prepared statements (`$mysqli->prepare(\"INSERT INTO test(id, label) VALUES (?, ?)\");`) or a safe library.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/sqli_blind/source/low.php",
+            "line": 11,
+            "end_line": 11,
+            "code_snippet": "requires login",
+            "category": "sqli",
+            "cwe": [
+              "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+            ],
+            "owasp": [
+              "A01:2017 - Injection",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-sql-string.tainted-sql-string",
+            "message": "User data flows into this manually-constructed SQL string. User data can be safely inserted into SQL strings using prepared statements or an object-relational mapper (ORM). Manually-constructed SQL strings is a possible indicator of SQL injection, which could let an attacker steal or manipulate data from the database. Instead, use prepared statements (`$mysqli->prepare(\"INSERT INTO test(id, label) VALUES (?, ?)\");`) or a safe library.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/sqli_blind/source/low.php",
+            "line": 32,
+            "end_line": 32,
+            "code_snippet": "requires login",
+            "category": "sqli",
+            "cwe": [
+              "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+            ],
+            "owasp": [
+              "A01:2017 - Injection",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-sql-string.tainted-sql-string",
+            "message": "User data flows into this manually-constructed SQL string. User data can be safely inserted into SQL strings using prepared statements or an object-relational mapper (ORM). Manually-constructed SQL strings is a possible indicator of SQL injection, which could let an attacker steal or manipulate data from the database. Instead, use prepared statements (`$mysqli->prepare(\"INSERT INTO test(id, label) VALUES (?, ?)\");`) or a safe library.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/sqli_blind/source/medium.php",
+            "line": 34,
+            "end_line": 34,
+            "code_snippet": "requires login",
+            "category": "sqli",
+            "cwe": [
+              "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+            ],
+            "owasp": [
+              "A01:2017 - Injection",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.unlink-use.unlink-use",
+            "message": "Using user input when deleting files with `unlink()` is potentially dangerous. A malicious actor could use this to modify or access files they have no right to.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/upload/source/impossible.php",
+            "line": 51,
+            "end_line": 51,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')"
+            ],
+            "owasp": [
+              "A05:2017 - Broken Access Control",
+              "A01:2021 - Broken Access Control",
+              "A01:2025 - Broken Access Control"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.eval-use.eval-use",
+            "message": "Evaluating non-constant commands. This can lead to command injection.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/view_help.php",
+            "line": 20,
+            "end_line": 20,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')"
+            ],
+            "owasp": [
+              "A01:2017 - Injection",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-filename.tainted-filename",
+            "message": "File name based on user input risks server-side request forgery.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/view_help.php",
+            "line": 20,
+            "end_line": 20,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-918: Server-Side Request Forgery (SSRF)"
+            ],
+            "owasp": [
+              "A10:2021 - Server-Side Request Forgery (SSRF)",
+              "A01:2025 - Broken Access Control"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.eval-use.eval-use",
+            "message": "Evaluating non-constant commands. This can lead to command injection.",
+            "severity": "ERROR",
+            "file": "/home/ss/code/DVWA/vulnerabilities/view_help.php",
+            "line": 22,
+            "end_line": 22,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')"
+            ],
+            "owasp": [
+              "A01:2017 - Injection",
+              "A03:2021 - Injection",
+              "A05:2025 - Injection"
+            ],
+            "confidence": "LOW",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-filename.tainted-filename",
+            "message": "File name based on user input risks server-side request forgery.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/view_help.php",
+            "line": 22,
+            "end_line": 22,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-918: Server-Side Request Forgery (SSRF)"
+            ],
+            "owasp": [
+              "A10:2021 - Server-Side Request Forgery (SSRF)",
+              "A01:2025 - Broken Access Control"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-filename.tainted-filename",
+            "message": "File name based on user input risks server-side request forgery.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/view_source.php",
+            "line": 63,
+            "end_line": 63,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-918: Server-Side Request Forgery (SSRF)"
+            ],
+            "owasp": [
+              "A10:2021 - Server-Side Request Forgery (SSRF)",
+              "A01:2025 - Broken Access Control"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-filename.tainted-filename",
+            "message": "File name based on user input risks server-side request forgery.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/view_source.php",
+            "line": 67,
+            "end_line": 67,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-918: Server-Side Request Forgery (SSRF)"
+            ],
+            "owasp": [
+              "A10:2021 - Server-Side Request Forgery (SSRF)",
+              "A01:2025 - Broken Access Control"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          },
+          {
+            "rule_id": "php.lang.security.injection.tainted-filename.tainted-filename",
+            "message": "File name based on user input risks server-side request forgery.",
+            "severity": "WARNING",
+            "file": "/home/ss/code/DVWA/vulnerabilities/view_source.php",
+            "line": 68,
+            "end_line": 68,
+            "code_snippet": "requires login",
+            "category": "other",
+            "cwe": [
+              "CWE-918: Server-Side Request Forgery (SSRF)"
+            ],
+            "owasp": [
+              "A10:2021 - Server-Side Request Forgery (SSRF)",
+              "A01:2025 - Broken Access Control"
+            ],
+            "confidence": "MEDIUM",
+            "endpoint": "",
+            "parameter": ""
+          }
+        ],
+        "summary": {
+          "total": 73,
+          "by_severity": {
+            "WARNING": 22,
+            "ERROR": 51
+          },
+          "by_category": {
+            "other": 58,
+            "sqli": 14,
+            "xss": 1
+          }
+        },
+        "vulnerable_endpoints": [],
+        "vulnerable_params": [],
+        "raw_output": ""
+      }
+    },
+    "stop_reason": "Site was not responding after 12 attempts before step 'http_discovery'. (All connection attempts failed) You can resume from the previous successful step with: guardian workflow run --name web --resume 20260315_220209",
+    "resume_command": "guardian workflow run --name web --resume 20260315_220209",
+    "stop_file": "reports/20260315_220209/site_unresponsive_20260315_220209.txt"
+  }
+}

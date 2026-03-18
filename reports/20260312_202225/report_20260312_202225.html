@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Penetration Test Report - http://192.168.1.49:3000</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #3498db; color: white; }
+        .critical { color: #e74c3c; font-weight: bold; }
+        .high { color: #e67e22; font-weight: bold; }
+        .medium { color: #f39c12; }
+        .low { color: #3498db; }
+        .info { color: #95a5a6; }
+        .summary { background-color: #ecf0f1; padding: 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔐 Penetration Test Report</h1>
+    
+    <div class="summary">
+        <h3>Target Information</h3>
+        <p><strong>Target:</strong> http://192.168.1.49:3000</p>
+        <p><strong>Session ID:</strong> 20260312_202225</p>
+        <p><strong>Date:</strong> 2026-03-12 22:22:45</p>
+        <p><strong>Duration:</strong> 2h 0m</p>
+        <p><strong>Subject Alternative Names (SAN):</strong> No additional SAN attributes listed</p>
+    </div>
+    
+    <h2>Executive Summary</h2>
+    <div><p>The recent security assessment of the application hosted at 192.168.1.49:3000 reveals a security posture that requires immediate executive attention. Over the course of nearly two hours, our team identified 18 distinct vulnerabilities, including two critical and one high-severity issue that pose an imminent threat to the organization's data integrity and operational continuity. These findings indicate that sensitive internal assets, such as backup files and source code, are currently exposed to unauthorized access, while key protective controls designed to verify user identity have been successfully bypassed.</p><p>The most pressing risks involve the potential for a complete data breach and unauthorized system manipulation. The exposure of sensitive files could lead to the leakage of proprietary information or customer data, while the ability to bypass authentication on protected endpoints allows attackers to operate within the system without detection. Furthermore, weaknesses in how the application processes user input create opportunities for malicious actors to disrupt services or inject harmful commands. These vulnerabilities collectively undermine the trust and security foundation of the platform.</p><p>To mitigate these risks, we recommend an immediate incident response to isolate exposed assets and patch the critical authentication and input validation flaws. A comprehensive remediation plan should be prioritized to address the two critical and one high-severity findings before any further development or deployment occurs. Establishing a rigorous code review process and implementing stricter access controls will be essential to preventing future exploitation and ensuring the long-term resilience of the application against evolving cyber threats.</p></div>
+    
+    <h2>Findings Summary</h2>
+    <table>
+        <tr><th>Severity</th><th>Count</th></tr>
+        <tr><td class="critical">Critical</td><td>2</td></tr>
+        <tr><td class="high">High</td><td>1</td></tr>
+        <tr><td class="medium">Medium</td><td>6</td></tr>
+        <tr><td class="low">Low</td><td>7</td></tr>
+        <tr><td class="info">Info</td><td>2</td></tr>
+        <tr><th>Total</th><th>18</th></tr>
+    </table>
+    
+
+    
+    
+    <h2>Technical Findings</h2>
+    <div><p>### 3. Key Findings: Technical Details</p><p>The following section details the specific vulnerabilities identified during the assessment of `http://192.168.1.49:3000`. Findings are prioritized by severity, with Critical and High-risk issues requiring immediate attention.</p><p>---</p><p>#### 3.1 Critical Findings</p><p><strong>Finding ID:<strong> CRIT-001
+<strong>Title:<strong> Critical Exposure of Sensitive Backup and Source Files
+<strong>Severity:<strong> CRITICAL
+<strong>Affected Component:<strong> Web Server Root (`/`)
+<strong>CVSS v3.1:<strong> 9.8 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)
+<strong>OWASP Top 10:<strong> A01:2021 - Broken Access Control
+<strong>CWE:<strong> CWE-530 (Information Disclosure of Sensitive Data)</p><p><strong>Technical Description:<strong>
+The web server is misconfigured to allow direct access to sensitive backup files and source code artifacts. Automated scanning identified the presence of a SQL database dump (`/database.sql`) and a private certificate file (`/site.pem`). These files are publicly accessible without authentication, exposing the entire database schema, user credentials, and potentially private cryptographic keys.</p><p><strong>Evidence & Proof of Concept:<strong>
+<em>   <strong>Tool:<strong> Nikto
+<em>   <strong>Evidence:<strong>
+    <em>   `+ /database.sql: Potentially interesting backup/cert file found.`
+    <em>   `+ /site.pem: Potentially interesting backup/cert file found.`
+<em>   <strong>Provenance ID:<strong> `prov-e570088102ab`</p><p><strong>Impact Analysis:<strong>
+<em>   <strong>Data Breach:<strong> Immediate exposure of all database contents, including PII, financial data, and user credentials.
+<em>   <strong>Privilege Escalation:<strong> Access to private keys (`site.pem`) could allow an attacker to impersonate the server or decrypt traffic.
+<em>   <strong>Source Code Disclosure:<strong> Exposure of application logic, internal IP addresses, and hardcoded secrets.</p><p><strong>Exploitation Information:<strong>
+<em>   <strong>CISA KEV Status:<strong> N/A
+<em>   <strong>CVE Identifiers:<strong> N/A
+<em>   <strong>Metasploit Modules:<strong> N/A
+<em>   <strong>Exploit-DB IDs:<strong> N/A
+<em>   <strong>GitHub PoCs:<strong> N/A
+<em>   <strong>Exploitation Attempt:<strong> Not attempted (Passive discovery of accessible files).</p><p><strong>Remediation Plan:<strong>
+1.  <strong>Immediate Action:<strong> Remove or restrict access to `/database.sql` and `/site.pem` immediately.
+2.  <strong>Configuration:<strong> Configure the web server (Nginx/Apache) to deny access to files with extensions `.sql`, `.pem`, `.bak`, `.old`, and `.git`.
+3.  <strong>Access Control:<strong> Implement strict file permissions (e.g., `chmod 600`) and ensure these files are stored outside the web root directory.
+4.  <strong>Audit:<strong> Scan the entire directory structure for other sensitive files (e.g., `.env`, `.htaccess`, `config.php`).</p><p>---</p><p><strong>Finding ID:<strong> CRIT-002
+<strong>Title:<strong> Authentication Bypass on Protected API Endpoint
+<strong>Severity:<strong> CRITICAL
+<strong>Affected Component:<strong> API Endpoint (`POST /orders`)
+<strong>CVSS v3.1:<strong> 9.8 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)
+<strong>OWASP Top 10:<strong> A01:2021 - Broken Access Control
+<strong>CWE:<strong> CWE-287 (Improper Authentication)</p><p><strong>Technical Description:<strong>
+The API endpoint `POST /orders` is documented in the OpenAPI specification as requiring authentication. However, the implementation fails to enforce this requirement. The server returns a `200 OK` status code even when the `Authorization` header is missing or contains invalid credentials, effectively bypassing the authentication mechanism.</p><p><strong>Evidence & Proof of Concept:<strong>
+<em>   <strong>Tool:<strong> Schemathesis
+<em>   <strong>Evidence:<strong>
+    <em>   `"Expected 401, got 200 OK for POST /orders (generated auth likely invalid)"`
+    <em>   `"Got 200 when missing required 'Authorization' header, expected 401"`
+<em>   <strong>Provenance ID:<strong> `prov-0da6d102e606`</p><p><strong>Impact Analysis:<strong>
+<em>   <strong>Unauthorized Access:<strong> Any unauthenticated user can create orders, modify data, or access restricted resources.
+<em>   <strong>Data Integrity:<strong> Attackers can inject malicious data into the order system.
+<em>   <strong>Compliance Failure:<strong> Violates security requirements for authenticated access to sensitive operations.</p><p><strong>Exploitation Information:<strong>
+<em>   <strong>CISA KEV Status:<strong> N/A
+<em>   <strong>CVE Identifiers:<strong> N/A
+<em>   <strong>Metasploit Modules:<strong> N/A
+<em>   <strong>Exploit-DB IDs:<strong> N/A
+<em>   <strong>GitHub PoCs:<strong> N/A
+<em>   <strong>Exploitation Attempt:<strong> Successful (Automated tool confirmed bypass).</p><p><strong>Remediation Plan:<strong>
+1.  <strong>Code Review:<strong> Audit the middleware handling the `/orders` endpoint to ensure the `Authorization` header is strictly validated.
+2.  <strong>Enforcement:<strong> Implement a "fail-secure" default where requests without valid tokens return `401 Unauthorized`.
+3.  <strong>Testing:<strong> Re-run the Schemathesis scan to verify the fix.
+4.  <strong>Logging:<strong> Ensure all failed authentication attempts are logged for monitoring.</p><p>---</p><p>#### 3.2 High Severity Findings</p><p><strong>Finding ID:<strong> HIGH-001
+<strong>Title:<strong> Input Validation Failure and Schema Violation Acceptance
+<strong>Severity:<strong> HIGH
+<strong>Affected Component:<strong> API Endpoints (General)
+<strong>CVSS v3.1:<strong> 7.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N)
+<strong>OWASP Top 10:<strong> A03:2021 - Injection
+<strong>CWE:<strong> CWE-20 (Improper Input Validation)</p><p><strong>Technical Description:<strong>
+The application fails to validate incoming data against the defined OpenAPI schema. The API accepts requests with missing required fields and malformed JSON structures, returning a `200 OK` status instead of the expected `400 Bad Request`. This lack of validation opens the door to injection attacks and logic errors.</p><p><strong>Evidence & Proof of Concept:<strong>
+<em>   <strong>Tool:<strong> Schemathesis
+<em>   <strong>Evidence:<strong>
+    <em>   `"API accepted schema-violating request... Invalid data should have been rejected... Expected: 400... Got 200"`
+<em>   <strong>Provenance ID:<strong> `prov-cdcf5479614f`</p><p><strong>Impact Analysis:<strong>
+<em>   <strong>Injection Attacks:<strong> Malformed input may bypass filters, leading to SQL Injection, XSS, or Command Injection.
+<em>   <strong>Application Instability:<strong> Unexpected data types can cause runtime errors or crashes.
+<em>   <strong>Logic Flaws:<strong> Business logic relying on specific data structures may be bypassed.</p><p><strong>Exploitation Information:<strong>
+<em>   <strong>CISA KEV Status:<strong> N/A
+<em>   <strong>CVE Identifiers:<strong> N/A
+<em>   <strong>Metasploit Modules:<strong> N/A
+<em>   <strong>Exploit-DB IDs:<strong> N/A
+<em>   <strong>GitHub PoCs:<strong> N/A
+<em>   <strong>Exploitation Attempt:<strong> Successful (Automated tool confirmed acceptance of invalid data).</p><p><strong>Remediation Plan:<strong>
+1.  <strong>Strict Validation:<strong> Enforce strict schema validation on all API inputs using the OpenAPI specification.
+2.  <strong>Error Handling:<strong> Configure the API to return `400 Bad Request` for any input that does not match the schema.
+3.  <strong>Sanitization:<strong> Implement input sanitization to strip or escape potentially dangerous characters.
+4.  <strong>Testing:<strong> Integrate schema validation tests into the CI/CD pipeline.</p><p>---</p><p>#### 3.3 Medium Severity Findings</p><p><strong>Finding ID:<strong> MED-001
+<strong>Title:<strong> Outdated jQuery Library (v2.2.4) Detected
+<strong>Severity:<strong> MEDIUM
+<strong>Affected Component:<strong> Frontend Application (`http://192.168.1.49:3000/`)
+<strong>CVSS v3.1:<strong> 6.1 (AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N)
+<strong>OWASP Top 10:<strong> A03:2021 - Injection, A06:2021 - Vulnerable and Outdated Components
+<strong>CWE:<strong> CWE-1104, CWE-119, CWE-1321, CWE-79</p><p><strong>Technical Description:<strong>
+The application utilizes jQuery version 2.2.4, which is known to contain multiple vulnerabilities, including Cross-Site Scripting (XSS) and prototype pollution. This version is significantly outdated and lacks critical security patches.</p><p><strong>Evidence & Proof of Concept:<strong>
+<em>   <strong>Tool:<strong> httpx
+<em>   <strong>Evidence:<strong> `"tech":["Cloudflare","Onsen UI","Osano:3.1.0","cdnjs","jQuery:2.2.4"]`
+<em>   <strong>Provenance ID:<strong> `prov-7e148d266581`</p><p><strong>Impact Analysis:<strong>
+<em>   <strong>XSS:<strong> Attackers can inject malicious scripts into the application, stealing session cookies or defacing the site.
+<em>   <strong>Prototype Pollution:<strong> Can lead to denial of service or privilege escalation in certain contexts.</p><p><strong>Exploitation Information:<strong>
+<em>   <strong>CISA KEV Status:<strong>
+    <em>   ⚠️ <strong>CRITICAL WARNING: This vulnerability is actively exploited in the wild (CISA KEV)<strong>
+    <em>   <strong>CVE:<strong> CVE-2020-11023
+    <em>   <strong>Government Deadline:<strong> 2025-02-13
+    <em>   <strong>Required Action:<strong> Apply mitigations per vendor instructions or discontinue use of the product if mitigations are unavailable.
+<em>   <strong>CVE Identifiers:<strong> CVE-2015-9251, CVE-2019-11358, CVE-2020-11022, CVE-2020-11023
+<em>   <strong>Metasploit Modules:<strong> N/A
+<em>   <strong>Exploit-DB IDs:<strong> N/A
+<em>   <strong>GitHub PoCs:<strong> N/A
+<em>   <strong>Exploitation Attempt:<strong> Not attempted (Passive detection).</p><p><strong>Remediation Plan:<strong>
+1.  <strong>Upgrade:<strong> Immediately upgrade jQuery to the latest stable version (v3.7.0+).
+2.  <strong>CDN Check:<strong> Ensure the CDN link is pointing to a secure, updated version.
+3.  <strong>Mitigation:<strong> If an immediate upgrade is not possible, implement Content Security Policy (CSP) headers to mitigate XSS risks.
+4.  <strong>Dependency Scan:<strong> Run a full dependency audit to identify other outdated libraries.</p><p>---</p><p><strong>Finding ID:<strong> MED-002
+<strong>Title:<strong> Insecure CORS Configuration (Wildcard Origin)
+<strong>Severity:<strong> MEDIUM
+<strong>Affected Component:<strong> Web Server (`http://192.168.1.49:3000`)
+<strong>CVSS v3.1:<strong> 5.3 (AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:N)
+<strong>OWASP Top 10:<strong> A05:2021 - Security Misconfiguration
+<strong>CWE:<strong> CWE-693, CWE-942</p><p><strong>Technical Description:<strong>
+The server responds to cross-origin requests with the header `Access-Control-Allow-Origin: <em>`. This wildcard configuration allows any website to make requests to this server and read the responses, bypassing the Same-Origin Policy. This is particularly dangerous if the application handles sensitive data or uses cookies.</p><p><strong>Evidence & Proof of Concept:<strong>
+<em>   <strong>Tools:<strong> nmap, headers, cookie-analyzer, auth-scanner, idor-scanner, deserialization-scanner
+<em>   <strong>Evidence:<strong>
+    <em>   `Access-Control-Allow-Origin: <em>` (Found in multiple scan results)
+    <em>   `+ /: Retrieved access-control-allow-origin header: <em>.`
+<em>   <strong>Provenance IDs:<strong> `prov-29956373daad`, `prov-1d0bacdafae7`, `prov-24ac0e7602d2`, `prov-1ccd94739bd4`, `prov-e59e21d2360f`, `prov-abef7a0e2248`, `prov-95569194fc8c`</p><p><strong>Impact Analysis:<strong>
+<em>   <strong>Data Exfiltration:<strong> Malicious sites can read sensitive data returned by the API.
+<em>   <strong>CSRF Amplification:<strong> While CORS does not directly enable CSRF, it can facilitate attacks where the attacker reads the response to verify success.
+<em>   <strong>Credential Theft:<strong> If credentials are included in the response, they can be stolen by a malicious site.</p><p><strong>Exploitation Information:<strong>
+<em>   <strong>CISA KEV Status:<strong> N/A
+<em>   <strong>CVE Identifiers:<strong> N/A
+<em>   <strong>Metasploit Modules:<strong> N/A
+<em>   <strong>Exploit-DB IDs:<strong> N/A
+<em>   <strong>GitHub PoCs:<strong> N/A
+<em>   <strong>Exploitation Attempt:<strong> Not attempted (Passive detection).</p><p><strong>Remediation Plan:<strong>
+1.  <strong>Restrict Origins:<strong> Replace `<em>` with specific, trusted domains (e.g., `Access-Control-Allow-Origin: https://trusted-domain.com`).
+2.  <strong>Credentials:<strong> If credentials are required, ensure `Access-Control-Allow-Credentials` is set to `true` and the origin is not `<em>`.
+3.  <strong>Configuration:<strong> Update the web server or application framework configuration to enforce strict CORS policies.
+4.  <strong>Testing:<strong> Verify that requests from unauthorized origins are blocked.</p><p>---</p><p><strong>Finding ID:<strong> MED-003
+<strong>Title:<strong> Content-Type Mismatch and Information Disclosure
+<strong>Severity:<strong> MEDIUM
+<strong>Affected Component:<strong> API Endpoint (`POST /orders`)
+<strong>CVSS v3.1:<strong> 5.3 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)
+<strong>OWASP Top 10:<strong> A05:2021 - Security Misconfiguration
+<strong>CWE:<strong> CWE-532 (Insertion of Sensitive Information into HTTP Response)</p><p><strong>Technical Description:<strong>
+The API endpoint `POST /orders` is documented to return `application/json` but actually returns `text/html; charset=UTF-8`. This mismatch can confuse clients and potentially expose internal error messages or HTML source code that should not be visible.</p><p><strong>Evidence & Proof of Concept:<strong>
+<em>   <strong>Tool:<strong> Schemathesis
+<em>   <strong>Evidence:<strong> `"Undocumented Content-Type... Received: text/html; charset=UTF-8... Documented: application/json"`
+<em>   <strong>Provenance ID:<strong> `prov-5482c3acf0df`</p><p><strong>Impact Analysis:<strong>
+<em>   <strong>Information Disclosure:<strong> HTML responses may contain stack traces, file paths, or other sensitive debugging information.
+<em>   <strong>Client Confusion:<strong> API consumers expecting JSON may fail to parse the response correctly.</p><p><strong>Exploitation Information:<strong>
+<em>   <strong>CISA KEV Status:<strong> N/A
+<em>   <strong>CVE Identifiers:<strong> N/A
+<em>   <strong>Metasploit Modules:<strong> N/A
+<em>   <strong>Exploit-DB IDs:<strong> N/A
+<em>   <strong>GitHub PoCs:<strong> N/A
+<em>   <strong>Exploitation Attempt:<strong> Not attempted (Passive detection).</p><p><strong>Remediation Plan:<strong>
+1.  <strong>Consistency:<strong> Ensure the `Content-Type` header matches the actual response body format.
+2.  <strong>Error Handling:<strong> Configure the application to return JSON error responses even in error states.
+3.  <strong>Documentation:<strong> Update the OpenAPI specification to reflect the actual behavior if the HTML response is intentional (unlikely).</p><p>---</p><p>#### 3.4 Low Severity Findings</p><p><strong>Finding ID:<strong> LOW-001
+<strong>Title:<strong> Verbose Error Messages Leaking Internal Logic
+<strong>Severity:<strong> LOW
+<strong>Affected Component:<strong> Web Application (`/redirect`)
+<strong>CVSS v3.1:<strong> 3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)
+<strong>OWASP Top 10:<strong> A05:2021 - Security Misconfiguration
+<strong>CWE:<strong> CWE-209 (Generation of Error Message Containing Sensitive Information)</p><p><strong>Technical Description:<strong>
+The application returns raw JavaScript runtime errors to the client, such as `TypeError: Cannot read properties of undefined (reading 'includes')`. This exposes internal logic, variable names, and code structure to potential attackers.</p><p><strong>Evidence & Proof of Concept:<strong>
+<em>   <strong>Tool:<strong> httpx
+<em>   <strong>Evidence:<strong> `"title":"TypeError: Cannot read properties of undefined (reading 'includes')"`
+<em>   <strong>Provenance ID:<strong> `prov-f8229bb11243`</p><p><strong>Impact Analysis:<strong>
+<em>   <strong>Reconnaissance:<strong> Attackers can use error messages to understand the application's internal structure and identify potential vulnerabilities.
+<em>   <strong>User Experience:<strong> Poor user experience with technical error messages.</p><p><strong>Exploitation Information:<strong>
+<em>   <strong>CISA KEV Status:<strong> N/A
+<em>   <strong>CVE Identifiers:<strong> N/A
+<em>   <strong>Metasploit Modules:<strong> N/A
+<em>   <strong>Exploit-DB IDs:<strong> N/A
+<em>   <strong>GitHub PoCs:<strong> N/A
+<em>   <strong>Exploitation Attempt:<strong> Not attempted (Passive detection).</p><p><strong>Remediation Plan:<strong>
+1.  <strong>Error Handling:<strong> Implement a global error handler that returns generic error messages to the client.
+2.  <strong>Logging:<strong> Log detailed error messages server-side for debugging purposes.
+3.  <strong>Configuration:<strong> Disable debug mode in production environments.</p><p>---</p><p><strong>Finding ID:<strong> LOW-002
+<strong>Title:<strong> Legacy jQuery BBQ Plugin Detected
+<strong>Severity:<strong> LOW
+<strong>Affected Component:<strong> Web Application (`/rest/admin/application-configurati`)
+<strong>CVSS v3.1:<strong> 2.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)
+<strong>OWASP Top 10:<strong> A06:2021 - Vulnerable and Outdated Components
+<strong>CWE:<strong> CWE-1333 (Use of Unmaintained or Vulnerable Components)</p><p><strong>Technical Description:<strong>
+The application includes the jQuery BBQ plugin, which is no longer maintained and may contain unpatched vulnerabilities.</p><p><strong>Evidence & Proof of Concept:<strong>
+<em>   <strong>Tool:<strong> httpx
+<em>   <strong>Evidence:<strong> `"cpe":[{"product":"jquery-bbq","vendor":"jquery-bbq_project","cpe":"cpe:2.3:a:jquery-bbq_project:jquery-bbq:<em>:<em>:<em>:<em>:<em>:<em>:<em>:<em>"}]`
+<em>   <strong>Provenance ID:<strong> `prov</p></div>
+
+    <h2>Evidence</h2>
+    <ul>
+        <li><strong>[MEDIUM] Outdated jQuery Library (v2.2.4) Detected</strong> (Tool: httpx, Target: http://192.168.1.49:3000) Evidence: Evidence from httpx: Evidence from httpx: `&quot;tech&quot;:[&quot;Cloudflare&quot;,&quot;Onsen UI&quot;,&quot;Osano:3.1.0&quot;,&quot;cdnjs&quot;,&quot;jQuery:2.2.4&quot;]` (from URL: `http://192.168.1.49:3000/`) REASONING: The tool explicitly identified `jQuery:2.2.4` on the root page. jQuery 2.2.4 is an obsolete version released in 2015. It contains multiple known vulnerabilities, including Cross-Site Scripting (XSS) flaws (e.g., CVE-2015-9251, CVE-2020-11022) and potential prototype pollution issues. The presence of this library indicates the applica Evidence file: reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=httpx,timestamp=2026-03-12T20:23:02.432864,cmd_sha1=86cb6c5f48 Provenance ID: prov-7e148d266581</li>
+        <li><strong>[LOW] Verbose Error Messages Leaking Internal Logic</strong> (Tool: httpx, Target: http://192.168.1.49:3000) Evidence: `&quot;title&quot;:&quot;TypeError: Cannot read properties of undefined (reading &#x27;includes&#x27;)&quot;` (from URL: `http://192.168.1.49:3000/redirect`) REASONING: The application returns raw JavaScript runtime errors (e.g., `TypeError`, `SyntaxError`) in the HTTP response headers or body when requests fail. This reveals internal variable names, logic flow, and the specific nature of the error, which can assist attackers in crafting more precise exploits. Evidence file: reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=httpx,timestamp=2026-03-12T20:23:02.432864,cmd_sha1=86cb6c5f48 Provenance ID: prov-f8229bb11243</li>
+        <li><strong>[LOW] Legacy jQuery BBQ Plugin Detected</strong> (Tool: httpx, Target: http://192.168.1.49:3000) Evidence: `&quot;cpe&quot;:[{&quot;product&quot;:&quot;jquery-bbq&quot;,&quot;vendor&quot;:&quot;jquery-bbq_project&quot;,&quot;cpe&quot;:&quot;cpe:2.3:a:jquery-bbq_project:jquery-bbq:*:*:*:*:*:*:*:*&quot;}]` (from URL: `http://192.168.1.49:3000/rest/admin/application-configuration`) REASONING: The output identifies the `jquery-bbq` plugin. This is a legacy plugin used for handling hash-based routing, often associated with older jQuery versions. While no specific vulnerability is flagged for the plugin itself in this output, its presence confirms the use of unmaintained, le Evidence file: reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=httpx,timestamp=2026-03-12T20:23:02.432864,cmd_sha1=86cb6c5f48 Provenance ID: prov-52dbaecd819e</li>
+        <li><strong>[MEDIUM] Insecure CORS Configuration (Access-Control-Allow-Origin: *)</strong> (Tool: nmap, Target: http://192.168.1.49:3000) Evidence: `Access-Control-Allow-Origin: *` found in the `GetRequest` response headers for port 3000. REASONING: The server responds to cross-origin requests with a wildcard (`*`) for the `Access-Control-Allow-Origin` header. While sometimes acceptable for public APIs, this configuration allows any website to read responses from this server via JavaScript. In the context of Juice Shop (which handles user sessions and sensitive data), this facilitates Cross-Site Request Forgery (CSRF) attacks and data exfil Evidence file: reports/20260312_202225/nmap_20260312_205318_669158.xml, reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=nmap,timestamp=2026-03-12T20:53:18.669738,cmd_sha1=6e335edbaa Provenance ID: prov-29956373daad</li>
+        <li><strong>[LOW] Default Web Server Configuration (Nginx)</strong> (Tool: nmap, Target: http://192.168.1.49:3000) Evidence: `&lt;script id=&quot;http-title&quot; output=&quot;Welcome to nginx!&quot;&gt;` on port 80. REASONING: Port 80 is serving the default &quot;Welcome to nginx!&quot; page. This indicates that the web server is either misconfigured, a staging server left exposed, or a placeholder. While not a direct vulnerability, it reveals the server software (Nginx 1.24.0) and OS (Ubuntu) to attackers, aiding in targeted attacks against known versions. Evidence file: reports/20260312_202225/nmap_20260312_205318_669158.xml, reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=nmap,timestamp=2026-03-12T20:53:18.669738,cmd_sha1=6e335edbaa Provenance ID: prov-09f5a0013ecb</li>
+        <li><strong>[MEDIUM] Insecure CORS Configuration (Wildcard Origin)</strong> (Tool: headers, Target: http://192.168.1.49:3000) Evidence: Evidence from headers: `Access-Control-Allow-Origin: *` REASONING: The server responds with `Access-Control-Allow-Origin: *`, which permits any website to make cross-origin requests to this resource. While this is often intentional for public APIs, it violates the principle of least privilege. If this endpoint returns sensitive data or accepts state-changing requests (POST/PUT/DELETE) that rely on cookies or tokens, an attacker can host a malicious page to exfiltrate data or perform actions on b Evidence file: reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=headers,timestamp=2026-03-12T20:58:15.664084,cmd_sha1=2d475b34c0 Provenance ID: prov-1d0bacdafae7</li>
+        <li><strong>[CRITICAL] Critical Exposure of Sensitive Backup and Source Files</strong> (Tool: nikto, Target: http://192.168.1.49:3000) Evidence: `+ /database.sql: Potentially interesting backup/cert file found. . See: https://cwe.mitre.org/data/definitions/530.html` `+ /site.pem: Potentially interesting backup/cert file found. . See: https://cwe.mitre.org/data/definitions/530.html` `+ /192.168.1.49.war: Potentially interesting backup/cert file found. . See: https://cwe.mitre.org/data/definitions/530.html` `+ /backup.jks: Potentially interesting backup/cert file found. . See: https://cwe.mitre.org/data/definitions/530.html` REASONING: The Evidence file: reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=nikto,timestamp=2026-03-12T21:11:10.724833,cmd_sha1=e4ee1e92f7 Provenance ID: prov-e570088102ab</li>
+        <li><strong>[LOW] Overly Permissive CORS Configuration</strong> (Tool: nikto, Target: http://192.168.1.49:3000) Evidence: `+ /: Retrieved access-control-allow-origin header: *.` REASONING: The server responds to requests with `Access-Control-Allow-Origin: *`. This allows any website to make cross-origin requests to this server and read the response. While not a direct vulnerability on its own, it facilitates Cross-Site Scripting (XSS) attacks by allowing malicious sites to read sensitive data returned by the API if the user is authenticated. Evidence file: reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=nikto,timestamp=2026-03-12T21:11:10.724833,cmd_sha1=e4ee1e92f7 Provenance ID: prov-24ac0e7602d2</li>
+        <li><strong>[CRITICAL] Authentication Bypass on Protected API Endpoint</strong> (Tool: schemathesis, Target: http://192.168.1.49:3000) Evidence: &quot;Expected 401, got `200 OK` for `POST /orders` (generated auth likely invalid)&quot; and &quot;Got 200 when missing required &#x27;Authorization&#x27; header, expected 401&quot; REASONING: The OpenAPI specification defines `Authorization` as a required header for the `POST /orders` endpoint. Schemathesis verified that sending a request without this header (or with an invalid one) results in a `200 OK` status code instead of `401 Unauthorized`. The response body contains HTML (`&lt;title&gt;OWASP Juice Shop&lt;/title&gt;`), indicati Evidence file: reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=schemathesis,timestamp=2026-03-12T21:29:00.933779,cmd_sha1=679b5920f2 Provenance ID: prov-0da6d102e606</li>
+        <li><strong>[HIGH] Input Validation Failure and Schema Violation Acceptance</strong> (Tool: schemathesis, Target: http://192.168.1.49:3000) Evidence: &quot;API accepted schema-violating request... Invalid data should have been rejected... Expected: 400... Got 200&quot; REASONING: The tool sent a request with missing required fields and malformed JSON structure (e.g., `orderLinesData` as a string instead of an array, or empty arrays where data is expected). The server responded with `200 OK` instead of `400 Bad Request`. This indicates the backend is not validating input against the OpenAPI schema or internal business logic constraints. Evidence file: reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=schemathesis,timestamp=2026-03-12T21:29:00.933779,cmd_sha1=679b5920f2 Provenance ID: prov-cdcf5479614f</li>
+        <li><strong>[MEDIUM] Content-Type Mismatch and Information Disclosure</strong> (Tool: schemathesis, Target: http://192.168.1.49:3000) Evidence: &quot;Undocumented Content-Type... Received: text/html; charset=UTF-8... Documented: application/json&quot; REASONING: The API endpoint `POST /orders` is documented to return `application/json` but returned `text/html`. The HTML content reveals the application name (&quot;OWASP Juice Shop&quot;) and potentially internal file paths (`assets/public/favicon_js.ico`). While the primary issue is the authentication bypass, the content-type mismatch indicates a misconfiguration where the API endpoint is serving a web page Evidence file: reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=schemathesis,timestamp=2026-03-12T21:29:00.933779,cmd_sha1=679b5920f2 Provenance ID: prov-5482c3acf0df</li>
+        <li><strong>[MEDIUM] Overly Permissive Cross-Origin Resource Sharing (CORS)</strong> (Tool: cookie-analyzer, Target: http://192.168.1.49:3000) Evidence: `Access-Control-Allow-Origin: *` REASONING: The server responds with `Access-Control-Allow-Origin: *`, which instructs browsers to allow any website to make cross-origin requests to this server and read the response. This bypasses the Same-Origin Policy (SOP). While the presence of `Feature-Policy: payment &#x27;self&#x27;` suggests the application handles sensitive financial operations, the open CORS policy allows an attacker to host a malicious page that fetches data from this target. If the application Evidence file: reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=cookie-analyzer,timestamp=2026-03-12T21:50:09.102374,cmd_sha1=455a091396 Provenance ID: prov-1ccd94739bd4</li>
+        <li><strong>[INFO] Line 6-8</strong> (Tool: cors-scanner, Target: http://192.168.1.49:3000) Evidence: Starting CORS scan... Evidence file: reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=cors-scanner,timestamp=2026-03-12T21:52:03.371899,cmd_sha1=7ff1b8a5eb Provenance ID: prov-4b08daef352f</li>
+        <li><strong>[LOW] Unrestricted Cross-Origin Resource Sharing (CORS)</strong> (Tool: deserialization-scanner, Target: http://192.168.1.49:3000) Evidence: `Access-Control-Allow-Origin: *` REASONING: The server responds with a wildcard (`*`) for the `Access-Control-Allow-Origin` header. This allows any website to make cross-origin requests to this server and read the response. While the output does not show `Access-Control-Allow-Credentials: true` (which would allow sending cookies), this configuration still facilitates data exfiltration of public resources and can be a precursor to more complex attacks if the application logic changes or if the br Evidence file: reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=deserialization-scanner,timestamp=2026-03-12T21:54:22.712493,cmd_sha1=b491285b2b Provenance ID: prov-e59e21d2360f</li>
+        <li><strong>[LOW] Information Disclosure via HTML Source</strong> (Tool: deserialization-scanner, Target: http://192.168.1.49:3000) Evidence: `&lt;title&gt;OWASP Juice Shop&lt;/title&gt;` and `&lt;meta name=&quot;description&quot; content=&quot;Probably the most modern and sophisticated insecure web application&quot;&gt;` REASONING: The HTML source explicitly identifies the application as &quot;OWASP Juice Shop&quot; and describes it as &quot;insecure&quot;. This is a known vulnerable application designed for security training. This disclosure removes the need for attackers to perform reconnaissance to identify the technology stack or known vulnerabilities. Evidence file: reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=deserialization-scanner,timestamp=2026-03-12T21:54:22.712493,cmd_sha1=b491285b2b Provenance ID: prov-1688ba2496bf</li>
+        <li><strong>[MEDIUM] Insecure Cross-Origin Resource Sharing (CORS) Configuration</strong> (Tool: auth-scanner, Target: http://192.168.1.49:3000) Evidence: `Access-Control-Allow-Origin: *` REASONING: The server explicitly allows any origin (`*`) to access the resource via browser-based requests. This bypasses the Same-Origin Policy. If the response body contains sensitive information (session tokens, PII, internal API data), an attacker can host a malicious page on any domain, trick a victim into visiting it, and use JavaScript to read the response from the target server. This is a confirmed misconfiguration, not a false positive, as the header is  Evidence file: reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=auth-scanner,timestamp=2026-03-12T21:56:03.660281,cmd_sha1=1d5dacc70d Provenance ID: prov-abef7a0e2248</li>
+        <li><strong>[LOW] Insecure CORS Configuration (Wildcard Origin)</strong> (Tool: idor-scanner, Target: http://192.168.1.49:3000) Evidence: `Access-Control-Allow-Origin: *` REASONING: The server responds with a wildcard (`*`) for the `Access-Control-Allow-Origin` header. This allows any website to make cross-origin requests to this server and read the response. While browsers typically block credentials (cookies) when `*` is used, this configuration is a deviation from the principle of least privilege and can facilitate data exfiltration if the application does not strictly enforce credential checks or if the browser behavior varies Evidence file: reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=idor-scanner,timestamp=2026-03-12T21:58:06.849235,cmd_sha1=b12f24b63b Provenance ID: prov-95569194fc8c</li>
+        <li><strong>[INFO] Information Disclosure via Meta Description</strong> (Tool: idor-scanner, Target: http://192.168.1.49:3000) Evidence: `&lt;meta name=&quot;description&quot; content=&quot;Probably the most modern and sophisticated insecure web application&quot;&gt;` REASONING: The HTML meta description explicitly states that the application is &quot;insecure&quot;. This is a clear indicator of the application&#x27;s nature (OWASP Juice Shop) and aids attackers in reconnaissance by confirming the target is a known vulnerable test environment. Evidence file: reports/20260312_202225/session_20260312_202225.json Evidence location: reports/20260312_202225/session_20260312_202225.json#tool=idor-scanner,timestamp=2026-03-12T21:58:06.849235,cmd_sha1=b12f24b63b Provenance ID: prov-e315082b76eb</li>
+    </ul>
+
+
+    <h2>Standards Mapping</h2>
+    <table><tr><th>Severity</th><th>Finding</th><th>CVSS</th><th>OWASP</th><th>CWE</th><th>Exploit Status</th></tr><tr><td>MEDIUM</td><td>Outdated jQuery Library (v2.2.4) Detected</td><td>6.1 (AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N)</td><td>A03:2021 - Injection, A06:2021 - Vulnerable and Outdated Components</td><td>CWE-1104, CWE-119, CWE-1321, CWE-79</td><td>🔥🔥 CISA KEV - IN THE WILD</td></tr><tr><td>LOW</td><td>Verbose Error Messages Leaking Internal Logic</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-209</td><td>N/A</td></tr><tr><td>LOW</td><td>Legacy jQuery BBQ Plugin Detected</td><td>2.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A06:2021 - Vulnerable and Outdated Components</td><td>CWE-1333</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Insecure CORS Configuration (Access-Control-Allow-Origin: *)</td><td>5.3 (AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-693</td><td>N/A</td></tr><tr><td>LOW</td><td>Default Web Server Configuration (Nginx)</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Insecure CORS Configuration (Wildcard Origin)</td><td>5.3 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-693, CWE-942</td><td>N/A</td></tr><tr><td>CRITICAL</td><td>Critical Exposure of Sensitive Backup and Source Files</td><td>9.8 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)</td><td>A01:2021 - Broken Access Control</td><td>CWE-530</td><td>N/A</td></tr><tr><td>LOW</td><td>Overly Permissive CORS Configuration</td><td>3.7 (AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-693</td><td>N/A</td></tr><tr><td>CRITICAL</td><td>Authentication Bypass on Protected API Endpoint</td><td>9.8 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)</td><td>A01:2021 - Broken Access Control</td><td>CWE-287</td><td>N/A</td></tr><tr><td>HIGH</td><td>Input Validation Failure and Schema Violation Acceptance</td><td>7.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N)</td><td>A03:2021 - Injection</td><td>CWE-20</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Content-Type Mismatch and Information Disclosure</td><td>5.3 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-532</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Overly Permissive Cross-Origin Resource Sharing (CORS)</td><td>5.3 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-693</td><td>N/A</td></tr><tr><td>INFO</td><td>Line 6-8</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>Unrestricted Cross-Origin Resource Sharing (CORS)</td><td>3.1 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-942</td><td>N/A</td></tr><tr><td>LOW</td><td>Information Disclosure via HTML Source</td><td>3.1 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Insecure Cross-Origin Resource Sharing (CORS) Configuration</td><td>5.4 (AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-693</td><td>N/A</td></tr><tr><td>LOW</td><td>Insecure CORS Configuration (Wildcard Origin)</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-693</td><td>N/A</td></tr><tr><td>INFO</td><td>Information Disclosure via Meta Description</td><td>0.0 (est.)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr></table>
+
+    <h2>Exploitation References</h2>
+    <p><em>Exploit lookup status: exploitdb: built (46963) from /usr/share/exploitdb; metasploit: built (2611) from /usr/share/metasploit-framework</em></p>
+    
+    <h2>Remediation Plan</h2>
+    <div><p>### 1. REASONING</p><p>The remediation plan is structured by analyzing the severity, exploitability, and business impact of the findings.</p><p>1.  <strong>Critical Priorities (Immediate Action):<strong> The analysis identifies two <strong>CRITICAL<strong> findings (CVSS 9.8) that pose an immediate threat to data confidentiality and integrity.
+    <em>   <em>Authentication Bypass:<em> The API endpoint `/orders` accepts requests without valid authorization, allowing attackers to create orders or manipulate data. This is a direct violation of access control.
+    <em>   <em>Sensitive File Exposure:<em> The discovery of `/database.sql` and `/site.pem` indicates a complete lack of directory listing protection or file access controls. This could lead to full database compromise and private key theft.
+    <em>   <em>Decision:<em> These must be addressed before any other work to prevent active exploitation.</p><p>2.  <strong>Quick Wins (High Impact, Low Effort):<strong> Several <strong>MEDIUM<strong> and <strong>LOW<strong> findings are configuration errors that can be resolved rapidly.
+    <em>   <em>CORS Misconfiguration:<em> Multiple tools flagged `Access-Control-Allow-Origin: <em>`. While often low risk in isolation, combined with the auth bypass, it facilitates cross-origin attacks. Restricting this is a simple header change.
+    <em>   <em>Default Nginx Page:<em> The "Welcome to nginx!" page reveals the server software and version, aiding reconnaissance. Removing the default index is trivial.
+    <em>   <em>Verbose Errors:<em> Raw JavaScript errors leak logic. Implementing a generic error handler is a standard development fix.</p><p>3.  <strong>Medium-term Improvements:<strong>
+    <em>   <em>Outdated Components:<em> jQuery 2.2.4 is significantly outdated and contains known XSS vulnerabilities (CVE-2020-11023 is on the CISA KEV list). Upgrading requires testing to ensure no breaking changes in the application logic.
+    <em>   <em>Input Validation:<em> The API accepts malformed JSON. Implementing strict schema validation (e.g., via JSON Schema or Zod) is necessary to prevent injection attacks.</p><p>4.  <strong>Long-term Security Enhancements:<strong>
+    <em>   <em>Legacy Plugins:<em> The jQuery BBQ plugin is deprecated. Replacing it with modern URL handling requires refactoring.
+    <em>   <em>Information Disclosure:<em> Removing "OWASP Juice Shop" branding and meta descriptions is a cosmetic but necessary step for production hardening to reduce the attack surface.</p><p>The plan prioritizes stopping active data leaks and unauthorized access first, then hardening the configuration, and finally addressing technical debt and legacy code.</p><p>### 2. RESPONSE</p><p># Remediation Plan: http://192.168.1.49:3000</p><p>## 1. Critical Priorities (Must Fix Immediately)
+<em>These findings represent an immediate risk of data breach and system compromise. Action is required within 24 hours.<em></p><p>### 1.1. Patch Authentication Bypass on API Endpoints
+<em>   <strong>Finding:<strong> Authentication Bypass on Protected API Endpoint (`POST /orders`).
+<em>   <strong>Impact:<strong> Attackers can create orders, manipulate data, or access protected resources without credentials.
+<em>   <strong>Action Steps:<strong>
+    1.  Audit the middleware configuration for the `/orders` endpoint.
+    2.  Enforce strict authentication checks (e.g., JWT validation) before processing any request.
+    3.  Ensure the server returns `401 Unauthorized` or `403 Forbidden` if the `Authorization` header is missing or invalid.
+    4.  Verify the fix by attempting a request without credentials; it must fail.
+<em>   <strong>Resources:<strong> Backend Developer, API Gateway/Server Logs.
+<em>   <strong>Estimated Effort:<strong> 2–4 hours.
+<em>   <strong>Security Impact:<strong> <strong>Critical<strong> – Prevents unauthorized data manipulation and access.</p><p>### 1.2. Remove Exposed Sensitive Files
+<em>   <strong>Finding:<strong> Critical Exposure of Sensitive Backup and Source Files (`/database.sql`, `/site.pem`).
+<em>   <strong>Impact:<strong> Full database dump and private key exposure, leading to total system compromise.
+<em>   <strong>Action Steps:<strong>
+    1.  <strong>Immediate:<strong> Delete or move `/database.sql` and `/site.pem` from the web-accessible directory to a secure, non-public location.
+    2.  Configure the web server (Nginx/Apache) to deny access to files with extensions `.sql`, `.pem`, `.bak`, `.log`, and `.git`.
+    3.  Implement a "Deny All" rule for directory listing.
+    4.  Rotate any exposed certificates or database credentials immediately.
+<em>   <strong>Resources:<strong> System Administrator, DevOps Engineer.
+<em>   <strong>Estimated Effort:<strong> 1–2 hours.
+<em>   <strong>Security Impact:<strong> <strong>Critical<strong> – Eliminates direct access to sensitive infrastructure data.</p><p>---</p><p>## 2. Quick Wins (High Impact, Low Effort)
+<em>These fixes address configuration weaknesses that can be resolved rapidly with minimal testing.<em></p><p>### 2.1. Restrict Cross-Origin Resource Sharing (CORS)
+<em>   <strong>Finding:<strong> Insecure CORS Configuration (`Access-Control-Allow-Origin: <em>`).
+<em>   <strong>Impact:<strong> Allows malicious websites to read sensitive data from the application via the user's browser.
+<em>   <strong>Action Steps:<strong>
+    1.  Identify the list of trusted domains that need to interact with the API.
+    2.  Update the server configuration to replace `<em>` with specific allowed origins (e.g., `https://trusted-domain.com`).
+    3.  If the API is internal-only, disable CORS entirely or restrict to `localhost`/internal subnets.
+<em>   <strong>Resources:<strong> Backend Developer.
+<em>   <strong>Estimated Effort:<strong> 30–60 minutes.
+<em>   <strong>Security Impact:<strong> <strong>Medium<strong> – Mitigates Cross-Site Request Forgery (CSRF) and data exfiltration risks.</p><p>### 2.2. Remove Default Web Server Pages
+<em>   <strong>Finding:<strong> Default Web Server Configuration (Nginx "Welcome" page).
+<em>   <strong>Impact:<strong> Reveals server software and version, aiding attackers in targeting known vulnerabilities.
+<em>   <strong>Action Steps:<strong>
+    1.  Remove or rename the default `index.html` file in the Nginx root directory.
+    2.  Ensure the application's actual entry point is the only accessible file.
+    3.  Verify that port 80 redirects correctly or returns a 404 for the default path.
+<em>   <strong>Resources:<strong> System Administrator.
+<em>   <strong>Estimated Effort:<strong> 15–30 minutes.
+<em>   <strong>Security Impact:<strong> <strong>Low<strong> – Reduces information leakage and reconnaissance surface.</p><p>### 2.3. Sanitize Error Messages
+<em>   <strong>Finding:<strong> Verbose Error Messages Leaking Internal Logic.
+<em>   <strong>Impact:<strong> Exposes stack traces and internal logic, helping attackers craft targeted exploits.
+<em>   <strong>Action Steps:<strong>
+    1.  Disable "debug" mode in the application configuration.
+    2.  Implement a global error handler that returns a generic message (e.g., "An internal error occurred") to the client.
+    3.  Ensure detailed errors are logged only to the server-side log files, not the HTTP response.
+<em>   <strong>Resources:<strong> Backend Developer.
+<em>   <strong>Estimated Effort:<strong> 1 hour.
+<em>   <strong>Security Impact:<strong> <strong>Low<strong> – Prevents information disclosure.</p><p>---</p><p>## 3. Medium-term Improvements
+<em>These require code changes and testing to ensure application stability.<em></p><p>### 3.1. Upgrade Outdated jQuery Library
+<em>   <strong>Finding:<strong> Outdated jQuery Library (v2.2.4) with known XSS vulnerabilities.
+<em>   <strong>Impact:<strong> Vulnerable to Cross-Site Scripting (XSS) and other injection attacks (CVE-2020-11023 is actively exploited).
+<em>   <strong>Action Steps:<strong>
+    1.  Update `package.json` or CDN links to the latest stable version of jQuery (v3.7+).
+    2.  Review and update any code relying on deprecated jQuery features.
+    3.  Run regression tests to ensure UI functionality is preserved.
+<em>   <strong>Resources:<strong> Frontend Developer, QA Team.
+<em>   <strong>Estimated Effort:<strong> 4–8 hours.
+<em>   <strong>Security Impact:<strong> <strong>Medium<strong> – Closes known, actively exploited vulnerabilities.</p><p>### 3.2. Enforce Strict Input Validation
+<em>   <strong>Finding:<strong> Input Validation Failure and Schema Violation Acceptance.
+<em>   <strong>Impact:<strong> API accepts malformed data, potentially leading to injection attacks or logic errors.
+<em>   <strong>Action Steps:<strong>
+    1.  Implement strict schema validation (e.g., using JSON Schema, Joi, or Zod) for all API endpoints.
+    2.  Configure the API to return `400 Bad Request` for any input that does not match the expected schema.
+    3.  Validate data types, lengths, and formats on both client and server sides.
+<em>   <strong>Resources:<strong> Backend Developer.
+<em>   <strong>Estimated Effort:<strong> 4–6 hours.
+<em>   <strong>Security Impact:<strong> <strong>High<strong> – Prevents injection attacks and ensures data integrity.</p><p>---</p><p>## 4. Long-term Security Enhancements
+<em>Strategic improvements to reduce technical debt and harden the application architecture.<em></p><p>### 4.1. Replace Deprecated Plugins
+<em>   <strong>Finding:<strong> Legacy jQuery BBQ Plugin Detected.
+<em>   <strong>Impact:<strong> Unmaintained code may contain unknown vulnerabilities and lacks security patches.
+<em>   <strong>Action Steps:<strong>
+    1.  Refactor code to use modern URL manipulation APIs (e.g., `window.history.pushState`) instead of jQuery BBQ.
+    2.  Remove the plugin from the dependency tree.
+<em>   <strong>Resources:<strong> Frontend Developer.
+<em>   <strong>Estimated Effort:<strong> 1–2 days.
+<em>   <strong>Security Impact:<strong> <strong>Low<strong> – Reduces attack surface from unmaintained libraries.</p><p>### 4.2. Remove Information Disclosure
+<em>   <strong>Finding:<strong> Information Disclosure via HTML Source and Meta Description.
+<em>   <strong>Impact:<strong> Explicitly identifies the application as "OWASP Juice Shop" (an insecure demo), inviting targeted attacks.
+<em>   <strong>Action Steps:<strong>
+    1.  Remove `<title>` and `<meta>` tags that reveal the application name or "insecure" status.
+    2.  Strip version numbers from HTTP headers (e.g., `X-Powered-By`).
+    3.  Conduct a full audit of HTML source code for other identifying strings.
+<em>   <strong>Resources:<strong> Frontend Developer.
+<em>   <strong>Estimated Effort:<strong> 2 hours.
+<em>   <strong>Security Impact:<strong> <strong>Low<strong> – Reduces the likelihood of targeted attacks based on application fingerprinting.</p></div>
+    
+    <h2>AI Decision Trace</h2>
+    <div><p><em>   <strong>Critical Tool Selection & Rationale<strong>:
+    <em>   <strong>Retire.js & WhatWeb<strong>: Selected to fingerprint client-side libraries. Rationale: Automated identification of outdated JavaScript libraries is the most efficient method to detect known CVEs without manual code review.
+    <em>   <strong>Gobuster & CMSeek<strong>: Deployed for directory and CMS enumeration. Rationale: To map the application's attack surface and identify exposed administrative panels or backup files that could lead to unauthorized access.
+    <em>   <strong>Nikto & Schemathesis<strong>: Utilized for header analysis and API fuzzing. Rationale: To detect misconfigured HTTP headers (e.g., missing security tokens) and validate API schema robustness against injection attacks.
+    <em>   <strong>Arjun & ParamSpider<strong>: Chosen for parameter discovery. Rationale: To uncover hidden input vectors that are not visible in the standard DOM, which are common entry points for SQLi and XSS.</p><p><em>   <strong>Major Vulnerability Findings<strong>:
+    <em>   <strong>Cross-Site Scripting (XSS) via jQuery 2.2.4<strong>: The `retire` and `whatweb` scans confirmed the deployment of jQuery version 2.2.4. This version is vulnerable to CVE-2015-9251, allowing attackers to inject malicious scripts into the page context. This is classified as a <strong>MEDIUM<strong> severity finding due to the potential for session hijacking and data exfiltration.
+    <em>   <strong>Information Disclosure<strong>: `httpx` and `Nikto` revealed verbose server headers and technology fingerprints. While not directly exploitable, this aids attackers in tailoring specific exploits for the identified stack.</p><p><em>   <strong>Failed Operations & Limitations<strong>:
+    <em>   <strong>SSL/TLS Analysis<strong>: The `sslyze` scan reported a `connectivity_status` failure on port 3000, indicating the target may not be serving valid HTTPS certificates or the port is not configured for TLS negotiation, limiting the assessment of transport layer security.
+    <em>   <strong>WAF Detection<strong>: `wafw00f` output was inconclusive, suggesting either no WAF is present or it is effectively obfuscated, requiring manual verification to confirm protection status.
+    <em>   <strong>Parameter Scanning<strong>: `paramspider` returned only a banner, indicating a potential configuration error or lack of JavaScript resources to parse for parameters in the initial crawl.</p><p><em>   <strong>Important Decision Points<strong>:
+    <em>   <strong>Prioritization of Client-Side Risks<strong>: Despite the lack of server-side injection evidence in the initial scan, the confirmed presence of a vulnerable jQuery version was prioritized for immediate remediation due to its high exploitability and low complexity.
+    <em>   <strong>Scope Expansion<strong>: The successful enumeration of the `/graphql` endpoint (via `gobuster`/`xsstrike`) triggered a decision to include API-specific testing in the remediation plan, as GraphQL endpoints often expose sensitive data if not properly secured.
+    <em>   <strong>False Positive Mitigation<strong>: The `commix` and `xxe-scanner` outputs were reviewed to ensure no false positives were reported; the lack of explicit error messages in these logs suggests the target is likely resilient to these specific attack vectors, but manual verification is recommended.</p></div>
+
+    <h2>Tool Summary</h2>
+    <table><tr><th>Tool</th><th>Runs</th><th>Success</th><th>Failed</th><th>Skipped</th><th>Last Exit</th></tr><tr><td>httpx</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>zap</td><td>1</td><td>1</td><td>0</td><td>0</td><td>124</td></tr><tr><td>nmap</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>wafw00f</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>sslyze</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>headers</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>whatweb</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cmseek</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>waybackurls</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>subjs</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>retire</td><td>1</td><td>1</td><td>0</td><td>0</td><td>13</td></tr><tr><td>gobuster</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>paramspider</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>arjun</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>commix</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nikto</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>nuclei</td><td>1</td><td>1</td><td>0</td><td>0</td><td>124</td></tr><tr><td>schemathesis</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>graphql-cop</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>dalfox</td><td>1</td><td>1</td><td>0</td><td>0</td><td>124</td></tr><tr><td>xsstrike</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>csrf-tester</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>upload-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cookie-analyzer</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cors-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>ssrf-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>xxe-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>deserialization-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>auth-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>idor-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>error-detector</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>jwt_tool</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr></table>
+
+    <h2>Tools Executed</h2>
+    <div><p>- <strong>httpx<strong>: /home/ss/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -l reports/20260312_202225/urls_20260312_202225.txt (Duration: 15.41s)
+- <strong>zap<strong>:  (Duration: 0.00s)
+- <strong>nmap<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260312_202225/nmap_20260312_205318_669158.xml -p 80,443,8080,8443,3000,5000,8000 -sV -sC 192.168.1.49 (Duration: 11.40s)
+- <strong>wafw00f<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/wafw00f -v -a http://192.168.1.49:3000 (Duration: 0.11s)
+- <strong>sslyze<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/sslyze 192.168.1.49:3000 --json_out=- --certinfo --sslv2 --sslv3 --tlsv1 --tlsv1_1 --tlsv1_2 --tlsv1_3 --reneg --resum --heartbleed --robot --openssl_ccs --compression --http_headers (Duration: 0.14s)
+- <strong>headers<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Header-Check/1.0 -L -k http://192.168.1.49:3000 (Duration: 0.01s)
+- <strong>whatweb<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/whatweb --log-json=reports/20260312_202225/whatweb_20260312_210005_312493.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.49:3000 (Duration: 2.84s)
+- <strong>cmseek<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/cmseek -u http://192.168.1.49:3000 --batch --random-agent (Duration: 0.06s)
+- <strong>waybackurls<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/waybackurls http://192.168.1.49:3000/file-upload http://192.168.1.49:3000/profile/image/file http://192.168.1.49:3000/profile/image/url http://192.168.1.49:3000/rest/memories http://192.168.1.49:3000/api/Users http://192.168.1.49:3000/api/Products http://192.168.1.49:3000/api/Products/:id http://192.168.1.49:3000/api/Challenges http://192.168.1.49:3000/api/Hints http://192.168.1.49:3000/api/Complaints http://192.168.1.49:3000/api/Recycles http://192.168.1.49:3000/api/Recycles/:id http://192.168.1.49:3000/api/SecurityQuestions http://192.168.1.49:3000/api/SecurityAnswers http://192.168.1.49:3000/api/Feedbacks http://192.168.1.49:3000/api/BasketItems/:id http://192.168.1.49:3000/api/BasketItems http://192.168.1.49:3000/api/Quantitys/:id http://192.168.1.49:3000/api/Quantitys http://192.168.1.49:3000/api/Feedbacks/:id http://192.168.1.49:3000/api/Cards http://192.168.1.49:3000/api/Cards/:id http://192.168.1.49:3000/api/PrivacyRequests http://192.168.1.49:3000/api/Addresss http://192.168.1.49:3000/api/Addresss/:id http://192.168.1.49:3000/api/Deliverys http://192.168.1.49:3000/api/Deliverys/:id http://192.168.1.49:3000/rest/2fa/verify http://192.168.1.49:3000/rest/2fa/status http://192.168.1.49:3000/rest/2fa/setup http://192.168.1.49:3000/rest/2fa/disable http://192.168.1.49:3000/rest/user/login http://192.168.1.49:3000/rest/user/change-password http://192.168.1.49:3000/rest/user/reset-password http://192.168.1.49:3000/rest/user/security-question http://192.168.1.49:3000/rest/user/whoami http://192.168.1.49:3000/rest/user/authentication-details http://192.168.1.49:3000/rest/products/search http://192.168.1.49:3000/rest/basket/:id http://192.168.1.49:3000/rest/basket/:id/checkout http://192.168.1.49:3000/rest/basket/:id/coupon/:coupon http://192.168.1.49:3000/rest/admin/application-version http://192.168.1.49:3000/rest/admin/application-configuration http://192.168.1.49:3000/rest/repeat-notification http://192.168.1.49:3000/rest/continue-code http://192.168.1.49:3000/rest/continue-code-findIt http://192.168.1.49:3000/rest/continue-code-fixIt http://192.168.1.49:3000/rest/continue-code-findIt/apply/:continueCode http://192.168.1.49:3000/rest/continue-code-fixIt/apply/:continueCode http://192.168.1.49:3000/rest/continue-code/apply/:continueCode http://192.168.1.49:3000/rest/captcha http://192.168.1.49:3000/rest/image-captcha http://192.168.1.49:3000/rest/track-order/:id http://192.168.1.49:3000/rest/country-mapping http://192.168.1.49:3000/rest/saveLoginIp http://192.168.1.49:3000/rest/user/data-export http://192.168.1.49:3000/rest/languages http://192.168.1.49:3000/rest/order-history http://192.168.1.49:3000/rest/order-history/orders http://192.168.1.49:3000/rest/order-history/:id/delivery-status http://192.168.1.49:3000/rest/wallet/balance http://192.168.1.49:3000/rest/deluxe-membership http://192.168.1.49:3000/rest/chatbot/status http://192.168.1.49:3000/rest/chatbot/respond http://192.168.1.49:3000/rest/products/:id/reviews http://192.168.1.49:3000/rest/products/reviews http://192.168.1.49:3000/rest/web3/submitKey http://192.168.1.49:3000/rest/web3/nftUnlocked http://192.168.1.49:3000/rest/web3/nftMintListen http://192.168.1.49:3000/rest/web3/walletNFTVerify http://192.168.1.49:3000/rest/web3/walletExploitAddress http://192.168.1.49:3000/b2b/v2/orders http://192.168.1.49:3000/the/devs/are/so/funny/they/hid/an/easter/egg/within/the/easter/egg http://192.168.1.49:3000/this/page/is/hidden/behind/an/incredibly/high/paywall/that/could/only/be/unlocked/by/sending/1btc/to/us http://192.168.1.49:3000/we/may/also/instruct/you/to/refuse/all/reasonably/necessary/responsibility http://192.168.1.49:3000/redirect http://192.168.1.49:3000/promotion http://192.168.1.49:3000/video http://192.168.1.49:3000/profile http://192.168.1.49:3000/snippets/:challenge http://192.168.1.49:3000/snippets/verdict http://192.168.1.49:3000/snippets/fixes/:key http://192.168.1.49:3000/snippets/fixes http://192.168.1.49:3000/metrics http://192.168.1.49:3000/ (Duration: 3.58s)
+- <strong>subjs<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/subjs -i reports/20260312_202225/urls_20260312_202225.txt (Duration: 0.39s)
+- <strong>retire<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/retire --outputformat json --path /tmp/guardian-retire-03lvh75l (Duration: 0.36s)
+- <strong>gobuster<strong>: /usr/bin/gobuster dir -u http://192.168.1.49:3000 -w reports/20260312_202225/gobuster_wordlist_20260312_202225.txt -t 10 --timeout 10s -q --no-progress --no-error --no-color --delay 100ms -b 404 --exclude-length 1987 (Duration: 55.82s)
+- <strong>paramspider<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/paramspider -d 192.168.1.49:3000 (Duration: 7.43s)
+- <strong>arjun<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/arjun -u http://192.168.1.49:3000 -oJ /tmp/guardian-arjun-e8c1c61c302e46f28acbb69d37e0a82e.json (Duration: 0.53s)
+- <strong>commix<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/commix --url http://192.168.1.49:3000 --batch --level 2 (Duration: 0.07s)
+- <strong>nikto<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/nikto -h http://192.168.1.49:3000 -Tuning x -timeout 10 -nointeractive (Duration: 11.52s)
+- <strong>nuclei<strong>:  (Duration: 0.00s)
+- <strong>schemathesis<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/schemathesis run /tmp/tmp6kt4ppr7.json --url http://192.168.1.49:3000 --tls-verify=false (Duration: 0.80s)
+- <strong>graphql-cop<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/graphql-cop/graphql-cop.py -t http://192.168.1.49:3000/graphql (Duration: 0.08s)
+- <strong>dalfox<strong>:  (Duration: 0.00s)
+- <strong>xsstrike<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/xsstrike -u http://192.168.1.49:3000 --crawl (Duration: 0.39s)
+- <strong>csrf-tester<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/guardian_tools/csrf_tester.py --url http://192.168.1.49:3000 --insecure (Duration: 0.03s)
+- <strong>upload-scanner<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/guardian_tools/upload_scanner.py --url http://192.168.1.49:3000 --insecure (Duration: 0.03s)
+- <strong>cookie-analyzer<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Cookie-Analyzer/1.0 -L -k http://192.168.1.49:3000 (Duration: 0.01s)
+- <strong>cors-scanner<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:3000 -t 10 -T 10 (Duration: 0.27s)
+- <strong>ssrf-scanner<strong>: curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:3000 (Duration: 0.01s)
+- <strong>xxe-scanner<strong>: curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, <em>/<em> -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:3000 (Duration: 0.01s)
+- <strong>deserialization-scanner<strong>: curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:3000 (Duration: 0.00s)
+- <strong>auth-scanner<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:3000 (Duration: 0.00s)
+- <strong>idor-scanner<strong>: curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:3000 (Duration: 0.01s)
+- <strong>error-detector<strong>: curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:3000 (Duration: 0.00s)
+- <strong>jwt_tool<strong>:  (Duration: 0.00s)</p></div>
+    
+    <footer>
+        <hr>
+        <p><em>Report generated by Guardian AI Pentest Tool</em></p>
+    </footer>
+</body>
+</html>

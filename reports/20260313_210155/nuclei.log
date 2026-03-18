@@ -1,0 +1,15 @@
+[2026-03-13T21:35:59.416969] target=http://192.168.1.49:3000 exit=0 duration=107.493617s findings=0
+command: /home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -u http://192.168.1.49:3000 -jsonl -o reports/20260313_210155/nuclei_20260313_213559.jsonl -severity critical,high -tags cve,default-login,exposure,misconfig -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 50
+jsonl: reports/20260313_210155/nuclei_20260313_213559.jsonl
+output: <empty>
+
+[2026-03-13T21:40:32.789986] target=http://192.168.1.49:3000 exit=0 duration=107.461708s findings=0
+command: /home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -u http://192.168.1.49:3000 -jsonl -o reports/20260313_210155/nuclei_20260313_214032.jsonl -severity critical,high -tags cve,default-login,exposure,misconfig -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 50
+jsonl: reports/20260313_210155/nuclei_20260313_214032.jsonl
+output: <empty>
+
+[2026-03-13T21:48:07.373395] target=http://192.168.1.49:3000 exit=0 duration=107.502627s findings=0
+command: /home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -u http://192.168.1.49:3000 -jsonl -o reports/20260313_210155/nuclei_20260313_214807.jsonl -severity critical,high -tags cve,default-login,exposure,misconfig -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 50
+jsonl: reports/20260313_210155/nuclei_20260313_214807.jsonl
+output: <empty>
+

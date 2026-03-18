@@ -24,7 +24,7 @@ Key principles:
 
 Web application scanning order (always follow for HTTP targets):
 1. technology_detection  — fingerprint the stack (whatweb, httpx, cmseek)
-2. web_crawling          — spider/crawl for URL discovery (zap spider, katana, waybackurls)
+2. web_crawling          — spider/crawl for URL discovery (zap spider, waybackurls)
 3. web_app_scanning      — active scanning against discovered URLs (nikto, zap active scan)
 4. component_analysis    — check JS libraries for CVEs (retire)
 5. header_analysis       — HTTP security headers and cookie flags

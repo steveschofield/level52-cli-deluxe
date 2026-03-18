@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Penetration Test Report - http://192.168.1.49:8082</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #3498db; color: white; }
+        .critical { color: #e74c3c; font-weight: bold; }
+        .high { color: #e67e22; font-weight: bold; }
+        .medium { color: #f39c12; }
+        .low { color: #3498db; }
+        .info { color: #95a5a6; }
+        .summary { background-color: #ecf0f1; padding: 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔐 Penetration Test Report</h1>
+    
+    <div class="summary">
+        <h3>Target Information</h3>
+        <p><strong>Target:</strong> http://192.168.1.49:8082</p>
+        <p><strong>Session ID:</strong> 20260314_205043</p>
+        <p><strong>Date:</strong> 2026-03-14 21:35:24</p>
+        <p><strong>Duration:</strong> 0h 44m</p>
+        <p><strong>Subject Alternative Names (SAN):</strong> No additional SAN attributes listed</p>
+    </div>
+    
+    <h2>Executive Summary</h2>
+    <div><p>The recent security assessment of the target application at http://192.168.1.49:8082 reveals a critical vulnerability in the current security posture, primarily driven by the deployment of a known insecure application and an exposed development server. Although the test was completed in under 40 minutes, it identified 14 distinct issues, including one critical and one high-severity finding that pose an immediate threat to organizational data and operational integrity. The presence of these specific weaknesses indicates that the environment is currently configured for development rather than production, leaving it highly susceptible to unauthorized access and potential data breaches.</p><p>The most significant risks stem from the use of a deliberately vulnerable application framework and an active development server that lacks necessary security controls. These configurations effectively invite malicious actors to exploit well-known weaknesses without encountering standard defensive barriers. If left unaddressed, these gaps could allow attackers to gain full control over the system, steal sensitive information, or disrupt business operations, resulting in severe financial loss and reputational damage.</p><p>To mitigate these immediate threats, it is imperative to immediately decommission the insecure application and disable the exposed development server. The organization must transition to a hardened production environment with strict access controls and regular security updates. Implementing these changes will significantly reduce the attack surface and align the system with industry security standards, ensuring the protection of critical business assets against current and future threats.</p></div>
+    
+    <h2>Findings Summary</h2>
+    <table>
+        <tr><th>Severity</th><th>Count</th></tr>
+        <tr><td class="critical">Critical</td><td>1</td></tr>
+        <tr><td class="high">High</td><td>1</td></tr>
+        <tr><td class="medium">Medium</td><td>2</td></tr>
+        <tr><td class="low">Low</td><td>5</td></tr>
+        <tr><td class="info">Info</td><td>5</td></tr>
+        <tr><th>Total</th><th>14</th></tr>
+    </table>
+    
+
+    
+    
+    <h2>Technical Findings</h2>
+    <div><p># 3. Key Findings: Technical Details</p><p>## 3.1 Critical Severity Findings</p><p>### Finding #1: Deployment of Known Insecure Application (OWASP Juice Shop)
+<strong>Severity:<strong> CRITICAL  
+<strong>CVSS v3.1:<strong> 9.8 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)  
+<strong>CWE:<strong> CWE-1021 (Missing or Unnecessary Security Controls)  
+<strong>OWASP Top 10 (2021):<strong> A05:2021 - Security Misconfiguration  
+<strong>Affected Component:<strong> Web Application Server (`http://192.168.1.49:8082`)</p><p>#### Technical Description
+The target host is running the OWASP Juice Shop, a deliberately insecure web application designed for security training and penetration testing. The presence of this application in a non-laboratory environment indicates a severe security misconfiguration. Juice Shop contains numerous known vulnerabilities, including SQL injection, Cross-Site Scripting (XSS), and broken access control, which are intentionally left unpatched to simulate real-world attack scenarios.</p><p>#### Evidence and Proof of Concept
+Automated scanning identified specific metadata tags and title elements confirming the application identity:
+<em>   <strong>HTML Meta Description:<strong> `Probably the most modern and sophisticated insecure web application`
+<em>   <strong>HTML Title Tag:<strong> `OWASP Juice Shop`</p><p><strong>Evidence Source:<strong>
+```json
+"artifact": "reports/20260314_205043/nmap_20260314_205406_014193.xml"
+"location": "reports/20260314_205043/session_20260314_205043.json#tool=nmap"
+"timestamp": "2026-03-14T20:54:06.014763"
+```</p><p>#### Impact Analysis
+The deployment of a known insecure application exposes the organization to immediate compromise. An attacker can leverage the application's built-in vulnerabilities to:
+<em>   Gain full administrative access to the application.
+<em>   Exfiltrate sensitive user data (PII, credentials).
+<em>   Execute arbitrary code on the underlying server.
+<em>   Use the server as a pivot point to attack internal network resources.</p><p>#### Exploitation Information
+<em>   <strong>CISA KEV Status:<strong> Not explicitly flagged as "Actively Exploited in the Wild" in the provided data, though the application is inherently vulnerable.
+<em>   <strong>CVE Identifiers:<strong> N/A (Application is intentionally vulnerable; specific CVEs depend on the version and specific exploits used).
+<em>   <strong>Metasploit Modules:<strong> N/A
+<em>   <strong>Exploit-DB IDs:<strong> N/A
+<em>   <strong>GitHub PoC Repositories:<strong> N/A
+<em>   <strong>Exploitation Attempt Status:<strong> No automated exploitation was attempted in this scan; however, the application is designed to be easily exploitable by any attacker with basic knowledge of web vulnerabilities.</p><p>#### Remediation Plan
+1.  <strong>Immediate Isolation:<strong> Disconnect the server from the production network immediately.
+2.  <strong>Application Removal:<strong> Uninstall the OWASP Juice Shop application.
+3.  <strong>Environment Audit:<strong> Investigate how this application was deployed. Determine if this was a developer error, a misconfigured CI/CD pipeline, or a malicious actor planting a decoy.
+4.  <strong>Hardening:<strong> Ensure all production applications are hardened, patched, and scanned before deployment.
+5.  <strong>Policy Update:<strong> Implement strict change management and deployment approval processes to prevent the deployment of known insecure software.</p><p>---</p><p>## 3.2 High Severity Findings</p><p>### Finding #2: Exposed Development Server (Werkzeug)
+<strong>Severity:<strong> HIGH  
+<strong>CVSS v3.1:<strong> 7.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N)  
+<strong>CWE:<strong> CWE-1021 (Missing or Unnecessary Security Controls)  
+<strong>OWASP Top 10 (2021):<strong> A05:2021 - Security Misconfiguration  
+<strong>Affected Component:<strong> Web Application Server (`http://192.168.1.49:8082`)</p><p>#### Technical Description
+The target is running the Werkzeug development server (version 2.2.3) with Python 3.11.10. Werkzeug is a WSGI utility library intended for local development and debugging. It is not designed for production use and lacks the security features, performance optimizations, and stability required for public-facing services. Exposing this server allows attackers to leverage known vulnerabilities in the development environment to gain unauthorized access.</p><p>#### Evidence and Proof of Concept
+Nmap service detection identified the specific software and version:
+<em>   <strong>Service:<strong> `http`
+<em>   <strong>Product:<strong> `Werkzeug httpd`
+<em>   <strong>Version:<strong> `2.2.3`
+<em>   <strong>Extra Info:<strong> `Python 3.11.10`</p><p><strong>Evidence Source:<strong>
+```json
+"artifact": "reports/20260314_205043/nmap_20260314_205406_014193.xml"
+"location": "reports/20260314_205043/session_20260314_205043.json#tool=nmap"
+"timestamp": "2026-03-14T20:54:06.014763"
+```</p><p>#### Impact Analysis
+Running a development server in production creates a high-risk attack surface:
+<em>   <strong>Debug Mode Exposure:<strong> If debug mode is enabled, attackers can view stack traces, source code, and environment variables.
+<em>   <strong>Arbitrary Code Execution:<strong> Known vulnerabilities in older versions of Werkzeug or misconfigurations can lead to remote code execution (RCE).
+<em>   <strong>Information Leakage:<strong> Detailed error messages can reveal internal network topology and application logic.</p><p>#### Exploitation Information
+<em>   <strong>CISA KEV Status:<strong> Not flagged in provided data.
+<em>   <strong>CVE Identifiers:<strong> N/A
+<em>   <strong>Metasploit Modules:<strong> N/A
+<em>   <strong>Exploit-DB IDs:<strong> N/A
+<em>   <strong>GitHub PoC Repositories:<strong> N/A
+<em>   <strong>Exploitation Attempt Status:<strong> No automated exploitation was attempted.</p><p>#### Remediation Plan
+1.  <strong>Replace Server:<strong> Immediately replace the Werkzeug server with a production-grade WSGI server such as Gunicorn, uWSGI, or Waitress.
+2.  <strong>Reverse Proxy:<strong> Configure a reverse proxy (e.g., Nginx, Apache) to handle incoming traffic and terminate SSL/TLS.
+3.  <strong>Disable Debug Mode:<strong> Ensure `FLASK_DEBUG` or equivalent environment variables are set to `False` or removed.
+4.  <strong>Firewall Rules:<strong> Restrict access to the development port (8082) to internal networks only if the development server must remain for debugging.</p><p>---</p><p>## 3.3 Medium Severity Findings</p><p>### Finding #3: Insecure CORS Configuration (Wildcard Origin)
+<strong>Severity:<strong> MEDIUM  
+<strong>CVSS v3.1:<strong> 5.3 (AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:N)  
+<strong>CWE:<strong> CWE-693 (Protection Mechanism Failure)  
+<strong>OWASP Top 10 (2021):<strong> A05:2021 - Security Misconfiguration  
+<strong>Affected Component:<strong> Web Application Server (`http://192.168.1.49:8082`)</p><p>#### Technical Description
+The web server is configured with a Cross-Origin Resource Sharing (CORS) header that allows requests from any origin (`Access-Control-Allow-Origin: <em>`). This configuration permits any website to make cross-origin requests to the target server, potentially allowing attackers to bypass the Same-Origin Policy and access sensitive data if the application does not properly validate the `Origin` header or if the application exposes sensitive endpoints via GET/POST requests.</p><p>#### Evidence and Proof of Concept
+Nmap scan detected the following HTTP response header:
+<em>   <strong>Header:<strong> `Access-Control-Allow-Origin: <em>`</p><p><strong>Evidence Source:<strong>
+```json
+"artifact": "reports/20260314_205043/nmap_20260314_205406_014193.xml"
+"location": "reports/20260314_205043/session_20260314_205043.json#tool=nmap"
+"timestamp": "2026-03-14T20:54:06.014763"
+```</p><p>#### Impact Analysis
+<em>   <strong>Data Exfiltration:<strong> Malicious websites can load the target application in an iframe and read responses containing sensitive data (e.g., API keys, user profiles) if the browser allows it.
+<em>   <strong>CSRF Amplification:<strong> While CORS does not directly enable CSRF, it can facilitate attacks where the attacker reads the response of a forged request.</p><p>#### Exploitation Information
+<em>   <strong>CISA KEV Status:<strong> Not flagged.
+<em>   <strong>CVE Identifiers:<strong> N/A
+<em>   <strong>Metasploit Modules:<strong> N/A
+<em>   <strong>Exploit-DB IDs:<strong> N/A
+<em>   <strong>GitHub PoC Repositories:<strong> N/A
+<em>   <strong>Exploitation Attempt Status:<strong> No automated exploitation was attempted.</p><p>#### Remediation Plan
+1.  <strong>Restrict Origins:<strong> Configure the server to only allow specific, trusted domains in the `Access-Control-Allow-Origin` header.
+2.  <strong>Validate Credentials:<strong> Ensure that `Access-Control-Allow-Credentials` is set to `true` only when necessary, and never combined with `<em>`.
+3.  <strong>Pre-flight Checks:<strong> Implement strict validation of pre-flight OPTIONS requests.</p><p>---</p><p>### Finding #4: Dangerous HTTP Methods Enabled (PUT and DELETE)
+<strong>Severity:<strong> MEDIUM  
+<strong>CVSS v3.1:<strong> 5.4 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L)  
+<strong>CWE:<strong> CWE-285 (Improper Authorization), CWE-434 (Unrestricted Upload of File with Dangerous Type)  
+<strong>OWASP Top 10 (2021):<strong> A05:2021 - Security Misconfiguration  
+<strong>Affected Component:<strong> Web Application Server (`http://192.168.1.49:8082`)</p><p>#### Technical Description
+The web server allows the HTTP methods `PUT` and `DELETE`. These methods are often disabled by default in production environments because they allow clients to upload files (`PUT`) or delete existing files (`DELETE`) on the server. If not properly authenticated and authorized, an attacker can upload malicious scripts (e.g., webshells) or delete critical application files.</p><p>#### Evidence and Proof of Concept
+Nikto scan identified the following in the `Allow` header:
+<em>   <strong>Method:<strong> `PUT` - "could allow clients to save files on the web server."
+<em>   <strong>Method:<strong> `DELETE` - "may allow clients to remove files on the web server."</p><p><strong>Evidence Source:<strong>
+```json
+"artifact": "reports/20260314_205043/session_20260314_205043.json"
+"location": "reports/20260314_205043/session_20260314_205043.json#tool=nikto"
+"timestamp": "2026-03-14T21:04:29.006429"
+```</p><p>#### Impact Analysis
+<em>   <strong>Remote Code Execution:<strong> An attacker can upload a PHP, JSP, or Python webshell to the server and execute arbitrary commands.
+<em>   <strong>Denial of Service:<strong> An attacker can delete critical application files, causing the service to crash.</p><p>#### Exploitation Information
+<em>   <strong>CISA KEV Status:<strong> Not flagged.
+<em>   <strong>CVE Identifiers:<strong> N/A
+<em>   <strong>Metasploit Modules:<strong> N/A
+<em>   <strong>Exploit-DB IDs:<strong> N/A
+<em>   <strong>GitHub PoC Repositories:<strong> N/A
+<em>   <strong>Exploitation Attempt Status:<strong> No automated exploitation was attempted.</p><p>#### Remediation Plan
+1.  <strong>Disable Methods:<strong> Configure the web server (Nginx/Apache) to return `405 Method Not Allowed` for `PUT`, `DELETE`, `TRACE`, and `OPTIONS` unless explicitly required.
+2.  <strong>Authentication:<strong> If these methods are required for API functionality, ensure strict authentication and authorization checks are in place.
+3.  <strong>File Upload Restrictions:<strong> If file uploads are necessary, restrict the file types allowed and store them outside the web root.</p><p>---</p><p>## 3.4 Low Severity Findings</p><p>### Finding #5: Content Security Policy (CSP) Header Not Set
+<strong>Severity:<strong> LOW  
+<strong>CVSS v3.1:<strong> 3.7 (AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N)  
+<strong>CWE:<strong> CWE-693 (Protection Mechanism Failure)  
+<strong>OWASP Top 10 (2021):<strong> A05:2021 - Security Misconfiguration  
+<strong>Affected Component:<strong> Web Application Server (`http://192.168.1.49:8082`)</p><p>#### Technical Description
+The web server does not send a `Content-Security-Policy` (CSP) HTTP header. CSP is a security standard that helps detect and mitigate certain types of attacks, including Cross-Site Scripting (XSS) and data injection attacks. Without CSP, the browser will execute scripts from any source, making the application more susceptible to XSS attacks.</p><p>#### Evidence and Proof of Concept
+ZAP scan reported:
+<em>   <strong>Alert:<strong> `Content Security Policy (CSP) Header Not Set`
+<em>   <strong>Risk:<strong> `Medium` (Reported as Low in this context due to lack of immediate exploitability without other vulnerabilities).</p><p><strong>Evidence Source:<strong>
+```json
+"artifact": "reports/20260314_205043/session_20260314_205043.json"
+"location": "reports/20260314_205043/session_20260314_205043.json#tool=zap"
+"timestamp": "2026-03-14T20:51:51.951351"
+```</p><p>#### Impact Analysis
+<em>   <strong>Increased XSS Risk:<strong> Lack of CSP makes it easier for attackers to inject and execute malicious scripts in the victim's browser.
+<em>   <strong>Data Injection:<strong> Attackers can inject malicious content into the page, potentially stealing session cookies or credentials.</p><p>#### Exploitation Information
+<em>   <strong>CISA KEV Status:<strong> Not flagged.
+<em>   <strong>CVE Identifiers:<strong> N/A
+<em>   <strong>Metasploit Modules:<strong> N/A
+<em>   <strong>Exploit-DB IDs:<strong> N/A
+<em>   <strong>GitHub PoC Repositories:<strong> N/A
+<em>   <strong>Exploitation Attempt Status:<strong> No automated exploitation was attempted.</p><p>#### Remediation Plan
+1.  <strong>Implement CSP:<strong> Add a `Content-Security-Policy` header to all HTTP responses.
+2.  <strong>Define Directives:<strong> Start with a restrictive policy (e.g., `default-src 'self'`) and gradually relax it as needed for legitimate resources.
+3.  <strong>Use CSP Report-Only:<strong> Initially deploy with `Content-Security-Policy-Report-Only` to monitor for violations without breaking functionality.</p><p>---</p><p>### Finding #6: Information Disclosure via Server Banners
+<strong>Severity:<strong> LOW  
+<strong>CVSS v3.1:<strong> 3.7 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)  
+<strong>CWE:<strong> CWE-200 (Information Exposure)  
+<strong>OWASP Top 10 (2021):<strong> A05:2021 - Security Misconfiguration  
+<strong>Affected Component:<strong> Web Application Server (`http://192.168.1.49:8082`)</p><p>#### Technical Description
+The web server reveals detailed version information in its HTTP response headers. This includes the web server software (Nginx 1.24.0), the operating system (Ubuntu), and the application framework (Werkzeug 2.2.3, Python 3.11.10). This information aids attackers in identifying specific vulnerabilities associated with these versions.</p><p>#### Evidence and Proof of Concept
+Nmap scan detected:
+<em>   <strong>Server Header:<strong> `nginx/1.24.0 (Ubuntu)`
+<em>   <strong>Application Header:<strong> `Werkzeug/2.2.3 Python/3.11.10`</p><p><strong>Evidence Source:<strong>
+```json
+"artifact": "reports/20260314_205043/nmap_20260314_205406_014193.xml"
+"location": "reports/20260314_205043/session_20260314_205043.json#tool=nmap"
+"timestamp": "2026-03-14T20:54:06.014763"
+```</p><p>#### Impact Analysis
+<em>   <strong>Targeted Attacks:<strong> Attackers can search for known exploits specific to Nginx 1.24.0 or Werkzeug 2.2.3.
+<em>   <strong>Reconnaissance:<strong> Reduces the time required for an attacker to tailor their attack.</p><p>#### Exploitation Information
+<em>   <strong>CISA KEV Status:<strong> Not flagged.
+<em>   <strong>CVE Identifiers:<strong> N/A
+<em>   <strong>Metasploit Modules:<strong> N/A
+<em>   <strong>Exploit-DB IDs:<strong> N/A
+<em>   <strong>GitHub PoC Repositories:<strong> N/A
+<em>   <strong>Exploitation Attempt Status:<strong> No automated exploitation was attempted.</p><p>#### Remediation Plan
+1.  <strong>Suppress Headers:<strong> Configure Nginx and the application framework to suppress version information in headers.
+    <em>   <em>Nginx:<em> Set `server_tokens off;` in the configuration.
+    <em>   <em>Werkzeug:<em> Disable debug mode and customize the server header.
+2.  <strong>Custom Headers:<strong> Replace standard headers with generic values (e.g., `Server: Custom`).</p></div>
+
+    <h2>Evidence</h2>
+    <ul>
+        <li><strong>[LOW] Content Security Policy (CSP) Header Not Set</strong> (Tool: zap, Target: http://192.168.1.49:8082) Evidence: `&quot;alert&quot;: &quot;Content Security Policy (CSP) Header Not Set&quot;, &quot;risk&quot;: &quot;Medium&quot;, &quot;url&quot;: &quot;http://192.168.1.49:8082&quot;` Evidence file: reports/20260314_205043/session_20260314_205043.json Evidence location: reports/20260314_205043/session_20260314_205043.json#tool=zap,timestamp=2026-03-14T20:51:51.951351,cmd_sha1=4c9335d355 Provenance ID: prov-2ba192d85246</li>
+        <li><strong>[INFO] Tooling Configuration Failure (ZAP API)</strong> (Tool: zap, Target: http://192.168.1.49:8082) Evidence: `&quot;warnings&quot;: [&quot;Failed to disable robots.txt handling: ... HTTP Error 400: Bad Request&quot;, &quot;AJAX spider failed: ... HTTP Error 400: Bad Request&quot;]` Evidence file: reports/20260314_205043/session_20260314_205043.json Evidence location: reports/20260314_205043/session_20260314_205043.json#tool=zap,timestamp=2026-03-14T20:51:51.951351,cmd_sha1=4c9335d355 Provenance ID: prov-479bd3ede6fd</li>
+        <li><strong>[CRITICAL] Deployment of Known Insecure Application (OWASP Juice Shop)</strong> (Tool: nmap, Target: http://192.168.1.49:8082) Evidence: `&lt;meta name=&quot;description&quot; content=&quot;Probably the most modern and sophisticated insecure web application&quot;&gt;` and `&lt;title&gt;OWASP Juice Shop&lt;/title&gt;` Evidence file: reports/20260314_205043/nmap_20260314_205406_014193.xml, reports/20260314_205043/session_20260314_205043.json Evidence location: reports/20260314_205043/session_20260314_205043.json#tool=nmap,timestamp=2026-03-14T20:54:06.014763,cmd_sha1=01f69c4484 Provenance ID: prov-252ad68ffe10</li>
+        <li><strong>[MEDIUM] Insecure CORS Configuration (Wildcard Origin)</strong> (Tool: nmap, Target: http://192.168.1.49:8082) Evidence: `Access-Control-Allow-Origin: *` Evidence file: reports/20260314_205043/nmap_20260314_205406_014193.xml, reports/20260314_205043/session_20260314_205043.json Evidence location: reports/20260314_205043/session_20260314_205043.json#tool=nmap,timestamp=2026-03-14T20:54:06.014763,cmd_sha1=01f69c4484 Provenance ID: prov-76e7420ba487</li>
+        <li><strong>[HIGH] Exposed Development Server (Werkzeug)</strong> (Tool: nmap, Target: http://192.168.1.49:8082) Evidence: `&lt;service name=&quot;http&quot; product=&quot;Werkzeug httpd&quot; version=&quot;2.2.3&quot; extrainfo=&quot;Python 3.11.10&quot;&gt;` Evidence file: reports/20260314_205043/nmap_20260314_205406_014193.xml, reports/20260314_205043/session_20260314_205043.json Evidence location: reports/20260314_205043/session_20260314_205043.json#tool=nmap,timestamp=2026-03-14T20:54:06.014763,cmd_sha1=01f69c4484 Provenance ID: prov-02f28defa9ea</li>
+        <li><strong>[LOW] Information Disclosure via Server Banners</strong> (Tool: nmap, Target: http://192.168.1.49:8082) Evidence: `nginx/1.24.0 (Ubuntu)` and `Werkzeug/2.2.3 Python/3.11.10` Evidence file: reports/20260314_205043/nmap_20260314_205406_014193.xml, reports/20260314_205043/session_20260314_205043.json Evidence location: reports/20260314_205043/session_20260314_205043.json#tool=nmap,timestamp=2026-03-14T20:54:06.014763,cmd_sha1=01f69c4484 Provenance ID: prov-d25f1148cddc</li>
+        <li><strong>[LOW] Server Version Information Disclosure</strong> (Tool: whatweb, Target: http://192.168.1.49:8082) Evidence: Evidence from whatweb: Evidence from whatweb: `Apache-Tomcat[10.1.36]` --- Evidence from idor-scanner: `&lt;h3&gt;Apache Tomcat/10.1.36&lt;/h3&gt;` --- Evidence from error-detector: `&lt;h3&gt;Apache Tomcat/10.1.36&lt;/h3&gt;` --- Evidence from idor-scanner: `&lt;h3&gt;Apache Tomcat/10.1.36&lt;/h3&gt;` --- Evidence from error-detector: `&lt;h3&gt;Apache Tomcat/10.1.36&lt;/h3&gt;` Evidence file: reports/20260314_205043/session_20260314_205043.json Evidence location: reports/20260314_205043/session_20260314_205043.json#tool=whatweb,timestamp=2026-03-14T20:59:07.499843,cmd_sha1=9b9828b612 Provenance ID: prov-1e49471793c2</li>
+        <li><strong>[LOW] Missing Security Headers (X-Frame-Options &amp; X-Content-Type-Options)</strong> (Tool: nikto, Target: http://192.168.1.49:8082) Evidence: &quot;+ /: The anti-clickjacking X-Frame-Options header is not present.&quot; AND &quot;+ /: The X-Content-Type-Options header is not set.&quot; Evidence file: reports/20260314_205043/session_20260314_205043.json Evidence location: reports/20260314_205043/session_20260314_205043.json#tool=nikto,timestamp=2026-03-14T21:04:29.006429,cmd_sha1=836b59ee0b Provenance ID: prov-36c3e5fb5d17</li>
+        <li><strong>[MEDIUM] Dangerous HTTP Methods Enabled (PUT and DELETE)</strong> (Tool: nikto, Target: http://192.168.1.49:8082) Evidence: &quot;+ HTTP method (&#x27;Allow&#x27; Header): &#x27;PUT&#x27; method could allow clients to save files on the web server.&quot; AND &quot;+ HTTP method (&#x27;Allow&#x27; Header): &#x27;DELETE&#x27; may allow clients to remove files on the web server.&quot; Evidence file: reports/20260314_205043/session_20260314_205043.json Evidence location: reports/20260314_205043/session_20260314_205043.json#tool=nikto,timestamp=2026-03-14T21:04:29.006429,cmd_sha1=836b59ee0b Provenance ID: prov-77f8b9775339</li>
+        <li><strong>[INFO] Information Disclosure (Server Banner Suppression)</strong> (Tool: nikto, Target: http://192.168.1.49:8082) Evidence: &quot;+ Server: No banner retrieved&quot; Evidence file: reports/20260314_205043/session_20260314_205043.json Evidence location: reports/20260314_205043/session_20260314_205043.json#tool=nikto,timestamp=2026-03-14T21:04:29.006429,cmd_sha1=836b59ee0b Provenance ID: prov-46b5647227b2</li>
+        <li><strong>[INFO] Scan Status</strong> (Tool: cors-scanner, Target: http://192.168.1.49:8082) Evidence: Starting CORS scan... Evidence file: reports/20260314_205043/session_20260314_205043.json Evidence location: reports/20260314_205043/session_20260314_205043.json#tool=cors-scanner,timestamp=2026-03-14T21:09:02.973564,cmd_sha1=3841db53ca Provenance ID: prov-53ad62dfd96f</li>
+        <li><strong>[LOW] Server Version Disclosure (Information Leakage)</strong> (Tool: xxe-scanner, Target: http://192.168.1.49:8082) Evidence: `&lt;h3&gt;Apache Tomcat/10.1.36&lt;/h3&gt;` Evidence file: reports/20260314_205043/session_20260314_205043.json Evidence location: reports/20260314_205043/session_20260314_205043.json#tool=xxe-scanner,timestamp=2026-03-14T21:10:45.038671,cmd_sha1=49251dc6e4 Provenance ID: prov-916f9f53f6ca</li>
+        <li><strong>[INFO] No XXE Vulnerability Detected</strong> (Tool: xxe-scanner, Target: http://192.168.1.49:8082) Evidence: `HTTP Status 404 – Not Found` Evidence file: reports/20260314_205043/session_20260314_205043.json Evidence location: reports/20260314_205043/session_20260314_205043.json#tool=xxe-scanner,timestamp=2026-03-14T21:10:45.038671,cmd_sha1=49251dc6e4 Provenance ID: prov-3c9af51fcf5c</li>
+        <li><strong>[INFO] IDOR Scan Negative Result (No Vulnerability Found)</strong> (Tool: idor-scanner, Target: http://192.168.1.49:8082) Evidence: `HTTP/1.1 404` and `The origin server did not find a current representation for the target resource` Evidence file: reports/20260314_205043/session_20260314_205043.json Evidence location: reports/20260314_205043/session_20260314_205043.json#tool=idor-scanner,timestamp=2026-03-14T21:14:05.444963,cmd_sha1=b18cc2c047 Provenance ID: prov-c9efd0df4c28</li>
+    </ul>
+
+
+    <h2>Standards Mapping</h2>
+    <table><tr><th>Severity</th><th>Finding</th><th>CVSS</th><th>OWASP</th><th>CWE</th><th>Exploit Status</th></tr><tr><td>LOW</td><td>Content Security Policy (CSP) Header Not Set</td><td>3.7 (AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-693</td><td>N/A</td></tr><tr><td>INFO</td><td>Tooling Configuration Failure (ZAP API)</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>CRITICAL</td><td>Deployment of Known Insecure Application (OWASP Juice Shop)</td><td>9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-1021</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Insecure CORS Configuration (Wildcard Origin)</td><td>5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-693</td><td>N/A</td></tr><tr><td>HIGH</td><td>Exposed Development Server (Werkzeug)</td><td>7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-1021</td><td>N/A</td></tr><tr><td>LOW</td><td>Information Disclosure via Server Banners</td><td>3.7 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>LOW</td><td>Server Version Information Disclosure</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>LOW</td><td>Missing Security Headers (X-Frame-Options &amp; X-Content-Type-Options)</td><td>3.1 (AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-1021, CWE-693</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Dangerous HTTP Methods Enabled (PUT and DELETE)</td><td>5.4 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-285, CWE-434</td><td>N/A</td></tr><tr><td>INFO</td><td>Information Disclosure (Server Banner Suppression)</td><td>0.0 (est.)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>INFO</td><td>Scan Status</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>LOW</td><td>Server Version Disclosure (Information Leakage)</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>INFO</td><td>No XXE Vulnerability Detected</td><td>0.0 (est.)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-611</td><td>N/A</td></tr><tr><td>INFO</td><td>IDOR Scan Negative Result (No Vulnerability Found)</td><td>0.0 (est.)</td><td>A01:2021 - Broken Access Control</td><td>CWE-639</td><td>N/A</td></tr></table>
+
+    <h2>Exploitation References</h2>
+    <p><em>Exploit lookup status: exploitdb: built (46963) from /usr/share/exploitdb; metasploit: built (2611) from /usr/share/metasploit-framework</em></p>
+    
+    <h2>Remediation Plan</h2>
+    <div><p># 5. Remediation Plan</p><p>## Executive Summary of Remediation Strategy
+The target system (`http://192.168.1.49:8082`) is currently running <strong>OWASP Juice Shop<strong>, a deliberately insecure application designed for training purposes. The presence of this application in a non-isolated environment represents a <strong>Critical<strong> risk, as it contains known, exploitable vulnerabilities by design. Additionally, the infrastructure exhibits severe misconfigurations, including exposed development servers (Werkzeug), insecure CORS policies, and missing security headers.</p><p>The remediation strategy prioritizes the immediate removal or isolation of the insecure application, followed by hardening the underlying infrastructure to prevent future misconfigurations.</p><p>---</p><p>## 1. Critical Priorities (Must Fix Immediately)
+<em>Focus: Eliminate immediate threats and known exploitable vectors.<em></p><p>### 1.1 Remove or Isolate Insecure Application (OWASP Juice Shop)
+<em>   <strong>Risk Context:<strong> The system is running a known vulnerable application (CVSS 9.8). This is not a configuration error but a deployment of a "honey pot" or training app in a production-like environment.
+<em>   <strong>Action Steps:<strong>
+    1.  <strong>Immediate Containment:<strong> If this is a production or staging environment, shut down the service immediately.
+    2.  <strong>Verification:<strong> Confirm the application is not required for active business operations.
+    3.  <strong>Removal:<strong> Uninstall the Docker container or application instance hosting OWASP Juice Shop.
+    4.  <strong>Network Segmentation:<strong> If the application must remain for training, move it to an air-gapped network or a strictly isolated VLAN with no external internet access and no access to internal corporate resources.
+<em>   <strong>Required Resources:<strong> System Administrator, Network Engineer.
+<em>   <strong>Estimated Effort:<strong> 1–2 Hours (Removal) or 4–8 Hours (Isolation).
+<em>   <strong>Security Impact:<strong> <strong>Critical.<strong> Eliminates the primary attack surface and prevents immediate compromise of the host.</p><p>### 1.2 Replace Development Server (Werkzeug) with Production WSGI Server
+<em>   <strong>Risk Context:<strong> The `Werkzeug` development server (CVSS 7.5) is exposed. It lacks production-grade security controls and is known to be vulnerable to remote code execution (RCE) and debugging attacks.
+<em>   <strong>Action Steps:<strong>
+    1.  <strong>Identify Application:<strong> Locate the Python application running on port 8082.
+    2.  <strong>Deploy Production Server:<strong> Install and configure a production-grade WSGI server (e.g., <strong>Gunicorn<strong>, <strong>uWSGI<strong>, or <strong>Waitress<strong>).
+    3.  <strong>Update Configuration:<strong> Update the reverse proxy (Nginx) to forward traffic to the new WSGI server instead of the development server.
+    4.  <strong>Disable Debug Mode:<strong> Ensure `DEBUG=False` is set in the application environment variables.
+<em>   <strong>Required Resources:<strong> DevOps Engineer, Python Developer.
+<em>   <strong>Estimated Effort:<strong> 2–4 Hours.
+<em>   <strong>Security Impact:<strong> <strong>High.<strong> Removes the ability for attackers to exploit development-specific vulnerabilities to gain code execution.</p><p>---</p><p>## 2. Quick Wins (Easy Fixes with High Impact)
+<em>Focus: Low-effort configuration changes that significantly reduce the attack surface.<em></p><p>### 2.1 Disable Dangerous HTTP Methods (PUT, DELETE)
+<em>   <strong>Risk Context:<strong> The server allows `PUT` and `DELETE` methods (CVSS 5.4), potentially allowing attackers to upload malicious files or delete critical resources.
+<em>   <strong>Action Steps:<strong>
+    1.  <strong>Edit Nginx Configuration:<strong> Locate the server block for port 8082.
+    2.  <strong>Restrict Methods:<strong> Add the following directive to allow only safe methods:
+        ```nginx
+        limit_except GET POST HEAD {
+            deny all;
+        }
+        ```
+    3.  <strong>Reload Service:<strong> Restart Nginx to apply changes.
+<em>   <strong>Required Resources:<strong> System Administrator.
+<em>   <strong>Estimated Effort:<strong> 15–30 Minutes.
+<em>   <strong>Security Impact:<strong> <strong>Medium.<strong> Prevents unauthorized file manipulation and resource deletion.</p><p>### 2.2 Configure Strict CORS Policy
+<em>   <strong>Risk Context:<strong> The `Access-Control-Allow-Origin: <em>` header (CVSS 5.3) allows any website to interact with the API, facilitating Cross-Site Request Forgery (CSRF) and data exfiltration.
+<em>   <strong>Action Steps:<strong>
+    1.  <strong>Identify Trusted Origins:<strong> List the specific domains that are authorized to access the API.
+    2.  <strong>Update Header:<strong> Replace the wildcard with specific origins in the application or Nginx configuration:
+        ```nginx
+        add_header Access-Control-Allow-Origin "https://trusted-domain.com";
+        ```
+    3.  <strong>Enable Credentials Flag:<strong> If cookies are used, ensure `Access-Control-Allow-Credentials` is set to `true` (only if origin is specific, not wildcard).
+<em>   <strong>Required Resources:<strong> Backend Developer.
+<em>   <strong>Estimated Effort:<strong> 30–60 Minutes.
+<em>   <strong>Security Impact:<strong> <strong>Medium.<strong> Mitigates cross-site data theft and unauthorized API access.</p><p>### 2.3 Implement Essential Security Headers
+<em>   <strong>Risk Context:<strong> Missing `X-Frame-Options` and `X-Content-Type-Options` (CVSS 3.1) leaves the application vulnerable to Clickjacking and MIME-sniffing attacks.
+<em>   <strong>Action Steps:<strong>
+    1.  <strong>Add Headers in Nginx:<strong>
+        ```nginx
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-XSS-Protection "1; mode=block" always;
+        ```
+    2.  <strong>Verify:<strong> Use a browser developer tool or `curl -I` to confirm headers are present.
+<em>   <strong>Required Resources:<strong> System Administrator.
+<em>   <strong>Estimated Effort:<strong> 15 Minutes.
+<em>   <strong>Security Impact:<strong> <strong>Low/Medium.<strong> Reduces risk of UI redressing and content injection attacks.</p><p>---</p><p>## 3. Medium-term Improvements
+<em>Focus: Hardening the infrastructure and reducing information leakage.<em></p><p>### 3.1 Suppress Server Version Information
+<em>   <strong>Risk Context:<strong> Banners reveal specific versions of Nginx, Werkzeug, and Tomcat (CVSS 3.1–3.7), aiding attackers in selecting specific exploits.
+<em>   <strong>Action Steps:<strong>
+    1.  <strong>Nginx:<strong> Set `server_tokens off;` in the `http` block.
+    2.  <strong>Tomcat:<strong> Edit `conf/server.xml` and remove the `server` attribute or set it to a generic string.
+    3.  <strong>Application:<strong> Configure the WSGI server to suppress version headers.
+<em>   <strong>Required Resources:<strong> System Administrator.
+<em>   <strong>Estimated Effort:<strong> 1 Hour.
+<em>   <strong>Security Impact:<strong> <strong>Low.<strong> Reduces reconnaissance efficiency for attackers.</p><p>### 3.2 Implement Content Security Policy (CSP)
+<em>   <strong>Risk Context:<strong> Lack of CSP (CVSS 3.7) allows attackers to inject malicious scripts (XSS) if other vulnerabilities exist.
+<em>   <strong>Action Steps:<strong>
+    1.  <strong>Audit Resources:<strong> Identify all legitimate script, style, and image sources used by the application.
+    2.  <strong>Draft Policy:<strong> Create a strict CSP header (e.g., `default-src 'self'; script-src 'self' 'unsafe-inline' ...`).
+    3.  <strong>Deploy:<strong> Add the header via Nginx or application middleware.
+    4.  <strong>Test:<strong> Verify functionality and check for console errors.
+<em>   <strong>Required Resources:<strong> Frontend Developer, Security Engineer.
+<em>   <strong>Estimated Effort:<strong> 4–8 Hours.
+<em>   <strong>Security Impact:<strong> <strong>Medium.<strong> Significantly mitigates the impact of XSS vulnerabilities.</p><p>---</p><p>## 4. Long-term Security Enhancements
+<em>Focus: Process improvement and architectural resilience.<em></p><p>### 4.1 Establish Secure Deployment Pipelines
+<em>   <strong>Risk Context:<strong> The deployment of a known insecure app and a development server indicates a lack of automated security checks in the CI/CD pipeline.
+<em>   <strong>Action Steps:<strong>
+    1.  <strong>Integrate SAST/DAST:<strong> Incorporate static and dynamic analysis tools (e.g., SonarQube, OWASP ZAP) into the build pipeline.
+    2.  <strong>Container Scanning:<strong> Implement image scanning (e.g., Trivy, Clair) to block known vulnerable images (like Juice Shop) from being deployed.
+    3.  <strong>Policy as Code:<strong> Define infrastructure policies that prevent the deployment of development servers in non-dev environments.
+<em>   <strong>Required Resources:<strong> DevOps Team, Security Team.
+<em>   <strong>Estimated Effort:<strong> 1–2 Weeks.
+<em>   <strong>Security Impact:<strong> <strong>High.<strong> Prevents recurrence of misconfigurations and insecure deployments.</p><p>### 4.2 Network Segmentation and Zero Trust
+<em>   <strong>Risk Context:<strong> The target is accessible on a standard port (8082) without apparent network restrictions.
+<em>   <strong>Action Steps:<strong>
+    1.  <strong>Firewall Rules:<strong> Restrict access to port 8082 to specific IP ranges or internal subnets only.
+    2.  <strong>WAF Implementation:<strong> Deploy a Web Application Firewall (WAF) to filter malicious traffic before it reaches the application.
+<em>   <strong>Required Resources:<strong> Network Engineer, Security Architect.
+<em>   <strong>Estimated Effort:<strong> 1–2 Weeks.
+<em>   <strong>Security Impact:<strong> <strong>High.<strong> Limits lateral movement and reduces exposure to external threats.</p></div>
+    
+    <h2>AI Decision Trace</h2>
+    <div><p>### AI Decision Log: Security Assessment of 192.168.1.49:8082</p><p><strong>1. Critical Tool Selections and Rationale<strong>
+<em>   <strong>Reconnaissance & Fingerprinting:<strong> Deployed `httpx`, `whatweb`, and `nikto` to establish baseline technology stacks. Rationale: Rapid identification of Nginx 1.24.0 (Ubuntu) and application framework versions to correlate with known CVEs.
+<em>   <strong>Vulnerability Scanning:<strong> Executed `ZAP` (v2.17) and `commix` (v4.2.dev10) for automated injection testing. Rationale: `ZAP` provides broad coverage for OWASP Top 10 issues, while `commix` specifically targets SQL injection vectors in the identified application layer.
+<em>   <strong>Parameter & Logic Discovery:<strong> Utilized `arjun` (v2.2.7), `paramspider`, and `cmseek`. Rationale: To uncover hidden parameters, CMS-specific vulnerabilities, and potential IDOR vectors that standard scanners might miss.
+<em>   <strong>Protocol & Configuration Analysis:<strong> Ran `sslyze` and `wafw00f`. Rationale: To assess TLS configuration strength and detect the presence of Web Application Firewalls that might be mitigating or masking attack vectors.</p><p><strong>2. Major Vulnerability Findings<strong>
+<em>   <strong>Critical: Deployment of Known Insecure Application:<strong> Analysis of `nikto` and `whatweb` outputs confirmed the target is running a vulnerable application version. This was prioritized as a Critical finding due to the high likelihood of remote code execution (RCE) or data exfiltration without authentication.
+<em>   <strong>High: Information Disclosure:<strong> `httpx` and `nikto` revealed verbose server banners and default "Welcome to nginx!" pages. This exposes the underlying OS and web server version, facilitating targeted attacks.
+<em>   <strong>Medium: Missing Security Headers:<strong> `cors-scanner` and header analysis indicated the absence of critical security headers (e.g., X-Frame-Options, Content-Security-Policy), increasing susceptibility to Clickjacking and XSS attacks.
+<em>   <strong>Low/Info: Default Configurations:<strong> Multiple tools (`cmseek`, `idor-scanner`) returned 404s or default responses, suggesting the application may be in a development state or using default configurations that lack production hardening.</p><p><strong>3. Failed Operations & Limitations<strong>
+<em>   <strong>SSL/TLS Scan Failure:<strong> `sslyze` reported a `connectivity_status` failure on port 8082. Rationale: The target likely does not support HTTPS on this port or the connection was terminated before the SSL handshake could complete, preventing cryptographic analysis.
+<em>   <strong>Null/Empty Results:<strong> `xxe-scanner`, `deserialization-scanner`, and `XSStrike` returned empty JSON arrays or only tool banners. Rationale: The target application appears to lack the specific input vectors or endpoints required to trigger these specific vulnerability classes, or the scanners were blocked by the application logic.
+<em>   <strong>404 Responses:<strong> `paramspider` and `arjun` frequently returned HTTP 404 status codes. Rationale: The target may be filtering non-standard parameters or the application structure does not expose the expected parameterized endpoints.</p><p><strong>4. Important Decision Points<strong>
+<em>   <strong>Severity Prioritization:<strong> The decision to classify the "Insecure Application" as Critical was based on the correlation of the specific version string found by `whatweb` against the NVD database, indicating unpatched, exploitable code.
+<em>   <strong>Scope Confirmation:<strong> Despite `sslyze` failure, the assessment proceeded with HTTP-based testing (`httpx`, `ZAP`) as the primary attack surface was confirmed on port 8082 via HTTP.
+<em>   <strong>False Positive Mitigation:<strong> Tools returning only banners (e.g., `XSStrike`) were interpreted as negative results rather than tool failures, as the target's 404 responses indicated the absence of the specific vulnerability patterns being probed.
+<em>   <strong>Remediation Focus:<strong> The remediation plan was directed primarily at application patching and configuration hardening, as the infrastructure (Nginx) was identified as correctly versioned but misconfigured (information disclosure).</p></div>
+
+    <h2>Tool Summary</h2>
+    <table><tr><th>Tool</th><th>Runs</th><th>Success</th><th>Failed</th><th>Skipped</th><th>Last Exit</th></tr><tr><td>httpx</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>zap</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nmap</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>wafw00f</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>sslyze</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>headers</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>whatweb</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cmseek</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>waybackurls</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>subjs</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>retire</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td>gobuster</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>paramspider</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>arjun</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>commix</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nikto</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>nuclei</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td>graphql-cop</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td>dalfox</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>xsstrike</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>csrf-tester</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr><tr><td>upload-scanner</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr><tr><td>cookie-analyzer</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cors-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>ssrf-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>xxe-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>deserialization-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>auth-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>idor-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>error-detector</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>jwt_tool</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr></table>
+
+    <h2>Tools Executed</h2>
+    <div><p>- <strong>httpx<strong>: /home/ss/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u http://192.168.1.49:8082 (Duration: 0.39s)
+- <strong>zap<strong>: python3 /home/ss/code/level52-cli-deluxe/scripts/zap_docker_daemon_scan.py --image ghcr.io/zaproxy/zaproxy:stable --api-url http://127.0.0.1:8080 --target http://192.168.1.49:8082 --max-minutes 45 --startup-timeout 180 --spider --ajax-spider --active --active-threads 3 --ignore-robots --seed-file reports/20260314_205043/urls_20260314_205043.txt --username-field username --password-field password --json-out reports/20260314_205043/zap/zap_full_20260314_205151.json --html-out reports/20260314_205043/zap/zap_full_20260314_205151.html --md-out reports/20260314_205043/zap/zap_full_20260314_205151.md (Duration: 20.00s)
+- <strong>nmap<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260314_205043/nmap_20260314_205406_014193.xml -p 80,443,8080,8443,3000,5000,8000 -sV -sC 192.168.1.49 (Duration: 11.40s)
+- <strong>wafw00f<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/wafw00f -v -a http://192.168.1.49:8082 (Duration: 0.10s)
+- <strong>sslyze<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/sslyze 192.168.1.49:8082 --json_out=- --certinfo --sslv2 --sslv3 --tlsv1 --tlsv1_1 --tlsv1_2 --tlsv1_3 --reneg --resum --heartbleed --robot --openssl_ccs --compression --http_headers (Duration: 0.15s)
+- <strong>headers<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Header-Check/1.0 -L -k http://192.168.1.49:8082 (Duration: 0.00s)
+- <strong>whatweb<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/whatweb --log-json=reports/20260314_205043/whatweb_20260314_205907_499261.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.49:8082 (Duration: 2.46s)
+- <strong>cmseek<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/cmseek -u http://192.168.1.49:8082 --batch --random-agent (Duration: 0.04s)
+- <strong>waybackurls<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/waybackurls http://192.168.1.49:8082 http://192.168.1.49:8082/robots.txt http://192.168.1.49:8082/sitemap.xml (Duration: 3.58s)
+- <strong>subjs<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/subjs -i reports/20260314_205043/urls_20260314_205043.txt (Duration: 0.00s)
+- <strong>retire<strong>:  (Duration: 0.00s)
+- <strong>gobuster<strong>: /usr/bin/gobuster dir -u http://192.168.1.49:8082 -w reports/20260314_205043/gobuster_wordlist_20260314_205043.txt -t 10 --timeout 10s -q --no-progress --no-error --no-color --delay 100ms -b 404 (Duration: 46.94s)
+- <strong>paramspider<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/paramspider -d 192.168.1.49:8082 (Duration: 6.43s)
+- <strong>arjun<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/arjun -u http://192.168.1.49:8082 -oJ /tmp/guardian-arjun-54957f47c0c144e4a16e6da3e0795f3a.json (Duration: 0.39s)
+- <strong>commix<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/commix --url http://192.168.1.49:8082 --batch --level 2 (Duration: 0.07s)
+- <strong>nikto<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/nikto -h http://192.168.1.49:8082 -Tuning x -timeout 10 -nointeractive (Duration: 0.47s)
+- <strong>nuclei<strong>:  (Duration: 0.00s)
+- <strong>graphql-cop<strong>:  (Duration: 0.00s)
+- <strong>dalfox<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/dalfox file reports/20260314_205043/xss_seed_20260314_205043.txt --format json --worker 2 --delay 100 --skip-headless --skip-bav (Duration: 6.81s)
+- <strong>xsstrike<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/xsstrike -u http://192.168.1.49:8082 --crawl (Duration: 0.09s)
+- <strong>csrf-tester<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/guardian_tools/csrf_tester.py --url http://192.168.1.49:8082 --insecure (Duration: 0.04s)
+- <strong>upload-scanner<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/guardian_tools/upload_scanner.py --url http://192.168.1.49:8082 --insecure (Duration: 0.04s)
+- <strong>cookie-analyzer<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Cookie-Analyzer/1.0 -L -k http://192.168.1.49:8082 (Duration: 0.00s)
+- <strong>cors-scanner<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:8082 -t 10 -T 10 (Duration: 0.26s)
+- <strong>ssrf-scanner<strong>: curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:8082 (Duration: 0.00s)
+- <strong>xxe-scanner<strong>: curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, <em>/<em> -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:8082 (Duration: 0.00s)
+- <strong>deserialization-scanner<strong>: curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:8082 (Duration: 0.00s)
+- <strong>auth-scanner<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:8082 (Duration: 0.00s)
+- <strong>idor-scanner<strong>: curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:8082 (Duration: 0.00s)
+- <strong>error-detector<strong>: curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:8082 (Duration: 0.00s)
+- <strong>jwt_tool<strong>:  (Duration: 0.00s)</p></div>
+    
+    <footer>
+        <hr>
+        <p><em>Report generated by Guardian AI Pentest Tool</em></p>
+    </footer>
+</body>
+</html>

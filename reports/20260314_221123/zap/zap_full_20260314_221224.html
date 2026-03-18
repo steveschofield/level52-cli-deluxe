@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ZAP Scan Report - http://192.168.1.49:5000</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        h2 { color: #666; margin-top: 30px; }
+        .alert { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .alert-high { border-left: 5px solid #d9534f; }
+        .alert-medium { border-left: 5px solid #f0ad4e; }
+        .alert-low { border-left: 5px solid #5bc0de; }
+        .alert-info { border-left: 5px solid #5cb85c; }
+        .meta { color: #777; font-size: 0.9em; }
+        .warning { background: #fff3cd; padding: 10px; border-left: 3px solid #ffc107; margin: 10px 0; }
+        .timing { background: #f0f0f0; padding: 10px; border-radius: 5px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>OWASP ZAP Scan Report</h1>
+    <div class="meta">
+        <p><strong>Target:</strong> http://192.168.1.49:5000</p>
+        <p><strong>ZAP Version:</strong> 2.17.0</p>
+        <p><strong>Mode:</strong> daemon</p>
+        <p><strong>Spider:</strong> True</p>
+        <p><strong>AJAX Spider:</strong> True</p>
+        <p><strong>Active Scan:</strong> True</p>
+        <p><strong>Total Alerts:</strong> 4</p>
+    </div>
+    <div class="timing">
+        <h2>Scan Timing</h2>
+        <p><strong>Total Duration:</strong> 17.1s</p>
+        <ul>
+            <li><strong>ZAP Connection & Verification:</strong> 0.0s</li>
+            <li><strong>Seed URL Access:</strong> 0.0s</li>
+            <li><strong>Spider Scan:</strong> 2.0s</li>
+            <li><strong>AJAX Spider Scan:</strong> 0.0s</li>
+            <li><strong>Active Scan:</strong> 15.0s</li>
+            <li><strong>Passive Scan Queue Drain:</strong> 0.0s</li>
+            <li><strong>Alert Collection:</strong> 0.0s</li>
+        </ul>
+    </div>
+    <h2>Warnings</h2>
+    <div class="warning">Failed to disable robots.txt handling: Failed to parse JSON from http://127.0.0.1:8080/JSON/spider/action/setOptionHandleRobotsTxt/?apikey=&Boolean=false: HTTP Error 400: Bad Request</div>
+    <div class="warning">AJAX spider failed: Failed to parse JSON from http://127.0.0.1:8080/JSON/spiderAjax/action/scan/?apikey=&url=http%3A%2F%2F192.168.1.49%3A5000: HTTP Error 400: Bad Request</div>
+    <h2>Alerts</h2>
+    <div class="alert alert-low">
+        <h3>Server Leaks Version Information via "Server" HTTP Response Header Field</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:5000</p>
+        <p><strong>Evidence:</strong> <code>Werkzeug/2.2.3 Python/3.11.10</code></p>
+        <p><strong>Description:</strong> The web/application server is leaking version information via the "Server" HTTP response header. Access to such information may facilitate attackers identifying other vulnerabilities your web/application server is subject to.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to suppress the "Server" header or provide generic details.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>Server Leaks Version Information via "Server" HTTP Response Header Field</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:5000/sitemap.xml</p>
+        <p><strong>Evidence:</strong> <code>Werkzeug/2.2.3 Python/3.11.10</code></p>
+        <p><strong>Description:</strong> The web/application server is leaking version information via the "Server" HTTP response header. Access to such information may facilitate attackers identifying other vulnerabilities your web/application server is subject to.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to suppress the "Server" header or provide generic details.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>Server Leaks Version Information via "Server" HTTP Response Header Field</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:5000/robots.txt</p>
+        <p><strong>Evidence:</strong> <code>Werkzeug/2.2.3 Python/3.11.10</code></p>
+        <p><strong>Description:</strong> The web/application server is leaking version information via the "Server" HTTP response header. Access to such information may facilitate attackers identifying other vulnerabilities your web/application server is subject to.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to suppress the "Server" header or provide generic details.</p>
+    </div>
+    <div class="alert alert-low">
+        <h3>X-Content-Type-Options Header Missing</h3>
+        <p><strong>Risk:</strong> LOW | <strong>Confidence:</strong> Medium</p>
+        <p><strong>URL:</strong> http://192.168.1.49:5000</p>
+        <p><strong>Description:</strong> The Anti-MIME-Sniffing header X-Content-Type-Options was not set to 'nosniff'. This allows older versions of Internet Explorer and Chrome to perform MIME-sniffing on the response body, potentially causing the response body to be interpreted and displayed as a content type other than the declared content type. Current (early 2014) and legacy versions of Firefox will use the declared content type (if one is set), rather than performing MIME-sniffing.</p>
+        <p><strong>Solution:</strong> Ensure that the application/web server sets the Content-Type header appropriately, and that it sets the X-Content-Type-Options header to 'nosniff' for all web pages.
+If possible, ensure that the end user uses a standards-compliant and modern web browser that does not perform MIME-sniffing at all, or that can be directed by the web application/web server to not perform MIME-sniffing.</p>
+    </div>
+</body>
+</html>

@@ -599,7 +599,42 @@ install_gobuster() {
 }
 
 install_nikto() {
-    install_system_binary "nikto" "nikto"
+    # Check system paths directly — avoids picking up a broken pip-installed shim
+    # (pip's nikto package creates venv/bin/nikto that calls /var/lib/nikto/nikto.pl
+    # which doesn't exist on most systems).
+    local nikto_bin=""
+    for candidate in /usr/bin/nikto /usr/local/bin/nikto; do
+        if [[ -x "${candidate}" ]]; then
+            nikto_bin="${candidate}"
+            break
+        fi
+    done
+
+    if [[ -z "${nikto_bin}" ]]; then
+        if [[ "${OS}" == "debian" ]] && command -v sudo >/dev/null 2>&1 && sudo -n true 2>/dev/null; then
+            log_info "Installing nikto via apt..."
+            sudo apt-get update -qq && sudo apt-get install -y nikto 2>/dev/null || true
+        fi
+        for candidate in /usr/bin/nikto /usr/local/bin/nikto; do
+            if [[ -x "${candidate}" ]]; then
+                nikto_bin="${candidate}"
+                break
+            fi
+        done
+    fi
+
+    if [[ -z "${nikto_bin}" ]]; then
+        log_warn "nikto not found — install manually: sudo apt install nikto"
+        return 1
+    fi
+
+    # Verify nikto actually executes (guards against broken wrappers)
+    if ! "${nikto_bin}" -Version >/dev/null 2>&1; then
+        log_warn "nikto found at ${nikto_bin} but failed to execute"
+        return 1
+    fi
+
+    link_into_venv "${nikto_bin}" "nikto"
 }
 
 install_wpscan() {

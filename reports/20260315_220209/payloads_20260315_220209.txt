@@ -1,0 +1,6 @@
+### semgrep (external, 2026-03-15T22:02:14, 0.0s)
+  semgrep --config=auto /home/ss/code/DVWA
+
+### gitleaks/trufflehog (external, 2026-03-15T22:02:14, 0.0s)
+  gitleaks detect --source=/home/ss/code/DVWA
+

@@ -1,0 +1,6 @@
+[2026-03-14T19:22:01.626145] target=http://192.168.1.49:4280 exit=0 duration=1263.467197s findings=0
+command: /home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -l reports/20260314_185737/nuclei_seed_20260314_185737.txt -jsonl -o reports/20260314_185737/nuclei_20260314_192201.jsonl -severity critical,high -tags misconfiguration,csp,xss,csrf,juiceshop,cve,waf-bypass,no-waf,info-disclosure,dvwa -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 25
+targets: reports/20260314_185737/nuclei_seed_20260314_185737.txt
+jsonl: reports/20260314_185737/nuclei_20260314_192201.jsonl
+output: <empty>
+

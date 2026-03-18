@@ -27,7 +27,6 @@ def _minimal_config(tmp_path: Path) -> dict:
             "gobuster": {"wordlist": "/usr/share/wordlists/dirb/common.txt"},
             "zap": {"seed_urls_from_context": True, "run_additional_scan": True},
             "nuclei": {},
-            "katana": {},
         },
         "pentest": {"tool_timeout": 30, "max_parallel_tools": 1},
         "output": {"save_path": str(tmp_path)},
@@ -54,7 +53,7 @@ def _make_engine(config, target="http://example.com", source=None):
     engine.reporter = AsyncMock()
     engine.reporter.execute = AsyncMock(return_value="<html>report</html>")
     engine.tool_agent = MagicMock()
-    engine.tool_agent.available_tools = {"httpx", "katana", "zap", "gobuster", "nuclei"}
+    engine.tool_agent.available_tools = {"httpx", "zap", "gobuster", "nuclei"}
     return engine
 
 

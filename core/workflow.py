@@ -1915,7 +1915,7 @@ class WorkflowEngine:
         Build an enriched wordlist for gobuster by combining:
           1. The configured base wordlist (dirb/common.txt or similar)
           2. Path segments extracted from all URLs discovered so far
-             (ZAP spider, katana crawl, waybackurls, etc.)
+             (ZAP spider, waybackurls, etc.)
 
         Writes a deduplicated file to the session output dir and returns its path.
         Returns None if no base wordlist is available and no URLs exist.
@@ -1983,7 +1983,7 @@ class WorkflowEngine:
         """Rewrite the single master URL seed file from the current URL pool.
 
         Called after every major URL discovery event (whitebox, ZAP, gobuster,
-        katana …). All downstream scanners consume from this one file so they
+        waybackurls, etc.). All downstream scanners consume from this one file so they
         always see the union of every source discovered so far.
 
         File name: urls_{session_id}.txt
@@ -3293,7 +3293,7 @@ class WorkflowEngine:
             completed = set(self.memory.completed_actions or [])
             web_crawl_done = bool(
                 completed & {"web_crawling", "web_app_scanning"}
-                or any(t.tool in {"zap", "katana", "waybackurls"} for t in self.memory.tool_executions)
+                or any(t.tool in {"zap", "waybackurls"} for t in self.memory.tool_executions)
             )
             discovered_urls = self._get_discovered_urls()
             if not web_crawl_done and len(discovered_urls) < 10:

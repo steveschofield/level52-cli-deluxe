@@ -1,0 +1,85 @@
+2026-03-15 08:34:22,470 - guardian - INFO - Initialized Ollama model: qwen3.5:27b @ http://192.168.1.124:11434
+2026-03-15 08:34:22,472 - guardian - INFO - Prompt templates: set=qwen3_5_27b paths=/home/ss/code/level52-cli-deluxe/ai/prompt_templates/qwen3_5_27b/__init__.py, /home/ss/code/level52-cli-deluxe/ai/prompt_templates/qwen3_5_27b/analyst.py, /home/ss/code/level52-cli-deluxe/ai/prompt_templates/qwen3_5_27b/planner.py, /home/ss/code/level52-cli-deluxe/ai/prompt_templates/qwen3_5_27b/reporter.py
+2026-03-15 08:34:22,479 - guardian - INFO - Loaded skill configuration from config/skills.yaml
+2026-03-15 08:34:22,479 - guardian - INFO - ✓ Loaded 'planner' skill (optimized for qwen3_5_27b)
+2026-03-15 08:34:22,616 - guardian - WARNING - BloodHound MCP image not found. Run: /home/ss/code/level52-cli-deluxe/venv/bin/docker pull ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+2026-03-15 08:34:22,689 - guardian - INFO - Loaded skill configuration from config/skills.yaml
+2026-03-15 08:34:22,690 - guardian - INFO - ✓ Loaded 'analyst' skill (optimized for qwen3_5_27b)
+2026-03-15 08:34:22,690 - guardian - INFO - [CISAKEVClient] Fetching CISA KEV catalog...
+2026-03-15 08:34:22,847 - guardian - INFO - [CISAKEVClient] Fetched CISA KEV catalog v2026.03.13 (1542 entries)
+2026-03-15 08:34:22,849 - guardian - INFO - OSINT enrichment enabled: CISA KEV, GitHub, EPSS, OSV
+2026-03-15 08:34:22,849 - guardian - INFO - Tool available: nmap
+2026-03-15 08:34:22,850 - guardian - INFO - Tool available: subfinder
+2026-03-15 08:34:22,850 - guardian - INFO - Tool available: nuclei
+2026-03-15 08:34:22,850 - guardian - INFO - Tool available: whatweb
+2026-03-15 08:34:22,851 - guardian - INFO - Tool available: wafw00f
+2026-03-15 08:34:22,851 - guardian - INFO - Tool available: nikto
+2026-03-15 08:34:22,851 - guardian - INFO - Tool available: testssl
+2026-03-15 08:34:22,852 - guardian - INFO - Tool available: sqlmap
+2026-03-15 08:34:22,852 - guardian - INFO - Tool available: ffuf
+2026-03-15 08:34:22,853 - guardian - INFO - Tool available: wpscan
+2026-03-15 08:34:22,853 - guardian - INFO - Tool available: sslyze
+2026-03-15 08:34:22,853 - guardian - INFO - Tool available: headers
+2026-03-15 08:34:22,854 - guardian - INFO - Tool available: masscan
+2026-03-15 08:34:22,854 - guardian - INFO - Tool available: amass
+2026-03-15 08:34:22,854 - guardian - INFO - Tool available: whois
+2026-03-15 08:34:22,855 - guardian - INFO - Tool available: hydra
+2026-03-15 08:34:22,855 - guardian - INFO - Tool available: jwt_tool
+2026-03-15 08:34:22,855 - guardian - INFO - Tool available: graphql-cop
+2026-03-15 08:34:22,856 - guardian - INFO - Tool available: upload-scanner
+2026-03-15 08:34:22,856 - guardian - INFO - Tool available: csrf-tester
+2026-03-15 08:34:22,856 - guardian - INFO - Tool available: enum4linux-ng
+2026-03-15 08:34:22,857 - guardian - INFO - Tool available: enum4linux
+2026-03-15 08:34:22,857 - guardian - INFO - Tool available: smbclient
+2026-03-15 08:34:22,857 - guardian - INFO - Tool available: showmount
+2026-03-15 08:34:22,858 - guardian - INFO - Tool available: snmpwalk
+2026-03-15 08:34:22,858 - guardian - INFO - Tool available: onesixtyone
+2026-03-15 08:34:22,858 - guardian - INFO - Tool available: arjun
+2026-03-15 08:34:22,859 - guardian - INFO - Tool available: xsstrike
+2026-03-15 08:34:22,859 - guardian - INFO - Tool available: gitleaks
+2026-03-15 08:34:22,859 - guardian - INFO - Tool available: cmseek
+2026-03-15 08:34:22,860 - guardian - INFO - Tool available: dnsrecon
+2026-03-15 08:34:22,860 - guardian - INFO - Tool available: dnsx
+2026-03-15 08:34:22,861 - guardian - INFO - Tool available: shuffledns
+2026-03-15 08:34:22,861 - guardian - INFO - Tool available: puredns
+2026-03-15 08:34:22,861 - guardian - INFO - Tool available: retire
+2026-03-15 08:34:22,862 - guardian - INFO - Tool available: naabu
+2026-03-15 08:34:22,862 - guardian - INFO - Tool available: asnmap
+2026-03-15 08:34:22,862 - guardian - INFO - Tool available: waybackurls
+2026-03-15 08:34:22,863 - guardian - INFO - Tool available: subjs
+2026-03-15 08:34:22,863 - guardian - INFO - Tool available: linkfinder
+2026-03-15 08:34:22,863 - guardian - INFO - Tool available: xnlinkfinder
+2026-03-15 08:34:22,864 - guardian - INFO - Tool available: paramspider
+2026-03-15 08:34:22,864 - guardian - INFO - Tool available: schemathesis
+2026-03-15 08:34:22,864 - guardian - INFO - Tool available: trufflehog
+2026-03-15 08:34:22,865 - guardian - INFO - Tool available: metasploit
+2026-03-15 08:34:22,865 - guardian - INFO - Tool available: zap
+2026-03-15 08:34:22,865 - guardian - INFO - Tool available: dalfox
+2026-03-15 08:34:22,866 - guardian - INFO - Tool available: commix
+2026-03-15 08:34:22,866 - guardian - INFO - Tool available: gobuster
+2026-03-15 08:34:22,866 - guardian - INFO - Tool available: godeye
+2026-03-15 08:34:22,867 - guardian - INFO - Tool available: cors-scanner
+2026-03-15 08:34:22,867 - guardian - INFO - Tool available: cookie-analyzer
+2026-03-15 08:34:22,867 - guardian - INFO - Tool available: error-detector
+2026-03-15 08:34:22,868 - guardian - INFO - Tool available: ssrf-scanner
+2026-03-15 08:34:22,868 - guardian - INFO - Tool available: xxe-scanner
+2026-03-15 08:34:22,869 - guardian - INFO - Tool available: deserialization-scanner
+2026-03-15 08:34:22,869 - guardian - INFO - Tool available: auth-scanner
+2026-03-15 08:34:22,869 - guardian - INFO - Tool available: idor-scanner
+2026-03-15 08:34:22,870 - guardian - INFO - Tool available: semgrep
+2026-03-15 08:34:22,870 - guardian - INFO - Tool available: trivy
+2026-03-15 08:34:22,870 - guardian - INFO - Tool available: bloodhound
+2026-03-15 08:34:22,871 - guardian - INFO - Tool available: httpx
+2026-03-15 08:34:22,871 - guardian - INFO - Tool available: katana
+2026-03-15 08:34:22,871 - guardian - INFO - Starting workflow: web for target: http://192.168.1.49:3000
+2026-03-15 08:34:22,883 - guardian - INFO - Workflow setting: max_parallel_tools=1
+2026-03-15 08:34:22,884 - guardian - INFO - Workflow setting: step_delay=5.0s
+2026-03-15 08:34:22,884 - guardian - INFO - Workflow Progress [--------------------] 1/36 (0%) ETA n/a
+2026-03-15 08:34:22,885 - guardian - INFO - Executing step: http_discovery
+2026-03-15 08:34:22,898 - guardian - INFO - Tool Agent selecting tool: httpx
+2026-03-15 08:34:22,898 - guardian - INFO - Executing: /home/ss/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u http://192.168.1.49:3000
+2026-03-15 08:34:23,284 - guardian - INFO - Tool httpx finished in 0.39s (status=completed, exit=0, stdout=513B, stderr=0B)
+2026-03-15 08:34:23,285 - guardian - INFO - Tool Executed: httpx
+2026-03-15 08:34:23,286 - guardian - INFO - Master seed updated: 1 URLs → urls_20260315_083422.txt
+2026-03-15 08:34:23,286 - guardian - INFO - Analyst Agent analyzing results...
+2026-03-15 08:34:23,287 - guardian - INFO - [Analyst] LLM request: system_prompt=1369 chars, prompt=2913 chars

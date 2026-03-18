@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.98 scan initiated Sun Mar 15 22:11:48 2026 as: /usr/lib/nmap/nmap -&#45;privileged -sV -sC -T4 -Pn -oX reports/20260315_220612/nmap_20260315_221148_474697.xml -p 80,443,8080,8443,3000,5000,8000 -sV -sC 192.168.1.49 -->
+<nmaprun scanner="nmap" args="/usr/lib/nmap/nmap -&#45;privileged -sV -sC -T4 -Pn -oX reports/20260315_220612/nmap_20260315_221148_474697.xml -p 80,443,8080,8443,3000,5000,8000 -sV -sC 192.168.1.49" start="1773627108" startstr="Sun Mar 15 22:11:48 2026" version="7.98" xmloutputversion="1.05">
+<scaninfo type="syn" protocol="tcp" numservices="7" services="80,443,3000,5000,8000,8080,8443"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<hosthint><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.49" addrtype="ipv4"/>
+<address addr="BC:24:11:E0:2E:8C" addrtype="mac" vendor="Proxmox Server Solutions GmbH"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<host starttime="1773627108" endtime="1773627114"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.1.49" addrtype="ipv4"/>
+<address addr="BC:24:11:E0:2E:8C" addrtype="mac" vendor="Proxmox Server Solutions GmbH"/>
+<hostnames>
+<hostname name="ubuntu1.localdomain" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="http" product="nginx" version="1.24.0" extrainfo="Ubuntu" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:igor_sysoev:nginx:1.24.0</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service><script id="http-server-header" output="nginx/1.24.0 (Ubuntu)"><elem>nginx/1.24.0 (Ubuntu)</elem>
+</script><script id="http-title" output="Welcome to nginx!"><elem key="title">Welcome to nginx!</elem>
+</script></port>
+<port protocol="tcp" portid="443"><state state="closed" reason="reset" reason_ttl="64"/><service name="https" method="table" conf="3"/></port>
+<port protocol="tcp" portid="3000"><state state="closed" reason="reset" reason_ttl="64"/><service name="ppp" method="table" conf="3"/></port>
+<port protocol="tcp" portid="5000"><state state="closed" reason="reset" reason_ttl="64"/><service name="upnp" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8000"><state state="closed" reason="reset" reason_ttl="64"/><service name="http-alt" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8080"><state state="closed" reason="reset" reason_ttl="64"/><service name="http-proxy" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8443"><state state="closed" reason="reset" reason_ttl="64"/><service name="https-alt" method="table" conf="3"/></port>
+</ports>
+<times srtt="237" rttvar="753" to="100000"/>
+</host>
+<runstats><finished time="1773627114" timestr="Sun Mar 15 22:11:54 2026" summary="Nmap done at Sun Mar 15 22:11:54 2026; 1 IP address (1 host up) scanned in 6.28 seconds" elapsed="6.28" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

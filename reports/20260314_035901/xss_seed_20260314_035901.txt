@@ -1,0 +1,9 @@
+http://192.168.1.49:3000
+http://192.168.1.49:3000/profile/image/url
+http://192.168.1.49:3000/file-upload
+http://192.168.1.49:3000/profile
+http://192.168.1.49:3000/rest/admin/application-configuration
+http://192.168.1.49:3000/metrics
+http://192.168.1.49:3000/api
+http://192.168.1.49:3000/profile/image/file
+http://192.168.1.49:3000/

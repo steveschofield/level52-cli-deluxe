@@ -1,0 +1,1 @@
+/home/ss/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -l reports/20260312_201852/urls_20260312_201852.txt

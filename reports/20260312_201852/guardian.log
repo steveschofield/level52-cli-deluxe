@@ -1,0 +1,127 @@
+2026-03-12 20:18:52,944 - guardian - INFO - Initialized Ollama model: qwen3.5:27b @ http://192.168.1.124:11434
+2026-03-12 20:18:52,946 - guardian - INFO - Prompt templates: set=qwen3_5_27b paths=/home/ss/code/level52-cli-deluxe/ai/prompt_templates/qwen3_5_27b/__init__.py, /home/ss/code/level52-cli-deluxe/ai/prompt_templates/qwen3_5_27b/analyst.py, /home/ss/code/level52-cli-deluxe/ai/prompt_templates/qwen3_5_27b/planner.py, /home/ss/code/level52-cli-deluxe/ai/prompt_templates/qwen3_5_27b/reporter.py
+2026-03-12 20:18:52,953 - guardian - INFO - Loaded skill configuration from config/skills.yaml
+2026-03-12 20:18:52,953 - guardian - INFO - ✓ Loaded 'planner' skill (optimized for qwen3_5_27b)
+2026-03-12 20:18:53,107 - guardian - WARNING - BloodHound MCP image not found. Run: /home/ss/code/level52-cli-deluxe/venv/bin/docker pull ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+2026-03-12 20:18:53,186 - guardian - INFO - Loaded skill configuration from config/skills.yaml
+2026-03-12 20:18:53,187 - guardian - INFO - ✓ Loaded 'analyst' skill (optimized for qwen3_5_27b)
+2026-03-12 20:18:53,190 - guardian - INFO - [CISAKEVClient] Loaded CISA KEV from cache (1540 entries)
+2026-03-12 20:18:53,190 - guardian - INFO - OSINT enrichment enabled: CISA KEV, GitHub, EPSS, OSV
+2026-03-12 20:18:53,191 - guardian - INFO - Tool available: nmap
+2026-03-12 20:18:53,191 - guardian - INFO - Tool available: subfinder
+2026-03-12 20:18:53,191 - guardian - INFO - Tool available: nuclei
+2026-03-12 20:18:53,192 - guardian - INFO - Tool available: whatweb
+2026-03-12 20:18:53,192 - guardian - INFO - Tool available: wafw00f
+2026-03-12 20:18:53,192 - guardian - INFO - Tool available: nikto
+2026-03-12 20:18:53,193 - guardian - INFO - Tool available: testssl
+2026-03-12 20:18:53,193 - guardian - INFO - Tool available: sqlmap
+2026-03-12 20:18:53,193 - guardian - INFO - Tool available: ffuf
+2026-03-12 20:18:53,194 - guardian - INFO - Tool available: wpscan
+2026-03-12 20:18:53,194 - guardian - INFO - Tool available: sslyze
+2026-03-12 20:18:53,194 - guardian - INFO - Tool available: headers
+2026-03-12 20:18:53,195 - guardian - INFO - Tool available: masscan
+2026-03-12 20:18:53,195 - guardian - INFO - Tool available: amass
+2026-03-12 20:18:53,196 - guardian - INFO - Tool available: whois
+2026-03-12 20:18:53,196 - guardian - INFO - Tool available: hydra
+2026-03-12 20:18:53,196 - guardian - INFO - Tool available: jwt_tool
+2026-03-12 20:18:53,197 - guardian - INFO - Tool available: graphql-cop
+2026-03-12 20:18:53,197 - guardian - INFO - Tool available: upload-scanner
+2026-03-12 20:18:53,197 - guardian - INFO - Tool available: csrf-tester
+2026-03-12 20:18:53,198 - guardian - INFO - Tool available: enum4linux-ng
+2026-03-12 20:18:53,198 - guardian - INFO - Tool available: enum4linux
+2026-03-12 20:18:53,199 - guardian - INFO - Tool available: smbclient
+2026-03-12 20:18:53,199 - guardian - INFO - Tool available: showmount
+2026-03-12 20:18:53,199 - guardian - INFO - Tool available: snmpwalk
+2026-03-12 20:18:53,200 - guardian - INFO - Tool available: onesixtyone
+2026-03-12 20:18:53,200 - guardian - INFO - Tool available: arjun
+2026-03-12 20:18:53,200 - guardian - INFO - Tool available: xsstrike
+2026-03-12 20:18:53,201 - guardian - INFO - Tool available: gitleaks
+2026-03-12 20:18:53,201 - guardian - INFO - Tool available: cmseek
+2026-03-12 20:18:53,201 - guardian - INFO - Tool available: dnsrecon
+2026-03-12 20:18:53,202 - guardian - INFO - Tool available: dnsx
+2026-03-12 20:18:53,202 - guardian - INFO - Tool available: shuffledns
+2026-03-12 20:18:53,202 - guardian - INFO - Tool available: puredns
+2026-03-12 20:18:53,203 - guardian - INFO - Tool available: retire
+2026-03-12 20:18:53,203 - guardian - INFO - Tool available: naabu
+2026-03-12 20:18:53,203 - guardian - INFO - Tool available: asnmap
+2026-03-12 20:18:53,204 - guardian - INFO - Tool available: waybackurls
+2026-03-12 20:18:53,204 - guardian - INFO - Tool available: subjs
+2026-03-12 20:18:53,204 - guardian - INFO - Tool available: linkfinder
+2026-03-12 20:18:53,205 - guardian - INFO - Tool available: xnlinkfinder
+2026-03-12 20:18:53,205 - guardian - INFO - Tool available: paramspider
+2026-03-12 20:18:53,206 - guardian - INFO - Tool available: schemathesis
+2026-03-12 20:18:53,206 - guardian - INFO - Tool available: trufflehog
+2026-03-12 20:18:53,206 - guardian - INFO - Tool available: metasploit
+2026-03-12 20:18:53,207 - guardian - INFO - Tool available: zap
+2026-03-12 20:18:53,207 - guardian - INFO - Tool available: dalfox
+2026-03-12 20:18:53,207 - guardian - INFO - Tool available: commix
+2026-03-12 20:18:53,208 - guardian - INFO - Tool available: gobuster
+2026-03-12 20:18:53,208 - guardian - INFO - Tool available: godeye
+2026-03-12 20:18:53,208 - guardian - INFO - Tool available: cors-scanner
+2026-03-12 20:18:53,209 - guardian - INFO - Tool available: cookie-analyzer
+2026-03-12 20:18:53,209 - guardian - INFO - Tool available: error-detector
+2026-03-12 20:18:53,209 - guardian - INFO - Tool available: ssrf-scanner
+2026-03-12 20:18:53,210 - guardian - INFO - Tool available: xxe-scanner
+2026-03-12 20:18:53,210 - guardian - INFO - Tool available: deserialization-scanner
+2026-03-12 20:18:53,210 - guardian - INFO - Tool available: auth-scanner
+2026-03-12 20:18:53,211 - guardian - INFO - Tool available: idor-scanner
+2026-03-12 20:18:53,211 - guardian - INFO - Tool available: semgrep
+2026-03-12 20:18:53,211 - guardian - INFO - Tool available: trivy
+2026-03-12 20:18:53,212 - guardian - INFO - Tool available: bloodhound
+2026-03-12 20:18:53,212 - guardian - INFO - Tool available: httpx
+2026-03-12 20:18:53,212 - guardian - INFO - Tool available: katana
+2026-03-12 20:18:53,213 - guardian - INFO - Starting workflow: web for target: http://192.168.1.49:3000
+2026-03-12 20:18:53,225 - guardian - INFO - Workflow setting: max_parallel_tools=1
+2026-03-12 20:18:53,225 - guardian - INFO - Workflow setting: step_delay=5.0s
+2026-03-12 20:18:53,226 - guardian - INFO - ============================================================
+2026-03-12 20:18:53,226 - guardian - INFO - WHITEBOX ANALYSIS PHASE
+2026-03-12 20:18:53,226 - guardian - INFO - ============================================================
+2026-03-12 20:18:53,227 - guardian - INFO - Starting whitebox analysis of /home/ss/code/juice-shop
+2026-03-12 20:18:53,228 - guardian - INFO - Running Semgrep analysis...
+2026-03-12 20:18:53,228 - guardian - INFO - Running Trivy analysis...
+2026-03-12 20:18:53,229 - guardian - INFO - Running Gitleaks secret scan...
+2026-03-12 20:18:53,230 - guardian - INFO - Running TruffleHog secret scan...
+2026-03-12 20:18:55,126 - guardian - INFO - Trivy found 0 vulnerabilities
+2026-03-12 20:19:01,309 - guardian - INFO - TruffleHog found 3 secrets
+2026-03-12 20:19:07,403 - guardian - WARNING - Tool exited with code 1: 
+    ○
+    │╲
+    │ ○
+    ○ ░
+    ░    gitleaks
+
+[90m8:19PM[0m [32mINF[0m [1m19846 commits scanned.[0m
+[90m8:19PM[0m [32mINF[0m [1mscanned ~65306179 bytes (65.31 MB) in 14.2s[0m
+[90m8:19PM[0m [33mWRN[0m [1mleaks found: 145[0m
+
+2026-03-12 20:19:07,406 - guardian - INFO - Gitleaks found 145 secrets
+2026-03-12 20:19:30,799 - guardian - INFO - Semgrep found 39 issues
+2026-03-12 20:19:30,817 - guardian - INFO - Extracted 85 API endpoints from source code
+2026-03-12 20:19:30,818 - guardian - INFO - Whitebox analysis complete. Found 187 issues
+2026-03-12 20:19:30,818 - guardian - INFO - 
+Whitebox Analysis Summary:
+2026-03-12 20:19:30,818 - guardian - INFO -   Source Path: /home/ss/code/juice-shop
+2026-03-12 20:19:30,819 - guardian - INFO -   Frameworks Detected: Express.js
+2026-03-12 20:19:30,819 - guardian - INFO -   API Endpoints Found: 85
+2026-03-12 20:19:30,820 - guardian - INFO -   Secrets Found: 148
+2026-03-12 20:19:30,820 - guardian - INFO -   Semgrep Issues: 39
+2026-03-12 20:19:30,820 - guardian - INFO -     ERROR: 13
+2026-03-12 20:19:30,821 - guardian - INFO -     WARNING: 26
+2026-03-12 20:19:30,821 - guardian - INFO - ============================================================
+2026-03-12 20:19:30,821 - guardian - INFO - 
+2026-03-12 20:19:30,823 - guardian - INFO - Saved whitebox endpoints to: reports/20260312_201852/whitebox_endpoints_20260312_201852.txt
+2026-03-12 20:19:30,823 - guardian - INFO - Saved whitebox endpoint wordlist to: reports/20260312_201852/whitebox_endpoints_paths_20260312_201852.txt
+2026-03-12 20:19:30,824 - guardian - INFO - Master seed updated: 85 URLs → urls_20260312_201852.txt
+2026-03-12 20:19:30,824 - guardian - INFO - Workflow Progress [--------------------] 1/36 (0%) ETA n/a
+2026-03-12 20:19:30,825 - guardian - INFO - Executing step: http_discovery
+2026-03-12 20:19:30,833 - guardian - INFO - Tool Agent selecting tool: httpx
+2026-03-12 20:19:30,834 - guardian - INFO - Executing: /home/ss/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -l reports/20260312_201852/urls_20260312_201852.txt
+2026-03-12 20:19:46,357 - guardian - INFO - Tool httpx finished in 15.52s (status=completed, exit=0, stdout=44618B, stderr=0B)
+2026-03-12 20:19:46,358 - guardian - INFO - Tool Executed: httpx
+2026-03-12 20:19:46,358 - guardian - INFO - Master seed updated: 85 URLs → urls_20260312_201852.txt
+2026-03-12 20:19:46,359 - guardian - INFO - Analyst Agent analyzing results...
+2026-03-12 20:19:46,359 - guardian - ERROR - Workflow failed: '\n  "dalfox"'
+2026-03-12 20:19:46,361 - guardian - ERROR - Error occurred: KeyError - '\n  "dalfox"'
+2026-03-12 20:19:46,362 - guardian - INFO - Session saved to: reports/20260312_201852/session_20260312_201852.json
+2026-03-12 20:19:46,362 - guardian - INFO - Master seed updated: 85 URLs → urls_20260312_201852.txt
+2026-03-12 20:19:46,363 - guardian - INFO - Exported tool commands: reports/20260312_201852/payloads_20260312_201852.txt

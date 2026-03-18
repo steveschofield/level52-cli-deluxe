@@ -133,7 +133,7 @@ class PlannerAgent(BaseAgent):
             ],
             "scanning": [
                 "service_detection - Identify services on open ports",
-                "web_crawling - Spider/crawl the web app and collect all URLs (zap, katana, waybackurls)",
+                "web_crawling - Spider/crawl the web app and collect all URLs (zap, waybackurls)",
                 "web_app_scanning - Web application vulnerability scan (nikto, zap active scan, dalfox)",
                 "vulnerability_scanning - Template-based vulnerability scanning (nuclei)",
                 "component_analysis - Check JS libraries and components for CVEs (retire)",

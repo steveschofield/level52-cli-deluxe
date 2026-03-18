@@ -1,0 +1,2 @@
+ip,dns_name,cname,ports,sans
+192.168.1.49,ubuntu1.localdomain,,80;3000;5000;8080,

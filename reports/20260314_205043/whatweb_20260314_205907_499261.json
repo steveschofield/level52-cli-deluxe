@@ -1,0 +1,3 @@
+[
+{"target":"http://192.168.1.49:8082","http_status":404,"request_config":{"headers":{"User-Agent":"Guardian-Pentest-Tool"}},"plugins":{"Apache-Tomcat":{"version":["10.1.36"]},"Content-Language":{"string":["en"]},"Country":{"string":["RESERVED"],"module":["ZZ"]},"HTML5":{},"IP":{"string":["192.168.1.49"]},"Title":{"string":["HTTP Status 404 – Not Found"]}}}
+]

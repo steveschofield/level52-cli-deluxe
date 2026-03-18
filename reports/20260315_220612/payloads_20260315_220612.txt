@@ -1,0 +1,143 @@
+### semgrep (external, 2026-03-15T22:06:17, 0.0s)
+  semgrep --config=auto /home/ss/code/DVWA
+
+### gitleaks/trufflehog (external, 2026-03-15T22:06:17, 0.0s)
+  gitleaks detect --source=/home/ss/code/DVWA
+
+### httpx (external, 2026-03-15T22:06:17, 0.4s)
+  /home/ss/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u http://192.168.1.49:4280
+
+### zap (external, 2026-03-15T22:08:05, 43.0s)
+  python3 /home/ss/code/level52-cli-deluxe/scripts/zap_docker_daemon_scan.py --image ghcr.io/zaproxy/zaproxy:stable --api-url http://127.0.0.1:8080 --target http://192.168.1.49:4280 --max-minutes 45 --startup-timeout 180 --spider --ajax-spider --active --active-threads 3 --ignore-robots --seed-file reports/20260315_220612/urls_20260315_220612.txt --username-field username --password-field password --json-out reports/20260315_220612/zap/zap_full_20260315_220805.json --html-out reports/20260315_220612/zap/zap_full_20260315_220805.html --md-out reports/20260315_220612/zap/zap_full_20260315_220805.md
+
+### nmap (external, 2026-03-15T22:11:48, 6.3s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260315_220612/nmap_20260315_221148_474697.xml -p 80,443,8080,8443,3000,5000,8000 -sV -sC 192.168.1.49
+
+### wafw00f (external, 2026-03-15T22:13:32, 0.1s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/wafw00f -v -a http://192.168.1.49:4280
+
+### sslyze (external, 2026-03-15T22:14:48, 10.2s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/sslyze 192.168.1.49:4280 --json_out=- --certinfo --sslv2 --sslv3 --tlsv1 --tlsv1_1 --tlsv1_2 --tlsv1_3 --reneg --resum --heartbleed --robot --openssl_ccs --compression --http_headers
+
+### headers (external, 2026-03-15T22:15:39, 0.0s)
+  curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Header-Check/1.0 -L -k http://192.168.1.49:4280
+
+### whatweb (external, 2026-03-15T22:17:31, 5.0s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/whatweb --log-json=reports/20260315_220612/whatweb_20260315_221731_257023.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.49:4280
+
+### cmseek (external, 2026-03-15T22:19:38, 0.1s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/cmseek -u http://192.168.1.49:4280 --batch --random-agent
+
+### waybackurls (external, 2026-03-15T22:20:17, 19.4s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/waybackurls http://192.168.1.49:4280 http://192.168.1.49:4280/robots.txt http://192.168.1.49:4280/ http://192.168.1.49:4280/login.php http://192.168.1.49:4280/sitemap.xml http://192.168.1.49:4280/dvwa/css/login.css http://192.168.1.49:4280/dvwa/images/login_logo.png http://192.168.1.49:4280/dvwa http://192.168.1.49:4280/dvwa/css http://192.168.1.49:4280/dvwa/images
+
+### subjs (external, 2026-03-15T22:20:41, 0.0s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/subjs -i reports/20260315_220612/urls_20260315_220612.txt
+
+### gobuster (external, 2026-03-15T22:20:52, 46.9s)
+  /usr/bin/gobuster dir -u http://192.168.1.49:4280 -w reports/20260315_220612/gobuster_wordlist_20260315_220612.txt -t 10 --timeout 10s -q --no-progress --no-error --no-color --delay 100ms -b 404
+
+### paramspider (external, 2026-03-15T22:23:38, 0.4s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/paramspider -d 192.168.1.49:4280
+
+### arjun (external, 2026-03-15T22:24:09, 0.4s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/arjun -u http://192.168.1.49:4280 -oJ /tmp/guardian-arjun-84188a31c5f343b58a0fad7fd423bc92.json
+
+### commix (external, 2026-03-15T22:25:02, 0.1s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/commix --url http://192.168.1.49:4280 --batch --level 2
+
+### nikto (external, 2026-03-15T22:25:27, 2.4s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/nikto -h http://192.168.1.49:4280 -Tuning 123b -timeout 10 -nointeractive
+
+### nikto (external, 2026-03-15T22:29:23, 4.7s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/nikto -h http://192.168.1.49:4280 -Tuning x6 -timeout 10 -nointeractive
+
+### nuclei (external, 2026-03-15T22:31:35, 487.6s)
+  /home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -l reports/20260315_220612/nuclei_seed_20260315_220612.txt -jsonl -o reports/20260315_220612/nuclei_20260315_223135.jsonl -severity critical,high -tags apache,php,login,misconfiguration,csp,x-frame-options,server-leak,exposure,default-credentials,config -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 25
+
+### graphql-cop (external, 2026-03-15T22:39:52, 0.1s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/graphql-cop/graphql-cop.py -t http://192.168.1.49:4280/graphql
+
+### dalfox (external, 2026-03-15T22:40:27, 14.2s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/dalfox file reports/20260315_220612/xss_seed_20260315_220612.txt --format json --worker 2 --delay 100 --skip-headless --skip-bav
+
+### xsstrike (external, 2026-03-15T22:41:13, 0.1s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/xsstrike -u http://192.168.1.49:4280 --crawl
+
+### csrf-tester (external, 2026-03-15T22:41:52, 0.0s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/guardian_tools/csrf_tester.py --url http://192.168.1.49:4280 --insecure
+
+### upload-scanner (external, 2026-03-15T22:42:32, 0.0s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/guardian_tools/upload_scanner.py --url http://192.168.1.49:4280 --insecure
+
+### cookie-analyzer (external, 2026-03-15T22:43:06, 0.0s)
+  curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Cookie-Analyzer/1.0 -L -k http://192.168.1.49:4280
+
+### cors-scanner (6 requests, 2026-03-15T22:44:42, 1.6s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:4280 -t 10 -T 10
+  /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:4280/ -t 10 -T 10
+  /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:4280/login.php -t 10 -T 10
+  /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:4280/dvwa -t 10 -T 10
+  /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:4280/dvwa/css -t 10 -T 10
+  /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:4280/dvwa/images -t 10 -T 10
+
+### ssrf-scanner (6 requests, 2026-03-15T22:45:45, 0.0s)
+  curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:4280
+  curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:4280/
+  curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:4280/login.php
+  curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa
+  curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa/css
+  curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa/images
+
+### xxe-scanner (6 requests, 2026-03-15T22:46:49, 0.0s)
+  curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, */* -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:4280
+  curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, */* -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:4280/
+  curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, */* -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:4280/login.php
+  curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, */* -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:4280/dvwa
+  curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, */* -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:4280/dvwa/css
+  curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, */* -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:4280/dvwa/images
+
+### deserialization-scanner (6 requests, 2026-03-15T22:47:54, 0.0s)
+  curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:4280
+  curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:4280/
+  curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:4280/login.php
+  curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa
+  curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa/css
+  curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa/images
+
+### auth-scanner (6 requests, 2026-03-15T22:49:22, 0.0s)
+  curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:4280
+  curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:4280/
+  curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:4280/login.php
+  curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:4280/dvwa
+  curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:4280/dvwa/css
+  curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:4280/dvwa/images
+
+### idor-scanner (6 requests, 2026-03-15T22:51:01, 0.0s)
+  curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:4280
+  curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:4280/
+  curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:4280/login.php
+  curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa
+  curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa/css
+  curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa/images
+
+### error-detector (6 requests, 2026-03-15T22:53:05, 0.0s)
+  curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:4280
+  curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:4280/
+  curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:4280/login.php
+  curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:4280/dvwa
+  curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:4280/dvwa/css
+  curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:4280/dvwa/images
+

@@ -1,0 +1,7 @@
+http://192.168.1.49:4280
+http://192.168.1.49:4280/login.php
+http://192.168.1.49:4280/instructions.php?doc=copying
+http://192.168.1.49:4280/instructions.php?doc=PDF
+http://192.168.1.49:4280/instructions.php?doc=changelog
+http://192.168.1.49:4280/instructions.php?doc=readme
+http://192.168.1.49:4280/instructions.php?doc=%3Cxsl%3Avalue-of+select%3D%22document%28%27http%3A%2F%2F192.168.1.49%3A22%27%29%22%2F%3E

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ZAP Scan Report - http://192.168.1.49:8082</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        h2 { color: #666; margin-top: 30px; }
+        .alert { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .alert-high { border-left: 5px solid #d9534f; }
+        .alert-medium { border-left: 5px solid #f0ad4e; }
+        .alert-low { border-left: 5px solid #5bc0de; }
+        .alert-info { border-left: 5px solid #5cb85c; }
+        .meta { color: #777; font-size: 0.9em; }
+        .warning { background: #fff3cd; padding: 10px; border-left: 3px solid #ffc107; margin: 10px 0; }
+        .timing { background: #f0f0f0; padding: 10px; border-radius: 5px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>OWASP ZAP Scan Report</h1>
+    <div class="meta">
+        <p><strong>Target:</strong> http://192.168.1.49:8082</p>
+        <p><strong>ZAP Version:</strong> 2.17.0</p>
+        <p><strong>Mode:</strong> daemon</p>
+        <p><strong>Spider:</strong> True</p>
+        <p><strong>AJAX Spider:</strong> True</p>
+        <p><strong>Active Scan:</strong> True</p>
+        <p><strong>Total Alerts:</strong> 3</p>
+    </div>
+    <div class="timing">
+        <h2>Scan Timing</h2>
+        <p><strong>Total Duration:</strong> 9.1s</p>
+        <ul>
+            <li><strong>ZAP Connection & Verification:</strong> 0.0s</li>
+            <li><strong>Seed URL Access:</strong> 0.0s</li>
+            <li><strong>Spider Scan:</strong> 2.0s</li>
+            <li><strong>AJAX Spider Scan:</strong> 0.0s</li>
+            <li><strong>Active Scan:</strong> 5.0s</li>
+            <li><strong>Passive Scan Queue Drain:</strong> 2.0s</li>
+            <li><strong>Alert Collection:</strong> 0.0s</li>
+        </ul>
+    </div>
+    <h2>Warnings</h2>
+    <div class="warning">Failed to disable robots.txt handling: Failed to parse JSON from http://127.0.0.1:8080/JSON/spider/action/setOptionHandleRobotsTxt/?apikey=&Boolean=false: HTTP Error 400: Bad Request</div>
+    <div class="warning">AJAX spider failed: Failed to parse JSON from http://127.0.0.1:8080/JSON/spiderAjax/action/scan/?apikey=&url=http%3A%2F%2F192.168.1.49%3A8082: HTTP Error 400: Bad Request</div>
+    <h2>Alerts</h2>
+    <div class="alert alert-medium">
+        <h3>Content Security Policy (CSP) Header Not Set</h3>
+        <p><strong>Risk:</strong> MEDIUM | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:8082</p>
+        <p><strong>Description:</strong> Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to set the Content-Security-Policy header.</p>
+    </div>
+    <div class="alert alert-medium">
+        <h3>Content Security Policy (CSP) Header Not Set</h3>
+        <p><strong>Risk:</strong> MEDIUM | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:8082/sitemap.xml</p>
+        <p><strong>Description:</strong> Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to set the Content-Security-Policy header.</p>
+    </div>
+    <div class="alert alert-medium">
+        <h3>Content Security Policy (CSP) Header Not Set</h3>
+        <p><strong>Risk:</strong> MEDIUM | <strong>Confidence:</strong> High</p>
+        <p><strong>URL:</strong> http://192.168.1.49:8082/robots.txt</p>
+        <p><strong>Description:</strong> Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</p>
+        <p><strong>Solution:</strong> Ensure that your web server, application server, load balancer, etc. is configured to set the Content-Security-Policy header.</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+2026-03-15 22:02:09,820 - guardian - INFO - Initialized Ollama model: qwen3.5:27b @ http://192.168.1.124:11434
+2026-03-15 22:02:09,822 - guardian - INFO - Prompt templates: set=qwen3_5_27b paths=/home/ss/code/level52-cli-deluxe/ai/prompt_templates/qwen3_5_27b/__init__.py, /home/ss/code/level52-cli-deluxe/ai/prompt_templates/qwen3_5_27b/analyst.py, /home/ss/code/level52-cli-deluxe/ai/prompt_templates/qwen3_5_27b/planner.py, /home/ss/code/level52-cli-deluxe/ai/prompt_templates/qwen3_5_27b/reporter.py
+2026-03-15 22:02:09,828 - guardian - INFO - Loaded skill configuration from config/skills.yaml
+2026-03-15 22:02:09,829 - guardian - INFO - ✓ Loaded 'planner' skill (optimized for qwen3_5_27b)
+2026-03-15 22:02:09,976 - guardian - WARNING - BloodHound MCP image not found. Run: /home/ss/code/level52-cli-deluxe/venv/bin/docker pull ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+2026-03-15 22:02:10,053 - guardian - INFO - Loaded skill configuration from config/skills.yaml
+2026-03-15 22:02:10,053 - guardian - INFO - ✓ Loaded 'analyst' skill (optimized for qwen3_5_27b)
+2026-03-15 22:02:10,056 - guardian - INFO - [CISAKEVClient] Loaded CISA KEV from cache (1542 entries)
+2026-03-15 22:02:10,057 - guardian - INFO - OSINT enrichment enabled: CISA KEV, GitHub, EPSS, OSV
+2026-03-15 22:02:10,057 - guardian - INFO - Tool available: nmap
+2026-03-15 22:02:10,057 - guardian - INFO - Tool available: subfinder
+2026-03-15 22:02:10,058 - guardian - INFO - Tool available: nuclei
+2026-03-15 22:02:10,058 - guardian - INFO - Tool available: whatweb
+2026-03-15 22:02:10,058 - guardian - INFO - Tool available: wafw00f
+2026-03-15 22:02:10,059 - guardian - INFO - Tool available: nikto
+2026-03-15 22:02:10,059 - guardian - INFO - Tool available: testssl
+2026-03-15 22:02:10,060 - guardian - INFO - Tool available: sqlmap
+2026-03-15 22:02:10,060 - guardian - INFO - Tool available: ffuf
+2026-03-15 22:02:10,060 - guardian - INFO - Tool available: wpscan
+2026-03-15 22:02:10,061 - guardian - INFO - Tool available: sslyze
+2026-03-15 22:02:10,061 - guardian - INFO - Tool available: headers
+2026-03-15 22:02:10,061 - guardian - INFO - Tool available: masscan
+2026-03-15 22:02:10,062 - guardian - INFO - Tool available: amass
+2026-03-15 22:02:10,062 - guardian - INFO - Tool available: whois
+2026-03-15 22:02:10,062 - guardian - INFO - Tool available: hydra
+2026-03-15 22:02:10,063 - guardian - INFO - Tool available: jwt_tool
+2026-03-15 22:02:10,063 - guardian - INFO - Tool available: graphql-cop
+2026-03-15 22:02:10,063 - guardian - INFO - Tool available: upload-scanner
+2026-03-15 22:02:10,064 - guardian - INFO - Tool available: csrf-tester
+2026-03-15 22:02:10,064 - guardian - INFO - Tool available: enum4linux-ng
+2026-03-15 22:02:10,064 - guardian - INFO - Tool available: enum4linux
+2026-03-15 22:02:10,065 - guardian - INFO - Tool available: smbclient
+2026-03-15 22:02:10,065 - guardian - INFO - Tool available: showmount
+2026-03-15 22:02:10,065 - guardian - INFO - Tool available: snmpwalk
+2026-03-15 22:02:10,066 - guardian - INFO - Tool available: onesixtyone
+2026-03-15 22:02:10,066 - guardian - INFO - Tool available: arjun
+2026-03-15 22:02:10,066 - guardian - INFO - Tool available: xsstrike
+2026-03-15 22:02:10,067 - guardian - INFO - Tool available: gitleaks
+2026-03-15 22:02:10,067 - guardian - INFO - Tool available: cmseek
+2026-03-15 22:02:10,067 - guardian - INFO - Tool available: dnsrecon
+2026-03-15 22:02:10,068 - guardian - INFO - Tool available: dnsx
+2026-03-15 22:02:10,068 - guardian - INFO - Tool available: shuffledns
+2026-03-15 22:02:10,068 - guardian - INFO - Tool available: puredns
+2026-03-15 22:02:10,069 - guardian - INFO - Tool available: retire
+2026-03-15 22:02:10,069 - guardian - INFO - Tool available: naabu
+2026-03-15 22:02:10,069 - guardian - INFO - Tool available: asnmap
+2026-03-15 22:02:10,070 - guardian - INFO - Tool available: waybackurls
+2026-03-15 22:02:10,070 - guardian - INFO - Tool available: subjs
+2026-03-15 22:02:10,070 - guardian - INFO - Tool available: linkfinder
+2026-03-15 22:02:10,071 - guardian - INFO - Tool available: xnlinkfinder
+2026-03-15 22:02:10,071 - guardian - INFO - Tool available: paramspider
+2026-03-15 22:02:10,071 - guardian - INFO - Tool available: schemathesis
+2026-03-15 22:02:10,072 - guardian - INFO - Tool available: trufflehog
+2026-03-15 22:02:10,072 - guardian - INFO - Tool available: metasploit
+2026-03-15 22:02:10,072 - guardian - INFO - Tool available: zap
+2026-03-15 22:02:10,073 - guardian - INFO - Tool available: dalfox
+2026-03-15 22:02:10,073 - guardian - INFO - Tool available: commix
+2026-03-15 22:02:10,073 - guardian - INFO - Tool available: gobuster
+2026-03-15 22:02:10,074 - guardian - INFO - Tool available: godeye
+2026-03-15 22:02:10,074 - guardian - INFO - Tool available: cors-scanner
+2026-03-15 22:02:10,074 - guardian - INFO - Tool available: cookie-analyzer
+2026-03-15 22:02:10,075 - guardian - INFO - Tool available: error-detector
+2026-03-15 22:02:10,075 - guardian - INFO - Tool available: ssrf-scanner
+2026-03-15 22:02:10,075 - guardian - INFO - Tool available: xxe-scanner
+2026-03-15 22:02:10,076 - guardian - INFO - Tool available: deserialization-scanner
+2026-03-15 22:02:10,076 - guardian - INFO - Tool available: auth-scanner
+2026-03-15 22:02:10,076 - guardian - INFO - Tool available: idor-scanner
+2026-03-15 22:02:10,077 - guardian - INFO - Tool available: semgrep
+2026-03-15 22:02:10,077 - guardian - INFO - Tool available: trivy
+2026-03-15 22:02:10,077 - guardian - INFO - Tool available: bloodhound
+2026-03-15 22:02:10,078 - guardian - INFO - Tool available: httpx
+2026-03-15 22:02:10,078 - guardian - INFO - Tool available: katana
+2026-03-15 22:02:10,079 - guardian - INFO - Starting workflow: web for target: http://192.168.1.49:4280
+2026-03-15 22:02:10,091 - guardian - INFO - Workflow setting: max_parallel_tools=1
+2026-03-15 22:02:10,092 - guardian - INFO - Workflow setting: step_delay=5.0s
+2026-03-15 22:02:10,092 - guardian - INFO - ============================================================
+2026-03-15 22:02:10,092 - guardian - INFO - WHITEBOX ANALYSIS PHASE
+2026-03-15 22:02:10,093 - guardian - INFO - ============================================================
+2026-03-15 22:02:10,094 - guardian - INFO - Starting whitebox analysis of /home/ss/code/DVWA
+2026-03-15 22:02:10,094 - guardian - INFO - Running Semgrep analysis...
+2026-03-15 22:02:10,095 - guardian - INFO - Running Trivy analysis...
+2026-03-15 22:02:10,095 - guardian - INFO - Running Gitleaks secret scan...
+2026-03-15 22:02:10,096 - guardian - INFO - Running TruffleHog secret scan...
+2026-03-15 22:02:10,816 - guardian - INFO - Trivy found 0 vulnerabilities
+2026-03-15 22:02:10,897 - guardian - WARNING - Tool exited with code 1: 
+    ○
+    │╲
+    │ ○
+    ○ ░
+    ░    gitleaks
+
+[90m10:02PM[0m [32mINF[0m [1m615 commits scanned.[0m
+[90m10:02PM[0m [32mINF[0m [1mscanned ~6110486 bytes (6.11 MB) in 796ms[0m
+[90m10:02PM[0m [33mWRN[0m [1mleaks found: 2[0m
+
+2026-03-15 22:02:10,898 - guardian - INFO - Gitleaks found 2 secrets
+2026-03-15 22:02:11,587 - guardian - INFO - TruffleHog found 0 secrets
+2026-03-15 22:02:14,765 - guardian - INFO - Semgrep found 73 issues
+2026-03-15 22:02:14,769 - guardian - INFO - Extracted 0 API endpoints from source code
+2026-03-15 22:02:14,770 - guardian - INFO - Whitebox analysis complete. Found 75 issues
+2026-03-15 22:02:14,770 - guardian - INFO - 
+Whitebox Analysis Summary:
+2026-03-15 22:02:14,770 - guardian - INFO -   Source Path: /home/ss/code/DVWA
+2026-03-15 22:02:14,771 - guardian - INFO -   Frameworks Detected: None
+2026-03-15 22:02:14,771 - guardian - INFO -   API Endpoints Found: 0
+2026-03-15 22:02:14,772 - guardian - INFO -   Secrets Found: 2
+2026-03-15 22:02:14,772 - guardian - INFO -   Semgrep Issues: 73
+2026-03-15 22:02:14,772 - guardian - INFO -     WARNING: 22
+2026-03-15 22:02:14,773 - guardian - INFO -     ERROR: 51
+2026-03-15 22:02:14,773 - guardian - INFO - ============================================================
+2026-03-15 22:02:14,773 - guardian - INFO - 
+2026-03-15 22:02:14,774 - guardian - INFO -   Elevated semgrep finding: other (36 hits)
+2026-03-15 22:02:14,774 - guardian - INFO -   Elevated semgrep finding: sqli (14 hits)
+2026-03-15 22:02:14,775 - guardian - INFO -   Elevated semgrep finding: xss (1 hits)
+2026-03-15 22:02:14,775 - guardian - INFO -   Elevated secrets finding: 2 total secrets
+2026-03-15 22:02:14,775 - guardian - INFO - Workflow Progress [--------------------] 1/37 (0%) ETA n/a
+2026-03-15 22:02:14,776 - guardian - INFO - Executing step: http_discovery
+2026-03-15 22:02:14,782 - guardian - WARNING - Target not responding (attempt 1/12), retrying in 10s...
+2026-03-15 22:02:24,797 - guardian - WARNING - Target not responding (attempt 2/12), retrying in 10s...
+2026-03-15 22:02:34,813 - guardian - WARNING - Target not responding (attempt 3/12), retrying in 10s...
+2026-03-15 22:02:44,828 - guardian - WARNING - Target not responding (attempt 4/12), retrying in 10s...
+2026-03-15 22:02:54,844 - guardian - WARNING - Target not responding (attempt 5/12), retrying in 10s...
+2026-03-15 22:03:04,859 - guardian - WARNING - Target not responding (attempt 6/12), retrying in 10s...
+2026-03-15 22:03:14,874 - guardian - WARNING - Target not responding (attempt 7/12), retrying in 10s...
+2026-03-15 22:03:24,890 - guardian - WARNING - Target not responding (attempt 8/12), retrying in 10s...
+2026-03-15 22:03:34,905 - guardian - WARNING - Target not responding (attempt 9/12), retrying in 10s...
+2026-03-15 22:03:44,920 - guardian - WARNING - Target not responding (attempt 10/12), retrying in 10s...
+2026-03-15 22:03:54,932 - guardian - WARNING - Target not responding (attempt 11/12), retrying in 10s...
+2026-03-15 22:04:04,948 - guardian - ERROR - Site was not responding after 12 attempts before step 'http_discovery'. (All connection attempts failed) You can resume from the previous successful step with: guardian workflow run --name web --resume 20260315_220209
+2026-03-15 22:04:04,948 - guardian - INFO - Resume with: guardian workflow run --name web --resume 20260315_220209
+2026-03-15 22:04:04,950 - guardian - INFO - Session saved to: reports/20260315_220209/session_20260315_220209.json
+2026-03-15 22:04:04,950 - guardian - INFO - Exported tool commands: reports/20260315_220209/payloads_20260315_220209.txt
+2026-03-15 22:04:04,950 - guardian - INFO - Tool execution summary:
+2026-03-15 22:04:04,951 - guardian - INFO - - semgrep: success (runs=1, success=1, failed=0, skipped=0)
+2026-03-15 22:04:04,951 - guardian - INFO - - gitleaks/trufflehog: success (runs=1, success=1, failed=0, skipped=0)

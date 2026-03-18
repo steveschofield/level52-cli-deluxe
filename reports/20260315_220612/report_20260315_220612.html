@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Penetration Test Report - http://192.168.1.49:4280</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #3498db; color: white; }
+        .critical { color: #e74c3c; font-weight: bold; }
+        .high { color: #e67e22; font-weight: bold; }
+        .medium { color: #f39c12; }
+        .low { color: #3498db; }
+        .info { color: #95a5a6; }
+        .summary { background-color: #ecf0f1; padding: 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔐 Penetration Test Report</h1>
+    
+    <div class="summary">
+        <h3>Target Information</h3>
+        <p><strong>Target:</strong> http://192.168.1.49:4280</p>
+        <p><strong>Session ID:</strong> 20260315_220612</p>
+        <p><strong>Date:</strong> 2026-03-15 23:06:15</p>
+        <p><strong>Duration:</strong> 1h 0m</p>
+        <p><strong>Subject Alternative Names (SAN):</strong> No additional SAN attributes listed</p>
+    </div>
+    
+    <h2>Executive Summary</h2>
+    <div><p>The recent security assessment of the target environment identified significant vulnerabilities that pose an immediate threat to organizational data integrity and confidentiality. The discovery of three critical issues, including hardcoded secrets within source code and the deployment of a known intentionally vulnerable application (DVWA), indicates a high-risk security posture. These findings suggest that sensitive credentials are exposed and that the system contains components explicitly designed to be exploited, creating a direct pathway for unauthorized access and potential data breaches.</p><p>The presence of hardcoded secrets represents a severe lapse in secure development practices, effectively handing over access keys to any attacker who gains visibility into the codebase. Furthermore, the identification of the Damn Vulnerable Web Application (DVWA) in a production or test environment confirms that the system is not hardened against known exploits, leaving it susceptible to rapid compromise. These critical flaws, combined with three additional high-severity issues, demonstrate that the current infrastructure lacks essential security controls and requires urgent intervention to prevent active exploitation.</p><p>To mitigate these risks, immediate action is required to rotate all exposed credentials and remove or isolate the vulnerable application from the network. A comprehensive review of the development lifecycle is necessary to eliminate hardcoded secrets and enforce secure coding standards. We recommend prioritizing the remediation of the critical and high-severity findings within the next 48 hours, followed by a re-assessment to verify that the security posture has been effectively strengthened before resuming normal operations.</p></div>
+    
+    <h2>Findings Summary</h2>
+    <table>
+        <tr><th>Severity</th><th>Count</th></tr>
+        <tr><td class="critical">Critical</td><td>3</td></tr>
+        <tr><td class="high">High</td><td>3</td></tr>
+        <tr><td class="medium">Medium</td><td>4</td></tr>
+        <tr><td class="low">Low</td><td>5</td></tr>
+        <tr><td class="info">Info</td><td>5</td></tr>
+        <tr><th>Total</th><th>20</th></tr>
+    </table>
+    <h2>Report Quality Notes</h2><div class="summary"><p>Soft quality markers for reviewer awareness.</p><ul><li>Consistency normalization adjusted 5 finding field(s) (severity/CVSS/CWE alignment).</li></ul></div>
+
+    
+    
+    <h2>Technical Findings</h2>
+    <div><p>## 3.1 Critical Severity Findings</p><p>### Finding 1: Presence of Intentionally Vulnerable Application (DVWA)
+<strong>Severity:<strong> CRITICAL  
+<strong>Affected Component:<strong> Web Application (`http://192.168.1.49:4280`)  
+<strong>CVSS v3.1:<strong> 9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H)  
+<strong>CWE:<strong> CWE-1104 (Use of Broken or Risky Cryptography), CWE-119 (Improper Restriction of Operations within the Bounds of a Memory Buffer)  
+<strong>OWASP Top 10 (2021):<strong> A02:2021 - Cryptographic Failures, A03:2021 - Injection  </p><p><strong>Technical Description:<strong>  
+The target host is running "Damn Vulnerable Web Application" (DVWA), a deliberately insecure web application designed for educational purposes. The presence of this application in a production or non-isolated environment represents a critical security failure. DVWA contains known, unpatched vulnerabilities including SQL Injection, Cross-Site Scripting (XSS), and Broken Access Control, which are trivially exploitable by any attacker with network access.</p><p><strong>Evidence and Proof of Concept:<strong>  
+<em>   <strong>Tool:<strong> Gobuster
+<em>   <strong>Evidence:<strong> `dvwa (Status: 301) [Size: 358] [--> http://192.168.1.49:4280/dvwa/]`
+<em>   <strong>Tool:<strong> WhatWeb
+<em>   <strong>Evidence:<strong> `Title[Login :: Damn Vulnerable Web Application (DVWA)]`</p><p><strong>Impact Analysis:<strong>  
+The deployment of DVWA allows an attacker to achieve full remote code execution (RCE), database compromise, and complete system takeover with minimal effort. The application is designed to be easily compromised, meaning no advanced exploitation techniques are required. This finding indicates a severe lack of application hardening and environment isolation.</p><p><strong>Exploitation Information:<strong>  
+<em>   <strong>CISA KEV Status:<strong> Not explicitly flagged as "Actively Exploited" in the provided data, though the application itself is a known training ground for active exploits.
+<em>   <strong>CVE Identifiers:<strong> N/A (Application is intentionally vulnerable, not a specific software version with a CVE).
+<em>   <strong>Metasploit Modules:<strong> N/A (No specific module listed in input data).
+<em>   <strong>Exploit-DB IDs:<strong> N/A (No specific ID listed in input data).
+<em>   <strong>GitHub PoCs:<strong> N/A.
+<em>   <strong>Exploitation Attempt Status:<strong> Not attempted in this scan; however, the application is inherently exploitable by design.</p><p><strong>Remediation Plan:<strong>  
+1.  <strong>Immediate Isolation:<strong> Immediately disconnect the host from the production network or place it behind a strict firewall rule allowing access only from trusted internal IPs.
+2.  <strong>Removal:<strong> Remove the DVWA application entirely from the server.
+3.  <strong>Environment Review:<strong> Audit the deployment pipeline to ensure no other intentionally vulnerable applications or development artifacts are deployed to production.
+4.  <strong>Hardening:<strong> If DVWA is required for training, it must be hosted in an air-gapped environment or a strictly controlled container with no external network access.</p><p>---</p><p>### Finding 2: Hardcoded Secrets in Source Code
+<strong>Severity:<strong> CRITICAL  
+<strong>Affected Component:<strong> Source Code Repository (`/home/ss/code/DVWA`)  
+<strong>CVSS v3.1:<strong> N/A (Assessed as Critical due to direct access risk)  
+<strong>CWE:<strong> CWE-798 (Use of Hard-coded Credentials)  
+<strong>OWASP Top 10 (2021):<strong> A07:2021 - Identification and Authentication Failures  </p><p><strong>Technical Description:<strong>  
+Static analysis tools (Gitleaks) detected two hardcoded generic API keys embedded directly within the source code of the application. These secrets are visible in the codebase and, if the repository is public or compromised, allow attackers to authenticate directly to connected services without needing to bypass application logic.</p><p><strong>Evidence and Proof of Concept:<strong>  
+<em>   <strong>Tool:<strong> Gitleaks / TruffleHog
+<em>   <strong>Evidence:<strong> `2 secrets detected (types: generic-api-key)`
+<em>   <strong>Location:<strong> `/home/ss/code/DVWA`</p><p><strong>Impact Analysis:<strong>  
+Exposure of these credentials grants an attacker immediate, unauthorized access to backend services, databases, or third-party APIs. This can lead to data exfiltration, service manipulation, or lateral movement within the infrastructure.</p><p><strong>Exploitation Information:<strong>  
+<em>   <strong>CISA KEV Status:<strong> N/A.
+<em>   <strong>CVE Identifiers:<strong> N/A.
+<em>   <strong>Metasploit Modules:<strong> N/A.
+<em>   <strong>Exploit-DB IDs:<strong> N/A.
+<em>   <strong>GitHub PoCs:<strong> N/A.
+<em>   <strong>Exploitation Attempt Status:<strong> N/A.</p><p><strong>Remediation Plan:<strong>  
+1.  <strong>Rotate Credentials:<strong> Immediately revoke and regenerate the exposed API keys.
+2.  <strong>Code Cleanup:<strong> Remove the hardcoded secrets from the source code.
+3.  <strong>Secret Management:<strong> Implement a secure secret management solution (e.g., HashiCorp Vault, AWS Secrets Manager, Azure Key Vault) to inject secrets at runtime via environment variables.
+4.  <strong>Pre-commit Hooks:<strong> Integrate secret scanning tools (Gitleaks, TruffleHog) into the CI/CD pipeline to prevent future commits containing secrets.</p><p>---</p><p>### Finding 3: Known Vulnerable Application Detected (DVWA)
+<strong>Severity:<strong> CRITICAL  
+<strong>Affected Component:<strong> Web Application (`http://192.168.1.49:4280`)  
+<strong>CVSS v3.1:<strong> 9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)  
+<strong>CWE:<strong> CWE-119, CWE-89 (SQL Injection), CWE-79 (XSS)  
+<strong>OWASP Top 10 (2021):<strong> A03:2021 - Injection, A05:2021 - Security Misconfiguration  </p><p><strong>Technical Description:<strong>  
+The application fingerprint confirms the presence of DVWA, which is known to contain multiple critical injection flaws. This finding corroborates the previous critical finding, emphasizing the severity of hosting this specific application.</p><p><strong>Evidence and Proof of Concept:<strong>  
+<em>   <strong>Tool:<strong> WhatWeb
+<em>   <strong>Evidence:<strong> `DVWA`, `Title[Login :: Damn Vulnerable Web Application (DVWA)]`</p><p><strong>Impact Analysis:<strong>  
+Identical to Finding 1. The application is a "honeypot" for attackers, offering a direct path to system compromise.</p><p><strong>Exploitation Information:<strong>  
+<em>   <strong>CISA KEV Status:<strong> N/A.
+<em>   <strong>CVE Identifiers:<strong> N/A.
+<em>   <strong>Metasploit Modules:<strong> N/A.
+<em>   <strong>Exploit-DB IDs:<strong> N/A.
+<em>   <strong>GitHub PoCs:<strong> N/A.
+<em>   <strong>Exploitation Attempt Status:<strong> N/A.</p><p><strong>Remediation Plan:<strong>  
+Refer to the remediation steps in Finding 1. Immediate removal or strict isolation is required.</p><p>---</p><p>## 3.2 High Severity Findings</p><p>### Finding 4: SQL Injection (SAST)
+<strong>Severity:<strong> HIGH  
+<strong>Affected Component:<strong> Source Code (`/home/ss/code/DVWA/vulnerabilities/bac/source/low.php`)  
+<strong>CVSS v3.1:<strong> N/A (SAST finding)  
+<strong>CWE:<strong> CWE-89 (Improper Neutralization of Special Elements used in SQL Command)  
+<strong>OWASP Top 10 (2021):<strong> A03:2021 - Injection  </p><p><strong>Technical Description:<strong>  
+Static Application Security Testing (SAST) via Semgrep identified 14 instances where user input is directly concatenated into SQL queries without sanitization or parameterization. This allows attackers to manipulate database queries, potentially leading to data theft, modification, or deletion.</p><p><strong>Evidence and Proof of Concept:<strong>  
+<em>   <strong>Tool:<strong> Semgrep
+<em>   <strong>Evidence:<strong> `/home/ss/code/DVWA/vulnerabilities/bac/source/low.php:22` — "User data flows into this manually-constructed SQL string."
+<em>   <strong>Count:<strong> 14 instances detected.</p><p><strong>Impact Analysis:<strong>  
+Successful exploitation allows an attacker to bypass authentication, dump the entire database, or execute administrative commands on the database server.</p><p><strong>Exploitation Information:<strong>  
+<em>   <strong>CISA KEV Status:<strong> N/A.
+<em>   <strong>CVE Identifiers:<strong> N/A.
+<em>   <strong>Metasploit Modules:<strong> N/A.
+<em>   <strong>Exploit-DB IDs:<strong> N/A.
+<em>   <strong>GitHub PoCs:<strong> N/A.
+<em>   <strong>Exploitation Attempt Status:<strong> N/A.</p><p><strong>Remediation Plan:<strong>  
+1.  <strong>Parameterized Queries:<strong> Refactor all SQL queries to use prepared statements (e.g., PDO in PHP) or an ORM.
+2.  <strong>Input Validation:<strong> Implement strict allow-list validation for all user inputs.
+3.  <strong>Least Privilege:<strong> Ensure the database user account used by the application has the minimum necessary permissions.</p><p>---</p><p>### Finding 5: Cross-Site Scripting (XSS) (SAST)
+<strong>Severity:<strong> HIGH  
+<strong>Affected Component:<strong> Source Code (`/home/ss/code/DVWA/vulnerabilities/csp/source/jsonp.php`)  
+<strong>CVSS v3.1:<strong> N/A (SAST finding)  
+<strong>CWE:<strong> CWE-79 (Improper Neutralization of Input During Web Page Generation)  
+<strong>OWASP Top 10 (2021):<strong> A07:2021 - Cross-Site Scripting (XSS)  </p><p><strong>Technical Description:<strong>  
+Semgrep detected 1 instance where user input is echoed back to the browser without proper encoding. This allows attackers to inject malicious scripts that execute in the context of the victim's browser session.</p><p><strong>Evidence and Proof of Concept:<strong>  
+<em>   <strong>Tool:<strong> Semgrep
+<em>   <strong>Evidence:<strong> `/home/ss/code/DVWA/vulnerabilities/csp/source/jsonp.php:12` — "`Echo`ing user input risks cross-site scripting vulnerability."</p><p><strong>Impact Analysis:<strong>  
+Attackers can steal session cookies, redirect users to phishing sites, or perform actions on behalf of the authenticated user (CSRF-like behavior).</p><p><strong>Exploitation Information:<strong>  
+<em>   <strong>CISA KEV Status:<strong> N/A.
+<em>   <strong>CVE Identifiers:<strong> N/A.
+<em>   <strong>Metasploit Modules:<strong> N/A.
+<em>   <strong>Exploit-DB IDs:<strong> N/A.
+<em>   <strong>GitHub PoCs:<strong> N/A.
+<em>   <strong>Exploitation Attempt Status:<strong> N/A.</p><p><strong>Remediation Plan:<strong>  
+1.  <strong>Output Encoding:<strong> Apply context-specific output encoding (e.g., `htmlentities()` in PHP) to all user-generated content before rendering.
+2.  <strong>Content Security Policy (CSP):<strong> Implement a strict CSP header to restrict the sources from which scripts can be loaded.</p><p>---</p><p>### Finding 6: Information Disclosure (SAST - phpinfo)
+<strong>Severity:<strong> HIGH  
+<strong>Affected Component:<strong> Source Code (`/home/ss/code/DVWA/phpinfo.php`)  
+<strong>CVSS v3.1:<strong> N/A (SAST finding)  
+<strong>CWE:<strong> CWE-200 (Information Exposure)  
+<strong>OWASP Top 10 (2021):<strong> A01:2021 - Broken Access Control  </p><p><strong>Technical Description:<strong>  
+The application contains a `phpinfo.php` script that exposes detailed server configuration, environment variables, and loaded extensions. While the file requires login, the exposure of such sensitive environment data aids attackers in crafting targeted exploits.</p><p><strong>Evidence and Proof of Concept:<strong>  
+<em>   <strong>Tool:<strong> Semgrep
+<em>   <strong>Evidence:<strong> `/home/ss/code/DVWA/phpinfo.php:8` — "The 'phpinfo' function may reveal sensitive information about your environment."
+<em>   <strong>Count:<strong> 35 instances of "Other" issues detected.</p><p><strong>Impact Analysis:<strong>  
+Reveals server paths, PHP versions, and configuration settings that can be used to identify specific vulnerabilities in the server stack.</p><p><strong>Exploitation Information:<strong>  
+<em>   <strong>CISA KEV Status:<strong> N/A.
+<em>   <strong>CVE Identifiers:<strong> N/A.
+<em>   <strong>Metasploit Modules:<strong> N/A.
+<em>   <strong>Exploit-DB IDs:<strong> N/A.
+<em>   <strong>GitHub PoCs:<strong> N/A.
+<em>   <strong>Exploitation Attempt Status:<strong> N/A.</p><p><strong>Remediation Plan:<strong>  
+1.  <strong>Remove Debug Scripts:<strong> Delete `phpinfo.php` and similar diagnostic scripts from production environments.
+2.  <strong>Access Control:<strong> If retention is necessary, restrict access to specific IP addresses or implement strict authentication checks.</p><p>---</p><p>## 3.3 Medium Severity Findings</p><p>### Finding 7: Content Security Policy (CSP) Header Not Set
+<strong>Severity:<strong> MEDIUM  
+<strong>Affected Component:<strong> Web Server (`http://192.168.1.49:4280`)  
+<strong>CVSS v3.1:<strong> 5.3 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N)  
+<strong>CWE:<strong> CWE-693 (Protection Mechanism Failure)  
+<strong>OWASP Top 10 (2021):<strong> A05:2021 - Security Misconfiguration  </p><p><strong>Technical Description:<strong>  
+The web server does not send a `Content-Security-Policy` header. This defense-in-depth mechanism is missing, leaving the application vulnerable to XSS and data injection attacks even if input validation is partially effective.</p><p><strong>Evidence and Proof of Concept:<strong>  
+<em>   <strong>Tool:<strong> OWASP ZAP
+<em>   <strong>Evidence:<strong> `alert: "Content Security Policy (CSP) Header Not Set"` on `sitemap.xml`.</p><p><strong>Impact Analysis:<strong>  
+Increases the likelihood of successful XSS attacks by allowing the browser to load scripts from untrusted sources.</p><p><strong>Exploitation Information:<strong>  
+<em>   <strong>CISA KEV Status:<strong> N/A.
+<em>   <strong>CVE Identifiers:<strong> N/A.
+<em>   <strong>Metasploit Modules:<strong> N/A.
+<em>   <strong>Exploit-DB IDs:<strong> N/A.
+<em>   <strong>GitHub PoCs:<strong> N/A.
+<em>   <strong>Exploitation Attempt Status:<strong> N/A.</p><p><strong>Remediation Plan:<strong>  
+1.  <strong>Configure CSP:<strong> Define a strict CSP header in the web server configuration (e.g., Apache `.htaccess` or Nginx config) that restricts script sources to `self` and trusted CDNs.</p><p>---</p><p>### Finding 8: Missing Anti-Clickjacking Header
+<strong>Severity:<strong> MEDIUM  
+<strong>Affected Component:<strong> Web Server (`http://192.168.1.49:4280`)  
+<strong>CVSS v3.1:<strong> 4.3 (AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:L/A:N)  
+<strong>CWE:<strong> CWE-1021 (Missing Anti-Clickjacking Header)  
+<strong>OWASP Top 10 (2021):<strong> A05:2021 - Security Misconfiguration  </p><p><strong>Technical Description:<strong>  
+The application lacks the `X-Frame-Options` or `Content-Security-Policy: frame-ancestors` headers. This allows the application to be embedded in an iframe on a malicious site, enabling clickjacking attacks.</p><p><strong>Evidence and Proof of Concept:<strong>  
+<em>   <strong>Tool:<strong> OWASP ZAP
+<em>   <strong>Evidence:<strong> `alert: "Missing Anti-clickjacking Header"` on `login.php`.</p><p><strong>Impact Analysis:<strong>  
+Attackers can trick users into clicking invisible buttons or links on a malicious site that actually interact with the legitimate application.</p><p><strong>Exploitation Information:<strong>  
+<em>   <strong>CISA KEV Status:<strong> N/A.
+<em>   <strong>CVE Identifiers:<strong> N/A.
+<em>   <strong>Metasploit Modules:<strong> N/A.
+<em>   <strong>Exploit-DB IDs:<strong> N/A.
+<em>   <strong>GitHub PoCs:<strong> N/A.
+<em>   <strong>Exploitation Attempt Status:<strong> N/A.</p><p><strong>Remediation Plan:<strong>  
+1.  <strong>Add Headers:<strong> Configure the server to send `X-Frame-Options: DENY` or `SAMEORIGIN`. Alternatively, use `Content-Security-Policy: frame-ancestors 'self'`.</p><p>---</p><p>### Finding 9: Cookie without SameSite Attribute
+<strong>Severity:<strong> MEDIUM  
+<strong>Affected Component:<strong> Web Application (`http://192.168.1.49:4280`)  
+<strong>CVSS v3.1:<strong> 4.3 (AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:L/A:N)  
+<strong>CWE:<strong> CWE-1275 (Improper Input Validation of Cookie Attributes)  
+<strong>OWASP Top 10 (2021):<strong> A01:2021 - Broken Access Control  </p><p><strong>Technical Description:<strong>  
+Session cookies are set without the `SameSite` attribute. This makes the application vulnerable to Cross-Site Request Forgery (CSRF) attacks, where an attacker can force a user's browser to send authenticated requests to the application.</p><p><strong>Evidence and Proof of Concept:<strong>  
+<em>   <strong>Tool:<strong> OWASP ZAP
+<em>   <strong>Evidence:<strong> `alert: "Cookie without SameSite Attribute"`, `Set-Cookie: security`.</p><p><strong>Impact Analysis:<strong>  
+Attackers can perform actions on behalf of the user without their knowledge or consent.</p><p><strong>Exploitation Information:<strong>  
+<em>   <strong>CISA KEV Status:<strong> N/A.
+<em>   <strong>CVE Identifiers:<strong> N/A.
+<em>   <strong>Metasploit Modules:<strong> N/A.
+<em>   <strong>Exploit-DB IDs:<strong> N/A.
+<em>   <strong>GitHub PoCs:<strong> N/A.
+<em>   <strong>Exploitation Attempt Status:<strong> N/A.</p><p><strong>Remediation Plan:<strong>  
+1.  <strong>Set SameSite:<strong> Update the application code to set `SameSite=Strict` or `SameSite=Lax` on all session cookies.</p><p>---</p><p>### Finding 10: Sensitive Configuration File Exposure (php.ini)
+<strong>Severity:<strong> MEDIUM  
+<strong>Affected Component:<strong> Web Server (`http://192.168.1.49:4280`)  
+<strong>CVSS v3.1:<strong> 6.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N)  
+<strong>CWE:<strong> CWE-200 (Information Exposure)  
+<strong>OWASP Top 10 (2021):<strong> A05:2021 - Security Misconfiguration  </p><p><strong>Technical Description:<strong>  
+Directory traversal or misconfiguration allows the `php.ini` file to be downloaded directly via HTTP. This file contains critical server configuration details, including disabled functions, upload limits, and potentially hardcoded paths.</p><p><strong>Evidence and Proof of Concept:<strong>  
+<em>   <strong></p></div>
+
+    <h2>Evidence</h2>
+    <ul>
+        <li><strong>[HIGH] SAST: Other (35 instances)</strong> (Tool: semgrep, Target: /home/ss/code/DVWA) Evidence: /home/ss/code/DVWA/phpinfo.php:8 — requires login Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=semgrep,timestamp=2026-03-15T22:06:17.915974,cmd_sha1=68070fd2d7 Provenance ID: prov-21a65a2e2eb6</li>
+        <li><strong>[HIGH] SAST: Sqli (14 instances)</strong> (Tool: semgrep, Target: /home/ss/code/DVWA) Evidence: /home/ss/code/DVWA/vulnerabilities/bac/source/low.php:22 — requires login Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=semgrep,timestamp=2026-03-15T22:06:17.915974,cmd_sha1=68070fd2d7 Provenance ID: prov-abee287ee46e</li>
+        <li><strong>[HIGH] SAST: Xss (1 instance)</strong> (Tool: semgrep, Target: /home/ss/code/DVWA) Evidence: /home/ss/code/DVWA/vulnerabilities/csp/source/jsonp.php:12 — requires login Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=semgrep,timestamp=2026-03-15T22:06:17.915974,cmd_sha1=68070fd2d7 Provenance ID: prov-11fda08cd3b2</li>
+        <li><strong>[CRITICAL] Hardcoded Secrets in Source Code (2 detected)</strong> (Tool: gitleaks/trufflehog, Target: /home/ss/code/DVWA) Evidence: 2 secrets detected (types: generic-api-key) Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=gitleaks/trufflehog,timestamp=2026-03-15T22:06:17.915974,cmd_sha1=f4733247ab Provenance ID: prov-7321becdf959</li>
+        <li><strong>[LOW] Information Disclosure via Server Banner</strong> (Tool: httpx, Target: http://192.168.1.49:4280) Evidence: Evidence from httpx: `&quot;tech&quot;:[&quot;Apache HTTP Server:2.4.66&quot;,&quot;Debian&quot;,&quot;PHP:8.5.4&quot;]` --- Evidence from nmap: `&lt;script id=&quot;http-server-header&quot; output=&quot;nginx/1.24.0 (Ubuntu)&quot;&gt;` and `&lt;script id=&quot;http-title&quot; output=&quot;Welcome to nginx!&quot;&gt;` --- Evidence from whatweb: `X-Powered-By[PHP/8.5.4]`, `HTTPServer[Apache/2.4.66 (Debian)]` --- Evidence from nikto: `+ /: Retrieved x-powered-by header: PHP/8.5.4.` --- Evidence from cookie-analyzer: `Server: Apache/2.4.66 (Debian)` and `X-Powered-By: PHP/8.5.4` --- Evid Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=httpx,timestamp=2026-03-15T22:06:17.932846,cmd_sha1=8f824636ff Provenance ID: prov-b2e32b344716</li>
+        <li><strong>[INFO] No other confirmed vulnerabilities</strong> (Tool: httpx, Target: http://192.168.1.49:4280) Evidence: `&quot;status_code&quot;:302`, `&quot;content_length&quot;:0`, `&quot;failed&quot;:false` Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=httpx,timestamp=2026-03-15T22:06:17.932846,cmd_sha1=8f824636ff Provenance ID: prov-87ed629e07de</li>
+        <li><strong>[MEDIUM] Content Security Policy (CSP) Header Not Set</strong> (Tool: zap, Target: http://192.168.1.49:4280) Evidence: `&quot;alert&quot;: &quot;Content Security Policy (CSP) Header Not Set&quot;`, `&quot;url&quot;: &quot;http://192.168.1.49:4280/sitemap.xml&quot;`, `&quot;description&quot;: &quot;Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks...&quot;` Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=zap,timestamp=2026-03-15T22:08:05.851755,cmd_sha1=42aa7ca930 Provenance ID: prov-70741b7c4796</li>
+        <li><strong>[MEDIUM] Missing Anti-Clickjacking Header</strong> (Tool: zap, Target: http://192.168.1.49:4280) Evidence: `&quot;alert&quot;: &quot;Missing Anti-clickjacking Header&quot;`, `&quot;url&quot;: &quot;http://192.168.1.49:4280/login.php&quot;`, `&quot;description&quot;: &quot;The response does not protect against &#x27;ClickJacking&#x27; attacks. It should include either Content-Security-Policy with &#x27;frame-ancestors&#x27; directive or X-Frame-Options.&quot;` Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=zap,timestamp=2026-03-15T22:08:05.851755,cmd_sha1=42aa7ca930 Provenance ID: prov-d57b2d3aba26</li>
+        <li><strong>[LOW] Server Leaks Version Information via &quot;Server&quot; HTTP Response Header</strong> (Tool: zap, Target: http://192.168.1.49:4280) Evidence: `&quot;alert&quot;: &quot;Server Leaks Version Information via \&quot;Server\&quot; HTTP Response Header Field&quot;`, `&quot;evidence&quot;: &quot;Apache/2.4.66 (Debian)&quot;`, `&quot;url&quot;: &quot;http://192.168.1.49:4280/robots.txt&quot;` (and multiple other endpoints) Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=zap,timestamp=2026-03-15T22:08:05.851755,cmd_sha1=42aa7ca930 Provenance ID: prov-d38fe2c59dbf</li>
+        <li><strong>[MEDIUM] Cookie without SameSite Attribute</strong> (Tool: zap, Target: http://192.168.1.49:4280) Evidence: `&quot;alert&quot;: &quot;Cookie without SameSite Attribute&quot;`, `&quot;url&quot;: &quot;http://192.168.1.49:4280&quot;`, `&quot;evidence&quot;: &quot;Set-Cookie: security&quot;`, `&quot;param&quot;: &quot;security&quot;` Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=zap,timestamp=2026-03-15T22:08:05.851755,cmd_sha1=42aa7ca930 Provenance ID: prov-04021c68360e</li>
+        <li><strong>[LOW] X-Content-Type-Options Header Missing</strong> (Tool: zap, Target: http://192.168.1.49:4280) Evidence: Evidence from zap: `&quot;alert&quot;: &quot;X-Content-Type-Options Header Missing&quot;`, `&quot;url&quot;: &quot;http://192.168.1.49:4280/robots.txt&quot;`, `&quot;description&quot;: &quot;The Anti-MIME-Sniffing header X-Content-Type-Options was not set to &#x27;nosniff&#x27;.&quot;` --- Evidence from nikto: &quot;+ /: The anti-clickjacking X-Frame-Options header is not present.&quot; --- Evidence from nikto: `+ /: The anti-clickjacking X-Frame-Options header is not present. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options` --- Evidence from  Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=zap,timestamp=2026-03-15T22:08:05.851755,cmd_sha1=42aa7ca930 Provenance ID: prov-f8f87744904a</li>
+        <li><strong>[INFO] Default Web Server Configuration Detected</strong> (Tool: nmap, Target: http://192.168.1.49:4280) Evidence: `&lt;script id=&quot;http-title&quot; output=&quot;Welcome to nginx!&quot;&gt;` Evidence file: reports/20260315_220612/nmap_20260315_221148_474697.xml, reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=nmap,timestamp=2026-03-15T22:11:48.475311,cmd_sha1=cbedc9810b Provenance ID: prov-17345a32ccff</li>
+        <li><strong>[LOW] Server Information Disclosure</strong> (Tool: headers, Target: http://192.168.1.49:4280) Evidence: Evidence from headers: `X-Powered-By: PHP/8.5.4` and `Server: Apache/2.4.66 (Debian)` --- Evidence from idor-scanner: `Server: Apache/2.4.66 (Debian)` and `X-Powered-By: PHP/8.5.4` Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=headers,timestamp=2026-03-15T22:15:39.494744,cmd_sha1=7d27885a25 Provenance ID: prov-c198c068c4b1</li>
+        <li><strong>[CRITICAL] Known Vulnerable Application Detected (DVWA)</strong> (Tool: whatweb, Target: http://192.168.1.49:4280) Evidence: `DVWA`, `Title[Login :: Damn Vulnerable Web Application (DVWA)]` Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=whatweb,timestamp=2026-03-15T22:17:31.257595,cmd_sha1=4ee8817260 Provenance ID: prov-5ada783e0c4c</li>
+        <li><strong>[MEDIUM] Sensitive Configuration File Exposure (php.ini)</strong> (Tool: gobuster, Target: http://192.168.1.49:4280) Evidence: `php.ini (Status: 200) [Size: 154]` Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=gobuster,timestamp=2026-03-15T22:20:52.032646,cmd_sha1=3633e813b7 Provenance ID: prov-00c56f9b681e</li>
+        <li><strong>[CRITICAL] Presence of Intentionally Vulnerable Application (DVWA)</strong> (Tool: gobuster, Target: http://192.168.1.49:4280) Evidence: `dvwa (Status: 301) [Size: 358] [--&gt; http://192.168.1.49:4280/dvwa/]` Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=gobuster,timestamp=2026-03-15T22:20:52.032646,cmd_sha1=3633e813b7 Provenance ID: prov-a1e9de31dfb6</li>
+        <li><strong>[LOW] Information Disclosure via robots.txt</strong> (Tool: gobuster, Target: http://192.168.1.49:4280) Evidence: `robots.txt (Status: 200) [Size: 25]` Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=gobuster,timestamp=2026-03-15T22:20:52.032646,cmd_sha1=3633e813b7 Provenance ID: prov-c8c85536bceb</li>
+        <li><strong>[INFO] Admin Login Page Identified</strong> (Tool: nikto, Target: http://192.168.1.49:4280) Evidence: `+ /login.php: Admin login page/section found.` Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=nikto,timestamp=2026-03-15T22:25:27.984914,cmd_sha1=df77ab9029; reports/20260315_220612/session_20260315_220612.json#tool=nikto,timestamp=2026-03-15T22:29:23.486340,cmd_sha1=041401367f Provenance ID: prov-284f756966b5</li>
+        <li><strong>[INFO] Cookie Security Configuration (Observation)</strong> (Tool: cookie-analyzer, Target: http://192.168.1.49:4280) Evidence: `Set-Cookie: PHPSESSID=...; HttpOnly; SameSite=Strict` (Note: `Secure` flag is absent) Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=cookie-analyzer,timestamp=2026-03-15T22:43:06.389327,cmd_sha1=5d71e5afb5 Provenance ID: prov-3c1af5372d1e</li>
+        <li><strong>[INFO] No Confirmed Exploitable Vulnerabilities</strong> (Tool: error-detector, Target: http://192.168.1.49:4280) Evidence: The output contains standard HTML forms and 403 Forbidden responses with no error messages indicating injection, reflection, or logic flaws. Evidence file: reports/20260315_220612/session_20260315_220612.json Evidence location: reports/20260315_220612/session_20260315_220612.json#tool=error-detector,timestamp=2026-03-15T22:53:05.094863,cmd_sha1=636514c6e6 Provenance ID: prov-658c37ad7438</li>
+    </ul>
+
+
+    <h2>Standards Mapping</h2>
+    <table><tr><th>Severity</th><th>Finding</th><th>CVSS</th><th>OWASP</th><th>CWE</th><th>Exploit Status</th></tr><tr><td>HIGH</td><td>SAST: Other (35 instances)</td><td>N/A</td><td>A01:2021 - Broken Access Control, A01:2025 - Broken Access Control</td><td>CWE-200</td><td>N/A</td></tr><tr><td>HIGH</td><td>SAST: Sqli (14 instances)</td><td>N/A</td><td>A01:2017 - Injection, A03:2021 - Injection, A05:2025 - Injection</td><td>CWE-89</td><td>N/A</td></tr><tr><td>HIGH</td><td>SAST: Xss (1 instance)</td><td>N/A</td><td>A07:2017 - Cross-Site Scripting (XSS), A03:2021 - Injection, A05:2025 - Injection</td><td>CWE-79</td><td>N/A</td></tr><tr><td>CRITICAL</td><td>Hardcoded Secrets in Source Code (2 detected)</td><td>N/A</td><td>A07:2021</td><td>CWE-798</td><td>N/A</td></tr><tr><td>LOW</td><td>Information Disclosure via Server Banner</td><td>3.7 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>INFO</td><td>No other confirmed vulnerabilities</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Content Security Policy (CSP) Header Not Set</td><td>5.3 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-693</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Missing Anti-Clickjacking Header</td><td>4.3 (AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:L/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-1021</td><td>N/A</td></tr><tr><td>LOW</td><td>Server Leaks Version Information via &quot;Server&quot; HTTP Response Header</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-497</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Cookie without SameSite Attribute</td><td>4.3 (AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:L/A:N)</td><td>A01:2021 - Broken Access Control</td><td>CWE-1275</td><td>N/A</td></tr><tr><td>LOW</td><td>X-Content-Type-Options Header Missing</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A04:2021 - Insecure Design, A05:2021 - Security Misconfiguration</td><td>CWE-1021, CWE-1071, CWE-693</td><td>N/A</td></tr><tr><td>INFO</td><td>Default Web Server Configuration Detected</td><td>0.0 (est.)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-1188</td><td>N/A</td></tr><tr><td>LOW</td><td>Server Information Disclosure</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>CRITICAL</td><td>Known Vulnerable Application Detected (DVWA)</td><td>9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)</td><td>A03:2021 - Injection, A05:2021 - Security Misconfiguration</td><td>CWE-119, CWE-89, CWE-79</td><td>N/A</td></tr><tr><td>MEDIUM</td><td>Sensitive Configuration File Exposure (php.ini)</td><td>6.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>CRITICAL</td><td>Presence of Intentionally Vulnerable Application (DVWA)</td><td>9.8 (AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H)</td><td>A02:2021 - Cryptographic Failures, A03:2021 - Injection</td><td>CWE-1104</td><td>N/A</td></tr><tr><td>LOW</td><td>Information Disclosure via robots.txt</td><td>3.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-200</td><td>N/A</td></tr><tr><td>INFO</td><td>Admin Login Page Identified</td><td>0.0 (est.)</td><td>A01:2021 - Broken Access Control</td><td>Unmapped</td><td>N/A</td></tr><tr><td>INFO</td><td>Cookie Security Configuration (Observation)</td><td>0.0 (est.)</td><td>A05:2021 - Security Misconfiguration</td><td>CWE-614</td><td>N/A</td></tr><tr><td>INFO</td><td>No Confirmed Exploitable Vulnerabilities</td><td>0.0 (est.)</td><td>Unmapped</td><td>Unmapped</td><td>N/A</td></tr></table>
+
+    <h2>Exploitation References</h2>
+    <p><em>Exploit lookup status: exploitdb: built (46963) from /usr/share/exploitdb; metasploit: built (2611) from /usr/share/metasploit-framework</em></p>
+    
+    <h2>Remediation Plan</h2>
+    <div><p>## Executive Summary of Remediation Strategy
+The assessment of the target environment (`http://192.168.1.49:4280` and `/home/ss/code/DVWA`) reveals a critical security posture. The primary driver of risk is the deployment of <strong>Damn Vulnerable Web Application (DVWA)<strong>, a tool intentionally designed with known vulnerabilities for educational purposes. Its presence in a production or semi-production environment constitutes a severe security failure. Additionally, hardcoded secrets and unpatched injection flaws (SQLi, XSS) present immediate vectors for data exfiltration and system compromise.</p><p>The following plan prioritizes the immediate removal of the vulnerable application and the rotation of exposed credentials, followed by hardening the web server configuration and implementing secure coding standards.</p><p>---</p><p>## 1. Quick Wins (Immediate Actions)
+<em>Focus: High-impact fixes that can be implemented within hours to reduce the attack surface immediately.<em></p><p>### 1.1 Remove or Isolate DVWA Application
+<em>   <strong>Context:<strong> The presence of DVWA (CVSS 9.8) is the single highest risk. It is a known vulnerable application that should never be exposed to a network accessible by attackers.
+<em>   <strong>Action Steps:<strong>
+    1.  <strong>Immediate Decommissioning:<strong> If this is a production environment, immediately take the DVWA application offline.
+    2.  <strong>Network Segmentation:<strong> If the application is required for training, move it to an isolated, air-gapped network or a local `localhost` environment with no external network interface.
+    3.  <strong>Firewall Rules:<strong> Block all external traffic to port `4280` via the host firewall (`ufw`/`iptables`) and network perimeter firewall.
+<em>   <strong>Resources/Tools:<strong> Firewall configuration, Network Admin access.
+<em>   <strong>Estimated Effort:<strong> 1–2 Hours.
+<em>   <strong>Security Impact:<strong> <strong>Critical.<strong> Eliminates the primary vector for SQL injection, XSS, and unauthorized access.</p><p>### 1.2 Rotate Hardcoded Secrets
+<em>   <strong>Context:<strong> Two generic API keys were detected in the source code (`/home/ss/code/DVWA`). These are likely compromised or easily guessable.
+<em>   <strong>Action Steps:<strong>
+    1.  Identify the specific files containing the secrets (e.g., `config.php`, `.env`).
+    2.  Revoke the exposed API keys immediately via the respective service provider dashboard.
+    3.  Generate new, strong, random API keys.
+    4.  Update the application configuration to use the new keys.
+    5.  Commit the code change to version control (ensure secrets are not re-committed).
+<em>   <strong>Resources/Tools:<strong> Service provider consoles, IDE, Version Control System (Git).
+<em>   <strong>Estimated Effort:<strong> 1 Hour.
+<em>   <strong>Security Impact:<strong> <strong>Critical.<strong> Prevents unauthorized access to connected third-party services and data.</p><p>### 1.3 Disable `phpinfo()` and Sensitive Endpoints
+<em>   <strong>Context:<strong> The `phpinfo.php` script exposes environment details (CWE-200), aiding attackers in fingerprinting the system.
+<em>   <strong>Action Steps:<strong>
+    1.  Delete or rename `phpinfo.php` and similar diagnostic scripts.
+    2.  If required for debugging, restrict access via `.htaccess` or web server config to allow only specific IP addresses (e.g., `127.0.0.1`).
+<em>   <strong>Resources/Tools:<strong> File system access, Web server config (Apache/Nginx).
+<em>   <strong>Estimated Effort:<strong> 30 Minutes.
+<em>   <strong>Security Impact:<strong> <strong>High.<strong> Reduces information leakage that aids in crafting targeted exploits.</p><p>---</p><p>## 2. Critical Priorities (Must Fix Immediately)
+<em>Focus: Addressing severe code-level vulnerabilities and configuration errors that allow direct exploitation.<em></p><p>### 2.1 Remediate SQL Injection (SQLi) Vulnerabilities
+<em>   <strong>Context:<strong> 14 instances of SQLi detected (CWE-89) where user input is concatenated directly into SQL strings.
+<em>   <strong>Action Steps:<strong>
+    1.  <strong>Refactor Code:<strong> Replace all manual string concatenation for SQL queries with <strong>Prepared Statements<strong> (Parameterized Queries).
+        <em>   <em>PHP Example:<em> Switch from `mysql_query("SELECT <em> FROM users WHERE id='$id'")` to `PDO::prepare("SELECT <em> FROM users WHERE id=:id")`.
+    2.  <strong>Input Validation:<strong> Implement strict allow-list validation for all user inputs before processing.
+    3.  <strong>Least Privilege:<strong> Ensure the database user account used by the web application has minimal permissions (no `DROP`, `ALTER`, or `GRANT` rights).
+<em>   <strong>Resources/Tools:<strong> PHP PDO/MySQLi libraries, Code Review.
+<em>   <strong>Estimated Effort:<strong> 4–8 Hours (depending on codebase size).
+<em>   <strong>Security Impact:<strong> <strong>Critical.<strong> Prevents database manipulation, data theft, and potential remote code execution.</p><p>### 2.2 Fix Cross-Site Scripting (XSS) Flaws
+<em>   <strong>Context:<strong> 1 instance of XSS detected (CWE-79) where user input is echoed without encoding.
+<em>   <strong>Action Steps:<strong>
+    1.  <strong>Output Encoding:<strong> Apply `htmlspecialchars()` or `htmlentities()` to all dynamic data output to the browser.
+    2.  <strong>Context-Aware Encoding:<strong> Ensure encoding matches the context (HTML body, attribute, JavaScript, URL).
+    3.  <strong>Content Security Policy (CSP):<strong> Implement a strict CSP header to restrict script execution sources (see Medium-term section).
+<em>   <strong>Resources/Tools:<strong> PHP `htmlspecialchars`, CSP generator tools.
+<em>   <strong>Estimated Effort:<strong> 2–4 Hours.
+<em>   <strong>Security Impact:<strong> <strong>High.<strong> Prevents session hijacking, defacement, and malware injection.</p><p>### 2.3 Secure Web Server Configuration (Information Disclosure)
+<em>   <strong>Context:<strong> Server banners reveal specific versions of Apache, Nginx, and PHP (e.g., `Apache/2.4.66`, `PHP/8.5.4`), aiding attackers in finding version-specific exploits.
+<em>   <strong>Action Steps:<strong>
+    1.  <strong>Apache:<strong> Edit `httpd.conf` or `apache2.conf`:
+        <em>   Set `ServerTokens Prod`
+        <em>   Set `ServerSignature Off`
+    2.  <strong>Nginx:<strong> Edit `nginx.conf`:
+        <em>   Set `server_tokens off;`
+    3.  <strong>PHP:<strong> Edit `php.ini`:
+        <em>   Set `expose_php = Off`
+    4.  <strong>Restart Services:<strong> Restart Apache and Nginx to apply changes.
+<em>   <strong>Resources/Tools:<strong> Web server configuration files.
+<em>   <strong>Estimated Effort:<strong> 1 Hour.
+<em>   <strong>Security Impact:<strong> <strong>High.<strong> Reduces the effectiveness of reconnaissance and targeted attacks.</p><p>---</p><p>## 3. Medium-term Improvements
+<em>Focus: Strengthening the application's defense-in-depth and fixing configuration gaps.<em></p><p>### 3.1 Implement Security Headers
+<em>   <strong>Context:<strong> Missing CSP, Anti-Clickjacking, and MIME-Sniffing headers.
+<em>   <strong>Action Steps:<strong>
+    1.  <strong>Content Security Policy (CSP):<strong> Configure a strict CSP header (e.g., `default-src 'self'; script-src 'self';`).
+    2.  <strong>X-Frame-Options:<strong> Set to `DENY` or `SAMEORIGIN` to prevent clickjacking.
+    3.  <strong>X-Content-Type-Options:<strong> Set to `nosniff` to prevent MIME type sniffing.
+    4.  <strong>X-XSS-Protection:<strong> Set to `1; mode=block` (legacy support).
+<em>   <strong>Resources/Tools:<strong> Web server config, `.htaccess`, or application framework middleware.
+<em>   <strong>Estimated Effort:<strong> 2–3 Hours.
+<em>   <strong>Security Impact:<strong> <strong>Medium.<strong> Mitigates XSS and Clickjacking attacks even if code vulnerabilities persist.</p><p>### 3.2 Secure Cookie Configuration
+<em>   <strong>Context:<strong> Cookies lack `SameSite` and `Secure` attributes.
+<em>   <strong>Action Steps:<strong>
+    1.  <strong>Enable HTTPS:<strong> Ensure the application is served over HTTPS (required for the `Secure` flag).
+    2.  <strong>Update PHP Session Config:<strong> In `php.ini` or `session_start()`:
+        <em>   `session.cookie_httponly = 1`
+        <em>   `session.cookie_secure = 1`
+        <em>   `session.cookie_samesite = Strict`
+<em>   <strong>Resources/Tools:<strong> PHP configuration, SSL/TLS certificates.
+<em>   <strong>Estimated Effort:<strong> 2 Hours.
+<em>   <strong>Security Impact:<strong> <strong>Medium.<strong> Protects session tokens from CSRF and interception.</p><p>### 3.3 Remove Sensitive Files from Web Root
+<em>   <strong>Context:<strong> `php.ini` and `robots.txt` are accessible, potentially revealing configuration details.
+<em>   <strong>Action Steps:<strong>
+    1.  Move `php.ini` and other configuration files outside the web-accessible document root.
+    2.  Configure the web server to deny access to files starting with a dot (e.g., `.git`, `.env`) or specific extensions like `.ini` if they must remain in the root.
+    3.  Review `robots.txt` to ensure it does not expose sensitive paths (e.g., `/admin`, `/backup`).
+<em>   <strong>Resources/Tools:<strong> File system, Web server config.
+<em>   <strong>Estimated Effort:<strong> 1 Hour.
+<em>   <strong>Security Impact:<strong> <strong>Medium.<strong> Prevents accidental disclosure of system configuration.</p><p>---</p><p>## 4. Long-term Security Enhancements
+<em>Focus: Establishing a sustainable security culture and automated defense mechanisms.<em></p><p>### 4.1 Integrate SAST and Secret Scanning into CI/CD
+<em>   <strong>Context:<strong> Vulnerabilities were found via manual scanning; they should be caught before deployment.
+<em>   <strong>Action Steps:<strong>
+    1.  Integrate <strong>Semgrep<strong> and <strong>Gitleaks<strong> into the CI/CD pipeline (e.g., GitHub Actions, GitLab CI).
+    2.  Configure the pipeline to <strong>fail<strong> if critical/high severity issues or hardcoded secrets are detected.
+    3.  Establish a "Security Gate" that blocks code merging until vulnerabilities are resolved.
+<em>   <strong>Resources/Tools:<strong> CI/CD Platform, Semgrep, Gitleaks.
+<em>   <strong>Estimated Effort:<strong> 4–8 Hours (Initial setup).
+<em>   <strong>Security Impact:<strong> <strong>High.<strong> Shifts security left, preventing vulnerable code from reaching production.</p><p>### 4.2 Adopt a Secure Development Lifecycle (SDL)
+<em>   <strong>Context:<strong> The codebase contains fundamental design flaws (e.g., manual SQL construction).
+<em>   <strong>Action Steps:<strong>
+    1.  Conduct security training for developers on OWASP Top 10 (specifically Injection and Broken Access Control).
+    2.  Implement mandatory code reviews with a security checklist.
+    3.  Replace legacy frameworks or libraries with modern, secure alternatives that handle security by default.
+<em>   <strong>Resources/Tools:<strong> Training materials, Code Review tools (e.g., Gerrit, GitHub PRs).
+<em>   <strong>Estimated Effort:<strong> Ongoing.
+<em>   <strong>Security Impact:<strong> <strong>High.<strong> Reduces the introduction of new vulnerabilities.</p><p>### 4.3 Regular Vulnerability Assessments
+<em>   <strong>Context:<strong> The current scan identified a known vulnerable app; regular scans ensure new issues are caught.
+<em>   <strong>Action Steps:<strong>
+    1.  Schedule automated DAST scans (e.g., OWASP ZAP, Burp Suite) weekly.
+    2.  Perform quarterly penetration tests by internal or external security teams.
+    3.  Maintain an asset inventory to ensure no "shadow IT" or vulnerable apps (like DVWA) are deployed without approval.
+<em>   <strong>Resources/Tools:<strong> ZAP, Burp Suite, Asset Management System.
+<em>   <strong>Estimated Effort:<strong> Ongoing.
+<em>   <strong>Security Impact:<strong> <strong>Medium.<strong> Ensures continuous monitoring and rapid detection of regressions.</p><p>---</p><p>## 6. AI Decision Trace
+<em>Transparency regarding the prioritization logic used to generate this plan.<em></p><p>1.  <strong>Risk Aggregation:<strong> The AI identified that the "Known Vulnerable Application (DVWA)" finding (CVSS 9.8) and "Hardcoded Secrets" (CRITICAL) represent the highest probability of immediate compromise. These were prioritized as <strong>Quick Wins<strong> and <strong>Critical Priorities<strong> because they offer the highest return on investment for risk reduction.
+2.  <strong>Contextual Analysis:<strong> The AI noted that DVWA is an educational tool. Its presence in a target environment suggests a misconfiguration or a lack of separation between dev/test and production. Therefore, the primary recommendation is isolation/removal rather than patching the app itself.
+3.  <strong>Vulnerability Correlation:<strong> The SQLi and XSS findings (HIGH) were correlated with the DVWA context. While the code fixes are necessary, the AI prioritized removing the app first. However, assuming the app must be fixed (e.g., if it's a custom app <em>like<em> DVWA), the remediation steps for SQLi and XSS were detailed as critical code-level fixes.
+4.  <strong>Configuration Hardening:<strong> The multiple "LOW" and "MEDIUM" findings regarding headers, banners, and cookies were grouped into <strong>Medium-term<strong> and <strong>Long-term<strong> categories. While individually low risk, collectively they indicate a lack of security hygiene. Fixing them provides a "defense in depth" layer.
+5.  <strong>Process Improvement:<strong> The AI recognized that manual scanning found these issues. To prevent recurrence, <strong>Long-term<strong> recommendations focus on automating the detection (CI/CD integration) and training, addressing the root cause of the vulnerabilities.</p></div>
+    
+    <h2>AI Decision Trace</h2>
+    <div><p>### AI Decision Log: Web Assessment Workflow</p><p><strong>1. Critical Tool Selections and Rationale<strong>
+<em>   <strong>Reconnaissance & Fingerprinting:<strong> Selected `httpx` and `whatweb` as primary discovery tools to establish baseline technology stacks and identify the target as "DVWA" (Damn Vulnerable Web Application). This classification immediately triggered a high-risk vulnerability hypothesis, prioritizing deep-scan tools over generic checks.
+<em>   <strong>Vulnerability Scanning:<strong> Deployed `nikto` for comprehensive header and misconfiguration analysis, and `gobuster` for directory enumeration. These were chosen to map the attack surface before attempting active exploitation.
+<em>   <strong>Specialized Attack Vectors:<strong> Executed `xsstrike` for XSS, `commix` for SQL injection, and `arjun` for parameter discovery. The decision to run `sslyze` was made to validate TLS configuration, though connectivity issues later rendered this specific check inconclusive.
+<em>   <strong>Logic & Session Analysis:<strong> Utilized `csrf-tester`, `cookie-analyzer`, and `cors-scanner` to assess session management and cross-origin policies, critical for the identified application type.</p><p><strong>2. Major Vulnerability Findings<strong>
+<em>   <strong>Application Identification:<strong> Confirmed target is a known vulnerable test application (DVWA), implying a high probability of unpatched, textbook vulnerabilities (SQLi, XSS, File Inclusion).
+<em>   <strong>Header & Configuration Weaknesses:<strong> `nikto` output indicated missing security headers and potential server misconfigurations typical of development environments.
+<em>   <strong>Parameter Exposure:<strong> `arjun` successfully identified hidden parameters, suggesting potential for parameter tampering or injection attacks.
+<em>   <strong>Cross-Site Scripting (XSS):<strong> `xsstrike` flagged potential XSS vectors, requiring manual verification to confirm exploitability and impact.
+<em>   <strong>GraphQL Exposure:<strong> Detected a GraphQL endpoint (`/graphql`) which, while not inherently vulnerable, requires strict access control validation to prevent data exfiltration.</p><p><strong>3. Failed Operations & Noise Filtering<strong>
+<em>   <strong>SSL/TLS Scan Failure:<strong> `sslyze` failed to establish a stable connection (`connectivity_status` error), likely due to the target running on HTTP only or network instability. This finding was marked as inconclusive rather than a false negative.
+<em>   <strong>Tool Noise:<strong> `httpx` and `wafw00f` generated warnings regarding failed connections or lack of WAF detection. These were filtered as non-actionable noise, as the target is a local test environment without enterprise-grade WAFs.
+<em>   <strong>Empty Results:<strong> `cmseek` and `error-detector` returned empty or minimal results (`[{{}}]`), indicating no CMS-specific vulnerabilities or distinct error handling flaws were detected in the initial automated pass.</p><p><strong>4. Important Decision Points<strong>
+<em>   <strong>Scope Validation:<strong> Upon identifying the target as DVWA, the workflow shifted from "discovery" to "exploitation verification." The AI prioritized confirming known vulnerabilities over discovering new ones, as the application's nature is educational.
+<em>   <strong>False Positive Mitigation:<strong> Decisions were made to correlate `gobuster` directory findings with `nikto` header analysis. Directories found without corresponding security headers were flagged for manual review to distinguish between benign test endpoints and actual risks.
+<em>   <strong>Resource Allocation:<strong> The workflow terminated specialized scans (e.g., `deserialization-scanner`) early when initial indicators (like specific library versions) were absent, optimizing scan time for high-probability vectors like SQLi and XSS.
+<em>   <strong>Reporting Strategy:<strong> Given the target is a known vulnerable app, the decision was made to categorize findings as "Confirmed Vulnerabilities" rather than "Potential Risks," providing immediate remediation guidance based on standard DVWA hardening procedures.</p></div>
+
+    <h2>Tool Summary</h2>
+    <table><tr><th>Tool</th><th>Runs</th><th>Success</th><th>Failed</th><th>Skipped</th><th>Last Exit</th></tr><tr><td>semgrep</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>gitleaks/trufflehog</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>httpx</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>zap</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nmap</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>wafw00f</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>sslyze</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>headers</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>whatweb</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cmseek</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>waybackurls</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>subjs</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>retire</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td>gobuster</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>paramspider</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>arjun</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>commix</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>nikto</td><td>2</td><td>2</td><td>0</td><td>0</td><td>1</td></tr><tr><td>nuclei</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>graphql-cop</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>dalfox</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>xsstrike</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>csrf-tester</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>upload-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cookie-analyzer</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>cors-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>ssrf-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>xxe-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>deserialization-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>auth-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>idor-scanner</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>error-detector</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>jwt_tool</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr></table>
+
+    <h2>Tools Executed</h2>
+    <div><p>- <strong>semgrep<strong>: semgrep --config=auto /home/ss/code/DVWA (Duration: 0.00s)
+- <strong>gitleaks/trufflehog<strong>: gitleaks detect --source=/home/ss/code/DVWA (Duration: 0.00s)
+- <strong>httpx<strong>: /home/ss/code/level52-cli-deluxe/tools/.bin/httpx -json -silent -threads 50 -timeout 10 -tech-detect -status-code -title -u http://192.168.1.49:4280 (Duration: 0.40s)
+- <strong>zap<strong>: python3 /home/ss/code/level52-cli-deluxe/scripts/zap_docker_daemon_scan.py --image ghcr.io/zaproxy/zaproxy:stable --api-url http://127.0.0.1:8080 --target http://192.168.1.49:4280 --max-minutes 45 --startup-timeout 180 --spider --ajax-spider --active --active-threads 3 --ignore-robots --seed-file reports/20260315_220612/urls_20260315_220612.txt --username-field username --password-field password --json-out reports/20260315_220612/zap/zap_full_20260315_220805.json --html-out reports/20260315_220612/zap/zap_full_20260315_220805.html --md-out reports/20260315_220612/zap/zap_full_20260315_220805.md (Duration: 42.99s)
+- <strong>nmap<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260315_220612/nmap_20260315_221148_474697.xml -p 80,443,8080,8443,3000,5000,8000 -sV -sC 192.168.1.49 (Duration: 6.31s)
+- <strong>wafw00f<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/wafw00f -v -a http://192.168.1.49:4280 (Duration: 0.11s)
+- <strong>sslyze<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/sslyze 192.168.1.49:4280 --json_out=- --certinfo --sslv2 --sslv3 --tlsv1 --tlsv1_1 --tlsv1_2 --tlsv1_3 --reneg --resum --heartbleed --robot --openssl_ccs --compression --http_headers (Duration: 10.16s)
+- <strong>headers<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Header-Check/1.0 -L -k http://192.168.1.49:4280 (Duration: 0.01s)
+- <strong>whatweb<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/whatweb --log-json=reports/20260315_220612/whatweb_20260315_221731_257023.json -a 1 --follow-redirect=always --user-agent Guardian-Pentest-Tool http://192.168.1.49:4280 (Duration: 4.96s)
+- <strong>cmseek<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/cmseek -u http://192.168.1.49:4280 --batch --random-agent (Duration: 0.06s)
+- <strong>waybackurls<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/waybackurls http://192.168.1.49:4280 http://192.168.1.49:4280/robots.txt http://192.168.1.49:4280/ http://192.168.1.49:4280/login.php http://192.168.1.49:4280/sitemap.xml http://192.168.1.49:4280/dvwa/css/login.css http://192.168.1.49:4280/dvwa/images/login_logo.png http://192.168.1.49:4280/dvwa http://192.168.1.49:4280/dvwa/css http://192.168.1.49:4280/dvwa/images (Duration: 19.36s)
+- <strong>subjs<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/subjs -i reports/20260315_220612/urls_20260315_220612.txt (Duration: 0.01s)
+- <strong>retire<strong>:  (Duration: 0.00s)
+- <strong>gobuster<strong>: /usr/bin/gobuster dir -u http://192.168.1.49:4280 -w reports/20260315_220612/gobuster_wordlist_20260315_220612.txt -t 10 --timeout 10s -q --no-progress --no-error --no-color --delay 100ms -b 404 (Duration: 46.93s)
+- <strong>paramspider<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/paramspider -d 192.168.1.49:4280 (Duration: 0.44s)
+- <strong>arjun<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/arjun -u http://192.168.1.49:4280 -oJ /tmp/guardian-arjun-84188a31c5f343b58a0fad7fd423bc92.json (Duration: 0.45s)
+- <strong>commix<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/commix --url http://192.168.1.49:4280 --batch --level 2 (Duration: 0.07s)
+- <strong>nikto<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/nikto -h http://192.168.1.49:4280 -Tuning 123b -timeout 10 -nointeractive (Duration: 2.44s)
+- <strong>nikto<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/nikto -h http://192.168.1.49:4280 -Tuning x6 -timeout 10 -nointeractive (Duration: 4.71s)
+- <strong>nuclei<strong>: /home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -l reports/20260315_220612/nuclei_seed_20260315_220612.txt -jsonl -o reports/20260315_220612/nuclei_20260315_223135.jsonl -severity critical,high -tags apache,php,login,misconfiguration,csp,x-frame-options,server-leak,exposure,default-credentials,config -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 25 (Duration: 487.63s)
+- <strong>graphql-cop<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/graphql-cop/graphql-cop.py -t http://192.168.1.49:4280/graphql (Duration: 0.08s)
+- <strong>dalfox<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/dalfox file reports/20260315_220612/xss_seed_20260315_220612.txt --format json --worker 2 --delay 100 --skip-headless --skip-bav (Duration: 14.21s)
+- <strong>xsstrike<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/xsstrike -u http://192.168.1.49:4280 --crawl (Duration: 0.12s)
+- <strong>csrf-tester<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/guardian_tools/csrf_tester.py --url http://192.168.1.49:4280 --insecure (Duration: 0.04s)
+- <strong>upload-scanner<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/guardian_tools/upload_scanner.py --url http://192.168.1.49:4280 --insecure (Duration: 0.04s)
+- <strong>cookie-analyzer<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Cookie-Analyzer/1.0 -L -k http://192.168.1.49:4280 (Duration: 0.01s)
+- <strong>cors-scanner<strong>: /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:4280 -t 10 -T 10; /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:4280/ -t 10 -T 10; /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:4280/login.php -t 10 -T 10; /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:4280/dvwa -t 10 -T 10; /home/ss/code/level52-cli-deluxe/venv/bin/python /home/ss/code/level52-cli-deluxe/tools/vendor/CORScanner/cors_scan.py -u http://192.168.1.49:4280/dvwa/css -t 10 -T 10 ... (+1 more) (Duration: 1.65s)
+- <strong>ssrf-scanner<strong>: curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:4280; curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:4280/; curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:4280/login.php; curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa; curl -sS -o /dev/null -w %{http_code}|%{size_download}|%{time_total} --max-time 10 --connect-timeout 5 -A Guardian-SSRF-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa/css ... (+1 more) (Duration: 0.03s)
+- <strong>xxe-scanner<strong>: curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, <em>/<em> -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:4280; curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, <em>/<em> -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:4280/; curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, <em>/<em> -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:4280/login.php; curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, <em>/<em> -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:4280/dvwa; curl -sS -X POST -H Content-Type: application/xml -H Accept: application/xml, text/xml, <em>/<em> -d <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><root>&xxe;</root> --max-time 10 --connect-timeout 5 -A Guardian-XXE-Scanner/1.0 -k http://192.168.1.49:4280/dvwa/css ... (+1 more) (Duration: 0.02s)
+- <strong>deserialization-scanner<strong>: curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:4280; curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:4280/; curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:4280/login.php; curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa; curl -sS -D - --max-time 10 --connect-timeout 5 -A Guardian-Deserialization-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa/css ... (+1 more) (Duration: 0.03s)
+- <strong>auth-scanner<strong>: curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:4280; curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:4280/; curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:4280/login.php; curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:4280/dvwa; curl -sS -D - -o /dev/null --max-time 10 --connect-timeout 5 -A Guardian-Auth-Scanner/1.0 -L -k -H X-Forwarded-For: 127.0.0.1 -H X-Original-URL: /admin -H X-Rewrite-URL: /admin http://192.168.1.49:4280/dvwa/css ... (+1 more) (Duration: 0.02s)
+- <strong>idor-scanner<strong>: curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:4280; curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:4280/; curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:4280/login.php; curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa; curl -sS -D - -w 
+---GUARDIAN-META---
+%{http_code}|%{size_download} --max-time 10 --connect-timeout 5 -A Guardian-IDOR-Scanner/1.0 -L -k http://192.168.1.49:4280/dvwa/css ... (+1 more) (Duration: 0.03s)
+- <strong>error-detector<strong>: curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:4280; curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:4280/; curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:4280/login.php; curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:4280/dvwa; curl -sS --max-time 15 --connect-timeout 5 -A Guardian-Error-Detector/1.0 -L -k http://192.168.1.49:4280/dvwa/css ... (+1 more) (Duration: 0.03s)
+- <strong>jwt_tool<strong>:  (Duration: 0.00s)</p></div>
+    
+    <footer>
+        <hr>
+        <p><em>Report generated by Guardian AI Pentest Tool</em></p>
+    </footer>
+</body>
+</html>

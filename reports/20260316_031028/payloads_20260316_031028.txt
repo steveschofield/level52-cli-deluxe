@@ -1,0 +1,84 @@
+### masscan (external, 2026-03-16T03:10:29, 40.2s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/masscan -p 1-65535 --rate 5000 -oJ reports/20260316_031028/masscan_20260316_031029_354911.json 192.168.1.244
+
+### nmap (external, 2026-03-16T03:14:20, 492.0s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T2 -Pn -oX reports/20260316_031028/nmap_20260316_031420_953880.xml -p 21,22,23,25,53,80,111,139,445,512,513,514,1099,1524,2049,2121,3306,3632,5432,5900,6000,6667,6697,8009,8180,8787,41755,42519,49727,50763 -sS -Pn -f -D RND:5 --scan-delay 50ms --max-rate 200 192.168.1.244
+
+### nmap (external, 2026-03-16T03:26:30, 286.4s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T3 -Pn -oX reports/20260316_031028/nmap_20260316_032630_800878.xml -p 21,22,23,25,53,80,111,139,445,512,513,514,1099,1524,2049,2121,3306,3632,5432,5900,6000,6667,6697,8009,8180,8787,41755,42519,49727,50763 -sS 192.168.1.244
+
+### nmap (external, 2026-03-16T03:35:13, 159.2s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T3 -Pn -oX reports/20260316_031028/nmap_20260316_033513_766454.xml -p 53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389 -sU 192.168.1.244
+
+### nmap (external, 2026-03-16T03:40:05, 48.6s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T3 -Pn -oX reports/20260316_031028/nmap_20260316_034005_354470.xml -p 53,67,68,69,88,111,123,135,137,138,161,162,389,445,500,514,520,623,1194,1701,1812,1813,1900,2049,3478,4500,4789,5004,5005,5060,5061,5353,11211,1434,3389 -sU -sV --version-intensity 0 192.168.1.244
+
+### nmap (external, 2026-03-16T03:43:01, 7.4s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T3 -Pn -oX reports/20260316_031028/nmap_20260316_034301_818667.xml -sY --top-ports 50 192.168.1.244
+
+### nmap (external, 2026-03-16T03:43:49, 279.1s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260316_031028/nmap_20260316_034349_060110.xml -p 21,22,23,25,53,80,111,137,139,445,512,513,514,1099,1524,2049,2121,3306,3632,5432,5900,6000,6667,6697,8009,8180,8787,41755,42519,49727,50763 -sV -sC 192.168.1.244
+
+### nmap (external, 2026-03-16T03:51:45, 7.2s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260316_031028/nmap_20260316_035145_631024.xml -p 445 --script smb-os-discovery,smb-enum-shares,smb-enum-users 192.168.1.244
+
+### enum4linux-ng (external, 2026-03-16T03:54:25, 0.7s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/enum4linux-ng -A 192.168.1.244
+
+### smbclient (external, 2026-03-16T03:57:08, 0.1s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/smbclient -L //192.168.1.244 -N
+
+### showmount (external, 2026-03-16T03:58:58, 0.0s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/showmount -e 192.168.1.244
+
+### enum4linux-ng (external, 2026-03-16T04:00:04, 0.6s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/enum4linux-ng -A 192.168.1.244 -oY /tmp/enum4linux_192.168.1.244.yaml
+
+### enum4linux-ng (external, 2026-03-16T04:02:32, 0.3s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/enum4linux-ng -A 192.168.1.244 -u {provided_username} -p {provided_password}
+
+### onesixtyone (external, 2026-03-16T04:04:31, 5.0s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/onesixtyone -q 192.168.1.244 public
+
+### snmpwalk (external, 2026-03-16T04:05:01, 6.0s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/snmpwalk -v 2c -c public 192.168.1.244
+
+### nmap (external, 2026-03-16T04:05:07, 0.8s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260316_031028/nmap_20260316_040507_781517.xml -p 21 --script ftp-anon,ftp-syst,ftp-bounce 192.168.1.244
+
+### nmap (external, 2026-03-16T04:06:54, 38.9s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260316_031028/nmap_20260316_040654_170884.xml -p 25 --script smtp-commands,smtp-enum-users,smtp-open-relay 192.168.1.244
+
+### nmap (external, 2026-03-16T04:09:10, 18.2s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260316_031028/nmap_20260316_040910_643182.xml -p 80 --script http-title,http-headers,http-methods,http-enum 192.168.1.244
+
+### nmap (external, 2026-03-16T04:11:56, 20.7s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV -sC -T4 -Pn -oX reports/20260316_031028/nmap_20260316_041156_506059.xml -p 3306,5432 --script ms-sql-info,ms-sql-ntlm-info,mysql-info,oracle-sid-brute 192.168.1.244
+
+### testssl (external, 2026-03-16T04:16:04, 0.7s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/testssl --jsonfile=/tmp/guardian-testssl-g6077rbf/testssl.json --severity LOW --quiet 192.168.1.244
+
+### nmap (external, 2026-03-16T04:16:05, 741.7s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/nmap -sV --script vuln,vulners -T4 -Pn -oX reports/20260316_031028/nmap_20260316_041605_400901.xml -p 21,22,23,25,53,80,111,137,139,445,512,513,514,1099,1524,2049,2121,3306,3632,5432,5900,6000,6667,6697,8009,8180,8787,41755,42519,49727,50763 192.168.1.244
+
+### nuclei (external, 2026-03-16T04:29:52, 66.9s)
+  /home/ss/code/level52-cli-deluxe/tools/.bin/nuclei -l /tmp/guardian-nuclei-targets-lxox3mnl.txt -jsonl -o reports/20260316_031028/nuclei_20260316_042952.jsonl -severity critical,high -tags exposed-panels,misconfiguration,smb,vnc,critical,rce,vulnerable,dns,nfs,rpc -t /home/ss/nuclei-templates/http/cves -t /home/ss/nuclei-templates/http/default-logins -t /home/ss/nuclei-templates/http/exposures -t /home/ss/nuclei-templates/http/misconfiguration -silent -rate-limit 25
+
+### bloodhound (external, 2026-03-16T04:32:02, 0.3s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/docker run -i --rm --network host -e NEO4J_URI=bolt://localhost:7687 -e NEO4J_USER=neo4j ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+
+### bloodhound (external, 2026-03-16T04:32:03, 0.4s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/docker run -i --rm --network host -e NEO4J_URI=bolt://localhost:7687 -e NEO4J_USER=neo4j ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+
+### bloodhound (external, 2026-03-16T04:32:03, 0.2s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/docker run -i --rm --network host -e NEO4J_URI=bolt://localhost:7687 -e NEO4J_USER=neo4j ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+
+### bloodhound (external, 2026-03-16T04:32:03, 0.2s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/docker run -i --rm --network host -e NEO4J_URI=bolt://localhost:7687 -e NEO4J_USER=neo4j ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+
+### bloodhound (external, 2026-03-16T04:32:04, 0.2s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/docker run -i --rm --network host -e NEO4J_URI=bolt://localhost:7687 -e NEO4J_USER=neo4j ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+
+### bloodhound (external, 2026-03-16T04:32:04, 0.3s)
+  /home/ss/code/level52-cli-deluxe/venv/bin/docker run -i --rm --network host -e NEO4J_URI=bolt://localhost:7687 -e NEO4J_USER=neo4j ghcr.io/fuzzinglabs/bloodhound-mcp:latest
+

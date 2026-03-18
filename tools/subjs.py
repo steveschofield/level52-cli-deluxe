@@ -21,20 +21,19 @@ class SubjsTool(BaseTool):
         """
         Build subjs command.
 
-        subjs expects input file with -i flag (not -iL).
-        Usage: subjs -i urls.txt
+        subjs expects an input file of URLs via -i.  It cannot operate on a
+        bare host/IP — it needs a seed list of page/JS URLs to scrape from.
+        Raises ValueError when no seed file is available so the caller skips
+        the tool rather than spawning a process that will immediately fail.
         """
-        command = ["subjs"]
+        from_file = kwargs.get("from_file")
+        if not from_file:
+            raise ValueError(
+                "subjs requires a URL seed file (from_file); skipping — "
+                "run after web crawling has produced a URL list"
+            )
 
-        # subjs requires an input file with -i flag
-        if kwargs.get("from_file"):
-            command.extend(["-i", kwargs["from_file"]])
-        else:
-            # If no file provided, we need to create a temp file or pipe stdin
-            # For now, pass target as input file path if it exists
-            command.extend(["-i", target])
-
-        return command
+        return ["subjs", "-i", from_file]
 
     def parse_output(self, output: str) -> Dict[str, Any]:
         urls = [line.strip() for line in output.splitlines() if line.strip()]
